@@ -2,13 +2,34 @@
  * list-item
  * ================================== */
 .store-item {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  padding: 7px 9px;
+  font-size: 15px;
+  border-radius: 5px;
+}
+.store-item.pick-color {
+  background-color: gold;
+  border: 1px solid;
 }
 .store-item .store-image .icon {
-  width: 38px;
-  height: 38px;
+  width: 20px;
+  height: 20px;
   fill: #4C6EF5;
-  margin-right: 17px;
+  margin-right: 10px;
+  margin-top: 6px;
+}
+.store-item .store-text ul li {
+  line-height: 1.5;
+}
+.store-item .store-button {
+  margin-top: 5px;
+  font-size: 14px;
+}
+.store-item .store-button button.btn {
+  padding: 0 6px;
+}
+.store-item .store-button button.btn:not(:last-child) {
+  margin-right: 5px;
 }
 
 /*# sourceMappingURL=index.css.map */
