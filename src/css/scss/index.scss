@@ -6,9 +6,12 @@
     padding: 7px 9px;
     font-size: 15px;
     border-radius: 5px;
+    border: 1px solid transparent;
 
-    &.pick-color {
-        background-color: gold;
+    // js call
+    &.pick-color,
+    &:hover {
+        background-color: rgba(255, 215, 0, 0.6);
         border: 1px solid;
     }
 
@@ -39,7 +42,8 @@
 
         button.btn {
             padding: 0 6px;
-            &:not(:last-child){
+
+            &:not(:last-child) {
                 margin-right: 5px;
             }
         }

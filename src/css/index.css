@@ -6,9 +6,10 @@
   padding: 7px 9px;
   font-size: 15px;
   border-radius: 5px;
+  border: 1px solid transparent;
 }
-.store-item.pick-color {
-  background-color: gold;
+.store-item.pick-color, .store-item:hover {
+  background-color: rgba(255, 215, 0, 0.6);
   border: 1px solid;
 }
 .store-item .store-image .icon {
