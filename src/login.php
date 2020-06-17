@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,26 +6,26 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.0.1">
-    <title>Signin</title>
+    <title>今天要吃啥？ 登入</title>
     <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="text-center">
-<form class="form-signin">
-<!--    <img class="mb-4" src="/docs/4.5/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">-->
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail" class="sr-only">Email address</label>
-    <input type="text" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" value="remember-me"> Remember me
-        </label>
-    </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
-</form>
+<div class="container">
+    <form class="form-signin" autocomplete="off">
+        <h1 class="h3 mb-3 font-weight-normal">今天要吃啥？</h1>
+        <input type="text" id="inputAccount" class="form-control" placeholder="account" required autofocus>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember-me"> 在這台電腦上記得我
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">登入</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+    </form>
+</div>
+
 </body>
 </html>
