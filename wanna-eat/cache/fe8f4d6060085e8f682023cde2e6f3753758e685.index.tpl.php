@@ -1,327 +1,262 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-06-19 00:49:17
+/* Smarty version 3.1.34-dev-7, created on 2020-06-19 16:49:24
   from 'D:\xampp\htdocs\myphp\projects\wanna-eat\wanna-eat\templates\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5eebef6de9cf95_78174837',
-  'has_nocache_code' => true,
+  'unifunc' => 'content_5eecd074223114_09136191',
+  'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '623f66f3a6ebff2bab620813d860b605e3037006' => 
     array (
       0 => 'D:\\xampp\\htdocs\\myphp\\projects\\wanna-eat\\wanna-eat\\templates\\index.tpl',
-      1 => 1592520555,
+      1 => 1592578139,
+      2 => 'file',
+    ),
+    '129f418d96e3f7074f3cc41eb9d91cedb2fea1b0' => 
+    array (
+      0 => 'D:\\xampp\\htdocs\\myphp\\projects\\wanna-eat\\wanna-eat\\templates\\head.tpl',
+      1 => 1592578033,
       2 => 'file',
     ),
     '9cf9af57158ea1bc874403a8a5dad0ace6329403' => 
     array (
       0 => 'D:\\xampp\\htdocs\\myphp\\projects\\wanna-eat\\wanna-eat\\templates\\header.tpl',
-      1 => 1551336140,
-      2 => 'file',
-    ),
-    'd53c41edecc694e72c7a44f3cae2b4cbb2573e16' => 
-    array (
-      0 => 'D:\\xampp\\htdocs\\myphp\\projects\\wanna-eat\\wanna-eat\\templates\\footer.tpl',
-      1 => 1551336140,
+      1 => 1592578163,
       2 => 'file',
     ),
   ),
   'cache_lifetime' => 120,
 ),true)) {
-function content_5eebef6de9cf95_78174837 (Smarty_Internal_Template $_smarty_tpl) {
-?>
-<HTML>
-<HEAD>
-<TITLE>foo - <?php echo $_smarty_tpl->tpl_vars['Name']->value;?>
-</TITLE>
-</HEAD>
-<BODY bgcolor="#ffffff">
+function content_5eecd074223114_09136191 (Smarty_Internal_Template $_smarty_tpl) {
+?><!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>今天要吃啥？</title>
+    <link rel="stylesheet" href="../language/css/bootstrap.css">
+    <link rel="stylesheet" href="../language/css/common.css">
+    <link rel="stylesheet" href="../language/css/index.css">
+</head><body>
+<header>
+    <div class="container">
+        <h1 class="text-center mb-3">今天要吃啥？</h1>
+        <hr>
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="login.php" class="btn btn-outline-primary btn-sm mr-2">登入</a>
+                <a href="add.php" class="btn btn-outline-info btn-sm mr-2">新增店家</a>
+                <a href="logout.php" class="btn btn-outline-secondary btn-sm text-dark">登出</a>
+            </div>
+        </div>
+    </div>
+</header>
 
-<p>
-Hello World!
-</p>
-<PRE>
+<main>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <article class="d-flex store-item pick-color">
+                        <div class="store-image">
+                            <svg class="icon" viewBox="0 0 416 512">
+                                <path d="M207.9 15.2c.8 4.7 16.1 94.5 16.1 128.8 0 52.3-27.8 89.6-68.9 104.6L168 486.7c.7 13.7-10.2 25.3-24 25.3H80c-13.7 0-24.7-11.5-24-25.3l12.9-238.1C27.7 233.6 0 196.2 0 144 0 109.6 15.3 19.9 16.1 15.2 19.3-5.1 61.4-5.4 64 16.3v141.2c1.3 3.4 15.1 3.2 16 0 1.4-25.3 7.9-139.2 8-141.8 3.3-20.8 44.7-20.8 47.9 0 .2 2.7 6.6 116.5 8 141.8.9 3.2 14.8 3.4 16 0V16.3c2.6-21.6 44.8-21.4 48-1.1zm119.2 285.7l-15 185.1c-1.2 14 9.9 26 23.9 26h56c13.3 0 24-10.7 24-24V24c0-13.2-10.7-24-24-24-82.5 0-221.4 178.5-64.9 300.9z"></path>
+                            </svg>
+                        </div>
+                        <div class="store-text">
+                            <ul>
+                                <li>名稱：龍皮魚丸店</li>
+                                <li>電話：04-12345678</li>
+                                <li>
+                                    <div class="store-button">
+                                        <button class="btn btn-outline-primary btn-sm btn-pill">菜單</button>
+                                        <button class="btn btn-outline-info btn-sm">編輯</button>
+                                        <button class="btn btn-outline-danger btn-sm">刪除</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
 
-    <b>                Title: Welcome To Smarty!
-        </b>
-    The current date and time is 2020-06-19 00:49:17
+                    </article>
+                </div>
+                <div class="col-sm-3">
+                    <article class="d-flex store-item">
+                        <div class="store-image">
+                            <svg class="icon" viewBox="0 0 416 512">
+                                <path d="M207.9 15.2c.8 4.7 16.1 94.5 16.1 128.8 0 52.3-27.8 89.6-68.9 104.6L168 486.7c.7 13.7-10.2 25.3-24 25.3H80c-13.7 0-24.7-11.5-24-25.3l12.9-238.1C27.7 233.6 0 196.2 0 144 0 109.6 15.3 19.9 16.1 15.2 19.3-5.1 61.4-5.4 64 16.3v141.2c1.3 3.4 15.1 3.2 16 0 1.4-25.3 7.9-139.2 8-141.8 3.3-20.8 44.7-20.8 47.9 0 .2 2.7 6.6 116.5 8 141.8.9 3.2 14.8 3.4 16 0V16.3c2.6-21.6 44.8-21.4 48-1.1zm119.2 285.7l-15 185.1c-1.2 14 9.9 26 23.9 26h56c13.3 0 24-10.7 24-24V24c0-13.2-10.7-24-24-24-82.5 0-221.4 178.5-64.9 300.9z"></path>
+                            </svg>
+                        </div>
+                        <div class="store-text">
+                            <ul>
+                                <li>名稱：龍皮魚丸店</li>
+                                <li>電話：04-12345678</li>
+                                <li>
+                                    <div class="store-button">
+                                        <button class="btn btn-outline-primary btn-sm">菜單</button>
+                                        <button class="btn btn-outline-info btn-sm">編輯</button>
+                                        <button class="btn btn-outline-danger btn-sm">刪除</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
 
-    The value of global assigned variable $SCRIPT_NAME is /myphp/projects/wanna-eat/wanna-eat/index.php
+                <div class="col-sm-3">
+                    <article class="d-flex store-item">
+                        <div class="store-image">
+                            <svg class="icon" viewBox="0 0 416 512">
+                                <path d="M207.9 15.2c.8 4.7 16.1 94.5 16.1 128.8 0 52.3-27.8 89.6-68.9 104.6L168 486.7c.7 13.7-10.2 25.3-24 25.3H80c-13.7 0-24.7-11.5-24-25.3l12.9-238.1C27.7 233.6 0 196.2 0 144 0 109.6 15.3 19.9 16.1 15.2 19.3-5.1 61.4-5.4 64 16.3v141.2c1.3 3.4 15.1 3.2 16 0 1.4-25.3 7.9-139.2 8-141.8 3.3-20.8 44.7-20.8 47.9 0 .2 2.7 6.6 116.5 8 141.8.9 3.2 14.8 3.4 16 0V16.3c2.6-21.6 44.8-21.4 48-1.1zm119.2 285.7l-15 185.1c-1.2 14 9.9 26 23.9 26h56c13.3 0 24-10.7 24-24V24c0-13.2-10.7-24-24-24-82.5 0-221.4 178.5-64.9 300.9z"></path>
+                            </svg>
+                        </div>
+                        <div class="store-text">
+                            <ul>
+                                <li>名稱：龍皮魚丸店</li>
+                                <li>電話：04-12345678</li>
+                                <li>
+                                    <div class="store-button">
+                                        <button class="btn btn-outline-primary btn-sm">菜單</button>
+                                        <button class="btn btn-outline-info btn-sm">編輯</button>
+                                        <button class="btn btn-outline-danger btn-sm">刪除</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
 
-    Example of accessing server environment variable SERVER_NAME: 127.0.0.1
+                <div class="col-sm-3">
+                    <article class="d-flex store-item">
+                        <div class="store-image">
+                            <svg class="icon" viewBox="0 0 416 512">
+                                <path d="M207.9 15.2c.8 4.7 16.1 94.5 16.1 128.8 0 52.3-27.8 89.6-68.9 104.6L168 486.7c.7 13.7-10.2 25.3-24 25.3H80c-13.7 0-24.7-11.5-24-25.3l12.9-238.1C27.7 233.6 0 196.2 0 144 0 109.6 15.3 19.9 16.1 15.2 19.3-5.1 61.4-5.4 64 16.3v141.2c1.3 3.4 15.1 3.2 16 0 1.4-25.3 7.9-139.2 8-141.8 3.3-20.8 44.7-20.8 47.9 0 .2 2.7 6.6 116.5 8 141.8.9 3.2 14.8 3.4 16 0V16.3c2.6-21.6 44.8-21.4 48-1.1zm119.2 285.7l-15 185.1c-1.2 14 9.9 26 23.9 26h56c13.3 0 24-10.7 24-24V24c0-13.2-10.7-24-24-24-82.5 0-221.4 178.5-64.9 300.9z"></path>
+                            </svg>
+                        </div>
+                        <div class="store-text">
+                            <ul>
+                                <li>名稱：龍皮魚丸店</li>
+                                <li>電話：04-12345678</li>
+                                <li>
+                                    <div class="store-button">
+                                        <button class="btn btn-outline-primary btn-sm">菜單</button>
+                                        <button class="btn btn-outline-info btn-sm">編輯</button>
+                                        <button class="btn btn-outline-danger btn-sm">刪除</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
 
-    The value of {$Name} is <b><?php echo $_smarty_tpl->tpl_vars['Name']->value;?>
-</b>
+                <div class="col-sm-3">
+                    <article class="d-flex store-item">
+                        <div class="store-image">
+                            <svg class="icon" viewBox="0 0 416 512">
+                                <path d="M207.9 15.2c.8 4.7 16.1 94.5 16.1 128.8 0 52.3-27.8 89.6-68.9 104.6L168 486.7c.7 13.7-10.2 25.3-24 25.3H80c-13.7 0-24.7-11.5-24-25.3l12.9-238.1C27.7 233.6 0 196.2 0 144 0 109.6 15.3 19.9 16.1 15.2 19.3-5.1 61.4-5.4 64 16.3v141.2c1.3 3.4 15.1 3.2 16 0 1.4-25.3 7.9-139.2 8-141.8 3.3-20.8 44.7-20.8 47.9 0 .2 2.7 6.6 116.5 8 141.8.9 3.2 14.8 3.4 16 0V16.3c2.6-21.6 44.8-21.4 48-1.1zm119.2 285.7l-15 185.1c-1.2 14 9.9 26 23.9 26h56c13.3 0 24-10.7 24-24V24c0-13.2-10.7-24-24-24-82.5 0-221.4 178.5-64.9 300.9z"></path>
+                            </svg>
+                        </div>
+                        <div class="store-text">
+                            <ul>
+                                <li>名稱：龍皮魚丸店</li>
+                                <li>電話：04-12345678</li>
+                                <li>
+                                    <div class="store-button">
+                                        <button class="btn btn-outline-primary btn-sm">菜單</button>
+                                        <button class="btn btn-outline-info btn-sm">編輯</button>
+                                        <button class="btn btn-outline-danger btn-sm">刪除</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
 
-variable modifier example of {$Name|upper}
+                <div class="col-sm-3">
+                    <article class="d-flex store-item">
+                        <div class="store-image">
+                            <svg class="icon" viewBox="0 0 416 512">
+                                <path d="M207.9 15.2c.8 4.7 16.1 94.5 16.1 128.8 0 52.3-27.8 89.6-68.9 104.6L168 486.7c.7 13.7-10.2 25.3-24 25.3H80c-13.7 0-24.7-11.5-24-25.3l12.9-238.1C27.7 233.6 0 196.2 0 144 0 109.6 15.3 19.9 16.1 15.2 19.3-5.1 61.4-5.4 64 16.3v141.2c1.3 3.4 15.1 3.2 16 0 1.4-25.3 7.9-139.2 8-141.8 3.3-20.8 44.7-20.8 47.9 0 .2 2.7 6.6 116.5 8 141.8.9 3.2 14.8 3.4 16 0V16.3c2.6-21.6 44.8-21.4 48-1.1zm119.2 285.7l-15 185.1c-1.2 14 9.9 26 23.9 26h56c13.3 0 24-10.7 24-24V24c0-13.2-10.7-24-24-24-82.5 0-221.4 178.5-64.9 300.9z"></path>
+                            </svg>
+                        </div>
+                        <div class="store-text">
+                            <ul>
+                                <li>名稱：龍皮魚丸店</li>
+                                <li>電話：04-12345678</li>
+                                <li>
+                                    <div class="store-button">
+                                        <button class="btn btn-outline-primary btn-sm">菜單</button>
+                                        <button class="btn btn-outline-info btn-sm">編輯</button>
+                                        <button class="btn btn-outline-danger btn-sm">刪除</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
 
-<b><?php echo mb_strtoupper($_smarty_tpl->tpl_vars['Name']->value, 'UTF-8');?>
-</b>
+                <div class="col-sm-3">
+                    <article class="d-flex store-item">
+                        <div class="store-image">
+                            <svg class="icon" viewBox="0 0 416 512">
+                                <path d="M207.9 15.2c.8 4.7 16.1 94.5 16.1 128.8 0 52.3-27.8 89.6-68.9 104.6L168 486.7c.7 13.7-10.2 25.3-24 25.3H80c-13.7 0-24.7-11.5-24-25.3l12.9-238.1C27.7 233.6 0 196.2 0 144 0 109.6 15.3 19.9 16.1 15.2 19.3-5.1 61.4-5.4 64 16.3v141.2c1.3 3.4 15.1 3.2 16 0 1.4-25.3 7.9-139.2 8-141.8 3.3-20.8 44.7-20.8 47.9 0 .2 2.7 6.6 116.5 8 141.8.9 3.2 14.8 3.4 16 0V16.3c2.6-21.6 44.8-21.4 48-1.1zm119.2 285.7l-15 185.1c-1.2 14 9.9 26 23.9 26h56c13.3 0 24-10.7 24-24V24c0-13.2-10.7-24-24-24-82.5 0-221.4 178.5-64.9 300.9z"></path>
+                            </svg>
+                        </div>
+                        <div class="store-text">
+                            <ul>
+                                <li>名稱：龍皮魚丸店</li>
+                                <li>電話：04-12345678</li>
+                                <li>
+                                    <div class="store-button">
+                                        <button class="btn btn-outline-primary btn-sm">菜單</button>
+                                        <button class="btn btn-outline-info btn-sm">編輯</button>
+                                        <button class="btn btn-outline-danger btn-sm">刪除</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
 
+                <div class="col-sm-3">
+                    <article class="d-flex store-item">
+                        <div class="store-image">
+                            <svg class="icon" viewBox="0 0 416 512">
+                                <path d="M207.9 15.2c.8 4.7 16.1 94.5 16.1 128.8 0 52.3-27.8 89.6-68.9 104.6L168 486.7c.7 13.7-10.2 25.3-24 25.3H80c-13.7 0-24.7-11.5-24-25.3l12.9-238.1C27.7 233.6 0 196.2 0 144 0 109.6 15.3 19.9 16.1 15.2 19.3-5.1 61.4-5.4 64 16.3v141.2c1.3 3.4 15.1 3.2 16 0 1.4-25.3 7.9-139.2 8-141.8 3.3-20.8 44.7-20.8 47.9 0 .2 2.7 6.6 116.5 8 141.8.9 3.2 14.8 3.4 16 0V16.3c2.6-21.6 44.8-21.4 48-1.1zm119.2 285.7l-15 185.1c-1.2 14 9.9 26 23.9 26h56c13.3 0 24-10.7 24-24V24c0-13.2-10.7-24-24-24-82.5 0-221.4 178.5-64.9 300.9z"></path>
+                            </svg>
+                        </div>
+                        <div class="store-text">
+                            <ul>
+                                <li>名稱：龍皮魚丸店</li>
+                                <li>電話：04-12345678</li>
+                                <li>
+                                    <div class="store-button">
+                                        <button class="btn btn-outline-primary btn-sm">菜單</button>
+                                        <button class="btn btn-outline-info btn-sm">編輯</button>
+                                        <button class="btn btn-outline-danger btn-sm">刪除</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
 
-An example of a section loop:
+            </div>
+        </div>
+    </section>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+<script>
+    $(function () {
 
-                        1 * John Doe
-                                    2 * Mary Smith
-                                    3 . James Johnson
-                                    4 . Henry Case
-                
-    An example of section looped key values:
-
-            phone: 1
-        <br>
-
-            fax: 2
-        <br>
-
-            cell: 3
-        <br>
-            phone: 555-4444
-        <br>
-
-            fax: 555-3333
-        <br>
-
-            cell: 760-1234
-        <br>
-        <p>
-
-        testing strip tags
-        <table border=0><tr><td><A HREF="/myphp/projects/wanna-eat/wanna-eat/index.php"><font color="red">This is a test </font></A></td></tr></table>
-
-</PRE>
-
-This is an example of the html_select_date function:
-
-<form>
-    <select name="Date_Month">
-<option value="01">January</option>
-<option value="02">February</option>
-<option value="03">March</option>
-<option value="04">April</option>
-<option value="05">May</option>
-<option value="06" selected="selected">June</option>
-<option value="07">July</option>
-<option value="08">August</option>
-<option value="09">September</option>
-<option value="10">October</option>
-<option value="11">November</option>
-<option value="12">December</option>
-</select>
-<select name="Date_Day">
-<option value="1">01</option>
-<option value="2">02</option>
-<option value="3">03</option>
-<option value="4">04</option>
-<option value="5">05</option>
-<option value="6">06</option>
-<option value="7">07</option>
-<option value="8">08</option>
-<option value="9">09</option>
-<option value="10">10</option>
-<option value="11">11</option>
-<option value="12">12</option>
-<option value="13">13</option>
-<option value="14">14</option>
-<option value="15">15</option>
-<option value="16">16</option>
-<option value="17">17</option>
-<option value="18">18</option>
-<option value="19" selected="selected">19</option>
-<option value="20">20</option>
-<option value="21">21</option>
-<option value="22">22</option>
-<option value="23">23</option>
-<option value="24">24</option>
-<option value="25">25</option>
-<option value="26">26</option>
-<option value="27">27</option>
-<option value="28">28</option>
-<option value="29">29</option>
-<option value="30">30</option>
-<option value="31">31</option>
-</select>
-<select name="Date_Year">
-<option value="1998">1998</option>
-<option value="1999">1999</option>
-<option value="2000">2000</option>
-<option value="2001">2001</option>
-<option value="2002">2002</option>
-<option value="2003">2003</option>
-<option value="2004">2004</option>
-<option value="2005">2005</option>
-<option value="2006">2006</option>
-<option value="2007">2007</option>
-<option value="2008">2008</option>
-<option value="2009">2009</option>
-<option value="2010">2010</option>
-</select>
-</form>
-
-This is an example of the html_select_time function:
-
-<form>
-    <select name="Time_Hour">
-<option value="01">01</option>
-<option value="02">02</option>
-<option value="03">03</option>
-<option value="04">04</option>
-<option value="05">05</option>
-<option value="06">06</option>
-<option value="07">07</option>
-<option value="08">08</option>
-<option value="09">09</option>
-<option value="10">10</option>
-<option value="11">11</option>
-<option value="12" selected="selected">12</option>
-</select>
-<select name="Time_Minute">
-<option value="00">00</option>
-<option value="01">01</option>
-<option value="02">02</option>
-<option value="03">03</option>
-<option value="04">04</option>
-<option value="05">05</option>
-<option value="06">06</option>
-<option value="07">07</option>
-<option value="08">08</option>
-<option value="09">09</option>
-<option value="10">10</option>
-<option value="11">11</option>
-<option value="12">12</option>
-<option value="13">13</option>
-<option value="14">14</option>
-<option value="15">15</option>
-<option value="16">16</option>
-<option value="17">17</option>
-<option value="18">18</option>
-<option value="19">19</option>
-<option value="20">20</option>
-<option value="21">21</option>
-<option value="22">22</option>
-<option value="23">23</option>
-<option value="24">24</option>
-<option value="25">25</option>
-<option value="26">26</option>
-<option value="27">27</option>
-<option value="28">28</option>
-<option value="29">29</option>
-<option value="30">30</option>
-<option value="31">31</option>
-<option value="32">32</option>
-<option value="33">33</option>
-<option value="34">34</option>
-<option value="35">35</option>
-<option value="36">36</option>
-<option value="37">37</option>
-<option value="38">38</option>
-<option value="39">39</option>
-<option value="40">40</option>
-<option value="41">41</option>
-<option value="42">42</option>
-<option value="43">43</option>
-<option value="44">44</option>
-<option value="45">45</option>
-<option value="46">46</option>
-<option value="47">47</option>
-<option value="48">48</option>
-<option value="49" selected="selected">49</option>
-<option value="50">50</option>
-<option value="51">51</option>
-<option value="52">52</option>
-<option value="53">53</option>
-<option value="54">54</option>
-<option value="55">55</option>
-<option value="56">56</option>
-<option value="57">57</option>
-<option value="58">58</option>
-<option value="59">59</option>
-</select>
-<select name="Time_Second">
-<option value="00">00</option>
-<option value="01">01</option>
-<option value="02">02</option>
-<option value="03">03</option>
-<option value="04">04</option>
-<option value="05">05</option>
-<option value="06">06</option>
-<option value="07">07</option>
-<option value="08">08</option>
-<option value="09">09</option>
-<option value="10">10</option>
-<option value="11">11</option>
-<option value="12">12</option>
-<option value="13">13</option>
-<option value="14">14</option>
-<option value="15">15</option>
-<option value="16">16</option>
-<option value="17" selected="selected">17</option>
-<option value="18">18</option>
-<option value="19">19</option>
-<option value="20">20</option>
-<option value="21">21</option>
-<option value="22">22</option>
-<option value="23">23</option>
-<option value="24">24</option>
-<option value="25">25</option>
-<option value="26">26</option>
-<option value="27">27</option>
-<option value="28">28</option>
-<option value="29">29</option>
-<option value="30">30</option>
-<option value="31">31</option>
-<option value="32">32</option>
-<option value="33">33</option>
-<option value="34">34</option>
-<option value="35">35</option>
-<option value="36">36</option>
-<option value="37">37</option>
-<option value="38">38</option>
-<option value="39">39</option>
-<option value="40">40</option>
-<option value="41">41</option>
-<option value="42">42</option>
-<option value="43">43</option>
-<option value="44">44</option>
-<option value="45">45</option>
-<option value="46">46</option>
-<option value="47">47</option>
-<option value="48">48</option>
-<option value="49">49</option>
-<option value="50">50</option>
-<option value="51">51</option>
-<option value="52">52</option>
-<option value="53">53</option>
-<option value="54">54</option>
-<option value="55">55</option>
-<option value="56">56</option>
-<option value="57">57</option>
-<option value="58">58</option>
-<option value="59">59</option>
-</select>
-<select name="Time_Meridian">
-<option value="am">AM</option>
-<option value="pm">PM</option>
-</select>
-</form>
-
-This is an example of the html_options function:
-
-<form>
-    <select name=states>
-        <option value="NY">New York</option>
-<option value="NE" selected="selected">Nebraska</option>
-<option value="KS">Kansas</option>
-<option value="IA">Iowa</option>
-<option value="OK">Oklahoma</option>
-<option value="TX">Texas</option>
-
-    </select>
-</form>
-
-</BODY>
-</HTML>
-<?php }
+    })
+</script>
+</body>
+</html><?php }
 }

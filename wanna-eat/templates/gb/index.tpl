@@ -2,7 +2,8 @@
 {include file="header.tpl" title=foo}
 
 <p>
-{$John}
+<hr>
+{$john}
 </p>
 <PRE>
 
@@ -44,10 +45,14 @@ An example of a section loop:
         phone: {$contacts[sec1].phone}
         <br>
 
-            fax: {$contacts[sec1].fax}
+
+fax: {$contacts[sec1].fax}
+
         <br>
 
-            cell: {$contacts[sec1].cell}
+
+cell: {$contacts[sec1].cell}
+
         <br>
     {/section}
     <p>

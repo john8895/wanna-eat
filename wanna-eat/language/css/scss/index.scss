@@ -1,0 +1,51 @@
+/* ==================================
+ * list-item
+ * ================================== */
+.store-item {
+    margin-bottom: 25px;
+    padding: 7px 9px;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+
+    // js call
+    &.pick-color,
+    &:hover {
+        background-color: rgba(255, 215, 0, 0.6);
+        border: 1px solid;
+    }
+
+    // image
+    .store-image {
+        .icon {
+            width: 20px;
+            height: 20px;
+            fill: #4C6EF5;
+            margin-right: 10px;
+            margin-top: 6px;
+        }
+    }
+
+    // text
+    .store-text {
+        ul {
+            li {
+                line-height: 1.5;
+            }
+        }
+    }
+
+    // button
+    .store-button {
+        margin-top: 5px;
+        font-size: 14px;
+
+        button.btn {
+            padding: 0 6px;
+
+            &:not(:last-child) {
+                margin-right: 5px;
+            }
+        }
+    }
+}
