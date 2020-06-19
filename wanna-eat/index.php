@@ -5,11 +5,41 @@
  * @package Example-application
  */
 require '../libs/Smarty.class.php';
-$smarty = new Smarty;
+//$smarty = new Smarty;
+
+$index_template = new Smarty;
+$index_template->debugging = false;
+$index_template->caching = false;
+$index_template->setTemplateDir('./templates/');
 
 
 
-$smarty->assign('add', 'templates/add.tpl');
+
+
+// mysql
+
+$connection = mysqli_connect('127.0.0.1', 'apai01','maze0819','wannaeat');
+if(!$connection) exit('<h1>連接數據庫失敗</h1>');
+
+$query = mysqli_query($connection, 'SELECT * FROM store LIMIT 10');
+if(!$query) exit('<h1>查詢數據失敗</h1>');
+
+var_dump($query);
+
+
+
+
+
+
+
+
+
+
+//$index_template->assign("posts", $post);
+//$index_template->assign("title", $home_title);//from header.php
+//$index_template->assign("description", $output_cities);//from header.php
+$index_template->display('layout.tpl');
+
 //$smarty->force_compile = true;
 //$smarty->debugging = true;
 //$smarty->caching = true;
@@ -40,4 +70,4 @@ $smarty->assign('add', 'templates/add.tpl');
 //$smarty->assign("option_values", array("NY", "NE", "KS", "IA", "OK", "TX"));
 //$smarty->assign("option_output", array("New York", "Nebraska", "Kansas", "Iowa", "Oklahoma", "Texas"));
 //$smarty->assign("option_selected", "NE");
-$smarty->display('layout.tpl');
+//$smarty->display('./templates/layout.tpl');
