@@ -2,7 +2,7 @@
 
 /**
  * PDO Cache Handler
- * Allows you to store Smarty Cache files into your db.
+ * Allows you to stores Smarty Cache files into your db.
  * Example table :
  * CREATE TABLE `smarty_cache` (
  * `id` char(40) NOT NULL COMMENT 'sha1 hash',

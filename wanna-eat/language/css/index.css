@@ -2,7 +2,6 @@
  * list-item
  * ================================== */
 .store-item {
-  margin-bottom: 25px;
   padding: 7px 9px;
   font-size: 15px;
   border-radius: 5px;
@@ -23,14 +22,18 @@
   line-height: 1.5;
 }
 .store-item .store-button {
-  margin-top: 5px;
   font-size: 14px;
-}
-.store-item .store-button button.btn {
-  padding: 0 6px;
 }
 .store-item .store-button button.btn:not(:last-child) {
   margin-right: 5px;
+}
+.store-item .modal {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.69);
+  overflow-y: auto;
+}
+.store-item .modal-body {
+  height: 100vh;
 }
 
 /*# sourceMappingURL=index.css.map */

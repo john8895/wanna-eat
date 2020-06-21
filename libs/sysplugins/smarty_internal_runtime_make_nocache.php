@@ -1,7 +1,7 @@
 <?php
 
 /**
- * {make_nocache} Runtime Methods save(), store()
+ * {make_nocache} Runtime Methods save(), stores()
  *
  * @package    Smarty
  * @subpackage PluginsInternal
@@ -27,7 +27,7 @@ class Smarty_Internal_Runtime_Make_Nocache
                 throw new SmartyException("{make_nocache \${$var}} in template '{$tpl->source->name}': variable does contain object '{$match[1]}' not implementing method '__set_state'");
             }
             echo "/*%%SmartyNocache:{$tpl->compiled->nocache_hash}%%*/<?php " .
-                 addcslashes("\$_smarty_tpl->smarty->ext->_make_nocache->store(\$_smarty_tpl, '{$var}', ", '\\') .
+                 addcslashes("\$_smarty_tpl->smarty->ext->_make_nocache->stores(\$_smarty_tpl, '{$var}', ", '\\') .
                  $export . ");?>\n/*/%%SmartyNocache:{$tpl->compiled->nocache_hash}%%*/";
         }
     }

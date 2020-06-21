@@ -2,7 +2,6 @@
  * list-item
  * ================================== */
 .store-item {
-    margin-bottom: 25px;
     padding: 7px 9px;
     font-size: 15px;
     border-radius: 5px;
@@ -37,15 +36,22 @@
 
     // button
     .store-button {
-        margin-top: 5px;
         font-size: 14px;
 
         button.btn {
-            padding: 0 6px;
-
             &:not(:last-child) {
                 margin-right: 5px;
             }
         }
+    }
+
+    // Modal
+    .modal {
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.69);
+        overflow-y: auto;
+    }
+    .modal-body {
+        height: 100vh;
     }
 }

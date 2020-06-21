@@ -947,7 +947,7 @@ class Smarty extends Smarty_Internal_TemplateBase
 
     /**
      *
-     * @param  string $compile_dir directory to store compiled templates in
+     * @param  string $compile_dir directory to stores compiled templates in
      *
      * @return Smarty current Smarty instance for chaining
      */
@@ -975,7 +975,7 @@ class Smarty extends Smarty_Internal_TemplateBase
     /**
      * Set cache directory
      *
-     * @param string $cache_dir directory to store cached templates in
+     * @param string $cache_dir directory to stores cached templates in
      *
      * @return Smarty current Smarty instance for chaining
      */

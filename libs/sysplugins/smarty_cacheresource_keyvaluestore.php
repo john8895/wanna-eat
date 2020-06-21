@@ -14,7 +14,7 @@
  * is no problem to filesystem and RDBMS implementations.
  * This implementation is based on the concept of invalidation. While one specific cache
  * can be identified and cleared, any range of caches cannot be identified. For this reason
- * each level of the cache group hierarchy can have its own value in the store. These values
+ * each level of the cache group hierarchy can have its own value in the stores. These values
  * are nothing but microtimes, telling us when a particular cache group was cleared for the
  * last time. These keys are evaluated for every cache read to determine if the cache has
  * been invalidated since it was created and should hence be treated as inexistent.
@@ -178,7 +178,7 @@ abstract class Smarty_CacheResource_KeyValueStore extends Smarty_CacheResource
      * @param integer $exp_time expiration time [being ignored]
      *
      * @return integer number of cache files deleted [always -1]
-     * @uses   purge() to clear the whole store
+     * @uses   purge() to clear the whole stores
      * @uses   invalidate() to mark everything outdated if purge() is inapplicable
      */
     public function clearAll(Smarty $smarty, $exp_time = null)
