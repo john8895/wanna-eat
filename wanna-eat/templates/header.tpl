@@ -11,5 +11,10 @@
                 <a href="logout.php" class="btn btn-outline-secondary btn-sm text-dark">登出</a>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <a href="" class="btn btn-info mr-2" id="wanna_eat">今天要吃啥？</a>
+            </div>
+        </div>
     </div>
 </header>
