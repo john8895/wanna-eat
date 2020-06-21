@@ -5,11 +5,11 @@
         <row>
             <form class="form-signin" autocomplete="off" action="login.php" method="post">
                 <h1 class="h3 mb-3 font-weight-normal">今天要吃啥？</h1>
-{*                {if isset($error)}*}
-{*                    <div class="form-group">*}
-{*                        {$error}*}
-{*                    </div>*}
-{*                {/if}*}
+                {if isset($error)}
+                    <div class="form-group">
+                        {$error}
+                    </div>
+                {/if}
                 <div class="form-group">
                     <input type="text" id="inputAccount" class="form-control" placeholder="account" required autofocus
                            name="username">

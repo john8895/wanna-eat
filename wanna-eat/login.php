@@ -6,7 +6,7 @@ require_once("../libs/Smarty.class.php");
 $smarty = new Smarty;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if(empty($_POST['username']) || isset($_POST['username'])){
+    if(empty($_POST['username'])){
         $GLOBALS['error_message']='請輸入帳號';
         return;
     }
@@ -14,11 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $GLOBALS['error_message']='請輸入密碼';
         return;
     }
-    echo 'OK';
+
+
 
 }
-//if(isset($error_message)){
-//    $smarty->assign('error', $error_message);
-//}
+if(isset($error_message)){
+    $smarty->assign('error', $error_message);
+}
 
 $smarty->display("./templates/login.tpl");
