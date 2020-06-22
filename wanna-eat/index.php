@@ -12,6 +12,20 @@ $smarty->setTemplateDir('./templates/');
 
 /*
  * ======================
+ * Logged in
+ * ======================
+ */
+session_start();
+if(isset($_SESSION['logged_in'])){
+    echo '您已登入';
+    $logged = true;
+}else{
+    $logged = false;
+}
+
+
+/*
+ * ======================
  * mysql
  * ======================
  */
@@ -27,5 +41,6 @@ while ($rows = mysqli_fetch_assoc($query)) {
 }
 
 
+$smarty->assign('logged', $logged);
 $smarty->assign('stores', $stores);
 $smarty->display('layout.tpl');

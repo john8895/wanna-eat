@@ -6,13 +6,13 @@
             <form class="form-signin" autocomplete="off" action="login.php" method="post">
                 <h1 class="h3 mb-3 font-weight-normal">今天要吃啥？</h1>
                 {if isset($error)}
-                    <div class="form-group">
+                    <div class="form-group text-danger">
                         {$error}
                     </div>
                 {/if}
                 <div class="form-group">
                     <input type="text" id="inputAccount" class="form-control" placeholder="account" required autofocus
-                           name="username">
+                           name="username" {if isset($username)}value="{$username}"{/if}>
                     <input type="password" id="inputPassword" class="form-control" placeholder="Password" required
                            name="password">
                 </div>

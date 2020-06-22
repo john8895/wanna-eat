@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-06-21 15:26:04
+/* Smarty version 3.1.34-dev-7, created on 2020-06-22 15:05:32
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\login.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5eef5fecb7a301_99086468',
+  'unifunc' => 'content_5ef0ac9c8e2669_96005026',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd76f8ef0d46a925fb25cea2a2840438e471efcb3' => 
     array (
       0 => 'D:\\xampp\\htdocs\\wanna-eat\\wanna-eat\\templates\\login.tpl',
-      1 => 1592745964,
+      1 => 1592831131,
       2 => 'file',
     ),
   ),
@@ -23,7 +23,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:js.tpl' => 1,
   ),
 ),false)) {
-function content_5eef5fecb7a301_99086468 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5ef0ac9c8e2669_96005026 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender("file:head.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
@@ -33,14 +33,15 @@ $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_sm
             <form class="form-signin" autocomplete="off" action="login.php" method="post">
                 <h1 class="h3 mb-3 font-weight-normal">今天要吃啥？</h1>
                 <?php if (isset($_smarty_tpl->tpl_vars['error']->value)) {?>
-                    <div class="form-group">
+                    <div class="form-group text-danger">
                         <?php echo $_smarty_tpl->tpl_vars['error']->value;?>
 
                     </div>
                 <?php }?>
                 <div class="form-group">
                     <input type="text" id="inputAccount" class="form-control" placeholder="account" required autofocus
-                           name="username">
+                           name="username" <?php if (isset($_smarty_tpl->tpl_vars['username']->value)) {?>value="<?php echo $_smarty_tpl->tpl_vars['username']->value;?>
+"<?php }?>>
                     <input type="password" id="inputPassword" class="form-control" placeholder="Password" required
                            name="password">
                 </div>
