@@ -1,3 +1,15 @@
+<?php
+
+
+
+/* 1. 連接資料庫
+ * 2. 顯示數據
+ *
+ */
+
+
+?>
+
 <!doctype html>
 <html lang="en">
 <head>

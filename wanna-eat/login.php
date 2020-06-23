@@ -2,6 +2,7 @@
 /* filename: login.php */
 
 require_once("../libs/Smarty.class.php");
+require_once("conn.php");
 //global $smarty;
 $smarty = new Smarty;
 
@@ -21,7 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $users['username'] = $_POST['username'];
     $users['password'] = $_POST['password'];
 
-    $conn = mysqli_connect('127.0.0.1', 'apai01', 'maze0819', 'wannaeat');
+
+
+    $conn = mysqli_connect('127.0.0.1', 'xyz', 'xyz', 'wannaeat');
     if (!$conn) {
         $GLOBALS['error_message'] = '無法連接數據庫';
     }

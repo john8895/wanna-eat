@@ -4,6 +4,14 @@ require_once("../libs/Smarty.class.php");
 global $smarty;
 $smarty = new Smarty;
 
+session_start();
+if(isset($_SESSION['logged_in'])){
+    echo '您已登入';
+    $logged = true;
+}else{
+    $logged = false;
+}
+$smarty->assign('logged', $logged);
 
 /*
  * ======================

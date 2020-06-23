@@ -5,7 +5,7 @@
         <hr>
         <div class="row">
             <div class="col-sm-12">
-                {if !$logged}
+                {if isset($logged) && !$logged}
                     <a href="login.php" class="btn btn-outline-primary btn-sm mr-2">登入</a>
                 {else}
                     <a href="logout.php" class="btn btn-outline-secondary btn-sm text-dark mr-2">登出</a>
