@@ -1,5 +1,5 @@
 <header>
-    <div class="container">
+    <div class="container mb-4">
         <a href="index.php">
             <h1 class="text-center mb-3">今天要吃啥？</h1></a>
         <hr>
@@ -14,10 +14,6 @@
                 <a href="index.php" class="btn btn-outline-success btn-sm mr-2">首頁</a>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <a href="" class="btn btn-info mr-2" id="wanna_eat">今天要吃啥？</a>
-            </div>
-        </div>
+
     </div>
 </header>

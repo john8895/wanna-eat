@@ -4,6 +4,19 @@ require_once("../libs/Smarty.class.php");
 global $smarty;
 $smarty = new Smarty;
 
+// 用SESSION判斷是否有登入，如果沒登入就跳轉頁面
+session_start();
+if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']===true){
+    echo '您已登入';
+    $logged = true;
+}else{
+    $logged = false;
+    header('Location: index.php');
+}
+var_dump($logged);
+$smarty->assign('logged', $logged);
+
+
 // 如果有帶參數 GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     show_up($smarty);
@@ -12,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     edit_user($smarty);
 }
 
+// 顯示數據
 function show_up($smarty)
 {
     if (!isset($_GET['id'])) exit('<h1>必須指定參數</h1>');
@@ -29,6 +43,8 @@ function show_up($smarty)
     $smarty->assign('item', $fetch_assoc);
 }
 
+
+// 修改數據
 function edit_user($smarty)
 {
     $item['id'] = $_POST['id'];
@@ -36,6 +52,7 @@ function edit_user($smarty)
     $item['phone'] = $_POST['phone'];
     $smarty->assign('item', $item);
 
+    // 校驗
     if (empty($_POST['name'])) {
         $GLOBALS['error_message'] = '請輸入店家名稱';
         return;
@@ -70,6 +87,8 @@ function edit_user($smarty)
         }
         $item['images'] = $dest;
     }
+
+
     // 更新數據
     /*
      * MySQL

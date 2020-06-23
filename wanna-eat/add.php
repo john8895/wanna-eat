@@ -5,13 +5,12 @@ global $smarty;
 $smarty = new Smarty;
 
 session_start();
-if(isset($_SESSION['logged_in'])){
-    echo '您已登入';
-    $logged = true;
-}else{
+if(!isset($logged) || !$logged){
     $logged = false;
+    $smarty->assign('logged', $logged);
+    header('Location: index.php');
 }
-$smarty->assign('logged', $logged);
+var_dump($logged);
 
 /*
  * ======================

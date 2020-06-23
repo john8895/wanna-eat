@@ -2,6 +2,11 @@
     <section>
         <div class="container">
             <div class="row">
+                <div class="col-sm-12 text-center mb-5">
+                    <a href="" class="btn btn-info mr-2" id="wanna_eat">今天要吃啥？</a>
+                </div>
+            </div>
+            <div class="row">
 
                 {foreach $stores as $item }
                 <div class="col-sm-3">
@@ -19,8 +24,10 @@
                                 <li>
                                     <div class="store-button mt-1">
                                         <a href="{$item.images}" class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu" target="_blank">菜單</a>
-                                        <a href="edit.php?id={$item.id}" class="btn btn-outline-info btn-sm px-2">編輯</a>
-                                        <a href="delete.php?id={$item.id}" class="btn btn-outline-danger btn-sm px-2">刪除</a>
+                                        {if isset($logged) && $logged}
+                                            <a href="edit.php?id={$item.id}" class="btn btn-outline-info btn-sm px-2">編輯</a>
+                                            <a href="delete.php?id={$item.id}" class="btn btn-outline-danger btn-sm px-2">刪除</a>
+                                        {/if}
                                     </div>
                                 </li>
                                 <li class="image_show">
