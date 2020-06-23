@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-06-23 15:22:48
+/* Smarty version 3.1.34-dev-7, created on 2020-06-23 16:58:43
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\index\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5ef2022847ed26_83060146',
+  'unifunc' => 'content_5ef218a3995193_74621725',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'af28998661cb309fb9c6dc50108aba14a4f339d7' => 
     array (
       0 => 'D:\\xampp\\htdocs\\wanna-eat\\wanna-eat\\templates\\index\\index.tpl',
-      1 => 1592918567,
+      1 => 1592924322,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5ef2022847ed26_83060146 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5ef218a3995193_74621725 (Smarty_Internal_Template $_smarty_tpl) {
 ?><main>
     <section>
         <div class="container">
@@ -55,6 +55,8 @@ foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {
                                     <div class="store-button mt-1">
                                         <a href="<?php echo $_smarty_tpl->tpl_vars['item']->value['images'];?>
 " class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu" target="_blank">菜單</a>
+                                        <a href="order.php?id=<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
+" class="btn btn-danger btn-sm btn-pill px-2">訂餐</a>
                                         <?php if (isset($_smarty_tpl->tpl_vars['logged']->value) && $_smarty_tpl->tpl_vars['logged']->value) {?>
                                             <a href="edit.php?id=<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
 " class="btn btn-outline-info btn-sm px-2">編輯</a>

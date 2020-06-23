@@ -24,6 +24,7 @@
                                 <li>
                                     <div class="store-button mt-1">
                                         <a href="{$item.images}" class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu" target="_blank">菜單</a>
+                                        <a href="order.php?id={$item.id}" class="btn btn-danger btn-sm btn-pill px-2">訂餐</a>
                                         {if isset($logged) && $logged}
                                             <a href="edit.php?id={$item.id}" class="btn btn-outline-info btn-sm px-2">編輯</a>
                                             <a href="delete.php?id={$item.id}" class="btn btn-outline-danger btn-sm px-2">刪除</a>

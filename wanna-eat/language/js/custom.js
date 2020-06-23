@@ -66,3 +66,24 @@ $(function () {
 
 
 })
+
+$(function () {
+    function foo() {
+        console.log(1)
+    }
+    function getData(item_id) {
+        console.log('1')
+        $.ajax({
+            url: `get_data.php?id=${item_id}`,
+            // method: 'GET',
+            type: 'GET',
+            dataType: 'json',
+            error: function (err) {
+                console.log(err);
+            },
+            success: function (data) {
+                console.log(data);
+            }
+        })
+    }
+})
