@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-06-24 00:13:15
+/* Smarty version 3.1.34-dev-7, created on 2020-06-26 08:35:27
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\order.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5ef27e7ba21ae6_68457973',
+  'unifunc' => 'content_5ef5972f29c9e3_43665021',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '06e0197ee886b06603031f3973b6361dd4f1f5d9' => 
     array (
       0 => 'D:\\xampp\\htdocs\\wanna-eat\\wanna-eat\\templates\\order.tpl',
-      1 => 1592950394,
+      1 => 1593153326,
       2 => 'file',
     ),
   ),
@@ -23,7 +23,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:js.tpl' => 1,
   ),
 ),false)) {
-function content_5ef27e7ba21ae6_68457973 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5ef5972f29c9e3_43665021 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender("file:head.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
@@ -34,13 +34,6 @@ $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_sm
         <div class="row pt-4">
             <div class="m-auto w-50">
                 <form action="order.php" method="post" enctype="multipart/form-data">
-
-
-                    <button onclick="getData( <?php ob_start();
-echo $_smarty_tpl->tpl_vars['id']->value;
-$_prefixVariable1 = ob_get_clean();
-if (isset($_prefixVariable1)) {?> <?php echo $_smarty_tpl->tpl_vars['id']->value;?>
- <?php }?> ); return false;">接收數據</button>
 
                                         <?php if (isset($_smarty_tpl->tpl_vars['error']->value)) {?>
                         <div class="form-group text-danger">
@@ -76,6 +69,7 @@ if (isset($_prefixVariable1)) {?> <?php echo $_smarty_tpl->tpl_vars['id']->value
         </div>
     </div>
 </main>
+
 <?php $_smarty_tpl->_subTemplateRender("file:js.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 }
 }

@@ -7,9 +7,8 @@
         <div class="row pt-4">
             <div class="m-auto w-50">
                 <form action="order.php" method="post" enctype="multipart/form-data">
-
-
-                    <button onclick="getData( {if isset({$id}) } {$id} {/if} ); return false;">接收數據</button>
+{*                    <input type="button" id="btn" value="接收數據">*}
+{*                    <button onclick="getData( {if isset({$id}) } {$id} {/if} ); return false;">接收數據</button>*}
 
                     {* todo: 錯誤訊息對應在欄位上                   *}
                     {if isset($error)}
@@ -45,4 +44,5 @@
         </div>
     </div>
 </main>
+
 {include file="js.tpl"}

@@ -1,11 +1,38 @@
-<main>
+<main xmlns:v-on="http://www.w3.org/1999/xhtml">
     <section>
-        <div class="container">
+        <div class="container" id="app">
             <div class="row">
                 <div class="col-sm-12 text-center mb-5">
                     <a href="" class="btn btn-info mr-2" id="wanna_eat">今天要吃啥？</a>
                 </div>
             </div>
+
+
+            <div v-if="orderDisplay" class="row">
+                <div class="form-group">
+                    <label class="w-75">店家名稱
+                        <input type="hidden" name="id" value="">
+                        <input type="text" name="name" class="form-control" value=""
+                               placeholder="請輸入店家名稱">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="w-75">店家電話
+                        <input type="text" name="phone" class="form-control" value=""
+                               placeholder="請輸入店家電話">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <ul class="order-list">
+                        <li><input type="text" value="阿翰-排骨飯*1/85"></li>
+                    </ul>
+                </div>
+
+            </div>
+
+
+
+
             <div class="row">
 
                 {foreach $stores as $item }
@@ -17,14 +44,14 @@
                             </svg>
                         </div>
                         <div class="store-text">
-                            <input type="hidden" name="" value="{$item.id}">
+                            <input type="hidden" name="" value="{$item.id}" class="item_id">
                             <ul>
                                 <li>名稱：{$item.name}</li>
                                 <li>電話：{$item.phone}</li>
                                 <li>
                                     <div class="store-button mt-1">
                                         <a href="{$item.images}" class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu" target="_blank">菜單</a>
-                                        <a href="order.php?id={$item.id}" class="btn btn-danger btn-sm btn-pill px-2">訂餐</a>
+                                        <button v-on:click="getData" class="btn btn-danger btn-sm btn-pill px-2">訂餐</button>
                                         {if isset($logged) && $logged}
                                             <a href="edit.php?id={$item.id}" class="btn btn-outline-info btn-sm px-2">編輯</a>
                                             <a href="delete.php?id={$item.id}" class="btn btn-outline-danger btn-sm px-2">刪除</a>

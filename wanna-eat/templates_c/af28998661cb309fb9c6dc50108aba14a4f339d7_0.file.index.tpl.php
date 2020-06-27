@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-06-23 16:58:43
+/* Smarty version 3.1.34-dev-7, created on 2020-06-27 07:47:34
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\index\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5ef218a3995193_74621725',
+  'unifunc' => 'content_5ef6dd761c60b2_80025173',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'af28998661cb309fb9c6dc50108aba14a4f339d7' => 
     array (
       0 => 'D:\\xampp\\htdocs\\wanna-eat\\wanna-eat\\templates\\index\\index.tpl',
-      1 => 1592924322,
+      1 => 1593236853,
       2 => 'file',
     ),
   ),
@@ -20,15 +20,42 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5ef218a3995193_74621725 (Smarty_Internal_Template $_smarty_tpl) {
-?><main>
+function content_5ef6dd761c60b2_80025173 (Smarty_Internal_Template $_smarty_tpl) {
+?><main xmlns:v-on="http://www.w3.org/1999/xhtml">
     <section>
-        <div class="container">
+        <div class="container" id="app">
             <div class="row">
                 <div class="col-sm-12 text-center mb-5">
                     <a href="" class="btn btn-info mr-2" id="wanna_eat">今天要吃啥？</a>
                 </div>
             </div>
+
+
+            <div v-if="orderDisplay" class="row">
+                <div class="form-group">
+                    <label class="w-75">店家名稱
+                        <input type="hidden" name="id" value="">
+                        <input type="text" name="name" class="form-control" value=""
+                               placeholder="請輸入店家名稱">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="w-75">店家電話
+                        <input type="text" name="phone" class="form-control" value=""
+                               placeholder="請輸入店家電話">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <ul class="order-list">
+                        <li><input type="text" value="阿翰-排骨飯*1/85"></li>
+                    </ul>
+                </div>
+
+            </div>
+
+
+
+
             <div class="row">
 
                 <?php
@@ -45,7 +72,7 @@ foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {
                         </div>
                         <div class="store-text">
                             <input type="hidden" name="" value="<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
-">
+" class="item_id">
                             <ul>
                                 <li>名稱：<?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
 </li>
@@ -55,8 +82,7 @@ foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {
                                     <div class="store-button mt-1">
                                         <a href="<?php echo $_smarty_tpl->tpl_vars['item']->value['images'];?>
 " class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu" target="_blank">菜單</a>
-                                        <a href="order.php?id=<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
-" class="btn btn-danger btn-sm btn-pill px-2">訂餐</a>
+                                        <button v-on:click="getData" class="btn btn-danger btn-sm btn-pill px-2">訂餐</button>
                                         <?php if (isset($_smarty_tpl->tpl_vars['logged']->value) && $_smarty_tpl->tpl_vars['logged']->value) {?>
                                             <a href="edit.php?id=<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
 " class="btn btn-outline-info btn-sm px-2">編輯</a>

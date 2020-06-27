@@ -1,5 +1,7 @@
+/**
+ * Modal 顯示隱藏
+ * **/
 $(function () {
-
     // Modal
     $('.btn-menu').on('click', function (e) {
         e.preventDefault();
@@ -26,11 +28,13 @@ $(function () {
             }
             modal.find('img').css('transform', 'scale(' + step + ')');
         })
-
     })
 })
 
 
+/**
+ * 亂數店家
+ * **/
 // Random store
 $(function () {
 
@@ -49,7 +53,7 @@ $(function () {
             timer = setInterval(function () {
                 let r = parseInt(Math.random() * item.length);
                 last_pick = r;
-                while (r === last_pick){
+                while (r === last_pick) {
                     r = parseInt(Math.random() * item.length);
                 }
                 console.log(last_pick, r)
@@ -67,23 +71,69 @@ $(function () {
 
 })
 
-$(function () {
-    function foo() {
-        console.log(1)
-    }
-    function getData(item_id) {
-        console.log('1')
-        $.ajax({
-            url: `get_data.php?id=${item_id}`,
-            // method: 'GET',
-            type: 'GET',
-            dataType: 'json',
-            error: function (err) {
-                console.log(err);
-            },
-            success: function (data) {
-                console.log(data);
-            }
+
+/**
+ * Order 訂單
+ * **/
+// $(function () {
+//     // window.addEventListener('load', getData)
+//     function getData(e) {
+//         e.preventDefault()
+//
+//         let id = $(location).attr('search')
+//         if (id===''){
+//             // 如果沒有參數
+//             // alert('必須有參數')
+//             window.location = 'index.php'
+//         }
+//         id = Number(id.replace('?id=', ''))
+//         console.log(id)
+//
+//
+//         // $.ajax({
+//         //     url: `get_data.php?id=${id}`,
+//         //     method: 'GET',
+//         //     dataType: 'json',
+//         //     error: function (err) {
+//         //         console.log('err',err);
+//         //     },
+//         //     success: function (data) {
+//         //         console.log('data',data);
+//         //     }
+//         // })
+//     }
+// })
+
+Vue.config.devtools = true  // 開啟 devtools
+
+/*
+ * 1. 傳ID
+ * 2. 顯示訂單區塊
+ * 3. 帶入數據
+ * 4. 定餐form
+ * 5. 送出後，POST給PHP接收
+ */
+
+let vm = new Vue({
+    delimiters: ['%%', '%%'],
+    el: '#app',
+    data: {
+        store: [],
+        orderDisplay: false,
+    },
+    mounted() {  // onloac 讀取數據
+        axios.get('output_data.php').then(res => {
+            console.log('success')
+            console.log(res.data)
+        }).catch(err=>{
+            console.error('err',err)
         })
+    },
+    methods: {
+        getData() {
+            vm.orderDisplay = true  // 顯示訂單區域
+            // $('.item_id').val()
+            console.log(this)
+        },
     }
 })

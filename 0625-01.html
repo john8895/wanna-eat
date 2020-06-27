@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="button" id="btn" value="按我">
+<div id="app">
+    <input type="text" value="">
+    <p>{{stores.name}}</p>
+    <p>{{stores.phone}}</p>
+    <ul>
+        <li>
+            <input type="text" v-model="orders">
+        </li>
+    </ul>
+    <p></p>
+    <button v-on:click="saveOrder">送出</button>
+
+
+    <div id="result"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<!--<script src="wanna-eat/language/js/vue.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+
+<script>
+    Vue.config.devtools = true  // 開啟 devtools
+
+    $(function () {
+        // $('#btn').on('click', getData)
+        //
+        // function getData(id) {
+        //     console.log(1)
+        //     $.ajax({
+        //         url: 'get_data.php?id=' + id,
+        //         type: 'GET',
+        //         success: function (result) {
+        //             result = JSON.parse(result)
+        //             $('#app').html(result.name)
+        //         }
+        //     })
+        // }
+    })
+
+
+    $(document).ready(function () {
+        if (!$(location).attr('search')) alert('必須有參數！')  // 如果沒帶參數就跳轉離開頁面
+        // 擷取參數
+        // ?id=3
+        let reg = /\?id=/g
+        let item_id = $(location).attr('search').replace(reg, '')
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            stores: [],
+            orders: '',
+            item_id: '',
+        },
+        mounted() {  // 如同 onload
+            axios.get('get_data.php').then(res => {
+                vm.stores = res.data
+                console.log('success')
+                console.log(vm.stores.name)
+            })
+        },
+        methods: {
+            saveOrder: function () {
+                // 組合數據
+                let dataObj = {
+                    name: vm.orderFormat[0],
+                    meal: vm.orderFormat[1],
+                    price: vm.orderFormat[2],
+                }
+                let json_data = JSON.stringify(dataObj)
+                // 傳送數據至後端
+                axios.post('get_data.php', json_data).then((res) => {
+                    // console.table(res.data)
+                    console.log(typeof res.data)
+                    // let response = JSON.parse(res.data)
+                    $('#result').html(res.data)
+                }).catch((error) => {
+                    console.error(error)
+                })
+
+            }
+        },
+        computed: {
+            orderFormat: function () {
+                // 阿翰-排骨飯-80元
+                return vm.orders
+                    .split(/[\.\-,、/元]/g);
+            }
+        }
+    })
+</script>
+
+</body>
+</html>
