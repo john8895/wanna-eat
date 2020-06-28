@@ -1,4 +1,4 @@
-<main xmlns:v-on="http://www.w3.org/1999/xhtml">
+<main xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
     <section>
         <div class="container" id="app">
             <div class="row">
@@ -11,32 +11,30 @@
             <div v-if="orderDisplay" class="row">
                 <div class="form-group">
                     <label class="w-75">店家名稱
-                        <input type="hidden" name="id" value="">
-                        <input type="text" name="name" class="form-control" value=""
+                        <input type="hidden" name="id" :value="orders.id">
+                        <input type="text" name="name" class="form-control" :value="orders.name"
                                placeholder="請輸入店家名稱">
                     </label>
                 </div>
                 <div class="form-group">
                     <label class="w-75">店家電話
-                        <input type="text" name="phone" class="form-control" value=""
+                        <input type="text" name="phone" class="form-control" :value="orders.phone"
                                placeholder="請輸入店家電話">
                     </label>
                 </div>
                 <div class="form-group">
-                    <ul class="order-list">
-                        <li><input type="text" value="阿翰-排骨飯*1/85"></li>
-                    </ul>
+                    <input type="text" value="阿翰-排骨飯/85" v-model="order_items" @keyup.enter="getContent">
+
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-danger">訂單送出</button>
                 </div>
 
             </div>
 
 
-
-
             <div class="row">
-
-                {foreach $stores as $item }
-                <div class="col-sm-3">
+                <div class="col-sm-3" v-for="(item, index) in stores" :index="item.id">
                     <article class="d-flex store-item mb-3">
                         <div class="store-image">
                             <svg class="icon" viewBox="0 0 416 512">
@@ -44,17 +42,21 @@
                             </svg>
                         </div>
                         <div class="store-text">
-                            <input type="hidden" name="" value="{$item.id}" class="item_id">
+                            <input type="hidden" name="" :value="item.id" class="item_id">
                             <ul>
-                                <li>名稱：{$item.name}</li>
-                                <li>電話：{$item.phone}</li>
+                                <li>名稱：%% item.name %%</li>
+                                <li>電話：%% item.phone %%</li>
                                 <li>
                                     <div class="store-button mt-1">
-                                        <a href="{$item.images}" class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu" target="_blank">菜單</a>
-                                        <button v-on:click="getData" class="btn btn-danger btn-sm btn-pill px-2">訂餐</button>
+                                        <a v-bind:href="item.images"
+                                           class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu"
+                                           target="_blank">菜單</a>
+                                        <button v-on:click="getData(index)" class="btn btn-danger btn-sm btn-pill px-2">
+                                            訂餐
+                                        </button>
                                         {if isset($logged) && $logged}
-                                            <a href="edit.php?id={$item.id}" class="btn btn-outline-info btn-sm px-2">編輯</a>
-                                            <a href="delete.php?id={$item.id}" class="btn btn-outline-danger btn-sm px-2">刪除</a>
+                                            <a href="edit.php?id=" class="btn btn-outline-info btn-sm px-2">編輯</a>
+                                            <a href="delete.php?id=" class="btn btn-outline-danger btn-sm px-2">刪除</a>
                                         {/if}
                                     </div>
                                 </li>
@@ -71,7 +73,6 @@
                     </article>
                 </div>
 
-                {/foreach}
 
             </div>
         </div>

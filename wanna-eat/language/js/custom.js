@@ -118,22 +118,72 @@ let vm = new Vue({
     delimiters: ['%%', '%%'],
     el: '#app',
     data: {
-        store: [],
+        stores: [],
         orderDisplay: false,
+        orders: [],
+        order_items: '',
+        item_data: [],
     },
     mounted() {  // onloac 讀取數據
-        axios.get('output_data.php').then(res => {
-            console.log('success')
-            console.log(res.data)
-        }).catch(err=>{
-            console.error('err',err)
+        axios.get('data_api.php').then(res => {
+            // console.log('success')
+            // console.log(res.data)
+            vm.stores = res.data
+        }).catch(err => {
+            console.error('err', err)
         })
     },
     methods: {
-        getData() {
+        getData(idx) {
             vm.orderDisplay = true  // 顯示訂單區域
-            // $('.item_id').val()
-            console.log(this)
+            // console.log(vm.stores[idx].name);
+            vm.orders = vm.stores[idx]
+            // console.log(vm.orders)
         },
+        getContent() {
+
+            // 組合數據
+            // console.log(vm.orderFormat)
+            // console.log(vm.orderFormat);
+
+            // let temp_data = []
+            // temp_data.push(dataObj)
+            // console.log(temp_data)
+            // vm.order_items['key'] = dataObj
+
+            // console.log(vm.order_items)
+            // vm.order_items.push(dataObj)
+            // console.log(vm.order_items);
+
+
+            // vm.order_obj.push(dataObj)
+
+            // vm.order_items.push(dataObj)
+
+            // 傳送數據至後端
+            // axios.post("data_api.php").then(res=>{
+            //     console.log(res.data)
+            // }).catch(err=>{
+            //     console.error('err', err)
+            // })
+        }
+    },
+    computed: {
+        orderFormat: function () {
+            console.log('我執行了')
+            // if(vm.order_items==='') return
+            let format = vm.order_items
+                    .trim()
+                    .split(/[\.\-,、/元]/g);
+
+            let dataObj = {
+                name: format[0],
+                meal: format[1],
+                price: parseInt(format[2]),
+            }
+            vm.item_data.push(dataObj)
+            // vm.order_items = ''
+            console.log(vm.item_data);
+        }
     }
 })

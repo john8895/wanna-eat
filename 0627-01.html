@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="input" @keyup.13="getContent">
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+
+<script>
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            input: '',
+            item_data: []
+        },
+        methods: {
+            getContent(){
+                let format = vm.input
+                    .trim()
+                    .split(/[\.\-,\/、元]/g)
+                let newData = {
+                    name: format[0],
+                    meal: format[1],
+                    price: parseInt(format[2]),
+                }
+                vm.item_data.push(newData)
+                vm.input = ''
+                console.log(vm.item_data)
+            }
+        }
+
+    })
+
+</script>
+</body>
+</html>

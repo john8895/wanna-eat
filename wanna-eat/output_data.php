@@ -1,9 +1,14 @@
 <?php
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-//    echo 'Hello';
     get_data();
 }
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    echo 'POST';
+}
+
 
 function get_data()
 {
@@ -13,20 +18,11 @@ function get_data()
 
     $new_item = array();
     while ($item = $result->fetch_assoc()) {
-//        var_dump($item);
         $new_item[] = $item;
     }
-//    var_dump($new_item);
-
-    $json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);
+    $json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
     echo $json_data;
     $result->close();
 }
 
 
-
-/*
- * ======================
- * mysql
- * ======================
- */

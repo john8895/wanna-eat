@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-06-27 07:47:34
+/* Smarty version 3.1.34-dev-7, created on 2020-06-27 17:00:38
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\index\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5ef6dd761c60b2_80025173',
+  'unifunc' => 'content_5ef75f16210870_84973617',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'af28998661cb309fb9c6dc50108aba14a4f339d7' => 
     array (
       0 => 'D:\\xampp\\htdocs\\wanna-eat\\wanna-eat\\templates\\index\\index.tpl',
-      1 => 1593236853,
+      1 => 1593270037,
       2 => 'file',
     ),
   ),
@@ -20,8 +20,8 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5ef6dd761c60b2_80025173 (Smarty_Internal_Template $_smarty_tpl) {
-?><main xmlns:v-on="http://www.w3.org/1999/xhtml">
+function content_5ef75f16210870_84973617 (Smarty_Internal_Template $_smarty_tpl) {
+?><main xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
     <section>
         <div class="container" id="app">
             <div class="row">
@@ -34,36 +34,30 @@ function content_5ef6dd761c60b2_80025173 (Smarty_Internal_Template $_smarty_tpl)
             <div v-if="orderDisplay" class="row">
                 <div class="form-group">
                     <label class="w-75">店家名稱
-                        <input type="hidden" name="id" value="">
-                        <input type="text" name="name" class="form-control" value=""
+                        <input type="hidden" name="id" :value="orders.id">
+                        <input type="text" name="name" class="form-control" :value="orders.name"
                                placeholder="請輸入店家名稱">
                     </label>
                 </div>
                 <div class="form-group">
                     <label class="w-75">店家電話
-                        <input type="text" name="phone" class="form-control" value=""
+                        <input type="text" name="phone" class="form-control" :value="orders.phone"
                                placeholder="請輸入店家電話">
                     </label>
                 </div>
                 <div class="form-group">
-                    <ul class="order-list">
-                        <li><input type="text" value="阿翰-排骨飯*1/85"></li>
-                    </ul>
+                    <input type="text" value="阿翰-排骨飯/85" v-model="order_items" @keyup.enter="getContent">
+
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-danger">訂單送出</button>
                 </div>
 
             </div>
 
 
-
-
             <div class="row">
-
-                <?php
-$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['stores']->value, 'item');
-if ($_from !== null) {
-foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {
-?>
-                <div class="col-sm-3">
+                <div class="col-sm-3" v-for="(item, index) in stores" :index="item.id">
                     <article class="d-flex store-item mb-3">
                         <div class="store-image">
                             <svg class="icon" viewBox="0 0 416 512">
@@ -71,23 +65,21 @@ foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {
                             </svg>
                         </div>
                         <div class="store-text">
-                            <input type="hidden" name="" value="<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
-" class="item_id">
+                            <input type="hidden" name="" :value="item.id" class="item_id">
                             <ul>
-                                <li>名稱：<?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
-</li>
-                                <li>電話：<?php echo $_smarty_tpl->tpl_vars['item']->value['phone'];?>
-</li>
+                                <li>名稱：%% item.name %%</li>
+                                <li>電話：%% item.phone %%</li>
                                 <li>
                                     <div class="store-button mt-1">
-                                        <a href="<?php echo $_smarty_tpl->tpl_vars['item']->value['images'];?>
-" class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu" target="_blank">菜單</a>
-                                        <button v-on:click="getData" class="btn btn-danger btn-sm btn-pill px-2">訂餐</button>
+                                        <a v-bind:href="item.images"
+                                           class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu"
+                                           target="_blank">菜單</a>
+                                        <button v-on:click="getData(index)" class="btn btn-danger btn-sm btn-pill px-2">
+                                            訂餐
+                                        </button>
                                         <?php if (isset($_smarty_tpl->tpl_vars['logged']->value) && $_smarty_tpl->tpl_vars['logged']->value) {?>
-                                            <a href="edit.php?id=<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
-" class="btn btn-outline-info btn-sm px-2">編輯</a>
-                                            <a href="delete.php?id=<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
-" class="btn btn-outline-danger btn-sm px-2">刪除</a>
+                                            <a href="edit.php?id=" class="btn btn-outline-info btn-sm px-2">編輯</a>
+                                            <a href="delete.php?id=" class="btn btn-outline-danger btn-sm px-2">刪除</a>
                                         <?php }?>
                                     </div>
                                 </li>
@@ -104,10 +96,6 @@ foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {
                     </article>
                 </div>
 
-                <?php
-}
-}
-$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 
             </div>
         </div>
