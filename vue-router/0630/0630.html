@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue vue-slim-tabs DEMO</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div id="app">
+    <vue-slim-tabs></vue-slim-tabs>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-slim-tabs@0.4.0/dist/vue-slim-tabs.js"></script>
+<script src="https://unpkg.com/http-vue-loader"></script>
+
+<script>
+    Vue.use(VueSlimTabs)
+    var app = new Vue({
+        el: '#app',
+        data: {
+        },
+        components: {
+            'vue-slim-tabs': httpVueLoader('./vue-slim-tabs.vue')
+        }
+    })
+</script>
+</body>
+</html>

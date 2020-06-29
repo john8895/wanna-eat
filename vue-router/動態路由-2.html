@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script src="https://unpkg.com/http-vue-loader"></script>
+
+<div id="app">
+    <div>
+        <h1>動態路由2</h1>
+        <router-link to="/user/foo">/user/foo</router-link>
+        <router-link to="/user/bar">/user/bar</router-link>
+        <router-link to="/add">/Add Store</router-link>
+        <router-view></router-view>
+    </div>
+</div>
+
+<script src="index2.js"></script>
+</body>
+</html>
