@@ -1,20 +1,15 @@
 <?php
 /* filename: edit.php */
+
 require_once("../libs/Smarty.class.php");
+/** Connect Mysql */
+require_once './php-component/connect.php';
+
 global $smarty;
 $smarty = new Smarty;
 
-// 用SESSION判斷是否有登入，如果沒登入就跳轉頁面
-session_start();
-if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']===true){
-    echo '您已登入';
-    $logged = true;
-}else{
-    $logged = false;
-    header('Location: index.php');
-}
-var_dump($logged);
-$smarty->assign('logged', $logged);
+/** Check Login Status */
+require_once './php-component/check-login-inner.php';
 
 
 // 如果有帶參數 GET
@@ -29,17 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 function show_up($smarty)
 {
     if (!isset($_GET['id'])) exit('<h1>必須指定參數</h1>');
-    $id = $_GET['id'];
-    /*
-     * MySQL
-     */
-    $conn = mysqli_connect('127.0.0.1', 'apai01', 'maze0819', 'wannaeat');
-    if (!$conn) exit('<h1>數據庫連接錯誤</h1>');
-
-    $query = mysqli_query($conn, "SELECT * FROM store WHERE id = {$id} LIMIT 1");
-    if (!$query) exit('<h1>數據查詢失敗</h1>');
-
-    $fetch_assoc = mysqli_fetch_assoc($query);
+    $sql = "SELECT * FROM store WHERE id = {$_GET['id']} LIMIT 1";
+    $result = connect_mysql($sql);
+    $fetch_assoc = mysqli_fetch_assoc($result);
     $smarty->assign('item', $fetch_assoc);
 }
 
@@ -50,6 +37,7 @@ function edit_user($smarty)
     $item['id'] = $_POST['id'];
     $item['name'] = $_POST['name'];
     $item['phone'] = $_POST['phone'];
+    $item['description'] = $_POST['description'];
     $smarty->assign('item', $item);
 
     // 校驗
@@ -59,6 +47,10 @@ function edit_user($smarty)
     }
     if (empty($_POST['phone'])) {
         $GLOBALS['error_message'] = '請輸入店家電話';
+        return;
+    }
+    if (empty($_POST['description'])) {
+        $GLOBALS['error_message'] = '請輸入店家介紹';
         return;
     }
 
@@ -86,18 +78,15 @@ function edit_user($smarty)
             return;
         }
         $item['images'] = $dest;
+        $sql_image = ",images='{$item['images']}'";
+    }else{
+        $sql_image = "";
     }
 
 
     // 更新數據
-    /*
-     * MySQL
-     */
-    $conn = mysqli_connect('127.0.0.1', 'apai01', 'maze0819', 'wannaeat');
-    if (!$conn) exit('<h1>數據庫連接錯誤</h1>');
-    $query = mysqli_query($conn, "UPDATE store SET name='{$item['name']}', phone='{$item['phone']}',images='{$item['images']}' WHERE id = {$item['id']};");
-    if (!$query) exit('<h1>數據更新失敗</h1>');
-
+    $sql = "UPDATE store SET name='{$item['name']}', phone='{$item['phone']}', description='{$item['description']}'{$sql_image} WHERE id = {$item['id']};";
+    connect_mysql($sql);
     header('Location: index.php');
 }
 

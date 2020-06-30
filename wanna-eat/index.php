@@ -1,31 +1,15 @@
 <?php
-/**
- * Example Application
- *
- * @package Example-application
- */
+/* filename: index.php */
+
 require '../libs/Smarty.class.php';
-require_once 'conn.php';
+/** Connect Mysql */
+require_once './php-component/connect.php';
 
 $smarty = new Smarty;
-$smarty->debugging = false;
-$smarty->caching = false;
 $smarty->setTemplateDir('./templates/');
 
-/*
- * ======================
- * Logged in
- * ======================
- */
-session_start();
-if(isset($_SESSION['logged_in'])){
-    echo '您已登入';
-    $logged = true;
-}else{
-    $logged = false;
-}
-var_dump($logged);
-$smarty->assign('logged', $logged);
+/** Check Login Status */
+require_once './php-component/check-login.php';
 
 
 /*
@@ -33,8 +17,8 @@ $smarty->assign('logged', $logged);
  * mysql
  * ======================
  */
-$result = mysql_func('SELECT * FROM store');
-if(!isset($result)) exit('error');
+$sql = 'SELECT * FROM store';
+$result = connect_mysql($sql);
 
 $stores = array();
 while ($rows = mysqli_fetch_assoc($result)) {

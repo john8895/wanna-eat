@@ -1,16 +1,16 @@
 <?php
 /* filename: add.php */
+
 require_once("../libs/Smarty.class.php");
+/** Connect Mysql */
+require_once './php-component/connect.php';
+
 global $smarty;
 $smarty = new Smarty;
 
-session_start();
-if(!isset($logged) || !$logged){
-    $logged = false;
-    $smarty->assign('logged', $logged);
-    header('Location: index.php');
-}
-var_dump($logged);
+/** Check Login Status */
+require_once './php-component/check-login-inner.php';
+
 
 /*
  * ======================
@@ -37,8 +37,13 @@ function add_store()
         $GLOBALS['error_message'] = '請輸入店家電話';
         return;
     }
+    if (empty($_POST['description'])) {
+        $GLOBALS['error_message'] = '請輸入店家介紹';
+        return;
+    }
     $store['name'] = $_POST['name'];
     $store['phone'] = $_POST['phone'];
+    $store['description'] = $_POST['description'];
 
     // 校驗圖片
     // empty($_FILES['images'] -> 有欄位但沒填 有變數無值
@@ -69,22 +74,9 @@ function add_store()
         $store['images'] = $target;
     }
 
-    /*
-     * ======================
-     * MySQL
-     * ======================
-     */
     // 數據校驗完畢 寫入資料庫
-    $conn = mysqli_connect('127.0.0.1','apai01', 'maze0819','wannaeat');
-    if(!$conn){
-        $GLOBALS['error_message'] = '連接數據庫失敗，請洽管理人員';
-        return;
-    }
-    $query = mysqli_query($conn,"INSERT INTO store values (null, '{$store['name']}', '{$store['phone']}', '{$store['images']}')");
-    if(!$query){
-        $GLOBALS['error_message'] = '數據增加失敗';
-        return;
-    }
+    $sql = "INSERT INTO store values (null, '{$store['name']}', '{$store['description']}', '{$store['phone']}', '{$store['images']}')";
+    connect_mysql($sql);
     header('Location: index.php');
 }
 

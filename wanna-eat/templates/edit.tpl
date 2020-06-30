@@ -28,6 +28,12 @@
                         </label>
                     </div>
                     <div class="form-group">
+                        <label class="w-75">店家介紹
+                            <textarea name="description" cols="30" rows="2" class="form-control"
+                                      placeholder="請輸入店家介紹">{$item.description}</textarea>
+                        </label>
+                    </div>
+                    <div class="form-group">
                         <label>上傳菜單
                             <input type="file" name="images" class="form-control-file">
                         </label>

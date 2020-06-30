@@ -1,4 +1,8 @@
 <template>
+
+    <h1>This is a Template</h1>
+
+
     <tabs>
         <tab title="Vue">
             This is Vue

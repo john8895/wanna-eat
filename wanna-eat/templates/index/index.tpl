@@ -34,7 +34,9 @@
 
 
             <div class="row">
-                <div class="col-sm-3" v-for="(item, index) in stores" :index="item.id">
+
+                {foreach from=$stores item=item}
+                <div class="col-sm-3">
                     <article class="d-flex store-item mb-3">
                         <div class="store-image">
                             <svg class="icon" viewBox="0 0 416 512">
@@ -42,21 +44,21 @@
                             </svg>
                         </div>
                         <div class="store-text">
-                            <input type="hidden" name="" :value="item.id" class="item_id">
+                            <input type="hidden" class="item_id" value="{$item.id}">
                             <ul>
-                                <li>名稱：%% item.name %%</li>
-                                <li>電話：%% item.phone %%</li>
+                                <li>名稱：{$item.name} </li>
+                                <li>電話：{$item.phone} </li>
                                 <li>
                                     <div class="store-button mt-1">
-                                        <a v-bind:href="item.images"
+                                        <a href="{$item.images}"
                                            class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu"
                                            target="_blank">菜單</a>
-                                        <button v-on:click="getData(index)" class="btn btn-danger btn-sm btn-pill px-2">
-                                            訂餐
-                                        </button>
+                                        <a href="group-buy.php?id={$item.id}" class="btn btn-danger btn-sm btn-pill px-2">
+                                            開團
+                                        </a>
                                         {if isset($logged) && $logged}
-                                            <a href="edit.php?id=" class="btn btn-outline-info btn-sm px-2">編輯</a>
-                                            <a href="delete.php?id=" class="btn btn-outline-danger btn-sm px-2">刪除</a>
+                                            <a href="edit.php?id={$item.id}" class="btn btn-outline-info btn-sm px-2">編輯</a>
+                                            <a href="delete.php?id={$item.id}" class="btn btn-outline-danger btn-sm px-2">刪除</a>
                                         {/if}
                                     </div>
                                 </li>
@@ -72,7 +74,7 @@
                         </div>
                     </article>
                 </div>
-
+                {/foreach}
 
             </div>
         </div>

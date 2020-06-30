@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-06-21 07:35:41
+/* Smarty version 3.1.34-dev-7, created on 2020-06-30 17:14:18
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\edit.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5eeef1ad7ba4d4_82196985',
+  'unifunc' => 'content_5efb56ca84e4d8_63035338',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '95816e6cf9bf1b95da2604dec00a348801db157d' => 
     array (
       0 => 'D:\\xampp\\htdocs\\wanna-eat\\wanna-eat\\templates\\edit.tpl',
-      1 => 1592717741,
+      1 => 1593530058,
       2 => 'file',
     ),
   ),
@@ -23,7 +23,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:js.tpl' => 1,
   ),
 ),false)) {
-function content_5eeef1ad7ba4d4_82196985 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5efb56ca84e4d8_63035338 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender("file:head.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
@@ -56,6 +56,13 @@ $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_sm
                             <input type="text" name="phone" class="form-control" value="<?php echo $_smarty_tpl->tpl_vars['item']->value['phone'];?>
 "
                                    placeholder="請輸入店家電話">
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="w-75">店家介紹
+                            <textarea name="description" cols="30" rows="2" class="form-control"
+                                      placeholder="請輸入店家介紹"><?php echo $_smarty_tpl->tpl_vars['item']->value['description'];?>
+</textarea>
                         </label>
                     </div>
                     <div class="form-group">

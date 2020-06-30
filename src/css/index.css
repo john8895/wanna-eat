@@ -29,8 +29,5 @@
 .store-item .store-button button.btn {
   padding: 0 6px;
 }
-.store-item .store-button button.btn:not(:last-child) {
-  margin-right: 5px;
-}
 
 /*# sourceMappingURL=index.css.map */
