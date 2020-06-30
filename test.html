@@ -7,15 +7,53 @@
         body {
             height: 2500px;
         }
+        header {
+            height: 200px;
+        }
     </style>
 </head>
 <body>
+<header>
+
+</header>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
 <script>
+    // onload = function(){
+    //     let body = document.querySelector('body');
+    //     body.onscroll = function(e){
+    //         console.log(e);
+    //     }
+    // }
+
+
+
     $(function () {
+
+        // 1.
         $(document).on('scroll',function () {
-            alert()
+            console.log('document', '媽我在這兒！')
         });
+
+        // 2.
+        $(window).on('scroll',function () {
+            console.log('window', '媽我在這兒！')
+        });
+
+        // 3.
+        $('html').on('scroll',function () {
+            console.log('html', '媽我在這兒！')
+        });
+
+        // 4.
+        $('body').on('scroll',function () {
+            console.log('body', '媽我在這兒！')
+        });
+
+        // 5.
+        $('html, body').on('scroll',function (e) {
+            console.log('html, body', '媽我在這兒！')
+        });
+
     })
 </script>
 </body>
