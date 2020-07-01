@@ -8,29 +8,49 @@
             </div>
 
 
-            <div v-if="orderDisplay" class="row">
-                <div class="form-group">
-                    <label class="w-75">店家名稱
-                        <input type="hidden" name="id" :value="orders.id">
-                        <input type="text" name="name" class="form-control" :value="orders.name"
-                               placeholder="請輸入店家名稱">
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label class="w-75">店家電話
-                        <input type="text" name="phone" class="form-control" :value="orders.phone"
-                               placeholder="請輸入店家電話">
-                    </label>
-                </div>
-                <div class="form-group">
-                    <input type="text" value="阿翰-排骨飯/85" v-model="order_items" @keyup.enter="getContent">
-
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-danger">訂單送出</button>
+            <section>
+                <!-- 訂單狀態-->
+                <div class="row mb-4">
+                    <div class="col-sm-12">
+                        <h4>進行中的訂單</h4>
+                    </div>
+                    <div class="col-sm-12">
+                        <ul>
+                            <li>預估金額：$0</li>
+                            <li>目前金額：$0</li>
+                            <li>阿翰開的炒飯超人</li>
+                            <li>
+                                <button>我也要訂</button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
-            </div>
+
+                <!-- 訂單-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4>我也要訂</h4>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label> 姓名
+                                <input type="text" value="阿翰">
+                            </label>
+                            <label> 餐點名
+                                <input type="text" value="排骨飯">
+                            </label>
+                            <label> 價錢
+                                <input type="text" value="85">
+                            </label>
+                            <label> 備註
+                                <input type="text" value="小辣">
+                            </label>
+                            <button>加訂單</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
 
             <div class="row">
