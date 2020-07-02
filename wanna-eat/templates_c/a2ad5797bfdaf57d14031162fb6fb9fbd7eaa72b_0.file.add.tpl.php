@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-06-30 17:05:45
+/* Smarty version 3.1.34-dev-7, created on 2020-07-01 14:22:40
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\add.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5efb54c951d0f8_30434217',
+  'unifunc' => 'content_5efc8010101574_52025986',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a2ad5797bfdaf57d14031162fb6fb9fbd7eaa72b' => 
     array (
       0 => 'D:\\xampp\\htdocs\\wanna-eat\\wanna-eat\\templates\\add.tpl',
-      1 => 1593529544,
+      1 => 1593530026,
       2 => 'file',
     ),
   ),
@@ -23,7 +23,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:js.tpl' => 1,
   ),
 ),false)) {
-function content_5efb54c951d0f8_30434217 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5efc8010101574_52025986 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender("file:head.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
@@ -52,7 +52,8 @@ $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_sm
                             <input type="text" name="phone" class="form-control" <?php if (isset($_smarty_tpl->tpl_vars['phone']->value)) {?>value="<?php echo $_smarty_tpl->tpl_vars['phone']->value;?>
 "<?php }?> placeholder="請輸入店家電話">
                         </label>
-                    </div><div class="form-group">
+                    </div>
+                    <div class="form-group">
                         <label class="w-75">店家介紹
                             <textarea name="description" cols="30" rows="2" class="form-control" placeholder="請輸入店家介紹"><?php if (isset($_smarty_tpl->tpl_vars['description']->value)) {?> <?php echo $_smarty_tpl->tpl_vars['description']->value;?>
  <?php }?></textarea>
