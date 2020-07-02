@@ -57,9 +57,9 @@ function group_buy($smarty)
         return;
     }
 
-    $group_buy['store_host'] = $_POST['store_host'];
     $group_buy['store_name'] = $_POST['store_name'];
-    $group_buy['host'] = $_POST['host'];
+    $group_buy['store_phone'] = $_POST['store_phone'];
+    $group_buy['host_name'] = $_POST['host_name'];
     $group_buy['end_time'] = $_POST['end_time'];
     $group_buy['remark'] = $_POST['remark'];
 

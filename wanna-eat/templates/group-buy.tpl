@@ -16,7 +16,7 @@
                         <li>負責人：
                             <select name="host">
                                 {foreach from=$hosts item=item}
-                                    <option value="{$item.host_name}">{$item.host_name}</option>
+                                    <option value="{$item.host_name}" name="host_name">{$item.host_name}</option>
                                 {/foreach}
                             </select>
                             <button>新增負責人</button>
