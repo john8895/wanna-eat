@@ -14,7 +14,7 @@
                     {/if}
                     <ul class="store-text">
                         <li>負責人：
-                            <select name="host">
+                            <select name="group_host">
                                 {foreach from=$hosts item=item}
                                     <option value="{$item.host_name}">{$item.host_name}</option>
                                 {/foreach}
@@ -35,7 +35,8 @@
                         </li>
                         <li>
                             <label>截止時間：
-                                <input type="text" value="1200" name="end_time" required>*
+                                <input type="text" value="07-02" name="endTime_month" required>
+                                <input type="text" value="12-00" name="end_time_hour" required>*
                             </label>
                         </li>
                         <li>

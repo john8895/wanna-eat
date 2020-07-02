@@ -48,7 +48,12 @@ function show_host($smarty)
 // 團購
 function group_buy($smarty)
 {
-    if (!$_POST['host'] || !$_POST['end_time'] || !$_POST['remark'] || !$_POST['store_name'] || !$_POST['store_phone']) {
+    if (!$_POST['store_name'] ||
+        !$_POST['store_phone'] ||
+        !$_POST['group_host'] ||
+        !$_POST['endTime_month'] ||
+        !$_POST['end_time_hour'] ||
+        !$_POST['remark']) {
         $GLOBALS['error_message'] = '請正常使用表單';
         return;
     }
@@ -57,15 +62,24 @@ function group_buy($smarty)
         return;
     }
 
-    $group_buy['store_host'] = $_POST['store_host'];
+    // TODO: end_time 要處理為日期格式
+    // 2020-07-02 12:49:54
+
+//    $_POST['endTime_month'] = '07-02'
+//    $_POST['end_time'] = '12-00'
+
+    echo date("Y-m-d");
+
+
     $group_buy['store_name'] = $_POST['store_name'];
-    $group_buy['host'] = $_POST['host'];
+    $group_buy['store_phone'] = $_POST['store_phone'];
+    $group_buy['group_host'] = $_POST['group_host'];
     $group_buy['end_time'] = $_POST['end_time'];
     $group_buy['remark'] = $_POST['remark'];
 
     // save
-    $sql = "";
-    var_dump($group_buy);
+    $sql = "INSERT INTO group_buy VALUES (null, '{$group_buy['store_name']}', '{$group_buy['store_phone']}', '{$group_buy['group_host']}', '2020-07-02 12:49:54', '{$group_buy['remark']}')";
+    var_dump($sql);
 
 }
 

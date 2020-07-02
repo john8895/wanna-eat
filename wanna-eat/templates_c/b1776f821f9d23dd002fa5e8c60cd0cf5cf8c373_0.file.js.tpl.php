@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-06-27 05:53:32
+/* Smarty version 3.1.34-dev-7, created on 2020-07-02 02:34:18
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\js.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5ef6c2bc577842_68231955',
+  'unifunc' => 'content_5efd2b8a49c347_33913758',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'b1776f821f9d23dd002fa5e8c60cd0cf5cf8c373' => 
     array (
       0 => 'D:\\xampp\\htdocs\\wanna-eat\\wanna-eat\\templates\\js.tpl',
-      1 => 1593230006,
+      1 => 1593390649,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5ef6c2bc577842_68231955 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5efd2b8a49c347_33913758 (Smarty_Internal_Template $_smarty_tpl) {
 echo '<script'; ?>
  src="./language/js/jquery.js"><?php echo '</script'; ?>
 >
