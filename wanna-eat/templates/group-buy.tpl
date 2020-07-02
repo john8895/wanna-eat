@@ -14,15 +14,17 @@
                     {/if}
                     <ul class="store-text">
                         <li>負責人：
-                            <select name="host">
+                            <select name="group_host">
                                 {foreach from=$hosts item=item}
                                     <option value="{$item.host_name}" name="host_name">{$item.host_name}</option>
                                 {/foreach}
                             </select>
                             <button>新增負責人</button>
                         </li>
-                        <li>店家名稱：<input type="text" value="{$item.name}" name="store_name" readonly class="form-control"></li>
-                        <li>店家電話：<input type="text" value="{$item.phone}" name="store_phone" readonly class="form-control"></li>
+                        <li>店家名稱：<input type="text" value="{$item.name}" name="store_name" readonly
+                                        class="form-control"></li>
+                        <li>店家電話：<input type="text" value="{$item.phone}" name="store_phone" readonly
+                                        class="form-control"></li>
                         <li>簡介：排骨飯比雞排飯好吃，肉很大塊</li>
                         <li>菜單：<a href="{$item.images}"
                                   class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu">菜單</a></li>
@@ -34,13 +36,18 @@
                             </div>
                         </li>
                         <li>
-                            <label>截止時間：
-                                <input type="text" value="1200" name="end_time" required>*
-                            </label>
+                            <div class="form-row">
+                                <label>截止時間*
+                                        <input type="text" value="{$time|date_format:"%Y-%m-%d"}" name="endTime_day" required class="form-control">
+                                        <input type="text" value="10-00" name="end_time_hour" required class="form-control">
+                                </label>
+
+                            </div>
+
                         </li>
                         <li>
                             <label>注意事項：
-                                <input type="text" value="老闆很凶會罵人" name="remark">
+                                <input type="text" value="老闆很凶會罵人" name="remark" class="form-control">
                             </label>
                         </li>
                     </ul>

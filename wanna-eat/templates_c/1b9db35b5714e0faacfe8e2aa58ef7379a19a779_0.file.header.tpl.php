@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-06-23 15:13:25
+/* Smarty version 3.1.34-dev-7, created on 2020-07-02 14:45:45
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\header.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5ef1fff5f08ce7_53269091',
+  'unifunc' => 'content_5efdd6f9051866_33835985',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5ef1fff5f08ce7_53269091 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5efdd6f9051866_33835985 (Smarty_Internal_Template $_smarty_tpl) {
 ?><header>
     <div class="container mb-4">
         <a href="index.php">

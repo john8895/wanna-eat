@@ -30,29 +30,29 @@
     </section>
 
 
-{*            <div v-if="orderDisplay" class="row">*}
-{*                <div class="form-group">*}
-{*                    <label class="w-75">店家名稱*}
-{*                        <input type="hidden" name="id" :value="orders.id">*}
-{*                        <input type="text" name="name" class="form-control" :value="orders.name"*}
-{*                               placeholder="請輸入店家名稱">*}
-{*                    </label>*}
-{*                </div>*}
-{*                <div class="form-group">*}
-{*                    <label class="w-75">店家電話*}
-{*                        <input type="text" name="phone" class="form-control" :value="orders.phone"*}
-{*                               placeholder="請輸入店家電話">*}
-{*                    </label>*}
-{*                </div>*}
-{*                <div class="form-group">*}
-{*                    <input type="text" value="阿翰-排骨飯/85" v-model="order_items" @keyup.enter="getContent">*}
+    {*            <div v-if="orderDisplay" class="row">*}
+    {*                <div class="form-group">*}
+    {*                    <label class="w-75">店家名稱*}
+    {*                        <input type="hidden" name="id" :value="orders.id">*}
+    {*                        <input type="text" name="name" class="form-control" :value="orders.name"*}
+    {*                               placeholder="請輸入店家名稱">*}
+    {*                    </label>*}
+    {*                </div>*}
+    {*                <div class="form-group">*}
+    {*                    <label class="w-75">店家電話*}
+    {*                        <input type="text" name="phone" class="form-control" :value="orders.phone"*}
+    {*                               placeholder="請輸入店家電話">*}
+    {*                    </label>*}
+    {*                </div>*}
+    {*                <div class="form-group">*}
+    {*                    <input type="text" value="阿翰-排骨飯/85" v-model="order_items" @keyup.enter="getContent">*}
 
-{*                </div>*}
-{*                <div class="form-group">*}
-{*                    <button class="btn btn-danger">訂單送出</button>*}
-{*                </div>*}
+    {*                </div>*}
+    {*                <div class="form-group">*}
+    {*                    <button class="btn btn-danger">訂單送出</button>*}
+    {*                </div>*}
 
-{*            </div>*}
+    {*            </div>*}
 
     <section>
 
@@ -73,6 +73,7 @@
                                 <ul>
                                     <li>名稱：{$item.name} </li>
                                     <li>電話：{$item.phone} </li>
+                                    <li>電話：{$item.description} </li>
                                     <li>
                                         <div class="store-button mt-1">
                                             <a href="{$item.images}"

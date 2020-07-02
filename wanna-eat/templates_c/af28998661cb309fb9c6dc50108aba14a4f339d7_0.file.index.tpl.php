@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-07-01 23:40:10
+/* Smarty version 3.1.34-dev-7, created on 2020-07-02 15:00:33
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\index\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5efd02ba294de6_66803374',
+  'unifunc' => 'content_5efdda71e68f78_30415780',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'af28998661cb309fb9c6dc50108aba14a4f339d7' => 
     array (
       0 => 'D:\\xampp\\htdocs\\wanna-eat\\wanna-eat\\templates\\index\\index.tpl',
-      1 => 1593607057,
+      1 => 1593686529,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5efd02ba294de6_66803374 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5efdda71e68f78_30415780 (Smarty_Internal_Template $_smarty_tpl) {
 ?><main>
     <section>
         <div class="container" id="app">
@@ -53,9 +53,9 @@ function content_5efd02ba294de6_66803374 (Smarty_Internal_Template $_smarty_tpl)
     </section>
 
 
-
-
-
+                                                                
+                
+    
     <section>
 
         <div class="container">
@@ -81,6 +81,8 @@ foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {
                                     <li>名稱：<?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
  </li>
                                     <li>電話：<?php echo $_smarty_tpl->tpl_vars['item']->value['phone'];?>
+ </li>
+                                    <li>電話：<?php echo $_smarty_tpl->tpl_vars['item']->value['description'];?>
  </li>
                                     <li>
                                         <div class="store-button mt-1">

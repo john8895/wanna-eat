@@ -48,29 +48,57 @@ function show_host($smarty)
 // 團購
 function group_buy($smarty)
 {
-    if (!$_POST['host'] || !$_POST['end_time'] || !$_POST['remark'] || !$_POST['store_name'] || !$_POST['store_phone']) {
+    if (!$_POST['store_name'] ||
+        !$_POST['store_phone'] ||
+        !$_POST['group_host'] ||
+        !$_POST['endTime_day'] ||
+        !$_POST['end_time_hour'] ||
+        !$_POST['remark']) {
         $GLOBALS['error_message'] = '請正常使用表單';
         return;
     }
-    if (empty($_POST['end_time'])) {
+    if (empty($_POST['endTime_day']) || empty($_POST['end_time_hour'])) {
         $GLOBALS['error_message'] = '必須填寫截止時間';
         return;
     }
 
+    // 校驗日期時間
+    // $_POST['endTime_day'] = '07-02'
+    if(!validationTime($_POST['endTime_day'])) {
+        $GLOBALS['error_message'] = '截止日期格式錯誤';
+        return;
+    }
+    //  $_POST['end_time'] = '12-00'
+    if(!validationTime($_POST['end_time_hour'])) {
+        $GLOBALS['error_message'] = '截止時間格式錯誤';
+        return;
+    }
+
+    // TODO:合併日期與時間
+    $end_time = $_POST['endTime_day'] . ' ' . $_POST['end_time_hour'];
+
     $group_buy['store_name'] = $_POST['store_name'];
     $group_buy['store_phone'] = $_POST['store_phone'];
-    $group_buy['host_name'] = $_POST['host_name'];
-    $group_buy['end_time'] = $_POST['end_time'];
+    $group_buy['group_host'] = $_POST['group_host'];
     $group_buy['remark'] = $_POST['remark'];
 
     // save
-    $sql = "";
-    var_dump($group_buy);
+    $sql = "INSERT INTO group_buy VALUES (null, '{$group_buy['store_name']}', '{$group_buy['store_phone']}', '{$group_buy['group_host']}', '{$end_time}', '{$group_buy['remark']}');";
+//    var_dump($sql);
+    connect_mysql($sql);
+    header('Location: index.php');
 
 }
 
+
+// 校驗日期時間
+function validationTime($subject){
+    $pattern = '/\d{2}-\d{2}/';
+    return preg_match($pattern, $subject);
+}
 
 if (isset($error_message)) {
     $smarty->assign('error', $error_message);
 }
+$smarty->assign('time', time());  // time
 $smarty->display("./templates/group-buy.tpl");
