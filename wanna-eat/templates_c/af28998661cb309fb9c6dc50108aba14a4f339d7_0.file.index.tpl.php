@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-07-02 15:00:33
+/* Smarty version 3.1.34-dev-7, created on 2020-07-03 06:45:21
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\index\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5efdda71e68f78_30415780',
+  'unifunc' => 'content_5efe638176a762_32468519',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'af28998661cb309fb9c6dc50108aba14a4f339d7' => 
     array (
       0 => 'D:\\xampp\\htdocs\\wanna-eat\\wanna-eat\\templates\\index\\index.tpl',
-      1 => 1593686529,
+      1 => 1593729918,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5efdda71e68f78_30415780 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5efe638176a762_32468519 (Smarty_Internal_Template $_smarty_tpl) {
 ?><main>
     <section>
         <div class="container" id="app">
@@ -32,24 +32,28 @@ function content_5efdda71e68f78_30415780 (Smarty_Internal_Template $_smarty_tpl)
         </div>
     </section>
 
-    <section>
-        <!-- 訂單狀態-->
-        <div class="row mb-4">
-            <div class="col-sm-12">
-                <h4>進行中的訂單</h4>
-            </div>
-            <div class="col-sm-12">
-                <ul>
-                    <li>預估金額：$0</li>
-                    <li>目前金額：$0</li>
-                    <li>阿翰開的炒飯超人</li>
-                    <li>
-                        <button>我也要訂</button>
-                    </li>
-                </ul>
+    <!-- 訂單狀態-->
+    <section id="app">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-sm-12">
+                    <h4>進行中的訂單 <span id="current_groupBuy">5</span></h4>
+                </div>
+                %% message %%
+                <div class="col-sm-3" v-for="(item, index) in group" :index="item.id">
+                    %%item%%
+                    <ul>
+                        <li>預估金額：$0</li>
+                        <li>目前金額：$0</li>
+                        <li><span id="group_host">%% item.group_name %%阿翰</span>開的 <span id="store_name">炒飯超人</span></li>
+                        <li>
+                            <button>我也要訂</button>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
-
     </section>
 
 

@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-07-02 14:45:45
+/* Smarty version 3.1.34-dev-7, created on 2020-07-03 06:26:03
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\js.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5efdd6f905c209_86390927',
+  'unifunc' => 'content_5efe5efbf18909_23020780',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5efdd6f905c209_86390927 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5efe5efbf18909_23020780 (Smarty_Internal_Template $_smarty_tpl) {
 echo '<script'; ?>
  src="./language/js/jquery.js"><?php echo '</script'; ?>
 >

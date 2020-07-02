@@ -1,7 +1,7 @@
 <?php
 /* filename: login.php */
 require_once("../libs/Smarty.class.php");
-require_once("connect.php");
+require_once("./assets/inc/connect.php");
 $smarty = new Smarty;
 
 if(!isset($logged)){

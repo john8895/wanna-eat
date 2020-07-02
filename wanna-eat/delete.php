@@ -2,7 +2,7 @@
 /* filename: edit.php */
 
 /** Connect Mysql */
-require_once './php-component/connect.php';
+require_once './assets/inc/connect.php';
 
 if($_SERVER['REQUEST_METHOD']==='GET' && !empty($_GET)){
     delete_user();

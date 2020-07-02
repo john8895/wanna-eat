@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-07-02 15:00:33
+/* Smarty version 3.1.34-dev-7, created on 2020-07-03 06:26:03
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\layout.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5efdda71e3a240_21930657',
+  'unifunc' => 'content_5efe5efbec89c4_28359712',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -24,7 +24,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:js.tpl' => 1,
   ),
 ),false)) {
-function content_5efdda71e3a240_21930657 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5efe5efbec89c4_28359712 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender("file:head.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>

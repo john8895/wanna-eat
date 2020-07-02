@@ -3,13 +3,13 @@
 
 require_once("../libs/Smarty.class.php");
 /** Connect Mysql */
-require_once './php-component/connect.php';
+require_once './assets/inc/connect.php';
 
 global $smarty;
 $smarty = new Smarty;
 
 /** Check Login Status */
-require_once './php-component/check-login-inner.php';
+require_once './assets/inc/check-login-inner.php';
 
 
 // 如果有帶參數 GET

@@ -3,13 +3,13 @@
 
 require_once("../libs/Smarty.class.php");
 /** Connect Mysql */
-require_once './php-component/connect.php';
+require_once './assets/inc/connect.php';
 
 global $smarty;
 $smarty = new Smarty;
 
 /** Check Login Status */
-require_once './php-component/check-login-inner.php';
+require_once './assets/inc/check-login-inner.php';
 
 
 // 如果有帶參數 GET
@@ -84,10 +84,8 @@ function group_buy($smarty)
 
     // save
     $sql = "INSERT INTO group_buy VALUES (null, '{$group_buy['store_name']}', '{$group_buy['store_phone']}', '{$group_buy['group_host']}', '{$end_time}', '{$group_buy['remark']}');";
-//    var_dump($sql);
     connect_mysql($sql);
     header('Location: index.php');
-
 }
 
 

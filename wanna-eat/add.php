@@ -9,7 +9,7 @@ global $smarty;
 $smarty = new Smarty;
 
 /** Check Login Status */
-require_once './php-component/check-login-inner.php';
+require_once './assets/inc/check-login-inner.php';
 
 
 /*

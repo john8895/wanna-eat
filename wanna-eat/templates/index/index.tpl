@@ -9,24 +9,28 @@
         </div>
     </section>
 
-    <section>
-        <!-- 訂單狀態-->
-        <div class="row mb-4">
-            <div class="col-sm-12">
-                <h4>進行中的訂單</h4>
-            </div>
-            <div class="col-sm-12">
-                <ul>
-                    <li>預估金額：$0</li>
-                    <li>目前金額：$0</li>
-                    <li>阿翰開的炒飯超人</li>
-                    <li>
-                        <button>我也要訂</button>
-                    </li>
-                </ul>
+    <!-- 訂單狀態-->
+    <section id="app">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-sm-12">
+                    <h4>進行中的訂單 <span id="current_groupBuy">5</span></h4>
+                </div>
+                %% message %%
+                <div class="col-sm-3" v-for="(item, index) in group" :index="item.id">
+                    %%item%%
+                    <ul>
+                        <li>預估金額：$0</li>
+                        <li>目前金額：$0</li>
+                        <li><span id="group_host">%% item.group_name %%阿翰</span>開的 <span id="store_name">炒飯超人</span></li>
+                        <li>
+                            <button>我也要訂</button>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
-
     </section>
 
 

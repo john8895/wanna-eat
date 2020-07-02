@@ -3,13 +3,13 @@
 
 require '../libs/Smarty.class.php';
 /** Connect Mysql */
-require_once './php-component/connect.php';
+require_once './assets/inc/connect.php';
 
 $smarty = new Smarty;
 $smarty->setTemplateDir('./templates/');
 
 /** Check Login Status */
-require_once './php-component/check-login.php';
+require_once './assets/inc/check-login.php';
 
 
 /*
