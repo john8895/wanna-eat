@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-07-03 06:45:21
+/* Smarty version 3.1.34-dev-7, created on 2020-07-03 13:02:09
   from 'D:\xampp\htdocs\wanna-eat\wanna-eat\templates\index\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5efe638176a762_32468519',
+  'unifunc' => 'content_5efebbd1b11083_60181157',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'af28998661cb309fb9c6dc50108aba14a4f339d7' => 
     array (
       0 => 'D:\\xampp\\htdocs\\wanna-eat\\wanna-eat\\templates\\index\\index.tpl',
-      1 => 1593729918,
+      1 => 1593752528,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5efe638176a762_32468519 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5efebbd1b11083_60181157 (Smarty_Internal_Template $_smarty_tpl) {
 ?><main>
     <section>
         <div class="container" id="app">
@@ -37,7 +37,7 @@ function content_5efe638176a762_32468519 (Smarty_Internal_Template $_smarty_tpl)
         <div class="container">
             <div class="row mb-4">
                 <div class="col-sm-12">
-                    <h4>進行中的訂單 <span id="current_groupBuy">5</span></h4>
+                    <h4>進行中的訂單 <span id="current_groupBuy">0%%group%%</span></h4>
                 </div>
                 %% message %%
                 <div class="col-sm-3" v-for="(item, index) in group" :index="item.id">

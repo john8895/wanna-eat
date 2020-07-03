@@ -95,12 +95,12 @@ let vm = new Vue({
         group: [],
         message: 'Hello',
     },
-    mounted() {
+    mounted: function() {
         this.showOrder();
     },
     methods: {
         // 取得數據
-        showOrder() {
+        showOrder: function() {
             axios.get('group_buy_api.php').then(res => {
                 console.log(res.data)
                 vm.group = res.data

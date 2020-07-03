@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container pt-9 pb-10">
+    <!--   nav -->
+    <nav>
+        <h1><a href="#" class="logo mb-5">hexshool BMI calculater</a></h1>
+    </nav>
+    <!--   BMI 計算 -->
+    <section class="calculator">
+        <h2 class="font-weight-medium font-size-xl text-center mb-11">大 AI 數據之 BMI 體重計</h2>
+        <!--     輸入資料 -->
+        <div class="bg-primary">
+            <div class="row pt-6 pb-7">
+                <div class="col-4 center">
+                    <form action="#">
+                        <label for="height" class="text-white mb-1">身高 cm</label>
+                        <input type="number" placeholder="請輸入身高"
+                               class="height w-100 mb-5 px-4 py-2 rounded border-color">
+                        <label for="weight" class="text-white mb-1">體重 kg</label>
+                        <input type="number" placeholder="請輸入體重" class="kg w-100 mb-7 px-4 py-2 rounded border-color">
+
+                        <button class="send btn text-white bg-secondary px-7 center mb-3 border-color">確認</button>
+                        <button class="clean btn text-white center border-color px-3">全部清除</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--   BMI 紀錄 -->
+    <section class="bmi-record pt-7">
+        <h2 class="font-size-lg text-center font-weight-medium mb-7">BMI 記錄</h2>
+        <div class="row">
+            <div class="col-6 center">
+                <ul class="list cards-group">
+                    <!-- <li class="card d-flex flex-column align-items-center py-6 mb-1">
+                      <h3 class="font-size-md font-weight-medium mb-3">理想</h3>
+                      <ul class="text-center">
+                        <li>BMI 20.90</li>
+                        <li>height：180cm</li>
+                        <li>weight：70kg</li>
+                      </ul>
+                    </li>
+                    <li class="card d-flex flex-column align-items-center py-6 mb-1">
+                      <h3 class="font-size-md font-weight-medium mb-3">理想</h3>
+                      <ul class="text-center">
+                        <li>BMI 20.90</li>
+                        <li>height：180cm</li>
+                        <li>weight：70kg</li>
+                      </ul>
+                    </li>
+                    <li class="card d-flex flex-column align-items-center py-6 mb-1">
+                      <h3 class="font-size-md font-weight-medium mb-3">過輕</h3>
+                      <ul class="text-center">
+                        <li>BMI 20.90</li>
+                        <li>height：180cm</li>
+                        <li>weight：70kg</li>
+                      </ul>
+                    </li>
+                    <li class="card d-flex flex-column align-items-center py-6 mb-1">
+                      <h3 class="font-size-md font-weight-medium mb-3">過重</h3>
+                      <ul class="text-center">
+                        <li>BMI 20.90</li>
+                        <li>height：180cm</li>
+                        <li>weight：70kg</li>
+                      </ul>
+                    </li>
+                    <li class="card d-flex flex-column align-items-center py-6 mb-1">
+                      <h3 class="font-size-md font-weight-medium mb-3">輕度肥胖</h3>
+                      <ul class="text-center">
+                        <li>BMI 20.90</li>
+                        <li>height：180cm</li>
+                        <li>weight：70kg</li>
+                      </ul>
+                    </li>
+                    <li class="card d-flex flex-column align-items-center py-6 mb-1">
+                      <h3 class="font-size-md font-weight-medium mb-3">中度肥胖</h3>
+                      <ul class="text-center">
+                        <li>BMI 20.90</li>
+                        <li>height：180cm</li>
+                        <li>weight：70kg</li>
+                      </ul>
+                    </li>
+                    <li class="card d-flex flex-column align-items-center py-6 mb-1">
+                      <h3 class="font-size-md font-weight-medium mb-3">重度肥胖</h3>
+                      <ul class="text-center">
+                        <li>BMI 20.90</li>
+                        <li>height：180cm</li>
+                        <li>weight：70kg</li>
+                      </ul>
+                    </li>-->
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    //1.宣告身高、體重、確認和清除按鈕
+    var height = document.querySelector(".height");
+    var weight = document.querySelector(".kg");
+    var sendBtn = document.querySelector(".send");
+    var allCleanBtn = document.querySelector(".clean");
+    var list = document.querySelector(".list"); //渲染畫面的li
+    var arrayData = []; //用來存放物件的陣列
+
+    //2.資料處理
+    //2-1 存放的物件：把身高體重BMI和狀態放到一個物件裡面
+
+    //2-2 點擊確認的按鈕：
+    /* 開始進行BMI運算、
+       if判斷BMI值是否過輕、正常、過重、肥胖
+
+    */
+
+    // 定義物件資料
+
+    var userRecord = {
+        height: "",
+        weight: "",
+        BMI: "",
+        status: ""
+    };
+
+    sendBtn.addEventListener("click", sendResult);
+
+    function sendResult() {
+        var userHeight = parseInt(height.value);
+        var userWeight = parseInt(weight.value);
+        var BMI = userWeight / (userHeight / 100) ** 2;
+
+        //防止有人錯誤使用-防呆機制 另外， 把資料放到物件裡
+        if (userHeight == "" || userHeight == 0) {
+            alert("請填入身高！");
+            height.value = "";
+            weight.value = "";
+        } else if (userWeight == "" || userWeight == 0) {
+            alert("請填入體重！");
+            height.value = "";
+            weight.value = "";
+        } else {
+            userRecord.height = userHeight;
+            userRecord.weight = userWeight;
+            userRecord.BMI = BMI;
+        }
+        if (BMI < 18.5) {
+            userRecord.status = "overlight";
+        } else if (BMI >= 18.5 && BMI <= 23) {
+            userRecord.status = "normal";
+        } else if (BMI > 23 && BMI <= 35) {
+            userRecord.status = "warning";
+        } else {
+            return (userRecord.status = "danger");
+        }
+
+        render();
+    } //function sendResult END
+
+    //把使用者資料存放到陣列
+    arrayData.push(userRecord);
+    //3.渲染畫面
+
+    var render = function () {
+        var str = ``;
+        arrayData.forEach(function (item) {
+            console.log(item)
+            str = `
+<li class="card mb-1">
+   <div class="card-body text-center">
+      <h4 class="mb-2">${item.status}</h4>
+       <p>${item.BMI}</p>
+       <p>height:${item.height}cm</p>
+       <p>weight:${item.weight}kg</p>
+  </div>
+</li>
+`;
+        });
+        list.innerHTML = str;
+    };
+
+</script>
+</body>
+</html>
