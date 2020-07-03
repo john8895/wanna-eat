@@ -14,11 +14,9 @@
         <div class="container">
             <div class="row mb-4">
                 <div class="col-sm-12">
-                    <h4>進行中的訂單 <span id="current_groupBuy">0%%group%%</span></h4>
+                    <h4>進行中的訂單 <span id="current_groupBuy">0</span></h4>
                 </div>
-                %% message %%
-                <div class="col-sm-3" v-for="(item, index) in group" :index="item.id">
-                    %%item%%
+                <div class="col-sm-3">
                     <ul>
                         <li>預估金額：$0</li>
                         <li>目前金額：$0</li>

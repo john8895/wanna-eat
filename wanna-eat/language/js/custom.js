@@ -79,43 +79,53 @@ $(function () {
 // 取得訂單資料
 $(function () {
     // 取得數據
-    // (function showOrder(){
-    //     axios.get('group_buy_api.php').then(res=>{
-    //         console.log(res.data)
-    //         groupBuyDisplay(res.data)
-    //     }).catch(err=>{
-    //         console.error(err)
-    //     })
-    // })()
-})
-let vm = new Vue({
-    delimiters: ['%%', '%%'],
-    el: '#app',
-    data: {
-        group: [],
-        message: 'Hello',
-    },
-    mounted: function() {
-        this.showOrder();
-    },
-    methods: {
-        // 取得數據
-        showOrder: function() {
-            axios.get('group_buy_api.php').then(res => {
-                console.log(res.data)
-                vm.group = res.data
-                // groupBuyDisplay(res.data)
-            }).catch(err => {
-                console.error(err)
-            })
-        },
-        // 顯示數據
-        groupBuyDisplay(response) {
-            $('#current_groupBuy').text(response.length)
-            $('#group_host').text(response.length)
-            $('#store_name').text(response.length)
-        }
+    (function showOrder(){
+        axios.get('group_buy_api.php').then(res => {
+            console.log(res.data)
+            groupBuyDisplay(res.data)
+        }).catch(err => {
+            console.error(err)
+        })
+    })()
+
+
+    // 顯示數據
+    function groupBuyDisplay(response) {
+        $('#current_groupBuy').text(response.length)
+        $('#group_host').text(response.length)
+        $('#store_name').text(response.length)
     }
 
 
 })
+// let vm = new Vue({
+//     delimiters: ['%%', '%%'],
+//     el: '#app',
+//     data: {
+//         group: [],
+//         message: 'Hello',
+//     },
+//     mounted: function() {
+//         this.showOrder();
+//     },
+//     methods: {
+//         // 取得數據
+//         showOrder: function() {
+//             axios.get('group_buy_api.php').then(res => {
+//                 console.log(res.data)
+//                 vm.group = res.data
+//                 // groupBuyDisplay(res.data)
+//             }).catch(err => {
+//                 console.error(err)
+//             })
+//         },
+//         // 顯示數據
+//         groupBuyDisplay(response) {
+//             $('#current_groupBuy').text(response.length)
+//             $('#group_host').text(response.length)
+//             $('#store_name').text(response.length)
+//         }
+//     }
+//
+//
+// })
