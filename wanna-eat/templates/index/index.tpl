@@ -1,4 +1,4 @@
-<main>
+<main class="page__index">
     <section>
         <div class="container" id="app">
             <div class="row">

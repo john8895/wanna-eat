@@ -3,7 +3,7 @@
 
 require_once("../libs/Smarty.class.php");
 /** Connect Mysql */
-require_once './php-component/connect.php';
+require_once './assets/inc/connect.php';
 
 global $smarty;
 $smarty = new Smarty;

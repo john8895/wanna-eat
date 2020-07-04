@@ -1,3 +1,5 @@
+{* filename: group-buy.tpl *}
+
 {include file="head.tpl"}
 {include file="header.tpl"}
 <main>
@@ -5,6 +7,7 @@
         <!-- 開團 -->
         <div class="row modal-wrap">
             <form action="group-buy.php" method="post">
+                <input type="hidden" name="store_id" value="{$store_id}">
                 <div class="col-sm-12 store-item">
                     <input type="hidden" name="id" value="orders.id">
                     {if isset($error)}

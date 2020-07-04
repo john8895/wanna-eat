@@ -29,6 +29,7 @@ function show_table($smarty)
     $sql = "SELECT * FROM store WHERE id = {$_GET['id']} LIMIT 1";
     $result = connect_mysql($sql);
     $fetch_assoc = mysqli_fetch_assoc($result);
+    $smarty->assign('store_id', $_GET['id']);  // Store id
     $smarty->assign('item', $fetch_assoc);
 }
 
@@ -77,6 +78,7 @@ function group_buy($smarty)
     // 合併日期與時間
     $end_time = $_POST['endTime_day'] . ' ' . $_POST['end_time_hour'];
 
+    $group_buy['store_id'] = $_POST['store_id'];
     $group_buy['store_name'] = $_POST['store_name'];
     $group_buy['store_phone'] = $_POST['store_phone'];
     $group_buy['group_host'] = $_POST['group_host'];
@@ -92,7 +94,7 @@ function group_buy($smarty)
     }
 
     // Save to Mysql
-    $sql = "INSERT INTO group_buy VALUES ({$group_buy['id']}, '{$group_buy['store_name']}', '{$group_buy['store_phone']}', '{$group_buy['group_host']}', '{$end_time}', '{$group_buy['remark']}');";
+    $sql = "INSERT INTO group_buy VALUES ({$group_buy['id']}, '{$group_buy['store_name']}', '{$group_buy['store_phone']}', '{$group_buy['group_host']}', '{$end_time}', '{$group_buy['remark']}',{$group_buy['store_id']});";    var_dump($sql);
     connect_mysql($sql);
 }
 
