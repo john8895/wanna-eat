@@ -16,50 +16,16 @@
                 <div class="col-sm-12">
                     <h4>進行中的訂單 <span id="current_groupBuy">0</span></h4>
                 </div>
-                <div class="col-sm-3">
-                    <ul>
-                        <li>預估金額：$0</li>
-                        <li>目前金額：$0</li>
-                        <li><span id="group_host">%% item.group_name %%阿翰</span>開的 <span id="store_name">炒飯超人</span></li>
-                        <li>
-                            <button>我也要訂</button>
-                        </li>
-                    </ul>
-                </div>
-
             </div>
+
+            {* Order block *}
+            <div class="row order-block"></div>
         </div>
     </section>
 
-
-    {*            <div v-if="orderDisplay" class="row">*}
-    {*                <div class="form-group">*}
-    {*                    <label class="w-75">店家名稱*}
-    {*                        <input type="hidden" name="id" :value="orders.id">*}
-    {*                        <input type="text" name="name" class="form-control" :value="orders.name"*}
-    {*                               placeholder="請輸入店家名稱">*}
-    {*                    </label>*}
-    {*                </div>*}
-    {*                <div class="form-group">*}
-    {*                    <label class="w-75">店家電話*}
-    {*                        <input type="text" name="phone" class="form-control" :value="orders.phone"*}
-    {*                               placeholder="請輸入店家電話">*}
-    {*                    </label>*}
-    {*                </div>*}
-    {*                <div class="form-group">*}
-    {*                    <input type="text" value="阿翰-排骨飯/85" v-model="order_items" @keyup.enter="getContent">*}
-
-    {*                </div>*}
-    {*                <div class="form-group">*}
-    {*                    <button class="btn btn-danger">訂單送出</button>*}
-    {*                </div>*}
-
-    {*            </div>*}
-
+{*    Store list*}
     <section>
-
         <div class="container">
-
             <div class="row">
 
                 {foreach from=$stores item=item}
@@ -81,16 +47,18 @@
                                             <a href="{$item.images}"
                                                class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu"
                                                target="_blank">菜單</a>
-                                            <a href="group-buy.php?id={$item.id}"
-                                               class="btn btn-danger btn-sm btn-pill px-2">
-                                                開團
-                                            </a>
+
                                             {if isset($logged) && $logged}
+                                                <a href="group-buy.php?id={$item.id}"
+                                                   class="btn btn-danger btn-sm btn-pill px-2">
+                                                    開團
+                                                </a>
                                                 <a href="edit.php?id={$item.id}"
                                                    class="btn btn-outline-info btn-sm px-2">編輯</a>
                                                 <a href="delete.php?id={$item.id}"
                                                    class="btn btn-outline-danger btn-sm px-2">刪除</a>
                                             {/if}
+
                                         </div>
                                     </li>
                                     <li class="image_show">

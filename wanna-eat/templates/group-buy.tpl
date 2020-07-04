@@ -38,8 +38,9 @@
                         <li>
                             <div class="form-row">
                                 <label>截止時間*
-                                        <input type="text" value="{$time|date_format:"%Y-%m-%d"}" name="endTime_day" required class="form-control">
-                                        <input type="text" value="10-00" name="end_time_hour" required class="form-control">
+                                        <input type="text" value="{$date|date_format:"%Y-%m-%d"}" name="endTime_day" required class="form-control">
+                                        {* TODO 顯示現在時間 + 20分 / 後面多個按鈕 點擊每次+10分    *}
+                                        <input type="text" value="{$time}" name="end_time_hour" required class="form-control">
                                 </label>
 
                             </div>
@@ -52,8 +53,26 @@
                         </li>
                     </ul>
 
+
+                    {* Order block *}
+                    <h3>我來加一單</h3>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" value="小白" name="order_name" placeholder="請輸入姓名">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" value="排骨飯" name="order_content" placeholder="請輸入點餐名稱">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="number" class="form-control" value="80" name="order_price" placeholder="請輸入價格"> 元
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" value="排骨大辣 炒飯不辣" name="order_remark" placeholder="請輸入備註">
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <button class="btn btn-danger">開始團購囉</button>
+                        <button class="btn btn-danger" type="submit">開始團購囉</button>
                     </div>
                 </div>
             </form>

@@ -79,9 +79,11 @@ $(function () {
 // 取得訂單資料
 $(function () {
     // 取得數據
-    (function showOrder(){
+    // TODO 只有首頁才讀取
+    (function showOrder() {
+
         axios.get('group_buy_api.php').then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             groupBuyDisplay(res.data)
         }).catch(err => {
             console.error(err)
@@ -90,42 +92,48 @@ $(function () {
 
 
     // 顯示數據
-    function groupBuyDisplay(response) {
-        $('#current_groupBuy').text(response.length)
-        $('#group_host').text(response.length)
-        $('#store_name').text(response.length)
+    function groupBuyDisplay(groupBuy) {
+        $('#current_groupBuy').text(groupBuy.length)
+        console.log(groupBuy)
+
+        // TODO 如果無資料要顯示的狀態
+        let orderBlock = '';
+        for (let i = 0; i < groupBuy.length; i++) {
+            orderBlock += `
+        <div class="col-sm-3">
+            <ul>
+                <li>預估金額：$0</li>
+                <li>目前金額：$0</li>
+                <li><span id="group_host">${groupBuy[i].group_host}</span>開的<span id="store_name">${groupBuy[i].store_name}</span></li>
+                <li>
+                    <button class="btn btn-primary px-2 w-100">我也要訂</button>
+                </li>
+            </ul>
+        </div>
+        `
+        }
+        $('.order-block').append(orderBlock);
+
     }
 
 
+    // SweetAlert 2 jquery plugin
+    // Swal.fire(
+    //     'Good job!',
+    //     'You clicked the button!',
+    //     'success'
+    // )
+    // Swal.fire({
+    //     title: 'Success!',
+    //     text: 'Do you want to continue',
+    //     icon: 'Success',
+    //     confirmButtonText: 'Cool'
+    // })
+    // Swal.fire('Any fool can use a computer')
+
+    // Swal.fire(
+    //     'The Internet?',
+    //     'That thing is still around?',
+    //     'success'
+    // )
 })
-// let vm = new Vue({
-//     delimiters: ['%%', '%%'],
-//     el: '#app',
-//     data: {
-//         group: [],
-//         message: 'Hello',
-//     },
-//     mounted: function() {
-//         this.showOrder();
-//     },
-//     methods: {
-//         // 取得數據
-//         showOrder: function() {
-//             axios.get('group_buy_api.php').then(res => {
-//                 console.log(res.data)
-//                 vm.group = res.data
-//                 // groupBuyDisplay(res.data)
-//             }).catch(err => {
-//                 console.error(err)
-//             })
-//         },
-//         // 顯示數據
-//         groupBuyDisplay(response) {
-//             $('#current_groupBuy').text(response.length)
-//             $('#group_host').text(response.length)
-//             $('#store_name').text(response.length)
-//         }
-//     }
-//
-//
-// })
