@@ -3,19 +3,53 @@
 require_once './assets/inc/connect.php';
 require_once './assets/inc/config.php';
 
-//if ($_SERVER['REQUEST_METHOD'] !== 'GET') exit('<h1>失敗</h1>');
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (!isset($_GET['res'])) return;
-    if ($_GET['res'] === 'buy') getGroupBuy();
-    if ($_GET['res'] === 'group') getOrders();
+
+    foreach ($_GET as $key => $value) {
+        switch ($key) {
+            case 'res':
+                switch ($value) {
+                    case 'buy':
+                        getGroupBuy();
+                        break;
+                    case 'total_orders':
+                        getOrders();
+                        break;
+                    case 'order_list':
+                        if (!$_GET['order_id'] || empty($_GET['order_id'])) {
+                            echo 'Invalid order id';
+                            return;
+                        }
+                        $_order_id = $_GET['order_id'];
+                        getOrderList($_order_id);
+                        break;
+                }
+                break;
+            case 'del':
+//                if(!empty($_GET['del'])) return;
+                deleteOrder();
+                break;
+            default:
+//                header('Location: index.php');
+                break;
+        }
+    }
 }
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    submitOrder();
+    if (isset($_POST['add_order'])) submitOrder();
+    if (isset($_POST['edit_order'])) editOrder();
 }
 
 
-// Get group_buy data
+/**
+ * @Range: group-buy.php
+ *
+ * Get group_buy data
+ *
+ */
 function getGroupBuy()
 {
     $result = connect_mysql("SELECT * FROM group_buy");
@@ -33,10 +67,11 @@ function getGroupBuy()
 }
 
 
-// Get orders
+/** Get orders in index.php */
 function getOrders()
 {
-    $result = connect_mysql("SELECT * FROM orders");
+    $sql = "SELECT * FROM orders";
+    $result = connect_mysql($sql);
     $new_item = array();
     while ($item = $result->fetch_assoc()) {
         $new_item[] = $item;
@@ -46,33 +81,61 @@ function getOrders()
     $result->close();
 }
 
-// Post orders
+
+/** Post orders */
 function submitOrder()
 {
-
-//    if (!(isset($_POST['add_order_id']) ||
-//        isset($_POST['add_order_name']) ||
-//        isset($_POST['add_order_content']) ||
-//        isset($_POST['add_order_price']) ||
-//        isset($_POST['add_order_remark']))
-//    ) {
-//        echo '請正常使用表單';
-//    }
-
     $orderData['order_id'] = $_POST['order_id'];
     $orderData['order_name'] = $_POST['order_name'];
-    $orderData['order_content'] = $_POST['order_content'];
+    $orderData['order_meal'] = $_POST['order_meal'];
     $orderData['order_price'] = $_POST['order_price'];
     $orderData['order_remark'] = $_POST['order_remark'];
+    $orderData['field_id'] = uniqid();  // Unique field id
 
-    $sql = "INSERT INTO orders VALUES ({$orderData['order_id']}, '{$orderData['order_name']}', '{$orderData['order_content']}', {$orderData['order_price']}, '{$orderData['order_remark']}')";
+
+    // Save data to mysql
+    $sql = "INSERT INTO orders (order_id, order_name, order_meal, order_price, order_remark, field_id) VALUES ({$orderData['order_id']}, '{$orderData['order_name']}', '{$orderData['order_meal']}', {$orderData['order_price']}, '{$orderData['order_remark']}', '{$orderData['field_id']}')";
     connect_mysql($sql);
     echo 'success';
-//    $new_item = array();
-//    while ($item = $result->fetch_assoc()) {
-//        $new_item[] = $item;
-//    }
-//    $order_json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
-//    echo $order_json_data;
-//    $result->close();
+}
+
+
+/** Get order in order.php
+ * @param $_order_id
+ */
+function getOrderList($_order_id)
+{
+    $sql = "SELECT * FROM orders WHERE order_id='{$_order_id}'";
+    $result = connect_mysql($sql);
+    $new_item = array();
+    while ($item = $result->fetch_assoc()) {
+        $new_item[] = $item;
+    }
+    $order_json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
+    echo $order_json_data;
+    $result->close();
+}
+
+
+/** Edit order */
+function editOrder()
+{
+    $order['order_id'] = $_POST['order_id'];
+    $order['order_field_name'] = $_POST['order_field_name'];
+    $order['order_field_value'] = $_POST['order_field_value'];
+    $order['order_field_id'] = $_POST['field_id'];
+
+    $sql = "UPDATE orders SET {$order['order_field_name']}='{$order['order_field_value']}' WHERE field_id='{$order['order_field_id']}';";
+    connect_mysql($sql);
+    echo 'success';
+}
+
+
+/** Delete order */
+function deleteOrder()
+{
+    $delete_id = $_GET['del'];
+    $sql = "DELETE FROM orders WHERE field_id='{$delete_id}';";
+    connect_mysql($sql);
+    echo 'success';
 }

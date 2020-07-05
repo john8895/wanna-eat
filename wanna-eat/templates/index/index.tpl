@@ -14,7 +14,7 @@
         <div class="container">
             <div class="row mb-4">
                 <div class="col-sm-12">
-                    <h4>進行中的訂單 <span id="current_groupBuy">0</span></h4>
+                    <h4 id="current_groupBuy"></h4>
                 </div>
             </div>
 

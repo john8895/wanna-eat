@@ -2,7 +2,7 @@
 {include file="header.tpl"}
 <main>
     <div class="container">
-        <h1 class="text-center my-3 h3">今天要吃啥？新增店家</h1>
+        <h1 class="text-center my-3 h3">新增店家</h1>
         <hr>
         <div class="row pt-4">
             <div class="m-auto w-50">
@@ -15,12 +15,12 @@
                     {/if}
                     <div class="form-group">
                         <label class="w-75">店家名稱
-                            <input type="text" name="name" class="form-control" {if isset($name)}value="{$name}"{/if} placeholder="請輸入店家名稱">
+                            <input type="text" name="name" class="form-control" {if isset($name)}value="{$name}"{/if} placeholder="請輸入店家名稱 *">
                         </label>
                     </div>
                     <div class="form-group">
                         <label class="w-75">店家電話
-                            <input type="text" name="phone" class="form-control" {if isset($phone)}value="{$phone}"{/if} placeholder="請輸入店家電話">
+                            <input type="text" name="phone" class="form-control" {if isset($phone)}value="{$phone}"{/if} placeholder="請輸入店家電話 *">
                         </label>
                     </div>
                     <div class="form-group">

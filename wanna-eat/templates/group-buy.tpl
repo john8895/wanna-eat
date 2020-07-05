@@ -7,7 +7,7 @@
         <!-- 開團 -->
         <div class="row modal-wrap">
             <form action="group-buy.php" method="post">
-                <input type="hidden" name="store_id" value="{$store_id}">
+                <input type="hidden" name="store_id" {if isset($store_id)}value="{$store_id}"{/if}>
                 <div class="col-sm-12 store-item">
                     <input type="hidden" name="id" value="orders.id">
                     {if isset($error)}
@@ -22,13 +22,13 @@
                                     <option value="{$item.host_name}" name="host_name">{$item.host_name}</option>
                                 {/foreach}
                             </select>
-                            <button>新增負責人</button>
+{*                            <button>新增負責人</button>*}
                         </li>
                         <li>店家名稱：<input type="text" value="{$item.name}" name="store_name" readonly
                                         class="form-control"></li>
                         <li>店家電話：<input type="text" value="{$item.phone}" name="store_phone" readonly
                                         class="form-control"></li>
-                        <li>簡介：排骨飯比雞排飯好吃，肉很大塊</li>
+                        <li>簡介：{$item.description}</li>
                         <li>菜單：<a href="{$item.images}"
                                   class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu">菜單</a></li>
                         <li class="image_show">
@@ -56,25 +56,27 @@
                         </li>
                     </ul>
 
+                    <input type="hidden" {if isset($field_id)}value="{$field_id}"{/if} name="order_field_id">
 
                     {* Order block *}
-                    <h3>我來加一單</h3>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" value="小白" name="order_name" placeholder="請輸入姓名">
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" value="排骨飯" name="order_content" placeholder="請輸入點餐名稱">
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="number" class="form-control" value="80" name="order_price" placeholder="請輸入價格"> 元
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" value="排骨大辣 炒飯不辣" name="order_remark" placeholder="請輸入備註">
-                        </div>
-                    </div>
+{*                    <h4 class="h5">我來加一單</h4>*}
+{*                    <div class="row">*}
+{*                        <div class="col-sm-3">*}
+{*                            <input type="hidden" {if isset($field_id)}value="{$field_id}"{/if} name="order_field_id">*}
+{*                            <input type="text" class="form-control" value="" name="order_name" placeholder="請輸入姓名">*}
+{*                        </div>*}
+{*                        <div class="col-sm-3">*}
+{*                            <input type="text" class="form-control" value="" name="order_meal" placeholder="請輸入點餐名稱">*}
+{*                        </div>*}
+{*                        <div class="col-sm-3">*}
+{*                            <input type="number" class="form-control" value="" name="order_price" placeholder="請輸入價格">*}
+{*                        </div>*}
+{*                        <div class="col-sm-3">*}
+{*                            <input type="text" class="form-control" value="" name="order_remark" placeholder="請輸入備註">*}
+{*                        </div>*}
+{*                    </div>*}
 
-                    <div class="form-group">
+                    <div class="form-group mt-3">
                         <button class="btn btn-danger" type="submit">開始團購囉</button>
                     </div>
                 </div>

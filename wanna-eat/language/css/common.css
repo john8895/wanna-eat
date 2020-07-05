@@ -21,7 +21,7 @@ body {
 }
 
 section {
-  padding: 0px 0 70px;
+  padding: 10px 0 20px;
 }
 
 a {
@@ -34,6 +34,29 @@ a {
 .icon {
   max-width: 100px;
   fill: #000;
+}
+
+.icon-md {
+  width: 20px;
+  height: 20px;
+  transition: 0.3s linear;
+}
+
+/* ==================================
+ * Pages
+ * ================================== */
+.page__order .order-item {
+  transition: 0.2s linear;
+  cursor: pointer;
+}
+.page__order .order-item:hover {
+  background-color: gold;
+}
+.page__order .order-item .icon-md {
+  fill: gray;
+}
+.page__order .order-item .icon-md:hover {
+  fill: red;
 }
 
 /*# sourceMappingURL=common.css.map */

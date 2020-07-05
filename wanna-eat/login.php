@@ -27,14 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $users['username'] = $_POST['username'];
     $users['password'] = $_POST['password'];
 
-    $conn = mysqli_connect('127.0.0.1', 'apai01', 'maze0819', 'wannaeat');
-    if (!$conn) {
-        $GLOBALS['error_message'] = '無法連接數據庫';
-    }
-    $result1 = mysqli_query($conn, "SELECT username, password FROM users WHERE username = '{$users['username']}' AND password = '{$users['password']}'");
+    $sql = "SELECT username, password FROM users WHERE username = '{$users['username']}' AND password = '{$users['password']}'";
+    $result1 = connect_mysql($sql);
 
     // 如帳號密碼都正確，設置SESSION並跳轉頁面
-    if (mysqli_affected_rows($conn) > 0) {
+    if ($result1->num_rows > 0) {
         session_start();
         $_SESSION['logged_in'] = true;
         $_SESSION['name'] = $users['username'];

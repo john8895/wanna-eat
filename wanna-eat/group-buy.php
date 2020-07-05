@@ -1,31 +1,30 @@
 <?php
 /* filename: group-buy.tpl.php */
-
 require_once("../libs/Smarty.class.php");
-/** Connect Mysql */
-require_once './assets/inc/connect.php';
-
+require_once './assets/inc/connect.php';  // Connect Mysql
 global $smarty;
 $smarty = new Smarty;
-
-/** Check Login Status */
-require_once './assets/inc/check-login-inner.php';
+require_once './assets/inc/check-login-inner.php';  // Check Login Status
 
 
-// 如果有帶參數 GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (!isset($_GET['id'])) exit('<h1>必須指定參數</h1>');
-    show_host($smarty);
-    show_table($smarty);
+    if (!isset($_GET['id'])) header('Location: index.php');
+    groupHostDisplay($smarty);
+    groupBuyDisplay($smarty);
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    group_buy($smarty);
+    groupBuySubmit();
 }
 
 
-// 顯示數據
-function show_table($smarty)
+/** Store display
+ * @param $smarty
+ */
+function groupBuyDisplay($smarty)
 {
+    $order['field_id'] = uniqid();  // Unique field id
+    $smarty->assign('field_id', $order['field_id']);
+
     $sql = "SELECT * FROM store WHERE id = {$_GET['id']} LIMIT 1";
     $result = connect_mysql($sql);
     $fetch_assoc = mysqli_fetch_assoc($result);
@@ -34,11 +33,14 @@ function show_table($smarty)
 }
 
 
-// 顯示負責人
-function show_host($smarty)
+/** Host display
+ * @param $smarty
+ */
+function groupHostDisplay($smarty)
 {
     $sql = "SELECT * FROM hosts";
     $result = connect_mysql($sql);
+    $hosts = [];
     while ($rows = mysqli_fetch_assoc($result)) {
         $hosts[] = $rows;
     }
@@ -46,18 +48,19 @@ function show_host($smarty)
 }
 
 
-// 團購
-function group_buy($smarty)
+/** Group-buy information display
+ */
+function groupBuySubmit()
 {
-    if (!$_POST['store_name'] ||
-        !$_POST['store_phone'] ||
-        !$_POST['group_host'] ||
-        !$_POST['endTime_day'] ||
-        !$_POST['end_time_hour'] ||
-        !$_POST['remark']) {
-        $GLOBALS['error_message'] = '請正常使用表單';
-        return;
-    }
+//    if (!$_POST['store_name'] ||
+//        !$_POST['store_phone'] ||
+//        !$_POST['group_host'] ||
+//        !$_POST['endTime_day'] ||
+//        !$_POST['end_time_hour'] ||
+//        !$_POST['remark']) {
+//        $GLOBALS['error_message'] = '請正常使用表單';
+//        return;
+//    }
     if (empty($_POST['endTime_day']) || empty($_POST['end_time_hour'])) {
         $GLOBALS['error_message'] = '必須填寫截止時間';
         return;
@@ -77,36 +80,41 @@ function group_buy($smarty)
 
     // 合併日期與時間
     $end_time = $_POST['endTime_day'] . ' ' . $_POST['end_time_hour'];
-
     $group_buy['store_id'] = $_POST['store_id'];
     $group_buy['store_name'] = $_POST['store_name'];
     $group_buy['store_phone'] = $_POST['store_phone'];
     $group_buy['group_host'] = $_POST['group_host'];
     $group_buy['remark'] = $_POST['remark'];
-
-    // 生成時間id
-    $group_buy['id'] = generateTimeId();
+    $group_buy['order_field_id'] = $_POST['order_field_id'];
+    $group_buy['id'] = generateTimeId();  // Generate Time id
 
     // 接收訂單數據
-    if (!(empty($_POST['order_name']) || empty($_POST['order_content']) || empty($_POST['order_price']))) {
-        // 如果不為空 則校驗並接收
-        saveOrderData($group_buy['id']);
-    }
+//    if (empty($_POST['order_name']) || empty($_POST['order_meal']) || empty($_POST['order_price'])){
+//        $GLOBALS['error_message'] = '訂單資料全都要填寫';
+//        return;
+//    }
+
+    // Save order  如果不為空 則校驗並接收
+//    saveOrderData($group_buy['id'], $group_buy['order_field_id']);
 
     // Save to Mysql
-    $sql = "INSERT INTO group_buy VALUES ({$group_buy['id']}, '{$group_buy['store_name']}', '{$group_buy['store_phone']}', '{$group_buy['group_host']}', '{$end_time}', '{$group_buy['remark']}',{$group_buy['store_id']});";    var_dump($sql);
+    $sql = "INSERT INTO group_buy (id, store_name, store_phone, group_host, end_time, remark, store_id) VALUES ({$group_buy['id']}, '{$group_buy['store_name']}', '{$group_buy['store_phone']}', '{$group_buy['group_host']}', '{$end_time}', '{$group_buy['remark']}',{$group_buy['store_id']});";
     connect_mysql($sql);
+    header('Location: index.php');
 }
 
 
-// 校驗並儲存訂單
-function saveOrderData($order_id)
+/** Check order status and save data
+ * @param $order_id
+ * @param $field_id
+ */
+function saveOrderData($order_id, $field_id)
 {
     if(!$order_id) exit('<h1>必須傳入訂單編號</h1>');
 
     // 如果欄位沒填完整
     if (empty($_POST['order_name']) ||
-        empty($_POST['order_content']) ||
+        empty($_POST['order_meal']) ||
         empty($_POST['order_price'])) {
         $GLOBALS['error_message'] = '訂單資料不完全';
         return;
@@ -114,18 +122,22 @@ function saveOrderData($order_id)
 
     // 接收數據
     $order['order_name'] = $_POST['order_name'];
-    $order['order_content'] = $_POST['order_content'];
+    $order['order_meal'] = $_POST['order_meal'];
     $order['order_price'] = $_POST['order_price'];
     $order['order_remark'] = $_POST['order_remark'];
 
     // save
-    $sql = "INSERT INTO orders VALUES ({$order_id}, '{$order['order_name']}', '{$order['order_content']}', {$order['order_price']}, '{$order['order_remark']}');";
+    $sql = "INSERT INTO orders (order_id, order_name, order_meal, order_price, order_remark, field_id) VALUES ({$order_id}, '{$order['order_name']}', '{$order['order_meal']}', {$order['order_price']}, '{$order['order_remark']}', '{$field_id}');";
     connect_mysql($sql);
     header('Location: index.php');
 }
 
 
 // 校驗日期時間
+/** Validation time
+ * @param $subject
+ * @return false|int
+ */
 function validationTime($subject)
 {
     // TODO 分別校驗日期、時間， 07-15=01-12, 00-59   12-00=00-23, 00-59
@@ -136,7 +148,7 @@ function validationTime($subject)
 }
 
 
-// 產生時間 id
+/** Generate time id */
 function generateTimeId(){
     // 用日期時間當訂單id，group_buy，orders也存入相同ID，就能以ID找訂單
     $nowTime =  date('ymd H:i:s', time());  // 取得現在年月日 時分秒

@@ -6,7 +6,7 @@ body {
 }
 
 section {
-    padding: 0px 0 70px;
+    padding: 10px 0 20px;
 }
 
 a {
@@ -18,4 +18,30 @@ a {
 .icon {
     max-width: 100px;
     fill: #000;
+}
+.icon-md {
+    width: 20px;
+    height: 20px;
+    transition: .3s linear;
+}
+/* ==================================
+ * Pages
+ * ================================== */
+.page__order {
+    .order-item {
+        transition: .2s linear;
+        cursor: pointer;
+
+        &:hover {
+            background-color: gold;
+        }
+
+        .icon-md {
+            fill: gray;
+
+            &:hover {
+                fill: red;
+            }
+        }
+    }
 }

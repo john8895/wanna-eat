@@ -8,5 +8,5 @@ if(isset($_SESSION['logged_in'])){
     $logged = false;
     header('Location: index.php');
 }
-var_dump($logged);
+//var_dump($logged);
 $smarty->assign('logged', $logged);

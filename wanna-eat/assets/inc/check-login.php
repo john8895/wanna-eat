@@ -7,5 +7,5 @@ if(isset($_SESSION['logged_in'])){
 }else{
     $logged = false;
 }
-var_dump($logged);
+//var_dump($logged);
 $smarty->assign('logged', $logged);
