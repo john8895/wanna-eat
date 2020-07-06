@@ -20,7 +20,7 @@
                     </div>
                     <div class="form-group">
                         <label class="w-75">店家電話
-                            <input type="text" name="phone" class="form-control" {if isset($phone)}value="{$phone}"{/if} placeholder="請輸入店家電話 *">
+                            <input type="text" name="phone" class="form-control" {if isset($phone)}value="{$phone}"{/if} placeholder="請輸入店家電話">
                         </label>
                     </div>
                     <div class="form-group">

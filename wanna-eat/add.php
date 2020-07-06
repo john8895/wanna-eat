@@ -33,14 +33,14 @@ function add_store()
         $GLOBALS['error_message'] = '請輸入店家名稱';
         return;
     }
-    if (empty($_POST['phone'])) {
-        $GLOBALS['error_message'] = '請輸入店家電話';
-        return;
-    }
-    if (empty($_POST['description'])) {
-        $GLOBALS['error_message'] = '請輸入店家介紹';
-        return;
-    }
+//    if (empty($_POST['phone'])) {
+//        $GLOBALS['error_message'] = '請輸入店家電話';
+//        return;
+//    }
+//    if (empty($_POST['description'])) {
+//        $GLOBALS['error_message'] = '請輸入店家介紹';
+//        return;
+//    }
     $store['name'] = $_POST['name'];
     $store['phone'] = $_POST['phone'];
     $store['description'] = $_POST['description'];
