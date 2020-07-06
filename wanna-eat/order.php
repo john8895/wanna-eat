@@ -72,7 +72,7 @@ function orderDisplay($smarty, $order_id)
 {
     $sql = "SELECT * FROM orders WHERE `order_id` = {$order_id} LIMIT 1";
     $result = connect_mysql($sql);
-    $order_item = [];
+    $order_item = array();
     while ($row = mysqli_fetch_assoc($result)) {
         $order_item[] = $row;
     }

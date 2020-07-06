@@ -62,7 +62,7 @@ function edit_user($smarty)
     // if has upload file
     if (!empty($_FILES['images']) && $_FILES['images']['error'] === UPLOAD_ERR_OK) {
         // 檔案類型校驗
-        $image_type = ['image/png', 'image/jpg', 'image/webp', 'image/gif', 'image/jpeg'];
+        $image_type = array('image/png', 'image/jpg', 'image/webp', 'image/gif', 'image/jpeg');
         // 使用 in_array 不是字串比對，in_array 第三個參數如果沒傳，預設會是 Object ，所以必須填true ，使之為 array
         if (!in_array($_FILES['images']['type'], $image_type, true)) {
             $GLOBALS['error_message'] = '上傳的檔案不是圖片格式，請重新上傳';

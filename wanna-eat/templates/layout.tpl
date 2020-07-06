@@ -3,4 +3,5 @@
 
 {include file="index/index.tpl"}
 
+{include file="footer.tpl"}
 {include file="js.tpl"}

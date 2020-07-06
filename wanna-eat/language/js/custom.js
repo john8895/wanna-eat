@@ -229,24 +229,13 @@ $(function () {
             })
     }
 
-    // Order calc in index.php
-    // function indexOrdersCalc(totalOrders, order_id) {
-    //     console.log(totalOrders, order_id)
-    //     // 1. 預估金額
-    //     // 2. 跟團人數
-    //     // 3. 截止時間*
-    //     // 4. 目前金額
-    //
-    //
-    // }
-
 
     // Calc total price and total people of order id.
     function indexOrdersCalc(json, order_id) {
         let sum = 0;
         let name = [];
         json.forEach(item => {
-            if(item.order_id === order_id){
+            if (item.order_id === order_id) {
                 sum += parseInt(item.order_price);
                 name.push(item.order_name)
             }
@@ -284,24 +273,99 @@ $(function () {
                 <li>截止時間：${left_time}</li>
                 <li><span id="group_host">${groupBuy[i].group_host}</span>開的<span id="store_name">${groupBuy[i].store_name}</span></li>
                 <li>
-                    <a href="order.php?id=${groupBuy[i].id}" class="btn btn-primary px-2 w-100">我也要訂</a>
+                    <div class="orderBtn mt-2">
+                        <a href="order.php?id=${groupBuy[i].id}" class="btn btn-primary px-1 py-0">我也要訂</a>
+                        <button class="btn btn-outline-danger px-1 py-0 del-group-btn" data-groupid="${groupBuy[i].id}">刪除此單</button>
+                    </div>
                 </li>
             </ul>
         </div>
         `
         }
-        $('.order-block').append(orderBlock);
+        $('.order-block').empty().append(orderBlock);
+        $('.del-group-btn').on('click', delGroupBuy)
     }
 
 
+    /**
+     * @Range: index.php
+     *
+     * Delete group-buy
+     *
+     */
+    function delGroupBuy() {
+        const group_id = $(this).data('groupid');
+        if (!group_id) return;
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: true
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: '你確定要刪除嗎？',
+            text: "這項操作是沒辦法還原的！",
+            showCancelButton: true,
+            confirmButtonText: '是的，我要刪除',
+            cancelButtonText: '取消',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                // swalWithBootstrapButtons.fire(
+                //     '團購單操作成功',
+                //     '您的資料已經被刪除。',
+                //     'success'
+                // )
+                delGroupBuyHandle(group_id);
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    '團購單操作取消',
+                    '您的資料是安全的 :)',
+                    'error'
+                )
+            }
+        })
+    }
 
 
-/**
- * @Range: Order.php
- *
- * Get order item of these order.
- *
- */
+    function delGroupBuyHandle(group_id) {
+        if (!group_id) return;
+        axios
+            .get(`group_buy_api.php?del_group=${group_id}`)
+            .then(res => {
+                // console.log(res)
+                if (!res.data === 'success') {
+                    Swal.fire(
+                        '操作失敗',
+                        '您並未刪除任何資料 :(',
+                        'error'
+                    )
+                }
+                Swal.fire(
+                    '團購單操作成功',
+                    '您的資料已經被刪除 :)',
+                    'success'
+                )
+                showOrder();
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
+
+
+    /**
+     * @Range: Order.php
+     *
+     * Get order item of these order.
+     *
+     */
     // Only order page load
     if ($('.page__order').length) {
         ordersDisplay();
@@ -371,9 +435,6 @@ $(function () {
             totalName: totalName,
         };
     }
-
-
-
 
 
     // Orders display
@@ -567,7 +628,6 @@ $(function () {
         swalWithBootstrapButtons.fire({
             title: '你確定要刪除嗎？',
             text: "這項操作是沒辦法還原的！",
-            icon: 'warning',
             showCancelButton: true,
             confirmButtonText: '是的，我要刪除',
             cancelButtonText: '取消',

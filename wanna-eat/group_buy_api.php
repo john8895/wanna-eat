@@ -26,12 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         break;
                 }
                 break;
+
+            // Delete orders
             case 'del':
-//                if(!empty($_GET['del'])) return;
                 deleteOrder();
                 break;
+
+            // Delete group-buy
+            case 'del_group':
+                deleteGroupBuy();
+                break;
+
             default:
-//                header('Location: index.php');
                 break;
         }
     }
@@ -61,7 +67,8 @@ function getGroupBuy()
         }
         $new_item[] = $item;
     }
-    $json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
+//    $json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
+    $json_data = json_encode($new_item);  // 轉為json格式，轉譯處理中文
     echo $json_data;
     $result->close();
 }
@@ -76,7 +83,8 @@ function getOrders()
     while ($item = $result->fetch_assoc()) {
         $new_item[] = $item;
     }
-    $order_json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
+//    $order_json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
+    $order_json_data = json_encode($new_item);  // 轉為json格式，轉譯處理中文
     echo $order_json_data;
     $result->close();
 }
@@ -111,7 +119,8 @@ function getOrderList($_order_id)
     while ($item = $result->fetch_assoc()) {
         $new_item[] = $item;
     }
-    $order_json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
+    $order_json_data = json_encode($new_item);  // 轉為json格式，轉譯處理中文
+//    $order_json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
     echo $order_json_data;
     $result->close();
 }
@@ -136,6 +145,16 @@ function deleteOrder()
 {
     $delete_id = $_GET['del'];
     $sql = "DELETE FROM orders WHERE field_id='{$delete_id}';";
+    connect_mysql($sql);
+    echo 'success';
+}
+
+
+/** Delete group buy */
+function deleteGroupBuy()
+{
+    $group_id = $_GET['del_group'];
+    $sql = "DELETE FROM group_buy WHERE id='{$group_id}';";
     connect_mysql($sql);
     echo 'success';
 }

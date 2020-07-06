@@ -40,7 +40,7 @@ function groupHostDisplay($smarty)
 {
     $sql = "SELECT * FROM hosts";
     $result = connect_mysql($sql);
-    $hosts = [];
+    $hosts = array();
     while ($rows = mysqli_fetch_assoc($result)) {
         $hosts[] = $rows;
     }
