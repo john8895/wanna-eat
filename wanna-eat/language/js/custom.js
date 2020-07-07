@@ -673,6 +673,19 @@ $(function () {
 
 })
 
+/**
+ * Plugin Config
+ */
+
+$(function () {
+    $('#datetimepicker_date').datetimepicker({
+        format: 'YYYY/MM/DD'
+    });
+    $('#datetimepicker_time').datetimepicker({
+        format: 'HH:mm'
+    });
+});
+
 // SweetAlert 2 jquery plugin
 // warning, error, success, info, and question
 // Swal.fire(

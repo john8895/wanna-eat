@@ -15,6 +15,10 @@ a {
 /* ==================================
  * Common
  * ================================== */
+.icon,.icon-md,.icon-sm {
+    transition: .3s linear;
+
+}
 .icon {
     max-width: 100px;
     fill: #000;
@@ -22,7 +26,10 @@ a {
 .icon-md {
     width: 20px;
     height: 20px;
-    transition: .3s linear;
+}
+.icon-sm {
+    width: 15px;
+    height: 15px;
 }
 /* ==================================
  * Header

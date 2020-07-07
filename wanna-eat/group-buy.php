@@ -68,12 +68,12 @@ function groupBuySubmit()
 
     // 校驗日期時間
     // $_POST['endTime_day'] = '07-02'
-    if (!validationTime($_POST['endTime_day'])) {
+    if (!validationTime($_POST['endTime_day'], 'date')) {
         $GLOBALS['error_message'] = '截止日期格式錯誤';
         return;
     }
     //  $_POST['end_time'] = '12-00'
-    if (!validationTime($_POST['end_time_hour'])) {
+    if (!validationTime($_POST['end_time_hour'], 'time')) {
         $GLOBALS['error_message'] = '截止時間格式錯誤';
         return;
     }
@@ -110,7 +110,7 @@ function groupBuySubmit()
  */
 function saveOrderData($order_id, $field_id)
 {
-    if(!$order_id) exit('<h1>必須傳入訂單編號</h1>');
+    if (!$order_id) exit('<h1>必須傳入訂單編號</h1>');
 
     // 如果欄位沒填完整
     if (empty($_POST['order_name']) ||
@@ -138,20 +138,22 @@ function saveOrderData($order_id, $field_id)
  * @param $subject
  * @return false|int
  */
-function validationTime($subject)
+function validationTime($subject, $type)
 {
     // TODO 分別校驗日期、時間， 07-15=01-12, 00-59   12-00=00-23, 00-59
-    $date_pattern = '/\b[0-1][0-9]-[0-3][0-9]/';
-    $time_pattern = '/^([0-1][0-9]|2[0-3])-[0-5][0-9]$/';
-    $pattern = '/\d{2}-\d{2}/';
+    $date_pattern = '/\b2020\/[0-1][0-9]\/[0-3][0-9]/';
+    $time_pattern = '/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/';
+//    $pattern = '/\d{2}-\d{2}/';
+    $pattern = $type === 'date' ? $date_pattern : $time_pattern;
     return preg_match($pattern, $subject);
 }
 
 
 /** Generate time id */
-function generateTimeId(){
+function generateTimeId()
+{
     // 用日期時間當訂單id，group_buy，orders也存入相同ID，就能以ID找訂單
-    $nowTime =  date('ymd H:i:s', time());  // 取得現在年月日 時分秒
+    $nowTime = date('ymd H:i:s', time());  // 取得現在年月日 時分秒
     $patten = '/\s|:/';
     return preg_replace($patten, '', $nowTime);  // 2007041420
 }
