@@ -2,10 +2,6 @@
  * list-item
  * ================================== */
 .store-item {
-    padding: 7px 9px;
-    font-size: 15px;
-    border-radius: 5px;
-    border: 1px solid transparent;
 
     // js call
     &.pick-color {
@@ -26,10 +22,8 @@
 
     // text
     .store-text {
-        ul {
-            li {
-                line-height: 1.5;
-            }
+        li {
+            line-height: 2;
         }
     }
 
@@ -50,6 +44,7 @@
         background-color: rgba(0, 0, 0, 0.69);
         overflow-y: auto;
     }
+
     .modal-body {
         height: 100vh;
     }

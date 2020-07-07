@@ -203,8 +203,8 @@ $(function () {
  *
  */
 $(function () {
-    // Only index load
-    if ($('.page__index').length) {
+    // Only index
+    if ($('.page__index').length || $('.page__group-buy-now').length || $('.layout__header').length) {
         showOrder();
     }
 
@@ -250,9 +250,11 @@ $(function () {
 
     function groupBuyDisplay(groupBuy, totalOrders) {
         if (groupBuy.length === 0) {
-            $('#current_groupBuy').text('目前沒有訂單')
+            $('#current_groupBuy').text('目前沒有團購 :(')
         }
-        $('#current_groupBuy').html(`進行中的訂單 <b>${groupBuy.length}</b>`)
+        $('#current_groupBuy').html(`進行中的團購&nbsp;&nbsp;<b>${groupBuy.length}</b>`)
+        $('#group_now_badge').text(groupBuy.length)
+        // sessionStorage.setItem('group_buy_num', groupBuy.length)
 
         let orderBlock = '';
         for (let i = 0; i < groupBuy.length; i++) {
@@ -265,20 +267,30 @@ $(function () {
             const left_time = moment(end_time).fromNow()
 
             orderBlock += `
-        <div class="col-sm-3 mb-3">
+        <div class="col-sm-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="h5 mb-0">
+                    <span id="store_name">${groupBuy[i].store_name}</span>
+                </h4>
+            </div>
+            <div class="card-body">
             <ul>
+                <li>團主：<span id="group_host">${groupBuy[i].group_host}</span></li>
                 <li>總金額：$${oneOrderSum}</li>
                 <li>已付金額：$0</li>
                 <li>跟團人數：${oneOrderNum} 人</li>
-                <li>截止時間：${left_time}</li>
-                <li><span id="group_host">${groupBuy[i].group_host}</span>開的<span id="store_name">${groupBuy[i].store_name}</span></li>
+                <li>收單時間：${left_time}</li>
+                <li></li>
                 <li>
-                    <div class="orderBtn mt-2">
-                        <a href="order.php?id=${groupBuy[i].id}" class="btn btn-primary px-1 py-0">我也要訂</a>
-                        <button class="btn btn-outline-danger px-1 py-0 del-group-btn" data-groupid="${groupBuy[i].id}">刪除此單</button>
+                    <div class="orderBtn mt-2 text-center">
+                        <a href="order.php?id=${groupBuy[i].id}" class="btn btn-primary">我要跟團</a>
+<!--                        <button class="btn btn-outline-danger px-1 py-0 del-group-btn" data-groupid="${groupBuy[i].id}">刪除此單</button>-->
                     </div>
                 </li>
             </ul>
+            </div>
+            </div>
         </div>
         `
         }
@@ -445,9 +457,9 @@ $(function () {
 
         // Orders number
         if (ordersData.length === 0) {
-            $('#ordersNum').text('目前還沒有訂單')
+            $('#order_list').text('目前還沒有訂單');
         }
-        $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單，總金額 ${totalPrice} 元`)
+        $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單，總金額 ${totalPrice} 元`);
 
 
         // Display
@@ -481,11 +493,11 @@ $(function () {
         </div>
         `
         }
-        $('#order-list').empty().append(orderListHtml);
+        $('#order_list').empty().append(orderListHtml);
 
 
         // Call edit order function
-        $('#order-list input[name^="order"]').on('change', editOrder);
+        $('#order_list input[name^="order"]').on('change', editOrder);
 
         // Call delete order function
         $('.delete_order').on('click', deleteOrder);

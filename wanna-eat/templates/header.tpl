@@ -1,4 +1,4 @@
-<header>
+<header class="layout__header mb-5">
 
     <!--navbar-expand-lg | sm | md..-->
     <!--對於不需要摺疊的導覽列，在導覽列中加入 .navbar-expand。對於總是摺疊的導覽列，不要加任何 .navbar-expand class-->
@@ -16,11 +16,14 @@
 {*                        <a href="index.php" class="nav-link">HOME</a>*}
 {*                    </li>*}
                     <li class="nav-item">
-                        <a href="index.php" class="nav-link">餐廳列表</a>
+                        <a href="group-buy-now.php" class="nav-link btn btn-primary text-white px-3">
+                            <span class="mr-1">進行中團購</span> <span class="badge badge-light" id="group_now_badge">0</span>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">進行中團購</a>
+                        <a href="index.php" class="nav-link">餐廳列表</a>
                     </li>
+
                     {if isset($logged) && !$logged}
                         <li class="nav-item">
                             <a href="login.php" class="nav-link">登入</a>

@@ -17,7 +17,7 @@
                     {/if}
                     <div class="store-text">
                         <div class="form-group">
-                            <label>負責人：
+                            <label>團主：
                                 <select name="group_host" class="form-control">
                                     {foreach from=$hosts item=item}
                                         <option value="{$item.host_name}" name="host_name">{$item.host_name}</option>
@@ -30,14 +30,14 @@
 
                         <div class="form-group">
                             <label>
-                                店家名稱：<input type="text" value="{$item.name}" name="store_name" readonly
+                                餐廳名稱：<input type="text" value="{$item.name}" name="store_name" readonly
                                             class="form-control">
                             </label>
                         </div>
 
                         <div class="form-group">
                             <label>
-                                店家電話：<input type="text" value="{$item.phone}" name="store_phone" readonly
+                                餐廳電話：<input type="text" value="{$item.phone}" name="store_phone" readonly
                                             class="form-control">
                             </label>
                         </div>
@@ -50,7 +50,7 @@
                             <label>
                                 菜單：
                                 <a href="{$item.images}"
-                                   class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu">菜單</a>
+                                   class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu">顯示菜單</a>
                             </label>
 
                         </div>

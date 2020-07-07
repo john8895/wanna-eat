@@ -1,5 +1,5 @@
 <?php
-/* filename: group-buy.tpl.php */
+/* filename: group-buy.php */
 require_once("../libs/Smarty.class.php");
 require_once './assets/inc/connect.php';  // Connect Mysql
 global $smarty;
