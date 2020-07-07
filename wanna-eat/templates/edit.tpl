@@ -48,4 +48,5 @@
         </div>
     </div>
 </main>
+{include file="footer.tpl"}
 {include file="js.tpl"}

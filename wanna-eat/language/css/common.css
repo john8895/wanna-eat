@@ -43,6 +43,18 @@ a {
 }
 
 /* ==================================
+ * Header
+ * ================================== */
+.navbar-nav > .nav-item > .dropdown-menu {
+  top: 33px;
+}
+
+.dropdown-menu .dropdown-menu {
+  left: 100%;
+  top: 0;
+}
+
+/* ==================================
  * Pages
  * ================================== */
 .page__order .order-item {

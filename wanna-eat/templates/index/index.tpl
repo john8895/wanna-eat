@@ -1,4 +1,5 @@
 <main class="page__index">
+    {*
     <section>
         <div class="container" id="app">
             <div class="row">
@@ -8,9 +9,10 @@
             </div>
         </div>
     </section>
+    *}
 
     <!-- 訂單狀態-->
-    <section id="app">
+    <section id="app" class="mt-3">
         <div class="container">
             <div class="row mb-4">
                 <div class="col-sm-12">
