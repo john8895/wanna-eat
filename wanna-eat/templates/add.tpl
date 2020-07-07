@@ -49,9 +49,7 @@
                             {*                                              placeholder="請輸入餐廳介紹">{if isset($description)} {$description} {/if}</textarea>*}
                             {*                                </label>*}
                             {*                            </div>*}
-                            <div class="form-group text-center">
-                                <button type="submit" class="btn btn-primary mb-2 rounded-pill px-4">新增餐廳</button>
-                            </div>
+
 
                         </div>
 
@@ -75,6 +73,9 @@
                         </div>
                     </div>
 
+                    <div class="form-group text-center mt-4">
+                        <button type="submit" class="btn btn-primary mb-2 rounded-pill px-4">新增餐廳</button>
+                    </div>
 
                 </form>
             </div>

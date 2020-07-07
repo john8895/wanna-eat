@@ -12,8 +12,14 @@
             <div class="collapse navbar-collapse" id="navbarDemo">
 
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a href="index.php" class="nav-link">HOME</a>
+{*                    <li class="nav-item active">*}
+{*                        <a href="index.php" class="nav-link">HOME</a>*}
+{*                    </li>*}
+                    <li class="nav-item">
+                        <a href="index.php" class="nav-link">餐廳列表</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="javascript:;" class="nav-link">進行中團購</a>
                     </li>
                     {if isset($logged) && !$logged}
                         <li class="nav-item">
@@ -21,12 +27,15 @@
                         </li>
                     {else}
                         <li class="nav-item">
-                            <a href="logout.php" class="nav-link">登出</a>
+                            <a href="add.php" class="nav-link">新增餐廳</a>
                         </li>
                         <li class="nav-item">
-                            <a href="add.php" class="nav-link">新增店家</a>
+                            <a href="logout.php" class="nav-link">登出</a>
                         </li>
                     {/if}
+                    <li class="nav-item">
+                        <a href="javascript:;" class="nav-link">設定</a>
+                    </li>
 
 
                     {*
