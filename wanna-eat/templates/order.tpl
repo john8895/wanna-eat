@@ -25,9 +25,12 @@
                             <li><i class="fas fa-angle-right mr-3 text-black-50"></i>團主：{$item.group_host}</li>
                             <li><i class="fas fa-angle-right mr-3 text-black-50"></i>餐廳名稱：{$item.store_name}</li>
                             <li><i class="fas fa-angle-right mr-3 text-black-50"></i>餐廳電話：{$item.store_phone}</li>
-                            <li><i class="fas fa-angle-right mr-3 text-black-50"></i>餐廳簡介：{if $store.description !=''}{$store.description}{else}無簡介{/if}</li>
+                            <li>
+                                <i class="fas fa-angle-right mr-3 text-black-50"></i>餐廳簡介：{if $store.description !=''}{$store.description}{else}無簡介{/if}
+                            </li>
                             <li><i class="fas fa-angle-right mr-3 text-black-50"></i>餐廳菜單：<a href="{$store.images}"
-                                        class="btn btn-outline-primary btn-sm px-2 btn-menu">顯示菜單</a></li>
+                                                                                             class="btn btn-outline-primary btn-sm px-2 btn-menu">顯示菜單</a>
+                            </li>
                             <li class="image_show">
                                 <div class="modal">
                                     <div class="modal-body d-flex align-items-center justify-content-center">
@@ -38,7 +41,9 @@
                             <li><i class="fas fa-angle-right mr-3 text-black-50"></i>外送金額：$200</li>
                             <li><i class="fas fa-angle-right mr-3 text-black-50"></i>目前金額：$250</li>
                             <li><i class="fas fa-angle-right mr-3 text-black-50"></i>收單時間：{$item.end_time}</li>
-                            <li><i class="fas fa-angle-right mr-3 text-black-50"></i>團購注意事項：{if $item.remark !=''}{$item.remark}{else}無注意事項{/if}</li>
+                            <li>
+                                <i class="fas fa-angle-right mr-3 text-black-50"></i>團購注意事項：{if $item.remark !=''}{$item.remark}{else}無注意事項{/if}
+                            </li>
                         </ul>
                     </div>
 
@@ -53,7 +58,6 @@
     {*   Order list display *}
     <div class="container">
         <div class="row">
-
 
 
             <div class="col-sm-12 mt-4">
@@ -83,7 +87,8 @@
                             </div>
 
                             <div class="form-group mt-4">
-                                <button type="submit" class="btn btn-danger rounded-lg" id="submit_order">送出一筆訂單</button>
+                                <button type="submit" class="btn btn-danger rounded-lg" id="submit_order">送出一筆訂單
+                                </button>
                             </div>
                         </form>
 
@@ -110,10 +115,76 @@
                         <h4 class="title h5">訂單統計</h4>
 
                     </div>
+
+
                     <div class="card-body">
-                        <div id="ordersNum"></div>
+                        <div id="ordersNum" class="mb-3 h6"></div>
+
+                        <div class="card table border">
+
+                            <div class="card-body">
+                                <div class="th row py-0 ">
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control border-0" value="點餐內容">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control border-0" value="數量">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control border-0" value="價格">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control border-0" value="訂購人">
+                                    </div>
+                                </div>
+
+                                <div class="tr row py-0">
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="order_meal" value="點餐內容"
+                                               data-field="點餐內容">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="number" class="form-control" name="order_price" value="1"
+                                               data-field="數量">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="number" class="form-control" name="order_price" value="150"
+                                               data-field="價格">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <ul class="d-flex flex-wrap">
+                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">小熊</li>
+                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">小熊王</li>
+                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">張學友</li>
+                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">陳胖胖</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="th row py-0 ">
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control border-0" value="點餐內容">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control border-0" value="數量">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control border-0" value="150">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control border-0" value="訂購人">
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+
 
                     </div>
+
                 </div>
             </div>
 

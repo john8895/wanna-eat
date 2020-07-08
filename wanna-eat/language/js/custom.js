@@ -250,11 +250,11 @@ $(function () {
 
     function groupBuyDisplay(groupBuy, totalOrders) {
         if (groupBuy.length === 0) {
-            $('#current_groupBuy').text('目前沒有團購 :(')
+            $('#current_groupBuy').text('目前還沒有團購 :(').addClass('text-center');
+        }else{
+            $('#current_groupBuy').html(`進行中的團購&nbsp;&nbsp;<b>${groupBuy.length}</b>`)
+            $('#group_now_badge').text(groupBuy.length)
         }
-        $('#current_groupBuy').html(`進行中的團購&nbsp;&nbsp;<b>${groupBuy.length}</b>`)
-        $('#group_now_badge').text(groupBuy.length)
-        // sessionStorage.setItem('group_buy_num', groupBuy.length)
 
         let orderBlock = '';
         for (let i = 0; i < groupBuy.length; i++) {
@@ -326,11 +326,6 @@ $(function () {
             reverseButtons: true
         }).then((result) => {
             if (result.value) {
-                // swalWithBootstrapButtons.fire(
-                //     '團購單操作成功',
-                //     '您的資料已經被刪除。',
-                //     'success'
-                // )
                 delGroupBuyHandle(group_id);
             } else if (
                 /* Read more about handling dismissals below */
@@ -455,10 +450,7 @@ $(function () {
         const totalPrice = calcData.totalPrice;
         const totalName = calcData.totalName;
 
-        // Orders number
-        if (ordersData.length === 0) {
-            $('#order_list').text('目前還沒有訂單');
-        }
+
         $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單，總金額 ${totalPrice} 元`);
 
 
@@ -493,7 +485,12 @@ $(function () {
         </div>
         `
         }
-        $('#order_list').empty().append(orderListHtml);
+        // Orders number
+        if (ordersData.length === 0) {
+            $('#order_list').text('目前還沒有訂單 :(').addClass('text-center');
+        }else{
+            $('#order_list').empty().append(orderListHtml);
+        }
 
 
         // Call edit order function
@@ -646,11 +643,6 @@ $(function () {
             reverseButtons: true
         }).then((result) => {
             if (result.value) {
-                // swalWithBootstrapButtons.fire(
-                //     '訂單操作成功',
-                //     '您的資料已經被刪除。',
-                //     'success'
-                // )
                 deleteOrderAct();
             } else if (
                 /* Read more about handling dismissals below */

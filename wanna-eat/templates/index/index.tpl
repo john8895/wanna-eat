@@ -20,48 +20,43 @@
                 <div class="col-sm-3 mb-3">
                     <div class="card">
                         <div class="store-image">
-                            <img src="http://picsum.photos/208/150" alt="">
+                            <img src="./language/img/fake_store_img.jpg" alt="">
                         </div>
-                        <div class="card-body">
-                            <article class="d-flex store-item">
+                        <div class="store-name text-center mt-3">
+                            {$item.name}
+                        </div>
+                        <article class="d-flex store-item text-center">
+                            <div class="store-text m-auto">
+                                <input type="hidden" class="item_id" value="{$item.id}">
 
-                                <div class="store-text">
-                                    <input type="hidden" class="item_id" value="{$item.id}">
-                                    <ul>
-                                        <li>名稱：{$item.name} </li>
-                                        <li>電話：{$item.phone} </li>
-                                        <li>簡介：{$item.description} </li>
-                                        <li>
-                                            <div class="store-button mt-2">
-                                                <a href="{$item.images}"
-                                                   class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu"
-                                                   target="_blank">菜單</a>
+                                {*                                        <li>電話：{$item.phone} </li>*}
+                                <div class="store-button mt-2 mb-3">
+                                    <a href="{$item.images}"
+                                       class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu mr-2 border-left-0 border-right-0 border-top-0"
+                                       target="_blank">菜單</a>
 
-                                                {if isset($logged) && $logged}
-                                                    <a href="group-buy.php?id={$item.id}"
-                                                       class="btn btn-danger btn-sm btn-pill px-2">
-                                                        開團
-                                                    </a>
-                                                    <a href="edit.php?id={$item.id}"
-                                                       class="btn btn-outline-info btn-sm px-2">編輯</a>
-                                                    {*                                                <a href="delete.php?id={$item.id}"*}
-                                                    {*                                                   class="btn btn-outline-danger btn-sm px-2">刪除</a>*}
-                                                {/if}
-
-                                            </div>
-                                        </li>
-                                        <li class="image_show">
-                                            <div class="modal">
-                                                <div class="modal-body d-flex align-items-center justify-content-center">
-                                                    <div class="img"></div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                    {if isset($logged) && $logged}
+                                        <a href="group-buy.php?id={$item.id}"
+                                           class="btn btn-outline-danger btn-sm btn-pill px-2 border-left-0 border-right-0 border-top-0">
+                                            發起團購
+                                        </a>
+                                        {*                                                    <a href="edit.php?id={$item.id}"*}
+                                        {*                                                       class="btn btn-outline-info btn-sm px-2">編輯</a>*}
+                                        {*                                                <a href="delete.php?id={$item.id}"*}
+                                        {*                                                   class="btn btn-outline-danger btn-sm px-2">刪除</a>*}
+                                    {/if}
 
                                 </div>
-                            </article>
-                        </div>
+                                <div class="image_show">
+                                    <div class="modal">
+                                        <div class="modal-body d-flex align-items-center justify-content-center">
+                                            <div class="img"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </article>
                     </div>
                 </div>
             {/foreach}
