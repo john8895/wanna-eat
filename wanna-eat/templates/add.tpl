@@ -60,6 +60,9 @@
                                     <div class="form-group">
                                         <div class="form-group">
                                             <input type="file" name="store_cover" class="form-control-file">
+                                            <small class="form-text text-muted">
+                                                請上傳圖片類型檔案，大小不超過 1 MB
+                                            </small>
                                         </div>
                                     </div>
                                 </div>
@@ -81,6 +84,9 @@
                                 <div class="col-sm-10">
                                     <div class="form-group">
                                         <input type="file" name="images" class="form-control-file">
+                                        <small class="form-text text-muted">
+                                            請上傳圖片類型檔案，大小不超過 1 MB
+                                        </small>
                                     </div>
                                 </div>
                             </div>

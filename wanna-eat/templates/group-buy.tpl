@@ -5,10 +5,25 @@
 <main>
     <div class="container">
         <!-- 開團 -->
-        <div class="row modal-wrap">
-            <form action="group-buy.php" method="post">
-                <input type="hidden" name="store_id" {if isset($store_id)}value="{$store_id}"{/if}>
-                <div class="col-sm-12 store-item">
+
+        <form action="group-buy.php" method="post">
+            <input type="hidden" name="store_id" {if isset($store_id)}value="{$store_id}"{/if}>
+
+            <div class="row modal-wrap">
+
+
+                <div class="col-sm-6">
+                    <div class="card store-image">
+                        {if isset($item.cover)}
+                            <img src="{$item.cover}" alt="" class="img-fluid img-thumbnail">
+                        {else}
+                            <img src="http://fakeimg.pl/300x300" alt="" class="img-fluid img-thumbnail">
+                        {/if}
+
+                    </div>
+                </div>
+
+                <div class="col-sm-6 store-item">
                     <input type="hidden" name="id" value="orders.id">
                     {if isset($error)}
                         <div class="form-group text-danger">
@@ -16,15 +31,15 @@
                         </div>
                     {/if}
                     <div class="store-text">
-                        <div class="form-group">
-                            <label>團主：
-                                <select name="group_host" class="form-control">
+                        <div class=" form-group">
+
+                            <label>團主：</label>
+                                <select name="group_host" class="form-control d-inline-block">
                                     {foreach from=$hosts item=item}
                                         <option value="{$item.host_name}" name="host_name">{$item.host_name}</option>
                                     {/foreach}
                                 </select>
-                            </label>
-                            {*                            <button>新增負責人</button>*}
+
                         </div>
 
 
@@ -65,16 +80,6 @@
 
 
                         <div class="form-group">
-{*                            <label>截止日期 **}
-{*                                <input type="text" value="{$date|date_format:"%Y-%m-%d"}" name="endTime_day"*}
-{*                                       required class="form-control">*}
-{*                            </label>*}
-{*                            <label>截止時間（時-分）**}
-{*                                <input type="text" value="{$time}" name="end_time_hour" required*}
-{*                                       class="form-control">*}
-{*                            </label>*}
-
-
                             <label>收單時間 *
                                 <div class="input-group date" id="datetimepicker_date" data-target-input="nearest">
                                     <input type="text" class="form-control datetimepicker-input"
@@ -139,8 +144,11 @@
                         <button class="btn btn-danger" type="submit">開始團購囉</button>
                     </div>
                 </div>
-            </form>
-        </div>
+
+
+            </div>
+        </form>
+
     </div>
 </main>
 {include file="footer.tpl"}

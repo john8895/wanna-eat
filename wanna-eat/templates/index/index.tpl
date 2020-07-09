@@ -20,7 +20,9 @@
                 <div class="col-sm-3 mb-3">
                     <div class="card">
                         <div class="store-image">
-                            <img src="./language/img/fake_store_img.jpg" alt="">
+                            <a href="group-buy.php?id={$item.id}" title="發起{$item.name}的團購">
+                                <img src="./language/img/fake_store_img.jpg" alt="" class="w-100">
+                            </a>
                         </div>
                         <div class="store-name text-center mt-3">
                             {$item.name}

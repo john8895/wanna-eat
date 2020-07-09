@@ -48,6 +48,38 @@ function add_store()
     // 校驗圖片
     // empty($_FILES['images'] -> 有欄位但沒填 有變數無值
     // !$_FILES['images'] -> 變數未設置 代表無此欄位 無變數
+
+    // TODO 校驗改為function 才不用處理兩次
+    /*
+    function validationImage($imgVar){
+        if (!isset($_FILES[$imgVar]) && !$_FILES[$imgVar]) {
+            $GLOBALS['error_message'] = '請正常使用表單';
+            return;
+        }
+        if (!empty($_FILES['images']) && $_FILES['images']['error'] === UPLOAD_ERR_OK) {
+            // 有上傳圖且錯誤碼 === 0 -> is no error
+            if (!$_FILES['images']['type'] === 'image/*') {
+                $GLOBALS['error_message'] = '上傳的不是圖片，請上傳圖片類型檔案';
+                return;
+            }
+            if ($_FILES['images']['size'] > 1 * 1024 * 1024) {
+                $GLOBALS['error_message'] = '上傳的檔案超過 1 MB，請重新上傳';
+                return;
+            }
+
+            // 校驗完成 上傳檔案
+            $ext = pathinfo($_FILES['images']['name'], PATHINFO_EXTENSION);
+            $source = $_FILES['images']['tmp_name'];
+            $target = './archive/stores/' . uniqid() . '.' . $ext;
+            if (!move_uploaded_file($source, $target)) {
+                $GLOBALS['error_message'] = '移動檔案失敗！';
+                return;
+            }
+            $store['images'] = $target;
+        }
+    }
+    */
+
     if (!isset($_FILES['images']) && !$_FILES['images']) {
         $GLOBALS['error_message'] = '請正常使用表單';
         return;
