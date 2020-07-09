@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<select name="myname" id="select">
+    <option value="value1">123</option>
+    <option value="value2">456</option>
+</select>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script>
+    $(function () {
+        $('#select').on('change',function () {
+            console.log($('').val());
+
+        })
+    })
+</script>
+</body>
+</html>

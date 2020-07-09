@@ -19,9 +19,13 @@
             {foreach from=$stores item=item}
                 <div class="col-sm-3 mb-3">
                     <div class="card">
-                        <div class="store-image">
+                        <div class="store-image" style="background-image: url({$item.store_cover})">
                             <a href="group-buy.php?id={$item.id}" title="發起{$item.name}的團購">
-                                <img src="./language/img/fake_store_img.jpg" alt="" class="w-100">
+                                {if isset($item.store_cover)}
+                                    <img src="{$item.store_cover}" alt="" class="">
+                                {else}
+                                    <img src="./language/img/fake_store_img.jpg" alt="" class="">
+                                {/if}
                             </a>
                         </div>
                         <div class="store-name text-center mt-3">
@@ -42,10 +46,12 @@
                                            class="btn btn-outline-danger btn-sm btn-pill px-2 border-left-0 border-right-0 border-top-0">
                                             發起團購
                                         </a>
-                                        {*                                                    <a href="edit.php?id={$item.id}"*}
-                                        {*                                                       class="btn btn-outline-info btn-sm px-2">編輯</a>*}
-                                        {*                                                <a href="delete.php?id={$item.id}"*}
-                                        {*                                                   class="btn btn-outline-danger btn-sm px-2">刪除</a>*}
+                                        <div class="mt-2">
+                                        <a href="edit.php?id={$item.id}"
+                                           class="btn btn-outline-dark text-muted btn-sm px-2 border-left-0 border-right-0 border-top-0">編輯</a>
+                                        <a href="delete.php?id={$item.id}"
+                                           class="btn btn-outline-dark text-muted btn-sm px-2 border-left-0 border-right-0 border-top-0">刪除</a>
+                                        </div>
                                     {/if}
 
                                 </div>

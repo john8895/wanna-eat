@@ -80,6 +80,33 @@ function add_store()
     }
     */
 
+    if (!isset($_FILES['store_cover']) && !$_FILES['store_cover']) {
+        $GLOBALS['error_message'] = '請正常使用表單';
+        return;
+    }
+    if (!empty($_FILES['store_cover']) && $_FILES['store_cover']['error'] === UPLOAD_ERR_OK) {
+        // 有上傳圖且錯誤碼 === 0 -> is no error
+        if (!$_FILES['store_cover']['type'] === 'image/*') {
+            $GLOBALS['error_message'] = '上傳的不是圖片，請上傳圖片類型檔案';
+            return;
+        }
+        if ($_FILES['store_cover']['size'] > 1 * 1024 * 1024) {
+            $GLOBALS['error_message'] = '上傳的檔案超過 1 MB，請重新上傳';
+            return;
+        }
+
+        // 校驗完成 上傳檔案
+        $ext = pathinfo($_FILES['store_cover']['name'], PATHINFO_EXTENSION);
+        $source = $_FILES['store_cover']['tmp_name'];
+        $target = './archive/stores/cover-' . uniqid() . '.' . $ext;
+        if (!move_uploaded_file($source, $target)) {
+            $GLOBALS['error_message'] = '移動檔案失敗！';
+            return;
+        }
+        $store['store_cover'] = $target;
+    }
+
+
     if (!isset($_FILES['images']) && !$_FILES['images']) {
         $GLOBALS['error_message'] = '請正常使用表單';
         return;
@@ -107,7 +134,7 @@ function add_store()
     }
 
     // 數據校驗完畢 寫入資料庫
-    $sql = "INSERT INTO store values (null, '{$store['name']}', '{$store['description']}', '{$store['phone']}', '{$store['images']}')";
+    $sql = "INSERT INTO store (id, name, description, phone, store_cover, images) values (null, '{$store['name']}', '{$store['description']}', '{$store['phone']}', '{$store['store_cover']}', '{$store['images']}')";
     connect_mysql($sql);
     header('Location: index.php');
 }

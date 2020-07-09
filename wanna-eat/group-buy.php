@@ -100,7 +100,7 @@ function groupBuySubmit()
     // Save to Mysql
     $sql = "INSERT INTO group_buy (id, store_name, store_phone, group_host, end_time, remark, store_id) VALUES ({$group_buy['id']}, '{$group_buy['store_name']}', '{$group_buy['store_phone']}', '{$group_buy['group_host']}', '{$end_time}', '{$group_buy['remark']}',{$group_buy['store_id']});";
     connect_mysql($sql);
-    header('Location: index.php');
+    header('Location: group-buy-now.php');
 }
 
 

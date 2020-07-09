@@ -32,20 +32,8 @@ $(function () {
             modal.find('img').css('transform', 'scale(' + step + ')');
         })
     })
-})
 
-
-/**
- * @Range: index.php
- *
- * Random store
- *
- */
-// Random store
-$(function () {
-
-    wanna_eat();
-
+    // Random store
     function wanna_eat() {
         let timer, last_pick;
 
@@ -73,8 +61,6 @@ $(function () {
 
         })
     }
-
-
 })
 
 
@@ -208,20 +194,21 @@ $(function () {
         showOrder();
     }
 
-
     // Get group-buy data
     function showOrder() {
         // axios get multiple urls
         const total_orders = axios.get('group_buy_api.php?res=total_orders');
         const groupBuy = axios.get('group_buy_api.php?res=buy');
+        const store_info = axios.get('group_buy_api.php?res=stores');
 
         axios
-            .all([groupBuy, total_orders])
+            .all([groupBuy, total_orders, store_info])
             .then(
                 axios.spread((...res) => {
                     const res1 = res[0];
                     const res2 = res[1];
-                    groupBuyDisplay(res1.data, res2.data)
+                    const res3 = res[2];
+                    groupBuyDisplay(res1.data, res2.data, res3.data)
                 })
             )
             .catch(errors => {
@@ -248,32 +235,52 @@ $(function () {
     }
 
 
-    function groupBuyDisplay(groupBuy, totalOrders) {
+    function groupBuyDisplay(groupBuy, totalOrders, stores) {
         if (groupBuy.length === 0) {
             $('#current_groupBuy').text('目前還沒有團購 :(').addClass('text-center');
-        }else{
+        } else {
             $('#current_groupBuy').html(`進行中的團購&nbsp;&nbsp;<b>${groupBuy.length}</b>`)
             $('#group_now_badge').text(groupBuy.length)
         }
-
         let orderBlock = '';
         for (let i = 0; i < groupBuy.length; i++) {
             // Calc orders
             const orderCalc = indexOrdersCalc(totalOrders, groupBuy[i].id)
             const oneOrderSum = orderCalc.totalPrice;
             const oneOrderNum = orderCalc.totalName.length;
+            const groupId = parseInt(groupBuy[i].store_id);
+
             // Calc left time
             const end_time = new Date(groupBuy[i].end_time).getTime();
             const left_time = moment(end_time).fromNow()
 
+            let storeCover = './language/img/noimg.jpg';
+            // TODO 迴圈造成null錯誤 要思考
+            for (let key in stores) {
+                const store_id = parseInt(stores[key].id);
+                if (groupId === store_id){
+                    console.log('groupId:',groupId)
+                    console.log('store_id:',store_id)
+                    storeCover = stores[key].store_cover;
+                }else {
+                    storeCover = './language/img/noimg.jpg';
+                }
+            }
+            console.log('storeCover:',storeCover)
+
+
             orderBlock += `
-        <div class="col-sm-4">
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
         <div class="card">
             <div class="card-header">
                 <h4 class="h5 mb-0">
                     <span id="store_name">${groupBuy[i].store_name}</span>
                 </h4>
             </div>
+            <a href="order.php?id=${groupBuy[i].id}" title="我要跟${groupBuy[i].group_host}開的${groupBuy[i].store_name}">
+                <div class="store-image" style="background-image: url(${storeCover})"></div>
+            </a>
+            
             <div class="card-body">
             <ul>
                 <li>團主：<span id="group_host">${groupBuy[i].group_host}</span></li>
@@ -284,8 +291,8 @@ $(function () {
                 <li></li>
                 <li>
                     <div class="orderBtn mt-2 text-center">
-                        <a href="order.php?id=${groupBuy[i].id}" class="btn btn-primary">我要跟團</a>
-<!--                        <button class="btn btn-outline-danger px-1 py-0 del-group-btn" data-groupid="${groupBuy[i].id}">刪除此單</button>-->
+                        <a href="order.php?id=${groupBuy[i].id}" class="btn btn-outline-success border-top-0 border-left-0 border-right-0 mr-3">我要跟團</a>
+                        <button class="btn btn-outline-dark text-muted del-group-btn  border-top-0 border-left-0 border-right-0" data-groupid="${groupBuy[i].id}">刪除此單</button>
                     </div>
                 </li>
             </ul>
@@ -376,7 +383,7 @@ $(function () {
     // Only order page load
     if ($('.page__order').length) {
         ordersDisplay();
-        $('#order_form').on('submit', sumbitOrder);  // Submit order
+        $('#order_form').on('submit', submitOrder);  // Submit order
     }
 
 
@@ -416,8 +423,6 @@ $(function () {
                 }
             })
         }
-
-
         // Ajax to get order list
         axios.get(`group_buy_api.php?res=order_list&order_id=${order_id}`).then(res => {
             // console.log(res.data)
@@ -449,34 +454,35 @@ $(function () {
         const calcData = calcOrders(ordersData);
         const totalPrice = calcData.totalPrice;
         const totalName = calcData.totalName;
-
-
         $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單，總金額 ${totalPrice} 元`);
-
 
         // Display
         let orderListHtml = '';
         for (let i = 0; i < ordersData.length; i++) {
             orderListHtml += `
         <div class="row py-2 rounded order-item">
-            <div class="col-sm-3">
+            <div class="col-sm-2 px-1">
                 <input type="hidden" name="field_id" value="${ordersData[i].field_id}" class="field_id">
                 <input type="text" class="form-control" value="${ordersData[i].order_name}" name="order_name"
                        placeholder="請輸入姓名 *" data-field="姓名">
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3 px-1">
                 <input type="text" class="form-control" value="${ordersData[i].order_meal}" name="order_meal"
                        placeholder="請輸入餐點名稱 *" data-field="餐點名稱">
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2 px-1">
                 <input type="number" class="form-control" value="${ordersData[i].order_price}" name="order_price"
                        placeholder="請輸入價格 *" data-field="價格">
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-1 px-1">
+                <input type="number" class="form-control" value="${ordersData[i].order_number}" name="order_number"
+                       placeholder="請輸入數量 *" data-field="數量">
+            </div>
+            <div class="col-sm-3 px-1">
                 <input type="text" class="form-control" value="${ordersData[i].order_remark}" name="order_remark"
                        placeholder="請輸入備註" data-field="備註">
             </div>
-            <div class="col-sm-1">
+            <div class="col-sm-1 px-1">
                 <a class="btn delete_order" title="刪除此筆訂單">
                       <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zM124 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H124z"></path></svg>
                 </a>
@@ -488,10 +494,9 @@ $(function () {
         // Orders number
         if (ordersData.length === 0) {
             $('#order_list').text('目前還沒有訂單 :(').addClass('text-center');
-        }else{
+        } else {
             $('#order_list').empty().append(orderListHtml);
         }
-
 
         // Call edit order function
         $('#order_list input[name^="order"]').on('change', editOrder);
@@ -508,28 +513,30 @@ $(function () {
      *
      */
     // Submit order handle
-    function sumbitOrder(event) {
+    function submitOrder(event) {
         event.preventDefault()
-
         const order_id = $('input[name=add_order_id]');
         const order_name = $('input[name=add_order_name]');
         const order_meal = $('input[name=add_order_meal]');
         const order_price = $('input[name=add_order_price]');
+        const order_number = $('select[name=add_order_number] :selected');
         const order_remark = $('input[name=add_order_remark]');
 
         if (!checkInputVal(order_price, '價格')) return;
+        if (!checkInputVal(order_number, '數量')) return;
         if (!checkInputVal(order_meal, '餐點內容')) return;
         if (!checkInputVal(order_name, '姓名')) return;
-
 
         let data = new FormData();
         data.append('add_order', 'true');
         data.append('order_id', order_id.val());
         data.append('order_name', order_name.val());
         data.append('order_meal', order_meal.val());
+        data.append('order_number', order_number.val());
         data.append('order_price', order_price.val());
         data.append('order_remark', order_remark.val());
 
+        // $('#order_form').find('input').val('')
         order_name.val('');
         order_meal.val('');
         order_price.val('');
@@ -562,7 +569,6 @@ $(function () {
             element.addClass('is-invalid');
             return false;
         }
-        // element.addClass('is-valid');
         return true;
     }
 
@@ -588,8 +594,6 @@ $(function () {
                 return;
             }
         }
-
-
         // Post form
         let orderData = new FormData();
         orderData.append('edit_order', 'true');
@@ -611,7 +615,6 @@ $(function () {
         }).catch(err => {
             console.error(err)
         })
-
     }
 
 
@@ -673,22 +676,7 @@ $(function () {
         }
 
     }
-
-
 })
-
-/**
- * Plugin Config
- */
-
-$(function () {
-    $('#datetimepicker_date').datetimepicker({
-        format: 'YYYY/MM/DD'
-    });
-    $('#datetimepicker_time').datetimepicker({
-        format: 'HH:mm'
-    });
-});
 
 // SweetAlert 2 jquery plugin
 // warning, error, success, info, and question

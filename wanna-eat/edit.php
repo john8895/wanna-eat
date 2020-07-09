@@ -60,6 +60,30 @@ function edit_user($smarty)
         return;
     }
     // if has upload file
+    if (!empty($_FILES['store_cover']) && $_FILES['store_cover']['error'] === UPLOAD_ERR_OK) {
+        // 檔案類型校驗
+        $image_type = array('image/png', 'image/jpg', 'image/webp', 'image/gif', 'image/jpeg');
+        // 使用 in_array 不是字串比對，in_array 第三個參數如果沒傳，預設會是 Object ，所以必須填true ，使之為 array
+        if (!in_array($_FILES['store_cover']['type'], $image_type, true)) {
+            $GLOBALS['error_message'] = '上傳的檔案不是圖片格式，請重新上傳';
+            return;
+        }
+
+        $ext = pathinfo($_FILES['store_cover']['name'], PATHINFO_EXTENSION);
+        $source = $_FILES['store_cover']['tmp_name'];
+        // TODO:刪除原本的檔案
+        $dest = './archive/cover-' . uniqid() . '.' . $ext;
+        if (!move_uploaded_file($source, $dest)) {
+            $GLOBALS['error_message'] = '上傳失敗';
+            return;
+        }
+        $item['store_cover'] = $dest;
+        $sql_store_cover = ",store_cover='{$item['store_cover']}'";
+    }else{
+        $sql_store_cover = "";
+    }
+
+    // if has upload file
     if (!empty($_FILES['images']) && $_FILES['images']['error'] === UPLOAD_ERR_OK) {
         // 檔案類型校驗
         $image_type = array('image/png', 'image/jpg', 'image/webp', 'image/gif', 'image/jpeg');
@@ -85,7 +109,7 @@ function edit_user($smarty)
 
 
     // 更新數據
-    $sql = "UPDATE store SET name='{$item['name']}', phone='{$item['phone']}', description='{$item['description']}'{$sql_image} WHERE id = {$item['id']};";
+    $sql = "UPDATE store SET name='{$item['name']}', phone='{$item['phone']}', description='{$item['description']}'{$sql_store_cover}{$sql_image} WHERE id = {$item['id']};";
     connect_mysql($sql);
     header('Location: index.php');
 }

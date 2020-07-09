@@ -8,7 +8,8 @@
     <title>今天要吃啥？</title>
     <link rel="stylesheet" href="language/css/bootstrap.css">
     <link rel="stylesheet" href="language/css/tempusdominus-bootstrap-4.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" />
+{*    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" />*}
+    <link rel="stylesheet" href="./language/css/all.min.css" />
     <link rel="stylesheet" href="language/css/common.css">
     <link rel="stylesheet" href="language/css/index.css">
 </head>

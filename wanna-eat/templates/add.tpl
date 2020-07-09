@@ -9,15 +9,10 @@
                 <form action="add.php" method="post" enctype="multipart/form-data">
 
                     <div class="card">
-
                         <div class="card-header">
-
                             <h1 class="h5">基本資料</h1>
-
                         </div>
-
                         <div class="card-body">
-
                             {if isset($error)}
                                 <div class="form-group text-danger">
                                     {$error}
@@ -58,12 +53,10 @@
                                 <label class="col-sm-2 col-form-label text-right">上傳封面</label>
                                 <div class="col-sm-10">
                                     <div class="form-group">
-                                        <div class="form-group">
-                                            <input type="file" name="store_cover" class="form-control-file">
-                                            <small class="form-text text-muted">
-                                                請上傳圖片類型檔案，大小不超過 1 MB
-                                            </small>
-                                        </div>
+                                        <input type="file" name="store_cover" class="form-control-file">
+                                        <small class="form-text text-muted">
+                                            請上傳圖片類型檔案，大小不超過 1 MB
+                                        </small>
                                     </div>
                                 </div>
                             </div>
@@ -71,7 +64,6 @@
                         </div>
 
                     </div>
-
 
                     <div class="card mt-5">
                         <div class="card-header">

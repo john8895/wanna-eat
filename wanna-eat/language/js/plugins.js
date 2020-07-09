@@ -61,3 +61,21 @@ $(function () {
     // 呼叫函示
     $("#header__menu").bootnavbar();
 });
+
+$(function () {
+    $('.accordion > .card-header').on('click',function () {
+        $(this).parent('.card').children('.card-body').slideToggle();
+    })
+
+    /**
+     * Plugin Config
+     */
+    $(function () {
+        $('#datetimepicker_date').datetimepicker({
+            format: 'YYYY/MM/DD'
+        });
+        $('#datetimepicker_time').datetimepicker({
+            format: 'HH:mm'
+        });
+    });
+})
