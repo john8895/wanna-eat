@@ -13,18 +13,23 @@
 
 
     {*    Store list*}
-    <div class="container">
+    <div class="container-fluid">
+
         <div class="row">
+            <div class="col-sm-12 mb-3">
+                <h4 class="h5 mb-1">餐廳列表</h4>
+                <small class="text-muted">看看你今天要吃啥？</small>
+            </div>
 
             {foreach from=$stores item=item}
-                <div class="col-sm-3 mb-3">
+                <div class="col-sm-4 mb-3">
                     <div class="card">
-                        <div class="store-image" style="background-image: url({$item.store_cover})">
+                        <div class="store-image">
                             <a href="group-buy.php?id={$item.id}" title="發起{$item.name}的團購">
                                 {if isset($item.store_cover)}
                                     <img src="{$item.store_cover}" alt="" class="">
                                 {else}
-                                    <img src="./language/img/fake_store_img.jpg" alt="" class="">
+                                    <img src="http://fakeimg.pl/550x440" alt="" class="">
                                 {/if}
                             </a>
                         </div>
@@ -42,10 +47,10 @@
                                        target="_blank">菜單</a>
 
                                     {if isset($logged) && $logged}
-                                        <a href="group-buy.php?id={$item.id}"
-                                           class="btn btn-outline-danger btn-sm btn-pill px-2 border-left-0 border-right-0 border-top-0">
-                                            發起團購
-                                        </a>
+{*                                        <a href="group-buy.php?id={$item.id}"*}
+{*                                           class="btn btn-outline-danger btn-sm btn-pill px-2 border-left-0 border-right-0 border-top-0">*}
+{*                                            發起團購*}
+{*                                        </a>*}
                                         <div class="mt-2">
                                         <a href="edit.php?id={$item.id}"
                                            class="btn btn-outline-dark text-muted btn-sm px-2 border-left-0 border-right-0 border-top-0">編輯</a>

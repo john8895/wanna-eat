@@ -1,3 +1,6 @@
+import axios from 'axios';
+import moment from 'moment';
+
 /**
  * @Range: index.php,
  *
@@ -45,10 +48,11 @@ $(function () {
 
             item.removeClass('pick-color');
             timer = setInterval(function () {
-                let r = parseInt(Math.random() * item.length);
+                let r : number;
+                r = parseInt(String(Math.random() * item.length));
                 last_pick = r;
                 while (r === last_pick) {
-                    r = parseInt(Math.random() * item.length);
+                    r = parseInt(String(Math.random() * item.length));
                 }
                 console.log(last_pick, r)
 

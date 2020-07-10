@@ -87,6 +87,7 @@ a {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  justify-content: center;
 }
 .store-image a {
   text-align: center;
@@ -95,6 +96,7 @@ a {
   height: 100%;
   margin: auto;
   object-fit: cover;
+  width: 100%;
 }
 
 /* ==================================
