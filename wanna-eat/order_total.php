@@ -55,7 +55,7 @@ function orderTotal($order_id)
         echo $k . '共有 ' . $v . " 個\n";
         if(in_array($k, $new_item[$meal_i])){
             echo '$k:', $k;
-            var_dump($new_item[$meal_i]);
+//            var_dump($new_item[$meal_i]);
             $meal_all['order_meal'] = $k;
             $meal_all['order_price'] = (int)$new_item[$meal_i]['order_price'];
         }
@@ -63,10 +63,10 @@ function orderTotal($order_id)
     }
 
 
-    var_dump($meal_count);
+    var_dump('餐點總數 不重複', $meal_count);
 
-    var_dump('$new_item', $new_item);
-    var_dump('$meal_obj', $meal_obj);
+    print_r($new_item);
+//    var_dump('$meal_obj', $meal_obj);
     var_dump('$meal_all', $meal_all);
     echo '--------------------------------';
     echo "<br>";
