@@ -29,6 +29,14 @@ $data = array(
     )
 );
 print_r($data);
+/*
+    * 1. 總金額  yes
+    * 2. 總人數  yes
+    * 3. 訂購餐點 -> 不重複 array_unique  *
+    * 4. 價錢 -> 價錢 * 數量 = 小計
+    * 5. 訂購人 ->
+    * 結果：排骨飯 50 * 2 = 100  | 阿熊、阿貓、阿翰
+    */
 
 $temp = [];
 foreach ($data as $k => $v) {
