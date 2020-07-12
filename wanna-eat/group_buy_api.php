@@ -166,6 +166,7 @@ function editOrder()
 
     $sql = "UPDATE orders SET {$order['order_field_name']}='{$order['order_field_value']}' WHERE field_id='{$order['order_field_id']}';";
     connect_mysql($sql);
+    orderTotal($order['order_id']);
     echo 'success';
 }
 
@@ -177,6 +178,15 @@ function deleteOrder()
     $sql = "DELETE FROM orders WHERE field_id='{$delete_id}';";
     connect_mysql($sql);
     echo 'success';
+}
+
+
+function orderTotal($order_id)
+{
+
+    $sql = "SELECT * FROM orders WHERE order_id={$order_id}";
+    $result = connect_mysql($sql);
+    var_dump($result);
 }
 
 

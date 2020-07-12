@@ -177,7 +177,8 @@
 
                         <div class="card table border">
 
-                            <div class="card-body">
+                            <div class="card-body" id="orderTotal">
+
                                 <div class="th row py-0 ">
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control border-0" value="點餐內容">
@@ -192,42 +193,39 @@
                                         <input type="text" class="form-control border-0" value="訂購人">
                                     </div>
                                 </div>
-
-                                <div class="tr row py-0">
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control border-0" name="order_meal" value="雞排飯"
-                                               data-field="點餐內容" readonly>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="number" class="form-control border-0" name="order_price" value="1"
-                                               data-field="數量" readonly>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="number" class="form-control border-0" name="order_price" value="150"
-                                               data-field="價格" readonly>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <ul class="d-flex flex-wrap">
-                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">小熊</li>
-                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">小熊王</li>
-                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">張學友</li>
-                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">陳胖胖</li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="th row py-0 ">
-                                    <div class="col-sm-4">
-                                    </div>
-                                    <div class="col-sm-2">
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control border-0" value="150">
-                                    </div>
-                                    <div class="col-sm-4">
-                                    </div>
-                                </div>
-
+{*                                <div class="tr row py-0">*}
+{*                                    <div class="col-sm-4">*}
+{*                                        <input type="text" class="form-control border-0" name="order_meal" value="雞排飯"*}
+{*                                               data-field="點餐內容" readonly>*}
+{*                                    </div>*}
+{*                                    <div class="col-sm-2">*}
+{*                                        <input type="number" class="form-control border-0" name="order_price" value="1"*}
+{*                                               data-field="數量" readonly>*}
+{*                                    </div>*}
+{*                                    <div class="col-sm-2">*}
+{*                                        <input type="number" class="form-control border-0" name="order_price" value="150"*}
+{*                                               data-field="價格" readonly>*}
+{*                                    </div>*}
+{*                                    <div class="col-sm-4">*}
+{*                                        <ul class="d-flex flex-wrap">*}
+{*                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">小熊</li>*}
+{*                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">小熊王</li>*}
+{*                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">張學友</li>*}
+{*                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">陳胖胖</li>*}
+{*                                        </ul>*}
+{*                                    </div>*}
+{*                                </div>*}
+{*                                <div class="th row py-0 ">*}
+{*                                    <div class="col-sm-4">*}
+{*                                    </div>*}
+{*                                    <div class="col-sm-2">*}
+{*                                    </div>*}
+{*                                    <div class="col-sm-2">*}
+{*                                        <input type="text" class="form-control border-0" value="150">*}
+{*                                    </div>*}
+{*                                    <div class="col-sm-4">*}
+{*                                    </div>*}
+{*                                </div>*}
 
                             </div>
 

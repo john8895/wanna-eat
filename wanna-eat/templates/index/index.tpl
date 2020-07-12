@@ -33,43 +33,55 @@
                                 {/if}
                             </a>
                         </div>
-                        <div class="store-name text-center mt-3">
-                            {$item.name}
+                        <div class="store-name text-center store-item store-text my-3">
+                            <span class="mr-2">{$item.name}</span>
+                            <a href="{$item.images}"
+                               class="btn btn-outline-primary btn-sm py-1 btn-pill px-2 btn-menu mr-2 border-left-0 border-right-0 border-top-0"
+                               target="_blank">菜單</a>
+                            <a href="edit.php?id={$item.id}"
+                               class="btn btn-outline-dark text-muted py-1 btn-sm px-2 border-left-0 border-right-0 border-top-0">編輯</a>
+                            <a href="delete.php?id={$item.id}"
+                               class="btn btn-outline-dark text-muted py-1 btn-sm px-2 border-left-0 border-right-0 border-top-0">刪除</a>
+                            <div class="image_show">
+                                <div class="modal">
+                                    <div class="modal-body d-flex align-items-center justify-content-center">
+                                        <div class="img"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <article class="d-flex store-item text-center">
-                            <div class="store-text m-auto">
-                                <input type="hidden" class="item_id" value="{$item.id}">
+{*                        <article class="d-flex store-item text-center">*}
+{*                            <div class="store-text m-auto">*}
+{*                                <input type="hidden" class="item_id" value="{$item.id}">*}
 
-                                {*                                        <li>電話：{$item.phone} </li>*}
-                                <div class="store-button mt-2 mb-3">
-                                    <a href="{$item.images}"
-                                       class="btn btn-outline-primary btn-sm btn-pill px-2 btn-menu mr-2 border-left-0 border-right-0 border-top-0"
-                                       target="_blank">菜單</a>
+{*                                *}{*                                        <li>電話：{$item.phone} </li>*}
+{*                                <div class="store-button mt-2 mb-3">*}
 
-                                    {if isset($logged) && $logged}
+
+{*                                    {if isset($logged) && $logged}*}
 {*                                        <a href="group-buy.php?id={$item.id}"*}
 {*                                           class="btn btn-outline-danger btn-sm btn-pill px-2 border-left-0 border-right-0 border-top-0">*}
 {*                                            發起團購*}
 {*                                        </a>*}
-                                        <div class="mt-2">
-                                        <a href="edit.php?id={$item.id}"
-                                           class="btn btn-outline-dark text-muted btn-sm px-2 border-left-0 border-right-0 border-top-0">編輯</a>
-                                        <a href="delete.php?id={$item.id}"
-                                           class="btn btn-outline-dark text-muted btn-sm px-2 border-left-0 border-right-0 border-top-0">刪除</a>
-                                        </div>
-                                    {/if}
+{*                                        <div class="mt-2">*}
+{*                                        <a href="edit.php?id={$item.id}"*}
+{*                                           class="btn btn-outline-dark text-muted btn-sm px-2 border-left-0 border-right-0 border-top-0">編輯</a>*}
+{*                                        <a href="delete.php?id={$item.id}"*}
+{*                                           class="btn btn-outline-dark text-muted btn-sm px-2 border-left-0 border-right-0 border-top-0">刪除</a>*}
+{*                                        </div>*}
+{*                                    {/if}*}
 
-                                </div>
-                                <div class="image_show">
-                                    <div class="modal">
-                                        <div class="modal-body d-flex align-items-center justify-content-center">
-                                            <div class="img"></div>
-                                        </div>
-                                    </div>
-                                </div>
+{*                                </div>*}
+{*                                <div class="image_show">*}
+{*                                    <div class="modal">*}
+{*                                        <div class="modal-body d-flex align-items-center justify-content-center">*}
+{*                                            <div class="img"></div>*}
+{*                                        </div>*}
+{*                                    </div>*}
+{*                                </div>*}
 
-                            </div>
-                        </article>
+{*                            </div>*}
+{*                        </article>*}
                     </div>
                 </div>
             {/foreach}

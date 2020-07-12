@@ -5,6 +5,7 @@
  *
  */
 $(function () {
+    "use strict"
     // Modal
     $('.btn-menu').on('click', function (e) {
         e.preventDefault();
@@ -189,81 +190,81 @@ $(function () {
  *
  */
 $(function () {
-    // Only index
-    if ($('.page__index').length || $('.page__group-buy-now').length || $('.layout__header').length) {
-        showOrder();
-    }
-
-    // Get group-buy data
-    function showOrder() {
-        // axios get multiple urls
-        const total_orders = axios.get('group_buy_api.php?res=total_orders');
-        const groupBuy = axios.get('group_buy_api.php?res=buy');
-        const store_info = axios.get('group_buy_api.php?res=stores');
-
-        axios
-            .all([groupBuy, total_orders, store_info])
-            .then(
-                axios.spread((...res) => {
-                    const res1 = res[0];
-                    const res2 = res[1];
-                    const res3 = res[2];
-                    groupBuyDisplay(res1.data, res2.data, res3.data)
-                })
-            )
-            .catch(errors => {
-                console.error(errors)
-            })
-    }
-
-
-    // Calc total price and total people of order id.
-    function indexOrdersCalc(json, order_id) {
-        let sum = 0;
-        let name = [];
-        json.forEach(item => {
-            if (item.order_id === order_id) {
-                sum += parseInt(item.order_price);
-                name.push(item.order_name)
-            }
-        })
-        const totalName = name.filter((item, index) => name.indexOf(item) === index);  // 刪除重複元素
-        return {
-            totalPrice: sum,
-            totalName: totalName,
-        };
-    }
-
-
-    function groupBuyDisplay(groupBuy, totalOrders, stores) {
-        if (groupBuy.length === 0) {
-            $('#current_groupBuy').text('目前還沒有團購 :(').addClass('text-center');
-        } else {
-            $('#current_groupBuy').html(`進行中的團購&nbsp;&nbsp;<b>${groupBuy.length}</b>`)
-            $('#group_now_badge').text(groupBuy.length)
+        // Only index
+        if ($('.page__index').length || $('.page__group-buy-now').length || $('.layout__header').length) {
+            showOrder();
         }
-        let orderBlock = '';
-        for (let i = 0; i < groupBuy.length; i++) {
-            // Calc orders
-            const orderCalc = indexOrdersCalc(totalOrders, groupBuy[i].id)
-            const oneOrderSum = orderCalc.totalPrice;
-            const oneOrderNum = orderCalc.totalName.length;
-            const groupId = parseInt(groupBuy[i].store_id);
 
-            // Calc left time
-            const end_time = new Date(groupBuy[i].end_time).getTime();
-            const left_time = moment(end_time).fromNow()
+        // Get group-buy data
+        function showOrder() {
+            // axios get multiple urls
+            const total_orders = axios.get('group_buy_api.php?res=total_orders');
+            const groupBuy = axios.get('group_buy_api.php?res=buy');
+            const store_info = axios.get('group_buy_api.php?res=stores');
 
-            let storeCover = './language/img/noimg.jpg';
-            for (let key in stores) {
-                const store_id = parseInt(stores[key].id);
-                if (groupId === store_id){
-                    storeCover = stores[key].store_cover;
+            axios
+                .all([groupBuy, total_orders, store_info])
+                .then(
+                    axios.spread((...res) => {
+                        const res1 = res[0];
+                        const res2 = res[1];
+                        const res3 = res[2];
+                        groupBuyDisplay(res1.data, res2.data, res3.data)
+                    })
+                )
+                .catch(errors => {
+                    console.error(errors)
+                })
+        }
+
+
+        // Calc total price and total people of order id.
+        function indexOrdersCalc(json, order_id) {
+            let sum = 0;
+            let name = [];
+            json.forEach(item => {
+                if (item.order_id === order_id) {
+                    sum += parseInt(item.order_price);
+                    name.push(item.order_name)
                 }
-            }
-            if(storeCover == null) storeCover = './language/img/noimg.jpg';
+            })
+            const totalName = name.filter((item, index) => name.indexOf(item) === index);  // 刪除重複元素
+            return {
+                totalPrice: sum,
+                totalName: totalName,
+            };
+        }
 
-            orderBlock += `
+
+        function groupBuyDisplay(groupBuy, totalOrders, stores) {
+            if (groupBuy.length === 0) {
+                $('#current_groupBuy').text('目前還沒有團購 :(').addClass('text-center');
+            } else {
+                $('#current_groupBuy').html(`進行中的團購&nbsp;&nbsp;<b>${groupBuy.length}</b>`)
+                $('#group_now_badge').text(groupBuy.length)
+            }
+            let orderBlock = '';
+            for (let i = 0; i < groupBuy.length; i++) {
+                // Calc orders
+                const orderCalc = indexOrdersCalc(totalOrders, groupBuy[i].id)
+                const oneOrderSum = orderCalc.totalPrice;
+                const oneOrderNum = orderCalc.totalName.length;
+                const groupId = parseInt(groupBuy[i].store_id);
+
+                // Calc left time
+                const end_time = new Date(groupBuy[i].end_time).getTime();
+                const left_time = moment(end_time).fromNow()
+
+                let storeCover = './language/img/noimg.jpg';
+                for (let key in stores) {
+                    const store_id = parseInt(stores[key].id);
+                    if (groupId === store_id) {
+                        storeCover = stores[key].store_cover;
+                    }
+                }
+                if (storeCover == null) storeCover = './language/img/noimg.jpg';
+
+                orderBlock += `
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
         <div class="card">
             <div class="card-header">
@@ -272,7 +273,9 @@ $(function () {
                 </h4>
             </div>
             <a href="order.php?id=${groupBuy[i].id}" title="我要跟${groupBuy[i].group_host}開的${groupBuy[i].store_name}">
-                <div class="store-image" style="background-image: url(${storeCover})"></div>
+                <div class="store-image">
+                    <img src="${storeCover}" alt="" class="img-fluid">
+                </div>
             </a>
             
             <div class="card-body">
@@ -293,166 +296,167 @@ $(function () {
             </div>
             </div>
         </div>`
-        }
-        $('.order-block').empty().append(orderBlock);
-        $('.del-group-btn').on('click', delGroupBuy)
-    }
-
-
-    /**
-     * @Range: index.php
-     *
-     * Delete group-buy
-     *
-     */
-    function delGroupBuy() {
-        const group_id = $(this).data('groupid');
-        if (!group_id) return;
-
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: true
-        })
-
-        swalWithBootstrapButtons.fire({
-            title: '你確定要刪除嗎？',
-            text: "這項操作是沒辦法還原的！",
-            showCancelButton: true,
-            confirmButtonText: '是的，我要刪除',
-            cancelButtonText: '取消',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                delGroupBuyHandle(group_id);
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                    '團購單操作取消',
-                    '您的資料是安全的 :)',
-                    'error'
-                )
             }
-        })
-    }
+            $('.order-block').empty().append(orderBlock);
+            $('.del-group-btn').on('click', delGroupBuy)
+        }
 
 
-    function delGroupBuyHandle(group_id) {
-        if (!group_id) return;
-        axios
-            .get(`group_buy_api.php?del_group=${group_id}`)
-            .then(res => {
-                // console.log(res)
-                if (!res.data === 'success') {
-                    Swal.fire(
-                        '操作失敗',
-                        '您並未刪除任何資料 :(',
+        /**
+         * @Range: index.php
+         *
+         * Delete group-buy
+         *
+         */
+        function delGroupBuy() {
+            const group_id = $(this).data('groupid');
+            if (!group_id) return;
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: true
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: '你確定要刪除嗎？',
+                text: "這項操作是沒辦法還原的！",
+                showCancelButton: true,
+                confirmButtonText: '是的，我要刪除',
+                cancelButtonText: '取消',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    delGroupBuyHandle(group_id);
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        '團購單操作取消',
+                        '您的資料是安全的 :)',
                         'error'
                     )
                 }
-                Swal.fire(
-                    '團購單操作成功',
-                    '您的資料已經被刪除 :)',
-                    'success'
-                )
-                showOrder();
-            })
-            .catch(error => {
-                console.error(error)
-            })
-    }
-
-
-    /**
-     * @Range: Order.php
-     *
-     * Get order item of these order.
-     *
-     */
-    // Only order page load
-    if ($('.page__order').length) {
-        ordersDisplay();
-        $('#order_form').on('submit', submitOrder);  // Submit order
-    }
-
-
-    // Orders display
-    function ordersDisplay() {
-        const order_id = $('#order_id').val();
-
-        // If not order id
-        if (!order_id) {
-            let timerInterval;
-            Swal.fire({
-                title: '未獲取到訂單編號',
-                html: '<b></b> 毫秒後跳轉到首頁',
-                icon: 'error',
-                timer: 3000,
-                timerProgressBar: true,
-                onBeforeOpen: () => {
-                    Swal.showLoading()
-                    timerInterval = setInterval(() => {
-                        const content = Swal.getContent()
-                        if (content) {
-                            const b = content.querySelector('b')
-                            if (b) {
-                                b.textContent = Swal.getTimerLeft()
-                            }
-                        }
-                    }, 100)
-                },
-                onClose: () => {
-                    clearInterval(timerInterval)
-                }
-            }).then((result) => {
-                /* Read more about handling dismissals below */
-                if (result.dismiss === Swal.DismissReason.timer) {
-                    // console.log('I was closed by the timer')
-                    // window.location.href = 'index.php';
-                }
             })
         }
-        // Ajax to get order list
-        axios.get(`group_buy_api.php?res=order_list&order_id=${order_id}`).then(res => {
-            // console.log(res.data)
-            ordersListDisplay(res.data)
-        }).catch(err => {
-            console.error(err)
-        })
-    }
 
 
-    // Calc price
-    function calcOrders(json) {
-        let sum = 0;
-        let name = [];
-        json.forEach(item => {
-            sum += parseInt(item.order_price);
-            name.push(item.order_name)
-        })
-        const totalName = name.filter((item, index) => name.indexOf(item) === index);  // 刪除重複元素
-        return {
-            totalPrice: sum,
-            totalName: totalName,
-        };
-    }
+        function delGroupBuyHandle(group_id) {
+            if (!group_id) return;
+            axios
+                .get(`group_buy_api.php?del_group=${group_id}`)
+                .then(res => {
+                    // console.log(res)
+                    if (!res.data === 'success') {
+                        Swal.fire(
+                            '操作失敗',
+                            '您並未刪除任何資料 :(',
+                            'error'
+                        )
+                    }
+                    Swal.fire(
+                        '團購單操作成功',
+                        '您的資料已經被刪除 :)',
+                        'success'
+                    )
+                    showOrder();
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        }
 
 
-    // Orders display
-    function ordersListDisplay(ordersData) {
-        const calcData = calcOrders(ordersData);
-        const totalPrice = calcData.totalPrice;
-        const totalName = calcData.totalName;
-        $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單，總金額 ${totalPrice} 元`);
+        /**
+         * @Range: Order.php
+         *
+         * Get order item of these order.
+         *
+         */
+        // Only order page load
+        if ($('.page__order').length) {
+            ordersDisplay();
+            $('#order_form').on('submit', submitOrder);  // Submit order
+        }
 
-        // Display
-        let orderListHtml = '';
-        for (let i = 0; i < ordersData.length; i++) {
-            orderListHtml += `
+
+        // Orders display
+        function ordersDisplay() {
+            const order_id = $('#order_id').val();
+
+            // If not order id
+            if (!order_id) {
+                let timerInterval;
+                Swal.fire({
+                    title: '未獲取到訂單編號',
+                    html: '<b></b> 毫秒後跳轉到首頁',
+                    icon: 'error',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                        timerInterval = setInterval(() => {
+                            const content = Swal.getContent()
+                            if (content) {
+                                const b = content.querySelector('b')
+                                if (b) {
+                                    b.textContent = Swal.getTimerLeft()
+                                }
+                            }
+                        }, 100)
+                    },
+                    onClose: () => {
+                        clearInterval(timerInterval)
+                    }
+                }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        // console.log('I was closed by the timer')
+                        // window.location.href = 'index.php';
+                    }
+                })
+            }
+            // Ajax to get order list
+            axios.get(`group_buy_api.php?res=order_list&order_id=${order_id}`).then(res => {
+                // console.log('res.data:',res.data)
+                ordersListDisplay(res.data)
+            }).catch(err => {
+                console.error(err)
+            })
+        }
+
+
+        // Calc price
+        function calcOrders(json) {
+            let sum = 0;
+            let name = [];
+            json.forEach(item => {
+                sum += parseInt(item.order_price);
+                name.push(item.order_name)
+            })
+            const totalName = name.filter((item, index) => name.indexOf(item) === index);  // 刪除重複元素
+            return {
+                totalPrice: sum,
+                totalName: totalName,
+            };
+        }
+
+
+        // Orders display
+        function ordersListDisplay(ordersData) {
+            const calcData = calcOrders(ordersData);
+            const totalPrice = calcData.totalPrice;
+            const totalName = calcData.totalName;
+            $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單，總金額 ${totalPrice} 元`);
+
+
+            // Display
+            let orderListHtml = '';
+            for (let i = 0; i < ordersData.length; i++) {
+                orderListHtml += `
         <div class="row py-2 rounded order-item">
             <div class="col-sm-2 px-1">
                 <input type="hidden" name="field_id" value="${ordersData[i].field_id}" class="field_id">
@@ -483,181 +487,318 @@ $(function () {
 
         </div>
         `
+            }
+            // Orders number
+            if (ordersData.length === 0) {
+                $('#order_list').text('目前還沒有訂單 :(').addClass('text-center');
+            } else {
+                $('#order_list').empty().append(orderListHtml);
+            }
+            // Call calc orders
+            // countOrders(ordersData);
+
+            // Call edit order function
+            $('#order_list input[name^="order"]').on('change', editOrder);
+
+            // Call delete order function
+            $('.delete_order').on('click', deleteOrder);
         }
-        // Orders number
-        if (ordersData.length === 0) {
-            $('#order_list').text('目前還沒有訂單 :(').addClass('text-center');
-        } else {
-            $('#order_list').empty().append(orderListHtml);
+
+        /**
+         * @Range: Order.php
+         *
+         * Calc orders
+         *
+         */
+        function countOrders(data) {
+            "use strict"
+            /*
+                1. 獲取所有餐點名  重複+1
+                2. 獲取餐點價格
+                3. 獲取訂購該餐點有哪些人
+
+                定義一維陣列
+                let arr = new Array();
+                定義二維陣列
+                arr[0] = new Array();
+             */
+            // [["排餐", 1], ["排餐", 3], ["排餐", 1], ["排餐", 1], ["排餐", 2]]
+            let meal = [];  // One dimensional array
+            for (let k = 0; k < data.length; k++) {
+                meal[k] = []   // Two dimensional array
+                // ["排餐"]
+                for (let j = 0; j < data.length; j++) {
+                    meal[k][0] = data[k].order_meal
+                    meal[k][1] = 1
+                }
+            }
+
+
+            console.log('data:', data)
+
+            let meal_price = []
+            for (let k in data) {
+                meal_price.push({
+                    meal: data[k].order_meal,
+                    price: data[k].order_price
+                })
+            }
+            console.log('meal_price',meal_price)
+
+
+
+
+            let price_empty = []
+
+            meal_price.forEach((v, k) => {
+                console.log(meal_price.indexOf(v.meal));
+                // console.log(v.meal);
+                // price_empty.includes(v.meal) ? '' : price_empty.push(v.meal)
+            })
+            // console.log('price_empty',price_empty)
+            // let price_result = new Set();
+            // let price_repeat = new Set();
+            // meal_price.forEach((item, k) => {
+            //     price_result.has(item) ? price_repeat.add(item) : price_result.add(item);
+            // })
+            //
+            // console.log('price_result:', price_result)
+            // console.log('price_repeat:', price_repeat)
+
+
+
+            // console.log(meal)
+
+
+            // ["排餐", "排餐", "雞排飯", "腳尾飯", "排餐", "綠茶包", "酸辣湯湯", "腳尾飯"]
+            let meal_count = []
+            meal.forEach(function (v, k) {
+                meal_count.push(v[0])
+            })
+            // console.log('meal_count:', meal_count)
+
+
+            // {排餐: 3, 雞排飯: 1, 腳尾飯: 2, 綠茶包: 1, 酸辣湯湯: 1}
+            let meal_result = []
+            meal_count.forEach(function (item) {
+                meal_result[item] = meal_result[item] ? meal_result[item] + 1 : 1
+            })
+            // console.log(Object.keys(meal_result))  // 不重複值 ["排餐", "雞排飯", "腳尾飯", "綠茶包", "酸辣湯湯"]
+            // console.log(meal_result)
+
+
+            // console.log('meal_result',Object.keys(meal_result))
+
+            // for(let i=0;i<meal_result.length;i++){
+            //     console.log(meal_result[i])
+            // }
+
+            let orderObj = [];
+            for (let k in meal_result) {
+
+                // console.log(k)
+
+                orderObj.push({
+                        meal: k,
+                        number: meal_result[k],
+                        price: searchPrice(k),
+                        // k = "雞排飯"
+
+                    }
+                )
+            }
+
+            console.log(orderObj)
+
+            //
+            function searchPrice(meal_name) {
+                let data_result = ''
+
+                data.filter(function (v) {
+                    if (v.order_meal.indexOf(meal_name) > -1) {
+                        data_result = v.order_price;
+                    }
+                    return data_result
+                })
+            }
+
+            // console.log(orderObj)
+            //
+            // console.log('-----------------')
+
+            // for (let k in data) {
+            //     console.log(data[k])
+            // }
+
+
+            /*
+                let hope_result = [{
+                    meal: "排餐",
+                    number: 3,
+                    price: 150,
+                    name: ["小熊", "王大大", "某某人"]
+                }]
+
+            */
+
+            // console.log(hope_result)
+
+            // for (let k in data) {
+            //     console.log(data[k])
+            // }
+
+            /*
+                let hope_result = [{
+                meal: ["排餐", 3],
+                price: 150,
+                name: ["小熊", "王大大", "某某人"]
+            }]
+
+
+             */
+
+
+            let orderTotalHtml = `
+            <div class="tr row py-0">
+                <div class="col-sm-4">
+                    <input type="text" class="form-control border-0" name="order_meal" value="雞排飯"
+                           data-field="點餐內容" readonly>
+                </div>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control border-0" name="order_price" value="1"
+                           data-field="數量" readonly>
+                </div>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control border-0" name="order_price" value="150"
+                           data-field="價格" readonly>
+                </div>
+                <div class="col-sm-4">
+                    <ul class="d-flex flex-wrap">
+                        <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">小熊</li>
+                        <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">小熊王</li>
+                        <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">張學友</li>
+                        <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">陳胖胖</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="th row py-0 ">
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control border-0" value="150">
+                </div>
+                <div class="col-sm-4">
+                </div>
+            </div>  
+        `;
+
+
         }
 
-        // Call edit order function
-        $('#order_list input[name^="order"]').on('change', editOrder);
 
-        // Call delete order function
-        $('.delete_order').on('click', deleteOrder);
-    }
+        /**
+         * @Range: Order.php
+         *
+         * Submit order
+         *
+         */
+        // Submit order handle
+        function submitOrder(event) {
+            event.preventDefault()
+            const order_id = $('input[name=add_order_id]');
+            const order_name = $('input[name=add_order_name]');
+            const order_meal = $('input[name=add_order_meal]');
+            const order_price = $('input[name=add_order_price]');
+            const order_number = $('select[name=add_order_number] :selected');
+            const order_remark = $('input[name=add_order_remark]');
+
+            if (!checkInputVal(order_price, '價格')) return;
+            if (!checkInputVal(order_number, '數量')) return;
+            if (!checkInputVal(order_meal, '餐點內容')) return;
+            if (!checkInputVal(order_name, '姓名')) return;
+
+            let data = new FormData();
+            data.append('add_order', 'true');
+            data.append('order_id', order_id.val());
+            data.append('order_name', order_name.val());
+            data.append('order_meal', order_meal.val());
+            data.append('order_number', order_number.val());
+            data.append('order_price', order_price.val());
+            data.append('order_remark', order_remark.val());
+
+            // $('#order_form').find('input').val('')
+            order_name.val('');
+            order_meal.val('');
+            order_price.val('');
+            order_remark.val('');
+
+            axios.post('group_buy_api.php', data).then(res => {
+                console.log(res.data)
+                if (res.data === 'success') {
+                    Swal.fire(
+                        '增加成功',
+                        '訂單已新增',
+                        'success'
+                    )
+                    ordersDisplay();
+                }
+            }).catch(err => {
+                console.error(err)
+            })
+        }
 
 
-    /**
-     * @Range: Order.php
-     *
-     * Submit order
-     *
-     */
-    // Submit order handle
-    function submitOrder(event) {
-        event.preventDefault()
-        const order_id = $('input[name=add_order_id]');
-        const order_name = $('input[name=add_order_name]');
-        const order_meal = $('input[name=add_order_meal]');
-        const order_price = $('input[name=add_order_price]');
-        const order_number = $('select[name=add_order_number] :selected');
-        const order_remark = $('input[name=add_order_remark]');
-
-        if (!checkInputVal(order_price, '價格')) return;
-        if (!checkInputVal(order_number, '數量')) return;
-        if (!checkInputVal(order_meal, '餐點內容')) return;
-        if (!checkInputVal(order_name, '姓名')) return;
-
-        let data = new FormData();
-        data.append('add_order', 'true');
-        data.append('order_id', order_id.val());
-        data.append('order_name', order_name.val());
-        data.append('order_meal', order_meal.val());
-        data.append('order_number', order_number.val());
-        data.append('order_price', order_price.val());
-        data.append('order_remark', order_remark.val());
-
-        // $('#order_form').find('input').val('')
-        order_name.val('');
-        order_meal.val('');
-        order_price.val('');
-        order_remark.val('');
-
-        axios.post('group_buy_api.php', data).then(res => {
-            console.log(res.data)
-            if (res.data === 'success') {
+        // Check input value not empty
+        function checkInputVal(element, elName) {
+            if (!element.val()) {
                 Swal.fire(
-                    '增加成功',
-                    '訂單已新增',
-                    'success'
+                    '表單欄位檢查',
+                    `\`${elName}\` 欄位不可為空喔`,
+                    'warning'
                 )
-                ordersDisplay();
+                element.addClass('is-invalid');
+                return false;
             }
-        }).catch(err => {
-            console.error(err)
-        })
-    }
-
-
-    // Check input value not empty
-    function checkInputVal(element, elName) {
-        if (!element.val()) {
-            Swal.fire(
-                '表單欄位檢查',
-                `\`${elName}\` 欄位不可為空喔`,
-                'warning'
-            )
-            element.addClass('is-invalid');
-            return false;
+            return true;
         }
-        return true;
-    }
 
 
-    /**
-     * @Range: Order.php
-     *
-     * Edit order
-     *
-     */
-    function editOrder() {
-        const orderEl = $(this);
-        const orderName = orderEl.attr('name');  // Field name
-        const orderValue = orderEl.val();
-        const orderId = $('#order_id').val();
-        const field_id = orderEl.parents('.order-item').find('.field_id').val();
-        const orderTitle = orderEl.attr('data-field')
+        /**
+         * @Range: Order.php
+         *
+         * Edit order
+         *
+         */
+        function editOrder() {
+            const orderEl = $(this);
+            const orderName = orderEl.attr('name');  // Field name
+            const orderValue = orderEl.val();
+            const orderId = $('#order_id').val();
+            const field_id = orderEl.parents('.order-item').find('.field_id').val();
+            const orderTitle = orderEl.attr('data-field')
 
-        // Check input value not empty.
-        if (orderName !== 'order_remark') {  // Order remark not require.
-            if (!checkInputVal(orderEl, orderTitle)) {
-                // ordersDisplay();  // Reload order data
-                return;
+            // Check input value not empty.
+            if (orderName !== 'order_remark') {  // Order remark not require.
+                if (!checkInputVal(orderEl, orderTitle)) {
+                    // ordersDisplay();  // Reload order data
+                    return;
+                }
             }
-        }
-        // Post form
-        let orderData = new FormData();
-        orderData.append('edit_order', 'true');
-        orderData.append('order_id', orderId);
-        orderData.append('order_field_name', orderName);
-        orderData.append('order_field_value', orderValue);
-        orderData.append('field_id', field_id);
+            // Post form
+            let orderData = new FormData();
+            orderData.append('edit_order', 'true');
+            orderData.append('order_id', orderId);
+            orderData.append('order_field_name', orderName);
+            orderData.append('order_field_value', orderValue);
+            orderData.append('field_id', field_id);
 
-        axios.post('group_buy_api.php', orderData).then(res => {
-            // console.log(res.data)
-            if (res.data === 'success') {
-                Swal.fire(
-                    '修改成功',
-                    '訂單已更新',
-                    'success'
-                )
-                ordersDisplay();
-            }
-        }).catch(err => {
-            console.error(err)
-        })
-    }
-
-
-    /**
-     * @Range: Order.php
-     *
-     * Delete order
-     *
-     */
-    function deleteOrder(event) {
-        event.preventDefault();
-        const fieldId = $(this).parents('.order-item').find('.field_id').val();
-
-        // Are you sure to delete this record?
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: true
-        })
-
-        swalWithBootstrapButtons.fire({
-            title: '你確定要刪除嗎？',
-            text: "這項操作是沒辦法還原的！",
-            showCancelButton: true,
-            confirmButtonText: '是的，我要刪除',
-            cancelButtonText: '取消',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                deleteOrderAct();
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                    '訂單操作取消',
-                    '您的資料是安全的 :)',
-                    'error'
-                )
-            }
-        })
-
-        function deleteOrderAct() {
-            axios.get(`group_buy_api.php?del=${fieldId}`).then(res => {
+            axios.post('group_buy_api.php', orderData).then(res => {
                 // console.log(res.data)
                 if (res.data === 'success') {
                     Swal.fire(
-                        '刪除成功',
+                        '修改成功',
                         '訂單已更新',
                         'success'
                     )
@@ -668,8 +809,69 @@ $(function () {
             })
         }
 
+
+        /**
+         * @Range: Order.php
+         *
+         * Delete order
+         *
+         */
+        function deleteOrder(event) {
+            event.preventDefault();
+            const fieldId = $(this).parents('.order-item').find('.field_id').val();
+
+            // Are you sure to delete this record?
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: true
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: '你確定要刪除嗎？',
+                text: "這項操作是沒辦法還原的！",
+                showCancelButton: true,
+                confirmButtonText: '是的，我要刪除',
+                cancelButtonText: '取消',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    deleteOrderAct();
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        '訂單操作取消',
+                        '您的資料是安全的 :)',
+                        'error'
+                    )
+                }
+            })
+
+            function deleteOrderAct() {
+                axios.get(`group_buy_api.php?del=${fieldId}`).then(res => {
+                    // console.log(res.data)
+                    if (res.data === 'success') {
+                        Swal.fire(
+                            '刪除成功',
+                            '訂單已更新',
+                            'success'
+                        )
+                        ordersDisplay();
+                    }
+                }).catch(err => {
+                    console.error(err)
+                })
+            }
+
+        }
+
+
     }
-})
+)
 
 // SweetAlert 2 jquery plugin
 // warning, error, success, info, and question
