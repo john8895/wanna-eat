@@ -190,6 +190,7 @@ $(function () {
  *
  */
 $(function () {
+    "use strict"
         // Only index
         if ($('.page__index').length || $('.page__group-buy-now').length || $('.layout__header').length) {
             showOrder();
@@ -450,7 +451,7 @@ $(function () {
             const calcData = calcOrders(ordersData);
             const totalPrice = calcData.totalPrice;
             const totalName = calcData.totalName;
-            $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單，總金額 ${totalPrice} 元`);
+            // $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單，總金額 ${totalPrice} 元`);
 
 
             // Display
@@ -495,207 +496,13 @@ $(function () {
                 $('#order_list').empty().append(orderListHtml);
             }
             // Call calc orders
-            countOrders(ordersData);
+            // countOrders(ordersData);
 
             // Call edit order function
             $('#order_list input[name^="order"]').on('change', editOrder);
 
             // Call delete order function
             $('.delete_order').on('click', deleteOrder);
-        }
-
-        /**
-         * @Range: Order.php
-         *
-         * Calc orders
-         *
-         */
-        function countOrders(data) {
-            "use strict"
-            console.log(data)
-            /*
-                1. 獲取所有餐點名  重複+1
-                2. 獲取餐點價格
-                3. 獲取訂購該餐點有哪些人
-
-                定義一維陣列
-                let arr = new Array();
-                定義二維陣列
-                arr[0] = new Array();
-             */
-            // [["排餐", 1], ["排餐", 3], ["排餐", 1], ["排餐", 1], ["排餐", 2]]
-            // let meal = [];  // One dimensional array
-            // for (let k = 0; k < data.length; k++) {
-            //     meal[k] = []   // Two dimensional array
-            //     // ["排餐"]
-            //     for (let j = 0; j < data.length; j++) {
-            //         meal[k][0] = data[k].order_meal
-            //         meal[k][1] = 1
-            //     }
-            // }
-
-
-            console.log('data:', data)
-
-            // let meal_price = []
-            // for (let k in data) {
-            //     meal_price.push({
-            //         meal: data[k].order_meal,
-            //         price: data[k].order_price
-            //     })
-            // }
-            // console.log('meal_price',meal_price)
-
-
-
-
-            // let price_empty = []
-
-            // meal_price.forEach((v, k) => {
-            //     console.log(meal_price.indexOf(v.meal));
-            //     // console.log(v.meal);
-            //     // price_empty.includes(v.meal) ? '' : price_empty.push(v.meal)
-            // })
-            // console.log('price_empty',price_empty)
-            // let price_result = new Set();
-            // let price_repeat = new Set();
-            // meal_price.forEach((item, k) => {
-            //     price_result.has(item) ? price_repeat.add(item) : price_result.add(item);
-            // })
-            //
-            // console.log('price_result:', price_result)
-            // console.log('price_repeat:', price_repeat)
-
-
-
-            // console.log(meal)
-
-
-            // ["排餐", "排餐", "雞排飯", "腳尾飯", "排餐", "綠茶包", "酸辣湯湯", "腳尾飯"]
-            // let meal_count = []
-            // meal.forEach(function (v, k) {
-            //     meal_count.push(v[0])
-            // })
-            // console.log('meal_count:', meal_count)
-
-
-            // {排餐: 3, 雞排飯: 1, 腳尾飯: 2, 綠茶包: 1, 酸辣湯湯: 1}
-            // let meal_result = []
-            // meal_count.forEach(function (item) {
-            //     meal_result[item] = meal_result[item] ? meal_result[item] + 1 : 1
-            // })
-            // console.log(Object.keys(meal_result))  // 不重複值 ["排餐", "雞排飯", "腳尾飯", "綠茶包", "酸辣湯湯"]
-            // console.log(meal_result)
-
-
-            // console.log('meal_result',Object.keys(meal_result))
-
-            // for(let i=0;i<meal_result.length;i++){
-            //     console.log(meal_result[i])
-            // }
-
-            // let orderObj = [];
-            // for (let k in meal_result) {
-            //
-            //     // console.log(k)
-            //
-            //     orderObj.push({
-            //             meal: k,
-            //             number: meal_result[k],
-            //             price: searchPrice(k),
-            //             // k = "雞排飯"
-            //
-            //         }
-            //     )
-            // }
-
-            // console.log(orderObj)
-
-            //
-            function searchPrice(meal_name) {
-                let data_result = ''
-
-                data.filter(function (v) {
-                    if (v.order_meal.indexOf(meal_name) > -1) {
-                        data_result = v.order_price;
-                    }
-                    return data_result
-                })
-            }
-
-            // console.log(orderObj)
-            //
-            // console.log('-----------------')
-
-            // for (let k in data) {
-            //     console.log(data[k])
-            // }
-
-
-            /*
-                let hope_result = [{
-                    meal: "排餐",
-                    number: 3,
-                    price: 150,
-                    name: ["小熊", "王大大", "某某人"]
-                }]
-
-            */
-
-            // console.log(hope_result)
-
-            // for (let k in data) {
-            //     console.log(data[k])
-            // }
-
-            /*
-                let hope_result = [{
-                meal: ["排餐", 3],
-                price: 150,
-                name: ["小熊", "王大大", "某某人"]
-            }]
-
-
-             */
-
-
-            let orderTotalHtml = `
-            <div class="tr row py-0">
-                <div class="col-sm-4">
-                    <input type="text" class="form-control border-0" name="order_meal" value="雞排飯"
-                           data-field="點餐內容" readonly>
-                </div>
-                <div class="col-sm-2">
-                    <input type="number" class="form-control border-0" name="order_price" value="1"
-                           data-field="數量" readonly>
-                </div>
-                <div class="col-sm-2">
-                    <input type="number" class="form-control border-0" name="order_price" value="150"
-                           data-field="價格" readonly>
-                </div>
-                <div class="col-sm-4">
-                    <ul class="d-flex flex-wrap">
-                        <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">小熊</li>
-                        <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">小熊王</li>
-                        <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">張學友</li>
-                        <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">陳胖胖</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="th row py-0 ">
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-2">
-                </div>
-                <div class="col-sm-2">
-                    <input type="text" class="form-control border-0" value="150">
-                </div>
-                <div class="col-sm-4">
-                </div>
-            </div>  
-        `;
-
-
         }
 
 
@@ -728,8 +535,6 @@ $(function () {
             data.append('order_number', order_number.val());
             data.append('order_price', order_price.val());
             data.append('order_remark', order_remark.val());
-
-            // $('#order_form').find('input').val('')
             order_name.val('');
             order_meal.val('');
             order_price.val('');
@@ -748,6 +553,8 @@ $(function () {
             }).catch(err => {
                 console.error(err)
             })
+
+
         }
 
 
@@ -804,12 +611,114 @@ $(function () {
                         'success'
                     )
                     ordersDisplay();
+                    countOrders(orderId);
                 }
             }).catch(err => {
                 console.error(err)
             })
+
         }
 
+
+    /**
+     * @Range: Order.php
+     *
+     * Calc orders
+     *
+     */
+    function countOrders(order_id) {
+        if (!order_id) return;
+
+        // Post form
+        let countData = new FormData();
+        countData.append('count_order', 'true');
+        countData.append('order_id', order_id);
+
+        axios
+            .post('group_buy_api.php', countData)
+            .then(res => {
+                // console.log(res.data)
+                // if (res.data) {
+                //     Swal.fire(
+                //         '操作失敗',
+                //         '您並未刪除任何資料 :(',
+                //         'error'
+                //     )
+                // }
+                // Swal.fire(
+                //     '團購單操作成功',
+                //     '您的資料已經被刪除 :)',
+                //     'success'
+                // )
+                countOrderDisplay(res.data);
+            })
+            .catch(error => {
+                console.error(error)
+            })
+
+
+    }
+
+    function countOrderDisplay(totalData) {
+        // console.log(totalData)
+
+        let orderTotalBodyHtml = '';
+        let orderTotalHtml = '';
+        let allTotal = 0;
+        // $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單，總金額 ${totalPrice} 元`);
+
+        for (let k in totalData) {
+            let buyerName = totalData[k].buyerName.split(',');  // 訂購人
+
+            allTotal += parseInt(totalData[k].subTotal);  // 總金額
+
+            let buyerNameHtml = '';
+            buyerName.forEach((v, k)=>{
+                buyerNameHtml += `
+            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">${v}</li>
+            `
+            })
+
+            orderTotalBodyHtml += `
+            <div class="tr row py-0">
+                <div class="col-sm-3">
+                    <input type="text" class="form-control border-0" name="order_meal" value="${totalData[k].meal}"
+                           data-field="點餐內容" readonly>
+                </div>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control border-0" name="order_price" value="${totalData[k].order_number}"
+                           data-field="數量" readonly>
+                </div>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control border-0" name="order_price" value="${totalData[k].price}"
+                           data-field="價格" readonly>
+                </div>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control border-0" name="order_price" value="${totalData[k].subTotal}"
+                           data-field="小計" readonly>
+                </div>
+                <div class="col-sm-2">
+                    <ul class="d-flex flex-wrap">
+                    ${buyerNameHtml}
+                    </ul>
+                </div>
+            </div>
+        `;
+            orderTotalHtml = `
+            <div class="th row py-0 ">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control border-0" value="${allTotal}">
+                </div>
+                <div class="col-sm-2"></div>
+            </div>  
+            `
+        }
+        $('#orderTotal').empty().append(orderTotalBodyHtml).append(orderTotalHtml);
+
+    }
 
         /**
          * @Range: Order.php

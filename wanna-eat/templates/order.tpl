@@ -177,10 +177,10 @@
 
                         <div class="card table border">
 
-                            <div class="card-body" id="orderTotal">
+                            <div class="card-body">
 
                                 <div class="th row py-0 ">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <input type="text" class="form-control border-0" value="點餐內容">
                                     </div>
                                     <div class="col-sm-2">
@@ -189,10 +189,14 @@
                                     <div class="col-sm-2">
                                         <input type="text" class="form-control border-0" value="價格">
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control border-0" value="小計">
+                                    </div>
+                                    <div class="col-sm-2">
                                         <input type="text" class="form-control border-0" value="訂購人">
                                     </div>
                                 </div>
+                                <div id="orderTotal"></div>
 {*                                <div class="tr row py-0">*}
 {*                                    <div class="col-sm-4">*}
 {*                                        <input type="text" class="form-control border-0" name="order_meal" value="雞排飯"*}

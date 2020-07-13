@@ -14,62 +14,55 @@ function orderTotal($order_id)
     * 結果：排骨飯 50 * 2 = 100  | 阿熊、阿貓、阿翰
     */
     $new_item = [];
-//    $i = 0;
-//    $meal_obj = [];
-//    $temp_meal = '';
     while ($item = $result->fetch_assoc()) {
         $new_item[] = $item;
-//        var_dump($item);
-//        if (in_array('排餐', $item)) {
-//            echo $i . '有一樣';
-//        }
-//        $i++;
     }
-    $i = 0;
-    $temp = '';
+//    var_dump($new_item);
+
     $meal_obj = [];
     foreach ($new_item as $k => $v) {
-
-        $meal_obj[$i] = $v['order_meal'];
-
-//        var_dump($v['order_meal']);
-////        var_dump(in_array($temp, $v));
-//        $temp = $v['order_meal'];
-//        echo $i . '=';
-//        if(in_array($temp, $v)){
-//            echo $temp . '一樣 ';
-////            var_dump('$temp',$temp);
-//            $meal_obj['order_meal'] = $temp;
-//            $temp = '';
-//        }else{
-//            echo $v['order_meal'] . ' ';
-//            $temp = $v['order_meal'];
-//        }
-        $i++;
+        $meal_obj[$v['order_meal']][] = $v;
     }
+    var_dump($meal_obj);
 
-    $meal_count = array_count_values($meal_obj);  // 餐點總數 不重複
-    $meal_all = [];
-    $meal_i = 0;
-    foreach ($meal_count as $k => $v) {
-        echo $k . '共有 ' . $v . " 個\n";
-        if(in_array($k, $new_item[$meal_i])){
-            echo '$k:', $k;
-//            var_dump($new_item[$meal_i]);
-            $meal_all['order_meal'] = $k;
-            $meal_all['order_price'] = (int)$new_item[$meal_i]['order_price'];
-        }
-        $meal_i++;
-    }
-
-
-    var_dump('餐點總數 不重複', $meal_count);
-
-    print_r($new_item);
-//    var_dump('$meal_obj', $meal_obj);
-    var_dump('$meal_all', $meal_all);
     echo '--------------------------------';
     echo "<br>";
     echo '--------------------------------';
+
+    $meal = [];
+    $totalBuyer = [];
+    $totalNumber = 0;
+    $temp_num = 0;
+
+    foreach ($meal_obj as $k => $v) {
+        if (count($v) > 1) {
+            // 有超過1筆
+            foreach ($v as $item) {
+                $totalBuyer[] = $item['order_name'];
+                $totalNumber++;
+                $temp_num += intval($item['order_number']);
+                var_dump($item, intval($item['order_number']));
+                $limit = 1;  // 標記
+            }
+        }else{
+            $totalNumber++;
+            $temp_num = (int)$item['order_number'];
+        }
+        $meal['order_meal'][] = [
+            "meal" => $k,
+            "price" => (int)$v[0]['order_price'],
+            "order_number" => $temp_num,
+            "totalBuyer" => count($v),
+            "subTotal" => (int)($v[0]['order_price'] * $totalNumber),
+            "buyerName" => $limit !== 1 ? $v[0]['order_name'] : join(',', $totalBuyer),  // '阿貓,媽媽米,一原'
+        ];
+        $totalBuyer = [];  // 清空array
+        $limit = 0;  // 清除標記
+        $totalNumber = 0;
+        $temp_num = 0;
+    }
+    var_dump($meal);
+
+
 }
 
