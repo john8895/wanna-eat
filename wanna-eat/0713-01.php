@@ -1,5 +1,5 @@
 <?php
-
+// 從資料庫取出的資料
 $data = array(
     0 => array(
         "order_id" => 200709062654,
@@ -28,7 +28,38 @@ $data = array(
         "order_remark" => "排骨大辣 炒飯不辣"
     )
 );
-print_r($data);
+// 想要得到的結果：
+//    排餐 100 * 2 = 200  訂購人：阿貓、媽媽米
+//    雞排飯 125 * 1 = 100  訂購人：阿翰
+
+// 2020.07.13 明澤教的解法
+$data1=[];
+foreach ($data as $k => $v) {
+    $data1[$v['order_meal']][] = $v;  // 用餐點名做 key，訂單含同名餐點就會自動集中在array中
+}
+
+foreach ($data1 as $k => $item){
+//    var_dump($k, $v);
+//    echo $k ;
+    if(count($item) > 1){  // 有兩個人以上訂相同餐點
+        var_dump($k, count($item));
+    }
+//    var_dump($k, $v[0]);
+    foreach ($item as $v){
+
+        // 取得單一餐點中的其他資訊
+        var_dump($v['order_price']);
+        var_dump($v['order_name']);
+        var_dump($v['order_number']);
+    }
+}
+
+
+//print_r($data1);
+
+
+
+//print_r($data);
 /*
     * 1. 總金額  yes
     * 2. 總人數  yes
@@ -43,7 +74,7 @@ foreach ($data as $k => $v) {
     $temp[$k] = $v['order_meal'];
 }
 $count_array = array_count_values($temp);
-var_dump($count_array);
+//var_dump($count_array);
 /*
  array (size=2)
   '排餐' => int 2

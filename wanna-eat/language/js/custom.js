@@ -495,7 +495,7 @@ $(function () {
                 $('#order_list').empty().append(orderListHtml);
             }
             // Call calc orders
-            // countOrders(ordersData);
+            countOrders(ordersData);
 
             // Call edit order function
             $('#order_list input[name^="order"]').on('change', editOrder);
@@ -512,6 +512,7 @@ $(function () {
          */
         function countOrders(data) {
             "use strict"
+            console.log(data)
             /*
                 1. 獲取所有餐點名  重複+1
                 2. 獲取餐點價格
@@ -523,38 +524,38 @@ $(function () {
                 arr[0] = new Array();
              */
             // [["排餐", 1], ["排餐", 3], ["排餐", 1], ["排餐", 1], ["排餐", 2]]
-            let meal = [];  // One dimensional array
-            for (let k = 0; k < data.length; k++) {
-                meal[k] = []   // Two dimensional array
-                // ["排餐"]
-                for (let j = 0; j < data.length; j++) {
-                    meal[k][0] = data[k].order_meal
-                    meal[k][1] = 1
-                }
-            }
+            // let meal = [];  // One dimensional array
+            // for (let k = 0; k < data.length; k++) {
+            //     meal[k] = []   // Two dimensional array
+            //     // ["排餐"]
+            //     for (let j = 0; j < data.length; j++) {
+            //         meal[k][0] = data[k].order_meal
+            //         meal[k][1] = 1
+            //     }
+            // }
 
 
             console.log('data:', data)
 
-            let meal_price = []
-            for (let k in data) {
-                meal_price.push({
-                    meal: data[k].order_meal,
-                    price: data[k].order_price
-                })
-            }
-            console.log('meal_price',meal_price)
+            // let meal_price = []
+            // for (let k in data) {
+            //     meal_price.push({
+            //         meal: data[k].order_meal,
+            //         price: data[k].order_price
+            //     })
+            // }
+            // console.log('meal_price',meal_price)
 
 
 
 
-            let price_empty = []
+            // let price_empty = []
 
-            meal_price.forEach((v, k) => {
-                console.log(meal_price.indexOf(v.meal));
-                // console.log(v.meal);
-                // price_empty.includes(v.meal) ? '' : price_empty.push(v.meal)
-            })
+            // meal_price.forEach((v, k) => {
+            //     console.log(meal_price.indexOf(v.meal));
+            //     // console.log(v.meal);
+            //     // price_empty.includes(v.meal) ? '' : price_empty.push(v.meal)
+            // })
             // console.log('price_empty',price_empty)
             // let price_result = new Set();
             // let price_repeat = new Set();
@@ -571,18 +572,18 @@ $(function () {
 
 
             // ["排餐", "排餐", "雞排飯", "腳尾飯", "排餐", "綠茶包", "酸辣湯湯", "腳尾飯"]
-            let meal_count = []
-            meal.forEach(function (v, k) {
-                meal_count.push(v[0])
-            })
+            // let meal_count = []
+            // meal.forEach(function (v, k) {
+            //     meal_count.push(v[0])
+            // })
             // console.log('meal_count:', meal_count)
 
 
             // {排餐: 3, 雞排飯: 1, 腳尾飯: 2, 綠茶包: 1, 酸辣湯湯: 1}
-            let meal_result = []
-            meal_count.forEach(function (item) {
-                meal_result[item] = meal_result[item] ? meal_result[item] + 1 : 1
-            })
+            // let meal_result = []
+            // meal_count.forEach(function (item) {
+            //     meal_result[item] = meal_result[item] ? meal_result[item] + 1 : 1
+            // })
             // console.log(Object.keys(meal_result))  // 不重複值 ["排餐", "雞排飯", "腳尾飯", "綠茶包", "酸辣湯湯"]
             // console.log(meal_result)
 
@@ -593,22 +594,22 @@ $(function () {
             //     console.log(meal_result[i])
             // }
 
-            let orderObj = [];
-            for (let k in meal_result) {
+            // let orderObj = [];
+            // for (let k in meal_result) {
+            //
+            //     // console.log(k)
+            //
+            //     orderObj.push({
+            //             meal: k,
+            //             number: meal_result[k],
+            //             price: searchPrice(k),
+            //             // k = "雞排飯"
+            //
+            //         }
+            //     )
+            // }
 
-                // console.log(k)
-
-                orderObj.push({
-                        meal: k,
-                        number: meal_result[k],
-                        price: searchPrice(k),
-                        // k = "雞排飯"
-
-                    }
-                )
-            }
-
-            console.log(orderObj)
+            // console.log(orderObj)
 
             //
             function searchPrice(meal_name) {
