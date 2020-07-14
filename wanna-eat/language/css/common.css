@@ -62,12 +62,24 @@ a {
   top: 0;
 }
 
+.navbar-light .nav-link.btn:hover {
+  color: #fff;
+}
 /* ==================================
  * Pages
  * ================================== */
+.page__banner {
+  height: 288px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .page__order .order-item {
   transition: 0.2s linear;
   cursor: pointer;
+}
+.page__order .order-item div[class^=col-]:first-child {
+  line-height: 38px;
 }
 .page__order .order-item:hover {
   background-color: gold;
@@ -81,16 +93,6 @@ a {
 .page__order .order_list > .row {
   position: relative;
 }
-.page__order .order_list > .row:before {
-  content: attr(data-index);
-  position: absolute;
-  top: 0;
-  z-index: 2;
-  background-color: #d9d9d9;
-  padding: 0 2px;
-  font-size: 13px;
-}
-
 .store-image {
   max-width: 100%;
   height: 246px;

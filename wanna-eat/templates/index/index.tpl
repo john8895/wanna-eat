@@ -16,9 +16,9 @@
     <div class="container-fluid">
 
         <div class="row">
-            <div class="col-sm-12 mb-3">
+            <div class="col-sm-12 mb-3 mt-5">
                 <h4 class="h5 mb-1">餐廳列表</h4>
-                <small class="text-muted">看看你今天要吃啥？</small>
+                <small class="text-muted mt-1">看看你今天要吃啥？</small>
             </div>
 
             {foreach from=$stores item=item}

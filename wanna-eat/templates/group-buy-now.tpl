@@ -6,10 +6,10 @@
 
     <!-- 訂單狀態-->
     <section id="app" class="mt-3">
-        <div class="container">
-            <div class="row mb-4">
+        <div class="container-fluid">
+            <div class="row mb-4 no-gutters">
                 <div class="col-sm-12">
-                    <h4 id="current_groupBuy" class="mb-2"></h4>
+                    <h4 id="current_groupBuy" class="h5 mb-2"></h4>
                 </div>
             </div>
 

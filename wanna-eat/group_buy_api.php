@@ -217,7 +217,7 @@ function orderTotal()
             }
         }else{
             $totalNumber++;
-            $temp_num = (int)$item['order_number'];
+            $temp_num = (int)$v[0]['order_number'];
         }
         // TODO: 餐點名稱相同但價格不同時 應該要做出響應提示
         $new_meal[] = [
@@ -233,7 +233,8 @@ function orderTotal()
         $totalNumber = 0;
         $temp_num = 0;
     }
-    $order_json_data = json_encode($new_meal, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
+//    $order_json_data = json_encode($new_meal, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
+    $order_json_data = json_encode($new_meal);  // 轉為json格式，轉譯處理中文
     echo $order_json_data;
 }
 

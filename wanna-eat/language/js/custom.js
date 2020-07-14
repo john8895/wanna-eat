@@ -221,6 +221,7 @@ $(function () {
 
         // Calc total price and total people of order id.
         function indexOrdersCalc(json, order_id) {
+            // console.log(json, order_id)
             let sum = 0;
             let name = [];
             json.forEach(item => {
@@ -283,13 +284,13 @@ $(function () {
             <ul>
                 <li>團主：<span id="group_host">${groupBuy[i].group_host}</span></li>
                 <li>總金額：$${oneOrderSum}</li>
-                <li>已付金額：$0</li>
+<!--                <li>已付金額：$0</li>-->
                 <li>跟團人數：${oneOrderNum} 人</li>
                 <li>收單時間：${left_time}</li>
                 <li></li>
                 <li>
                     <div class="orderBtn mt-2 text-center">
-                        <a href="order.php?id=${groupBuy[i].id}" class="btn btn-outline-success border-top-0 border-left-0 border-right-0 mr-3">我要跟團</a>
+                        <a href="order.php?id=${groupBuy[i].id}" class="btn btn-outline-danger mr-3">我要跟團</a>
                         <button class="btn btn-outline-dark text-muted del-group-btn  border-top-0 border-left-0 border-right-0" data-groupid="${groupBuy[i].id}">刪除此單</button>
                     </div>
                 </li>
@@ -461,6 +462,9 @@ $(function () {
             for (let i = 0; i < ordersData.length; i++) {
                 orderListHtml += `
         <div class="row py-2 rounded order-item" data-index="${i+1}">
+            <div class="col-sm-1 text-right px-1">
+                <span>${i+1}. </span>
+            </div>
             <div class="col-sm-2 px-1">
                 <input type="hidden" name="field_id" value="${ordersData[i].field_id}" class="field_id">
                 <input type="text" class="form-control" value="${ordersData[i].order_name}" name="order_name"
@@ -478,7 +482,7 @@ $(function () {
                 <input type="number" class="form-control" value="${ordersData[i].order_number}" name="order_number"
                        placeholder="請輸入數量 *" data-field="數量">
             </div>
-            <div class="col-sm-3 px-1">
+            <div class="col-sm-2 px-1">
                 <input type="text" class="form-control" value="${ordersData[i].order_remark}" name="order_remark"
                        placeholder="請輸入備註" data-field="備註">
             </div>
@@ -543,7 +547,7 @@ $(function () {
             order_remark.val('');
 
             axios.post('group_buy_api.php', data).then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 if (res.data === 'success') {
                     Swal.fire(
                         '增加成功',
@@ -649,8 +653,9 @@ $(function () {
     }
 
     function countOrderDisplay(totalData) {
-        console.log(totalData)
+        // console.log(totalData)
 
+        let orderTotalHeadHtml = '';
         let orderTotalBodyHtml = '';
         let orderTotalHtml = '';
         let allTotal = 0;
@@ -666,7 +671,25 @@ $(function () {
             <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">${v}</li>
             `
             })
-
+            orderTotalHeadHtml = `
+            <div class="th row py-0 ">
+                <div class="col-sm-3">
+                    <input type="text" class="form-control border-0" value="點餐內容">
+                </div>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control border-0" value="數量">
+                </div>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control border-0" value="價格">
+                </div>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control border-0" value="小計">
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control border-0" value="訂購人">
+                </div>
+            </div>
+            `;
             orderTotalBodyHtml += `
             <div class="tr row py-0">
                 <div class="col-sm-3">
@@ -704,7 +727,7 @@ $(function () {
             </div>  
             `
         }
-        $('#orderTotal').empty().append(orderTotalBodyHtml).append(orderTotalHtml);
+        $('#orderTotal').empty().append(orderTotalHeadHtml).append(orderTotalBodyHtml).append(orderTotalHtml);
 
 
     }

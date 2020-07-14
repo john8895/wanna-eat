@@ -2,84 +2,55 @@
 {include file="head.tpl"}
 {include file="header.tpl"}
 <main class="page__order">
+    <div class="page__banner" style="background-image: url(./language/img/hero1.webp)">
 
+    </div>
     {*    Group buy information*}
-    <div class="container">
+    <div class="container-fluid">
         <!-- 開團 -->
         <div class="row modal-wrap">
-            <div class="col-sm-12 store-item">
+            <div class="col-sm-12 store-item no-gutters px-0">
 
-                <div class="card accordion">
-                    <div class="card-header accordion">
-                        <h4 class="title h5">團購資訊（開團人：{$item.group_host}）</h4>
-                    </div>
-
-                    <div class="card-body">
-                        {if isset($error)}
-                            <div class="form-group text-danger">
-                                {$error}
+                <div class="card px-3 py-4">
+                    <div class="title">{$item.store_name}（團購聯絡人：{$item.group_host}）</div>
+                    <div class="res__info">
+                        <span>{$item.store_phone}</span>
+                        &emsp;|&emsp;
+                        <span>外送金額：$200</span>
+                        &emsp;|&emsp;
+                        <span>目前金額：$250</span>
+                        &emsp;|&emsp;
+                        <span>收單時間：{$item.end_time}</span>
+                        {if $store.description !=''}
+                            <div>
+                                <i class="fas fa-angle-right mr-1 text-black-50"></i>餐廳簡介：{$store.description}
                             </div>
                         {/if}
-
-                        <div class="row">
-
-                            <div class="col-sm-6">
-                                {if isset($store.store_cover)}
-                                    <img src="{$store.store_cover}" alt="" class="img-fluid">
-                                {else}
-                                    <img src="./language/img/noimg.jpg" alt="" class="img-fluid">
-                                {/if}
+                        {if $item.remark !=''}
+                            <div>
+                                <i class="fas fa-angle-right mr-3 text-black-50"></i>團購注意事項：{$item.remark}
                             </div>
-                            <div class="col-sm-6">
-                                <ul class="store-text">
-                                    <li><i class="fas fa-angle-right mr-3 text-black-50"></i>餐廳：{$item.store_name}</li>
-                                    <li><i class="fas fa-angle-right mr-3 text-black-50"></i>餐廳電話：{$item.store_phone}</li>
-                                    <li>
-                                        <i class="fas fa-angle-right mr-3 text-black-50"></i>餐廳簡介：{if $store.description !=''}{$store.description}{else}無簡介{/if}
-                                    </li>
-                                    {*                            <li><i class="fas fa-angle-right mr-3 text-black-50"></i>餐廳菜單：<a href="{$store.images}"*}
-                                    {*                                                                                             class="btn btn-outline-primary btn-sm px-2 btn-menu">顯示菜單</a>*}
-                                    {*                            </li>*}
-                                    {*                            <li class="image_show">*}
-                                    {*                                <div class="modal">*}
-                                    {*                                    <div class="modal-body d-flex align-items-center justify-content-center">*}
-                                    {*                                        <div class="img"></div>*}
-                                    {*                                    </div>*}
-                                    {*                                </div>*}
-                                    {*                            </li>*}
-                                    <li><i class="fas fa-angle-right mr-3 text-black-50"></i>外送金額：$200</li>
-                                    <li><i class="fas fa-angle-right mr-3 text-black-50"></i>目前金額：$250</li>
-                                    <li><i class="fas fa-angle-right mr-3 text-black-50"></i>收單時間：{$item.end_time}</li>
-                                    {if $item.remark !=''}
-                                        <li>
-                                            <i class="fas fa-angle-right mr-3 text-black-50"></i>團購注意事項：{$item.remark}
-                                        </li>
-                                    {/if}
-                                </ul>
-
-                            </div>
-
-
-                        </div>
-
-
+                        {/if}
                     </div>
-
                 </div>
 
 
             </div>
 
-            <div class="col-sm-12 mt-4">
-
+            <div class="col-sm-12 mt-4 px-0">
+                {if isset($error)}
+                    <div class="form-group text-danger">
+                        {$error}
+                    </div>
+                {/if}
                 <div class="card accordion">
                     <div class="card-header">
-                        <h4 class="h5">菜單</h4>
+                        <div>菜單</div>
                     </div>
-                    <div class="card-body" style="display: none">
+                    <div class="card-body">
                         <div class="text-center">
                             <a href="{$store.images}" title="" target="_blank">
-                                <img src="{$store.images}" alt="" class="img-fluid" style="max-height: 750px">
+                                <img src="{$store.images}" alt="" class="img-fluid" style="max-height: 1000px">
                             </a>
                         </div>
                     </div>
@@ -98,7 +69,7 @@
         <div class="row">
 
 
-            <div class="col-sm-12 mt-4">
+            <div class="col-sm-12 mt-5">
                 <div class="card accordion">
                     <div class="card-header">
                         <h4 class="title h5">增加訂單</h4>
@@ -179,58 +150,8 @@
 
                             <div class="card-body">
 
-                                <div class="th row py-0 ">
-                                    <div class="col-sm-3">
-                                        <input type="text" class="form-control border-0" value="點餐內容">
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control border-0" value="數量">
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control border-0" value="價格">
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control border-0" value="小計">
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <input type="text" class="form-control border-0" value="訂購人">
-                                    </div>
-                                </div>
-                                <div id="orderTotal"></div>
-{*                                <div class="tr row py-0">*}
-{*                                    <div class="col-sm-4">*}
-{*                                        <input type="text" class="form-control border-0" name="order_meal" value="雞排飯"*}
-{*                                               data-field="點餐內容" readonly>*}
-{*                                    </div>*}
-{*                                    <div class="col-sm-2">*}
-{*                                        <input type="number" class="form-control border-0" name="order_price" value="1"*}
-{*                                               data-field="數量" readonly>*}
-{*                                    </div>*}
-{*                                    <div class="col-sm-2">*}
-{*                                        <input type="number" class="form-control border-0" name="order_price" value="150"*}
-{*                                               data-field="價格" readonly>*}
-{*                                    </div>*}
-{*                                    <div class="col-sm-4">*}
-{*                                        <ul class="d-flex flex-wrap">*}
-{*                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">小熊</li>*}
-{*                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">小熊王</li>*}
-{*                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">張學友</li>*}
-{*                                            <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">陳胖胖</li>*}
-{*                                        </ul>*}
-{*                                    </div>*}
-{*                                </div>*}
-{*                                <div class="th row py-0 ">*}
-{*                                    <div class="col-sm-4">*}
-{*                                    </div>*}
-{*                                    <div class="col-sm-2">*}
-{*                                    </div>*}
-{*                                    <div class="col-sm-2">*}
-{*                                        <input type="text" class="form-control border-0" value="150">*}
-{*                                    </div>*}
-{*                                    <div class="col-sm-4">*}
-{*                                    </div>*}
-{*                                </div>*}
 
+                                <div id="orderTotal"></div>
                             </div>
 
                         </div>
@@ -239,6 +160,12 @@
                     </div>
 
                 </div>
+            </div>
+
+            <div class="col-sm-12">
+                <a href="javascript:window.history.back()" class="btn btn-dark mt-5 px-3">
+                    <i class="fas fa-reply mr-2"></i>回上一頁
+                </a>
             </div>
 
 

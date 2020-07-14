@@ -33,7 +33,7 @@ function orderTotal($order_id)
     $totalBuyer = [];
     $totalNumber = 0;
     $temp_num = 0;
-
+    $limit = 0;
     foreach ($meal_obj as $k => $v) {
         if (count($v) > 1) {
             // 有超過1筆
@@ -44,9 +44,10 @@ function orderTotal($order_id)
                 var_dump($item, intval($item['order_number']));
                 $limit = 1;  // 標記
             }
-        }else{
+        } else {
             $totalNumber++;
-            $temp_num = (int)$item['order_number'];
+            var_dump($v[0]['order_number']);
+//            $temp_num = (int)$item['order_number'];
         }
         $meal['order_meal'][] = [
             "meal" => $k,

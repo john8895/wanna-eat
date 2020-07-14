@@ -48,14 +48,35 @@ a {
     top: 0;
 }
 
+.navbar-light .nav-link {
+    &.btn:hover {
+        color: #fff;
+    }
+
+    &:hover {
+
+    }
+}
+
 
 /* ==================================
  * Pages
  * ================================== */
+.page__banner {
+    height: 288px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
 .page__order {
     .order-item {
         transition: .2s linear;
         cursor: pointer;
+
+        & div[class^="col-"]:first-child {
+            line-height: 38px;
+        }
 
         &:hover {
             background-color: gold;
@@ -72,17 +93,17 @@ a {
 
     .order_list {
 
-        &>.row {
+        & > .row {
             position: relative;
 
             &:before {
-                content: attr(data-index);
-                position: absolute;
-                top: 0;
-                z-index: 2;
-                background-color: #d9d9d9;
-                padding: 0 2px;
-                font-size: 13px;
+                //content: attr(data-index);
+                //position: absolute;
+                //top: 0;
+                //z-index: 2;
+                //background-color: #d9d9d9;
+                //padding: 0 2px;
+                //font-size: 13px;
             }
         }
     }
