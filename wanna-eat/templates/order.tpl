@@ -159,7 +159,7 @@
 
                     </div>
                     <div class="card-body">
-                        <div id="order_list"></div>
+                        <div id="order_list" class="order_list"></div>
                     </div>
                 </div>
             </div>
@@ -192,7 +192,7 @@
                                     <div class="col-sm-2">
                                         <input type="text" class="form-control border-0" value="小計">
                                     </div>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <input type="text" class="form-control border-0" value="訂購人">
                                     </div>
                                 </div>

@@ -424,6 +424,8 @@ $(function () {
             axios.get(`group_buy_api.php?res=order_list&order_id=${order_id}`).then(res => {
                 // console.log('res.data:',res.data)
                 ordersListDisplay(res.data)
+                countOrders(order_id);
+
             }).catch(err => {
                 console.error(err)
             })
@@ -452,13 +454,13 @@ $(function () {
             const totalPrice = calcData.totalPrice;
             const totalName = calcData.totalName;
             // $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單，總金額 ${totalPrice} 元`);
-
+            $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單`);
 
             // Display
             let orderListHtml = '';
             for (let i = 0; i < ordersData.length; i++) {
                 orderListHtml += `
-        <div class="row py-2 rounded order-item">
+        <div class="row py-2 rounded order-item" data-index="${i+1}">
             <div class="col-sm-2 px-1">
                 <input type="hidden" name="field_id" value="${ordersData[i].field_id}" class="field_id">
                 <input type="text" class="form-control" value="${ordersData[i].order_name}" name="order_name"
@@ -637,19 +639,6 @@ $(function () {
         axios
             .post('group_buy_api.php', countData)
             .then(res => {
-                // console.log(res.data)
-                // if (res.data) {
-                //     Swal.fire(
-                //         '操作失敗',
-                //         '您並未刪除任何資料 :(',
-                //         'error'
-                //     )
-                // }
-                // Swal.fire(
-                //     '團購單操作成功',
-                //     '您的資料已經被刪除 :)',
-                //     'success'
-                // )
                 countOrderDisplay(res.data);
             })
             .catch(error => {
@@ -660,12 +649,11 @@ $(function () {
     }
 
     function countOrderDisplay(totalData) {
-        // console.log(totalData)
+        console.log(totalData)
 
         let orderTotalBodyHtml = '';
         let orderTotalHtml = '';
         let allTotal = 0;
-        // $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單，總金額 ${totalPrice} 元`);
 
         for (let k in totalData) {
             let buyerName = totalData[k].buyerName.split(',');  // 訂購人
@@ -682,7 +670,7 @@ $(function () {
             orderTotalBodyHtml += `
             <div class="tr row py-0">
                 <div class="col-sm-3">
-                    <input type="text" class="form-control border-0" name="order_meal" value="${totalData[k].meal}"
+                    <input type="text" class="form-control border-0 mb-2" name="order_meal" value="${totalData[k].meal}"
                            data-field="點餐內容" readonly>
                 </div>
                 <div class="col-sm-2">
@@ -697,7 +685,7 @@ $(function () {
                     <input type="number" class="form-control border-0" name="order_price" value="${totalData[k].subTotal}"
                            data-field="小計" readonly>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <ul class="d-flex flex-wrap">
                     ${buyerNameHtml}
                     </ul>
@@ -712,11 +700,12 @@ $(function () {
                 <div class="col-sm-2">
                     <input type="text" class="form-control border-0" value="${allTotal}">
                 </div>
-                <div class="col-sm-2"></div>
+                <div class="col-sm-3"></div>
             </div>  
             `
         }
         $('#orderTotal').empty().append(orderTotalBodyHtml).append(orderTotalHtml);
+
 
     }
 
