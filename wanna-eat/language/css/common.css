@@ -53,6 +53,35 @@ a {
 /* ==================================
  * Header
  * ================================== */
+.header-top {
+  height: 126px;
+  padding: 38px 0 25px;
+}
+.header-top .navbar-brand {
+  font-size: 26px;
+  color: black;
+  font-family: "Noto Sans TC", sans-serif;
+}
+.header-top .navbar-brand span {
+  color: #EB4847;
+}
+.header-top .account a {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+.header-top .account .f-icon {
+  font-size: 27px;
+  color: black;
+}
+
+.navbar-light.navbar {
+  background-color: #EB4847;
+}
+.navbar-light.navbar .nav-link {
+  color: white;
+}
+
 .navbar-nav > .nav-item > .dropdown-menu {
   top: 33px;
 }

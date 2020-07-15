@@ -12,5 +12,6 @@
     <link rel="stylesheet" href="./language/css/all.min.css" />
     <link rel="stylesheet" href="language/css/common.css">
     <link rel="stylesheet" href="language/css/index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>

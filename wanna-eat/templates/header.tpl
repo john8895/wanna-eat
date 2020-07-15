@@ -1,22 +1,34 @@
 <header class="layout__header">
 
+    <div class="header-top">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <a href="index.php" class="navbar-brand">今天要吃啥<span>？</span></a>
+                <div class="account">
+                    <a href="javascript:;" class="">
+                        <i class="f-icon fas fa-user-circle"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--navbar-expand-lg | sm | md..-->
     <!--對於不需要摺疊的導覽列，在導覽列中加入 .navbar-expand。對於總是摺疊的導覽列，不要加任何 .navbar-expand class-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="header__menu">
+    <nav class="navbar navbar-expand-lg navbar-light" id="header__menu">
         <div class="container">
-            <a href="index.php" class="navbar-brand">今天要吃啥？</a>
             <button class="navbar-toggler" type="button" data-target="#navbarDemo" data-toggle="collapse"
                     aria-expanded="false">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarDemo">
 
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav">
 {*                    <li class="nav-item active">*}
 {*                        <a href="index.php" class="nav-link">HOME</a>*}
 {*                    </li>*}
                     <li class="nav-item">
-                        <a href="group-buy-now.php" class="nav-link btn btn-outline-primary px-3">
+                        <a href="group-buy-now.php" class="nav-link">
                             <span class="mr-1">進行中團購</span> <span class="badge badge-light" id="group_now_badge">0</span>
                         </a>
                     </li>
