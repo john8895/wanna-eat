@@ -5,8 +5,11 @@
             <div class="d-flex justify-content-between">
                 <a href="index.php" class="navbar-brand">今天要吃啥<span>？</span></a>
                 <div class="account">
-                    <a href="javascript:;" class="">
+                    <a href="javascript:;" class="mr-3">
                         <i class="f-icon fas fa-user-circle"></i>
+                    </a>
+                    <a href="javascript:;" class="">
+                        <i class="f-icon fas fa-cog"></i>
                     </a>
                 </div>
             </div>
@@ -29,7 +32,7 @@
 {*                    </li>*}
                     <li class="nav-item">
                         <a href="group-buy-now.php" class="nav-link">
-                            <span class="mr-1">進行中團購</span> <span class="badge badge-light" id="group_now_badge">0</span>
+                            <span class="">進行中團購</span> <span class="badge badge-light" id="group_now_badge">0</span>
                         </a>
                     </li>
                     <li class="nav-item">
