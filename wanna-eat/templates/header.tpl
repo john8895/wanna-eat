@@ -51,9 +51,6 @@
                             <a href="logout.php" class="nav-link">登出</a>
                         </li>
                     {/if}
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">設定</a>
-                    </li>
 
 
                     {*
