@@ -26,6 +26,10 @@ section {
 
 a {
   transition: 0.3s ease-in-out;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
 }
 
 /* ==================================
@@ -65,14 +69,31 @@ a {
 .header-top .navbar-brand span {
   color: #EB4847;
 }
-.header-top .account a {
+.header-top .header__account .link-item {
+  position: relative;
+}
+.header-top .header__account .account-link {
   display: inline-block;
   padding: 10px;
   border: 1px solid #ddd;
 }
-.header-top .account .f-icon {
-  font-size: 27px;
+.header-top .header__account .account-link:hover .f-icon {
   color: black;
+}
+.header-top .header__account .account-group {
+  position: absolute;
+  bottom: -28px;
+  left: 0px;
+  border: 1px solid #ddd;
+  min-width: 67px;
+  padding: 0.35rem;
+  background-color: #fff;
+  text-align: center;
+}
+.header-top .header__account .f-icon {
+  font-size: 23px;
+  color: #626262;
+  transition: 0.4s linear;
 }
 
 .navbar-light.navbar {

@@ -5,11 +5,10 @@
  *
  */
 $(function () {
-    "use strict"
     // Modal
     $('.btn-menu').on('click', function (e) {
         e.preventDefault();
-        let img_path = $(this).attr('href');
+        let img_path:string = $(this).attr('href');
         let modal = $(this).parents('.store-text').find('.modal');
         let height = $(document).height();
         let step = 1;

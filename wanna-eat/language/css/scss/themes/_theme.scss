@@ -11,6 +11,10 @@ section {
 
 a {
     transition: .3s ease-in-out;
+    text-decoration: none;
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 /* ==================================
@@ -52,16 +56,42 @@ a {
         }
     }
 
-    .account {
-        a {
+    .header__account {
+
+        .link-item {
+            position: relative;
+        }
+        .account-link {
             display: inline-block;
             padding: 10px;
             border: 1px solid #ddd;
+
+            &:hover {
+                .f-icon {
+                    color: black;
+                }
+            }
         }
+
+        .account-group {
+            position: absolute;
+            bottom: -28px;
+            left: 0px;
+            border: 1px solid #ddd;
+            min-width: 67px;
+            padding: 0.35rem;
+            background-color: #fff;
+            text-align: center;
+        }
+
+
         .f-icon {
-            font-size: 27px;
-            color: black;
+            font-size: 23px;
+            color: #626262;
+            transition: .4s linear;
         }
+
+
     }
 
 }
