@@ -42,7 +42,6 @@
                 </div>
             </header>
 
-
             <!-- 進行中團購-->
             <main id="app" class="mt-3">
                 <div class="row mb-4 no-gutters">
