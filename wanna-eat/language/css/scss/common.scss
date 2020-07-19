@@ -1,5 +1,7 @@
 @import "helpers/mixins";
 @import "helpers/reset";
 @import "helpers/variable";
-
+@import "plugins/owl.carousel";
+@import "plugins/owl.carousel.theme";
+@import "components/store";
 @import "themes/theme";

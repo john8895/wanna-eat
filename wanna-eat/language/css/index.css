@@ -1,6 +1,14 @@
 /* ==================================
  * list-item
  * ================================== */
+.store-item .title {
+  font-size: 16px;
+  margin-bottom: 7px;
+  color: #000;
+}
+.store-item .title:hover {
+  color: #EB4847;
+}
 .store-item.pick-color {
   background-color: rgba(255, 215, 0, 0.6);
   border: 1px solid;

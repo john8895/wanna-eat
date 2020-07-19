@@ -1,18 +1,29 @@
 {include file="head.tpl"}
 {include file="header.tpl"}
-<main>
-    <div class="container">
-        <h1 class="text-center my-3 h3">新增餐廳</h1>
-        <hr>
-        <div class="row pt-4">
-            <div class="col-sm-12">
-                <form action="add.php" method="post" enctype="multipart/form-data">
+<main class="page__add-res">
+    <div class="inner__banner">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <h1 class="title">新增餐廳</h1>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h1 class="h5">基本資料</h1>
-                        </div>
-                        <div class="card-body">
+                <nav class="jh-breadcrumb">
+                    <ol>
+                        <li><a href="index.php">首頁</a></li>
+                        <li>新增餐廳</li>
+                    </ol>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+
+    <section>
+        <div class="container">
+            <div class="row pt-4">
+                <div class="col-sm-12">
+                    <form action="add.php" method="post" enctype="multipart/form-data" id="addStoreForm">
+
+                        <div class="">
                             {if isset($error)}
                                 <div class="form-group text-danger">
                                     {$error}
@@ -43,8 +54,20 @@
                                 <label class="col-sm-2 col-form-label text-right">餐廳介紹</label>
                                 <div class="col-sm-10">
                                     <div class="form-group">
-                                        <textarea name="description" cols="30" rows="2" class="form-control"
+                                        <textarea name="description" cols="30" rows="3" class="form-control"
                                                   placeholder="請輸入餐廳介紹">{if isset($description)} {$description} {/if}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-sm-2 col-form-label text-right">外送金額</label>
+                                <div class="col-sm-10">
+                                    <div class="form-group">
+                                        <input type="number" name="store_full_price"
+                                               class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
+                                               {if isset($store_full_price)}value="{$store_full_price}"{/if}
+                                               placeholder="滿多少錢才可外送，不限制請輸入 0">
                                     </div>
                                 </div>
                             </div>
@@ -53,46 +76,53 @@
                                 <label class="col-sm-2 col-form-label text-right">上傳封面</label>
                                 <div class="col-sm-10">
                                     <div class="form-group">
-                                        <input type="file" name="store_cover" class="form-control-file">
+                                        <input type="file" name="store_cover" class="form-control-file" id="input_addStoreCover">
                                         <small class="form-text text-muted">
                                             請上傳圖片類型檔案，大小不超過 1 MB
                                         </small>
+                                        <div id="store_cover_preview"></div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
 
-                    </div>
 
-                    <div class="card mt-5">
-                        <div class="card-header">
-                            <h1 class="h5">上傳菜單</h1>
-                        </div>
+                        <div class="mt-5">
+                            <div class="text-center">
+                                <div class="sec-title">
+                                    <h3>上傳菜單</h3>
+                                    <div class="sub-title">Restaurant menu upload</div>
+                                </div>
+                            </div>
 
-                        <div class="card-body">
-                            <div class="row">
+                            <div class="row mt-4">
                                 <label class="col-sm-2 col-form-label text-right">上傳菜單</label>
                                 <div class="col-sm-10">
                                     <div class="form-group">
-                                        <input type="file" name="images" class="form-control-file">
+                                        <input type="file" name="images" class="form-control-file" id="input_addStoreMenu">
                                         <small class="form-text text-muted">
                                             請上傳圖片類型檔案，大小不超過 1 MB
                                         </small>
+                                        <div id="store_menu_preview"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group text-center mt-4">
-                        <button type="submit" class="btn btn-primary mb-2 rounded-pill px-4">新增餐廳</button>
-                    </div>
+                        <div class="form-group text-center mt-4">
+                            <button type="submit" class="btn btn-default">新增餐廳</button>
+                        </div>
 
-                </form>
+                    </form>
+                </div>
+                <div class="col-sm-12">
+                    <a href="javascript:window.history.back()" class="btn btn-dark mt-5 px-3 rounded-0">
+                        <i class="fas fa-reply mr-2"></i>回上一頁
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 </main>
 {include file="footer.tpl"}
 {include file="js.tpl"}

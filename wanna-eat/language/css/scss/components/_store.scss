@@ -1,0 +1,63 @@
+@import "../helpers/variable";
+/* ==================================
+ * list-item
+ * ================================== */
+.store-item {
+
+    .title {
+        font-size: 16px;
+        margin-bottom: 7px;
+        color: #000;
+
+        //&:hover {
+        //    color: $first-color;
+        //}
+    }
+
+    // js call
+    &.pick-color {
+        background-color: rgba(255, 215, 0, 0.6);
+        border: 1px solid;
+    }
+
+    // image
+    .store-image {
+        .icon {
+            width: 20px;
+            height: 20px;
+            fill: #4C6EF5;
+            margin-right: 10px;
+            margin-top: 6px;
+        }
+    }
+
+    // text
+    .store-text {
+        li {
+            margin-bottom: 3px;
+
+        }
+    }
+
+    // button
+    .store-button {
+        font-size: 14px;
+
+        button.btn {
+            &:not(:last-child) {
+                margin-right: 5px;
+            }
+        }
+    }
+
+}
+// Modal
+.modal {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.69);
+    overflow-y: auto;
+}
+
+.modal-body {
+    height: 100vh;
+}

@@ -1,12 +1,24 @@
-{* filename: group-buy-now.tpl *}
-
 {include file="head.tpl"}
 {include file="header.tpl"}
 <main class="page__group-buy-now">
+    <div class="inner__banner">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <h1 class="title">進行中團購</h1>
 
-    <!-- 訂單狀態-->
+                <nav class="jh-breadcrumb">
+                    <ol>
+                        <li><a href="index.php">首頁</a></li>
+                        <li>進行中團購</li>
+                    </ol>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+    <!-- 進行中團購-->
     <section id="app" class="mt-3">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row mb-4 no-gutters">
                 <div class="col-sm-12">
                     <h4 id="current_groupBuy" class="h5 mb-2"></h4>

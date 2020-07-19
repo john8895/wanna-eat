@@ -1,0 +1,113 @@
+@import "../helpers/variable";
+
+/**
+ * Owl Carousel v2.3.4
+ * Copyright 2013-2018 David Deutsch
+ * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
+ */
+/*
+ * 	Default theme - Owl Carousel CSS File
+ */
+
+.owl-theme {
+    .owl-nav {
+        margin-top: 10px;
+        text-align: center;
+        -webkit-tap-highlight-color: transparent;
+
+        [class*='owl-'] {
+            color: #FFF;
+            font-size: 14px;
+            margin: 5px;
+            padding: 4px 7px;
+            background: #D6D6D6;
+            display: inline-block;
+            cursor: pointer;
+            border-radius: 3px;
+
+            &:hover {
+                background: #869791;
+                color: #FFF;
+                text-decoration: none;
+            }
+        }
+
+        .disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        &.disabled + .owl-dots {
+            margin-top: 10px;
+        }
+
+
+    }
+
+    .owl-dots {
+        text-align: center;
+        -webkit-tap-highlight-color: transparent;
+
+        .owl-dot {
+            display: inline-block;
+            zoom: 1;
+            *display: inline;
+
+            span {
+                width: 10px;
+                height: 10px;
+                margin: 5px 7px;
+                background: #D6D6D6;
+                display: block;
+                -webkit-backface-visibility: visible;
+                transition: opacity 200ms ease;
+                border-radius: 30px;
+            }
+
+            &.active span, &:hover span {
+                background: #869791;
+            }
+        }
+    }
+}
+
+.owl-nav {
+    .owl-prev,
+    .owl-next {
+        position: absolute;
+        top: 40%;
+        color: #fff !important;
+        font-size: 28px;
+        cursor: pointer;
+
+        &:focus {
+            outline: none;
+        }
+
+        &:hover {
+            span {
+                background-color: #fff;
+                color: $first-color;
+            }
+        }
+
+        span {
+            background-color: #EB4847;
+            font-size: 26px;
+            width: 36px;
+            display: inline-block;
+            line-height: 30px;
+            padding: 0 0 5px;
+            transition: .3s ease-in;
+        }
+    }
+
+    .owl-prev {
+        left: 10px;
+
+    }
+
+    .owl-next {
+        right: 10px;
+    }
+}

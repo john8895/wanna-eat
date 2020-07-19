@@ -63,6 +63,11 @@ function storeDisplay($smarty, $store_id)
     $sql = "SELECT * FROM store WHERE id = {$store_id} LIMIT 1";
     $result = connect_mysql($sql);
     $store_item = mysqli_fetch_assoc($result);
+    if (!$store_item){
+        $GLOBALS['error_message'] = '請留意！此商家的資料已被刪除';
+        $smarty->assign('store', null);
+        return;
+    }
     $smarty->assign('store', $store_item);
 }
 
@@ -78,6 +83,7 @@ function orderDisplay($smarty, $order_id)
     }
     $smarty->assign('order_array', $order_item);
 }
+
 
 
 

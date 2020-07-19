@@ -1,4 +1,4 @@
-<main class="page__index">
+<main class="page__index page__res-list">
     {*
     <section>
         <div class="container" id="app">
@@ -11,81 +11,98 @@
     </section>
     *}
 
+    <section class="main__slider">
+        <div class="owl-carousel owl-theme">
+            <div class="slider-item">
+{*                <div class="text-block">*}
+{*                    <h4 class="title">本月訂購最多次餐廳</h4>*}
+{*                    <div class="description">累計訂餐次數 15 次，最熱門的餐點是…</div>*}
+{*                </div>*}
+                <img src="./language/img/banner1.jpg" alt="">
+            </div>
+            <div class="slider-item">
+{*                <div class="text-block">*}
+{*                    <h4 class="title">本月最熱門飲料</h4>*}
+{*                    <div class="description">累計團購人數 80人次</div>*}
+{*                </div>*}
+                <img src="./language/img/banner2.jpg" alt="">
+            </div>
+        </div>
+    </section>
 
     {*    Store list*}
-    <div class="container-fluid">
+    <section class="section main__group-list">
+        <div class="container">
+            <header>
+                <div class="row">
+                    <div class="col-sm-12 mb-3 mt-5 text-center">
+                        <h4 class="h1 title">進行中團購</h4>
+{*                        <div class="sub-title">Group buy in progress</div>*}
+                    </div>
+                </div>
+            </header>
 
-        <div class="row">
-            <div class="col-sm-12 mb-3 mt-5">
-                <h4 class="h5 mb-1">餐廳列表</h4>
-                <small class="text-muted mt-1">看看你今天要吃啥？</small>
-            </div>
 
-            {foreach from=$stores item=item}
-                <div class="col-sm-4 mb-3">
-                    <div class="card">
-                        <div class="store-image">
-                            <a href="group-buy.php?id={$item.id}" title="發起{$item.name}的團購">
-                                {if isset($item.store_cover)}
-                                    <img src="{$item.store_cover}" alt="" class="">
-                                {else}
-                                    <img src="http://fakeimg.pl/550x440" alt="" class="">
-                                {/if}
-                            </a>
-                        </div>
-                        <div class="store-name text-center store-item store-text my-3">
-                            <span class="mr-2">{$item.name}</span>
-                            <a href="{$item.images}"
-                               class="btn btn-outline-primary btn-sm py-1 btn-pill px-2 btn-menu mr-2 border-left-0 border-right-0 border-top-0"
-                               target="_blank">菜單</a>
-                            <a href="edit.php?id={$item.id}"
-                               class="btn btn-outline-dark text-muted py-1 btn-sm px-2 border-left-0 border-right-0 border-top-0">編輯</a>
-                            <a href="delete.php?id={$item.id}"
-                               class="btn btn-outline-dark text-muted py-1 btn-sm px-2 border-left-0 border-right-0 border-top-0">刪除</a>
-                            <div class="image_show">
-                                <div class="modal">
-                                    <div class="modal-body d-flex align-items-center justify-content-center">
-                                        <div class="img"></div>
+            <!-- 進行中團購-->
+            <main id="app" class="mt-3">
+                <div class="row mb-4 no-gutters">
+                    <div class="col-sm-12">
+                        <h4 id="current_groupBuy" class="h5 mb-2"></h4>
+                    </div>
+                </div>
+
+                {* Order block *}
+                <div class="row order-block"></div>
+            </main>
+
+        </div>
+    </section>
+
+    {*    Store list*}
+    <section class="section main__res-list">
+        <div class="container">
+            <header>
+                <div class="row">
+                    <div class="col-sm-12 mb-3 mt-5 text-center">
+                        <h4 class="h1 title">餐廳列表</h4>
+                    </div>
+                </div>
+            </header>
+
+            <div class="row">
+                {foreach from=$stores item=item}
+                    <div class="col-sm-4 mb-3">
+                        <div class="card">
+                            <div class="store-image">
+                                <a href="group-buy.php?id={$item.id}" title="發起{$item.name}的團購">
+                                    {if isset($item.store_cover)}
+                                        <img src="{$item.store_cover}" alt="" class="">
+                                    {else}
+                                        <img src="./language/img/noimg.jpg" alt="" class="">
+                                    {/if}
+                                </a>
+                            </div>
+                            <div class="store-name text-center store-item store-text my-3 position-relative">
+                                <a href="group-buy.php?id={$item.id}" title="發起{$item.name}的團購" class="title">
+                                    <span class="mr-2 ">{$item.name}</span>
+                                </a>
+                                <a href="{$item.images}"
+                                   class="btn-default btn-res-menu btn-menu"
+                                   target="_blank">菜單</a>
+                                <div class="image_show">
+                                    <div class="modal">
+                                        <div class="modal-body d-flex align-items-center justify-content-center">
+                                            <div class="img"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-{*                        <article class="d-flex store-item text-center">*}
-{*                            <div class="store-text m-auto">*}
-{*                                <input type="hidden" class="item_id" value="{$item.id}">*}
-
-{*                                *}{*                                        <li>電話：{$item.phone} </li>*}
-{*                                <div class="store-button mt-2 mb-3">*}
-
-
-{*                                    {if isset($logged) && $logged}*}
-{*                                        <a href="group-buy.php?id={$item.id}"*}
-{*                                           class="btn btn-outline-danger btn-sm btn-pill px-2 border-left-0 border-right-0 border-top-0">*}
-{*                                            發起團購*}
-{*                                        </a>*}
-{*                                        <div class="mt-2">*}
-{*                                        <a href="edit.php?id={$item.id}"*}
-{*                                           class="btn btn-outline-dark text-muted btn-sm px-2 border-left-0 border-right-0 border-top-0">編輯</a>*}
-{*                                        <a href="delete.php?id={$item.id}"*}
-{*                                           class="btn btn-outline-dark text-muted btn-sm px-2 border-left-0 border-right-0 border-top-0">刪除</a>*}
-{*                                        </div>*}
-{*                                    {/if}*}
-
-{*                                </div>*}
-{*                                <div class="image_show">*}
-{*                                    <div class="modal">*}
-{*                                        <div class="modal-body d-flex align-items-center justify-content-center">*}
-{*                                            <div class="img"></div>*}
-{*                                        </div>*}
-{*                                    </div>*}
-{*                                </div>*}
-
-{*                            </div>*}
-{*                        </article>*}
                     </div>
-                </div>
-            {/foreach}
+                {/foreach}
 
+            </div>
         </div>
-    </div>
+    </section>
+
 </main>

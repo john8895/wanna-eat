@@ -5,31 +5,46 @@
             <div class="d-flex justify-content-between">
                 <a href="index.php" class="navbar-brand">今天要吃啥<span>？</span></a>
                 <nav class="header__account">
-                    <ul class="d-flex">
+                    <ul class="d-flex header__nav-settings">
                         {if isset($logged) && !$logged}
                             <li class="link-item">
-                                <a href="login.php" class="account-link mr-3" title="登入">
+                                <a href="login.php" class="drop-link mr-3" title="登入">
                                     <i class="f-icon fas fa-user-circle"></i>
                                 </a>
                             </li>
                         {else}
                             <li class="link-item">
-                                <a href="javascript:;" class="account-link mr-3" title="會員功能">
+                                <a href="javascript:;" class="drop-link mr-3" title="會員功能">
                                     <i class="f-icon fas fa-user-circle"></i>
                                 </a>
-                                <ul class="account-group">
-                                    <li>
-                                        <a href="logout.php" title="會員登出">登出</a>
+                                <ul class="drop-menu">
+                                    <li class="link-item">
+                                        <a href="logout.php" title="會員登出">會員登出</a>
+                                    </li>
+                                    <li class="link-item">
+                                        <a href="edit-info.php" title="修改資訊">修改資訊</a>
                                     </li>
                                 </ul>
                             </li>
-                        {/if}
 
-                        <li>
-                            <a href="javascript:;" title="設定" class="account-link">
+                        <li class="link-item">
+                            <a href="javascript:;" title="設定" class="drop-link">
                                 <i class="f-icon fas fa-cog"></i>
                             </a>
+                            <ul class="drop-menu">
+                                <li class="link-item">
+                                    <a href="add.php" title="新增餐廳">新增餐廳</a>
+                                </li>
+                                <li class="link-item">
+                                    <a href="edit-res.php" title="編輯餐廳">編輯餐廳</a>
+                                </li>
+                                <li class="link-item">
+                                    <a href="edit-group-buy.php" title="編輯團購單">編輯團購單</a>
+                                </li>
+                            </ul>
                         </li>
+                        {/if}
+
                     </ul>
 
 
@@ -38,8 +53,6 @@
         </div>
     </div>
 
-    <!--navbar-expand-lg | sm | md..-->
-    <!--對於不需要摺疊的導覽列，在導覽列中加入 .navbar-expand。對於總是摺疊的導覽列，不要加任何 .navbar-expand class-->
     <nav class="navbar navbar-expand-lg navbar-light" id="header__menu">
         <div class="container">
             <button class="navbar-toggler" type="button" data-target="#navbarDemo" data-toggle="collapse"
@@ -56,15 +69,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="index.php" class="nav-link">餐廳列表</a>
+                        <a href="res-list.php" class="nav-link">餐廳列表</a>
                     </li>
-
-                    {if isset($logged)}
-                        <li class="nav-item">
-                            <a href="add.php" class="nav-link">新增餐廳</a>
-                        </li>
-                    {/if}
-
+                    <li class="nav-item">
+                        <a href="group-history.php" class="nav-link">歷史團購單</a>
+                    </li>
 
                     {*
                     <li class="nav-item dropdown">

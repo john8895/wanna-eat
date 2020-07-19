@@ -41,9 +41,12 @@ function add_store()
 //        $GLOBALS['error_message'] = '請輸入店家介紹';
 //        return;
 //    }
+    if(!empty($_POST['store_full_price'])) $store['store_full_price'] = $_POST['store_full_price'];
+
     $store['name'] = $_POST['name'];
     $store['phone'] = $_POST['phone'];
     $store['description'] = $_POST['description'];
+    $store['store_full_price'] = 0;
 
     // 校驗圖片
     // empty($_FILES['images'] -> 有欄位但沒填 有變數無值
@@ -103,8 +106,9 @@ function add_store()
             $GLOBALS['error_message'] = '移動檔案失敗！';
             return;
         }
-        $store['store_cover'] = $target;
+        $store['store_cover'] = (string)$target;
     }
+    if(!$_FILES['store_cover']['size']) $store['store_cover'] = '';
 
 
     if (!isset($_FILES['images']) && !$_FILES['images']) {
@@ -132,9 +136,10 @@ function add_store()
         }
         $store['images'] = $target;
     }
+    if(!$_FILES['images']['size']) $store['images'] = '';
 
     // 數據校驗完畢 寫入資料庫
-    $sql = "INSERT INTO store (id, name, description, phone, store_cover, images) values (null, '{$store['name']}', '{$store['description']}', '{$store['phone']}', '{$store['store_cover']}', '{$store['images']}')";
+    $sql = "INSERT INTO store (id, name, description, phone, store_cover, images, store_full_price) values (null, '{$store['name']}', '{$store['description']}', '{$store['phone']}', '{$store['store_cover']}', '{$store['images']}', {$store['store_full_price']})";
     connect_mysql($sql);
     header('Location: index.php');
 }

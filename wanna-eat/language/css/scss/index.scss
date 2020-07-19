@@ -1,7 +1,18 @@
+@import "helpers/variable";
 /* ==================================
  * list-item
  * ================================== */
 .store-item {
+
+    .title {
+        font-size: 16px;
+        margin-bottom: 7px;
+        color: #000;
+
+        &:hover {
+            color: $first-color;
+        }
+    }
 
     // js call
     &.pick-color {

@@ -38,6 +38,7 @@ function edit_user($smarty)
     $item['name'] = $_POST['name'];
     $item['phone'] = $_POST['phone'];
     $item['description'] = $_POST['description'];
+    $item['store_full_price'] = $_POST['store_full_price'] === '' ? 0 : $_POST['store_full_price'];
     $smarty->assign('item', $item);
 
     // 校驗
@@ -45,14 +46,14 @@ function edit_user($smarty)
         $GLOBALS['error_message'] = '請輸入店家名稱';
         return;
     }
-    if (empty($_POST['phone'])) {
-        $GLOBALS['error_message'] = '請輸入店家電話';
-        return;
-    }
-    if (empty($_POST['description'])) {
-        $GLOBALS['error_message'] = '請輸入店家介紹';
-        return;
-    }
+//    if (empty($_POST['phone'])) {
+//        $GLOBALS['error_message'] = '請輸入店家電話';
+//        return;
+//    }
+//    if (empty($_POST['description'])) {
+//        $GLOBALS['error_message'] = '請輸入店家介紹';
+//        return;
+//    }
 
     // if field is not exist
     if (!isset($_FILES['images'])) {
@@ -107,9 +108,8 @@ function edit_user($smarty)
         $sql_image = "";
     }
 
-
     // 更新數據
-    $sql = "UPDATE store SET name='{$item['name']}', phone='{$item['phone']}', description='{$item['description']}'{$sql_store_cover}{$sql_image} WHERE id = {$item['id']};";
+    $sql = "UPDATE store SET name='{$item['name']}', phone='{$item['phone']}', store_full_price={$item['store_full_price']}, description='{$item['description']}'{$sql_store_cover}{$sql_image} WHERE id = {$item['id']};";
     connect_mysql($sql);
     header('Location: index.php');
 }

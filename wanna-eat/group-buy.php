@@ -65,6 +65,17 @@ function groupBuySubmit()
         $GLOBALS['error_message'] = '必須填寫截止時間';
         return;
     }
+    if(!($_POST['group_host_new']) && $_POST['group_host'] === '0'){
+        $GLOBALS['error_message'] = '必須填寫團購負責人';
+        return;
+    }
+
+
+    if(!($_POST['group_host_new'])){
+        $group_buy['group_host'] = $_POST['group_host'];
+    }else{
+        $group_buy['group_host'] = $_POST['group_host_new'];
+    }
 
     // 校驗日期時間
     // $_POST['endTime_day'] = '07-02'
@@ -83,7 +94,7 @@ function groupBuySubmit()
     $group_buy['store_id'] = $_POST['store_id'];
     $group_buy['store_name'] = $_POST['store_name'];
     $group_buy['store_phone'] = $_POST['store_phone'];
-    $group_buy['group_host'] = $_POST['group_host'];
+//    $group_buy['group_host'] = $_POST['group_host'];
     $group_buy['remark'] = $_POST['remark'];
     $group_buy['order_field_id'] = $_POST['order_field_id'];
     $group_buy['id'] = generateTimeId();  // Generate Time id

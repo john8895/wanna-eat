@@ -62,6 +62,25 @@ $(function () {
 
         })
     }
+
+
+    (function goTop() {
+        $(window).on('scroll', function () {
+            const height = $(window).height();
+            const scroll = $(document).scrollTop();
+            if (scroll > height / 3) {
+                $('#gotop').slideDown();
+            } else {
+                $('#gotop').slideUp(500);
+            }
+        })
+
+        $('#gotop').on('click', function () {
+            $('html, body').animate({
+                scrollTop: 0
+            }, 500)
+        })
+    })()
 })
 
 
@@ -190,32 +209,128 @@ $(function () {
  *
  */
 $(function () {
-    "use strict"
+        "use strict"
         // Only index
         if ($('.page__index').length || $('.page__group-buy-now').length || $('.layout__header').length) {
             showOrder();
+        }
+        if ($('#add_hostName').length) editAccount();
+        if ($('.btn-del-store').length) deleteStore();
+        if ($('#groupBuyForm').length) submitGroupBuy();
+        if ($('#addStoreForm').length) submitAddStore();
+        if ($('#input_addStoreCover').length) addStoreImagePreview();
+
+
+        function addStoreImagePreview() {
+            $('#input_addStoreCover').on('change', function () {
+                readUrl(this, $('#store_cover_preview'));
+            })
+            $('#input_addStoreMenu').on('change', function () {
+                readUrl(this, $('#store_menu_preview'));
+            })
+        }
+
+        // Upload image preview
+        function readUrl(input, jq_appendElement) {
+            if(input.files && input.files[0]){
+                var reader = new FileReader();
+                $(reader).on('load',function (e) {
+                    const img = $('<img>').attr('src', e.target.result);
+                    img.addClass('preview-image img-thumbnail');
+                    jq_appendElement.empty().append(img);
+                })
+                reader.readAsDataURL(input.files[0])  // image to base64
+            }
+        }
+
+        function submitAddStore() {
+            $('#addStoreForm').on('submit',function () {
+                if(!checkInputVal($('input[name=name]'), '餐廳名稱')){
+                    return false;
+                }
+            })
+        }
+
+
+        // Group buy submit Check
+        function submitGroupBuy() {
+            $('#groupBuyForm').on('submit', function () {
+                const group_host_new = $('input[name=group_host_new]')
+                if (!group_host_new.val() && $('select[name=group_host]').val() === '0') {
+                    checkInputVal(group_host_new, '團購負責人');  // Check input not empty
+                    return false;
+                }
+            })
+        }
+
+        function deleteStore() {
+            $('.btn-del-store').on('click', function (e) {
+                e.preventDefault();
+                const itemId = $(this).attr('data-itemId') || 0;
+                Swal.fire({
+                    title: '你確定嗎？',
+                    text: "刪除資料不可復原！",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '是的，我要刪除'
+                }).then((result) => {
+                    if (result.value) deleteAct();
+                })
+
+                let deleteAct = function () {
+                    axios.get('delete.php?id=' + itemId)
+                        .then(res => {
+                            if (res.data === 'success') {
+                                Swal.fire(
+                                    '資料已刪除!',
+                                    '刪除一筆餐廳資料',
+                                    'success'
+                                )
+                            }
+                            window.location = 'edit-res.php';
+                        })
+                        .catch(err => {
+                            console.error(err)
+                        })
+                }
+            })
         }
 
         // Get group-buy data
         function showOrder() {
             // axios get multiple urls
+
             const total_orders = axios.get('group_buy_api.php?res=total_orders');
             const groupBuy = axios.get('group_buy_api.php?res=buy');
+            // 如果在歷史團購單頁，就讀取歷史團購單
+            const groupBuyHistory = $('.page__group-history').length ? axios.get('group_buy_api.php?res=buy_history') : 0;
             const store_info = axios.get('group_buy_api.php?res=stores');
 
             axios
-                .all([groupBuy, total_orders, store_info])
+                .all([groupBuy, total_orders, store_info, groupBuyHistory])
                 .then(
                     axios.spread((...res) => {
                         const res1 = res[0];
                         const res2 = res[1];
                         const res3 = res[2];
-                        groupBuyDisplay(res1.data, res2.data, res3.data)
+                        const groupBuyHistory = res[3].data;
+                        // console.log(res[3].data)
+                        groupBuyDisplay(res1.data, res2.data, res3.data, groupBuyHistory)
                     })
                 )
-                .catch(errors => {
-                    console.error(errors)
-                })
+                .catch(
+                    axios.spread((...error) => {
+                        const res1 = error[0];
+                        const res2 = error[1];
+                        const res3 = error[2];
+                        console.error(error[0].errors)
+                        console.error(error[1].errors)
+                        console.error(error[2].errors)
+                        console.error(error[3].errors)
+
+                    })
+                )
         }
 
 
@@ -237,61 +352,94 @@ $(function () {
             };
         }
 
+        /**
+         *
+         * @param groupBuy  進行中團購單
+         * @param totalOrders  全部訂單
+         * @param stores  餐廳數據
+         * @param groupBuyHistory  歷史團購單
+         */
+        function groupBuyDisplay(groupBuy, totalOrders, stores, groupBuyHistory) {
+            // console.log(groupBuy)
+            let groupBuyData;
+            let groupText = '';
+            if (groupBuyHistory) {
+                groupBuyData = groupBuyHistory;
+                groupText = '過往的團購單數&nbsp;&nbsp;';
+            } else {
+                groupBuyData = groupBuy;
+                groupText = '進行中團購&nbsp;&nbsp;';
+            }
 
-        function groupBuyDisplay(groupBuy, totalOrders, stores) {
-            if (groupBuy.length === 0) {
+            if (groupBuyData.length === 0) {
                 $('#current_groupBuy').text('目前還沒有團購 :(').addClass('text-center');
             } else {
-                $('#current_groupBuy').html(`進行中的團購&nbsp;&nbsp;<b>${groupBuy.length}</b>`)
+                $('#current_groupBuy').html(`${groupText}<b>${groupBuyData.length}</b>`)
                 $('#group_now_badge').text(groupBuy.length)
             }
             let orderBlock = '';
-            for (let i = 0; i < groupBuy.length; i++) {
+            for (let i = 0; i < groupBuyData.length; i++) {
                 // Calc orders
-                const orderCalc = indexOrdersCalc(totalOrders, groupBuy[i].id)
+                const orderCalc = indexOrdersCalc(totalOrders, groupBuyData[i].id)
                 const oneOrderSum = orderCalc.totalPrice;
                 const oneOrderNum = orderCalc.totalName.length;
-                const groupId = parseInt(groupBuy[i].store_id);
+                const groupId = parseInt(groupBuyData[i].store_id);
 
                 // Calc left time
-                const end_time = new Date(groupBuy[i].end_time).getTime();
-                const left_time = moment(end_time).fromNow()
+                const end_time = new Date(groupBuyData[i].end_time).getTime();
 
+                // console.log(end_time)
+                // 覆蓋moment.js內建函數，以分鐘計算
+                // moment.fn.fromNow = function (a) {
+                //     return moment().diff(this, 'minute');
+                // }
+                const left_time = moment(end_time).fromNow()  // 比較當日獲取還剩幾分鐘收單
+                // countdownGroupBuy(left_time);
+
+
+                // Get store data
                 let storeCover = './language/img/noimg.jpg';
-                for (let key in stores) {
+                let storeFullPrice = 0;
+                for (const key in stores) {
                     const store_id = parseInt(stores[key].id);
                     if (groupId === store_id) {
                         storeCover = stores[key].store_cover;
+                        storeFullPrice = stores[key].store_full_price;
                     }
                 }
                 if (storeCover == null) storeCover = './language/img/noimg.jpg';
 
+                // group full & yet
+                let groupFull = '';
+                if (oneOrderSum >= storeFullPrice) {
+                    groupFull = `<div class="item group-full">已成團</div>`;
+                } else {
+                    groupFull = `<div class="item group-yet">未成團</div>`;
+                }
+
                 orderBlock += `
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="h5 mb-0">
-                    <span id="store_name">${groupBuy[i].store_name}</span>
-                </h4>
-            </div>
-            <a href="order.php?id=${groupBuy[i].id}" title="我要跟${groupBuy[i].group_host}開的${groupBuy[i].store_name}">
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+        <div class="card group-list-item">
                 <div class="store-image">
-                    <img src="${storeCover}" alt="" class="img-fluid">
+                    <div class="group-status">
+                        ${groupFull}
+                        <div class="item group-countName">${oneOrderNum}人</div>
+                        <div class="item group-leftTime">&nbsp;${left_time}收單</div>
+                    </div>
+                    <a href="order.php?id=${groupBuyData[i].id}" title="我要跟${groupBuyData[i].group_host}開的${groupBuyData[i].store_name}">
+                        <img src="${storeCover}" alt="" class="img-fluid">
+                    </a>
                 </div>
-            </a>
             
-            <div class="card-body">
+            <div class="card-body text-center">
+            <span id="store_name">${groupBuyData[i].store_name}</span>
             <ul>
-                <li>團主：<span id="group_host">${groupBuy[i].group_host}</span></li>
-                <li>總金額：$${oneOrderSum}</li>
-<!--                <li>已付金額：$0</li>-->
-                <li>跟團人數：${oneOrderNum} 人</li>
-                <li>收單時間：${left_time}</li>
-                <li></li>
-                <li>
-                    <div class="orderBtn mt-2 text-center">
-                        <a href="order.php?id=${groupBuy[i].id}" class="btn btn-outline-danger mr-3">我要跟團</a>
-                        <button class="btn btn-outline-dark text-muted del-group-btn  border-top-0 border-left-0 border-right-0" data-groupid="${groupBuy[i].id}">刪除此單</button>
+<!--                <li>訂單金額：$${oneOrderSum}</li>-->
+<!--                <li>外送金額：$${storeFullPrice}</li>-->
+<!--                <li>收單時間：${Math.abs(left_time)} 分鐘</li>-->
+                <li class="orderBtn">
+                    <div class="mt-2 text-center">
+                        <button class="btn btn-outline-danger del-group-btn  border-top-0 border-left-0 border-right-0" data-groupid="${groupBuyData[i].id}">刪除此單</button>
                     </div>
                 </li>
             </ul>
@@ -301,6 +449,30 @@ $(function () {
             }
             $('.order-block').empty().append(orderBlock);
             $('.del-group-btn').on('click', delGroupBuy)
+
+        }
+
+
+        function countdownGroupBuy(left_time) {
+            var now = moment(),
+                // duration = moment().hours(0).minutes(0).seconds(0),
+                duration = left_time;
+            origin = moment().hours(12).minutes(10).seconds(30);
+            console.log('duration', duration)
+            const interval = 1;
+
+            const itemId = $('.group-leftTime').attr('data-itemId');
+            console.log('itemId:',itemId)
+            setInterval(function () {
+                duration = moment(duration).add(interval, 'seconds');
+                // $('#countdown').text( duration.format('HH:mm:ss').toString() );
+                var timeLeft = moment(moment(origin).diff(moment(duration))).format('HH:mm:ss').toString();
+                console.log(timeLeft)
+                return timeLeft;
+                // $('#countdown1').text( timeLeft );
+
+            }, 1000);
+
         }
 
 
@@ -461,9 +633,9 @@ $(function () {
             let orderListHtml = '';
             for (let i = 0; i < ordersData.length; i++) {
                 orderListHtml += `
-        <div class="row py-2 rounded order-item" data-index="${i+1}">
+        <div class="row py-2 rounded order-item" data-index="${i + 1}">
             <div class="col-sm-1 text-right px-1">
-                <span>${i+1}. </span>
+                <span>${i + 1}. </span>
             </div>
             <div class="col-sm-2 px-1">
                 <input type="hidden" name="field_id" value="${ordersData[i].field_id}" class="field_id">
@@ -626,87 +798,104 @@ $(function () {
         }
 
 
-    /**
-     * @Range: Order.php
-     *
-     * Calc orders
-     *
-     */
-    function countOrders(order_id) {
-        if (!order_id) return;
+        /**
+         * @Range: Order.php
+         *
+         * Calc orders
+         *
+         */
+        function countOrders(order_id) {
+            if (!order_id) return;
 
-        // Post form
-        let countData = new FormData();
-        countData.append('count_order', 'true');
-        countData.append('order_id', order_id);
+            // Post form
+            let countData = new FormData();
+            countData.append('count_order', 'true');
+            countData.append('order_id', order_id);
 
-        axios
-            .post('group_buy_api.php', countData)
-            .then(res => {
-                countOrderDisplay(res.data);
-            })
-            .catch(error => {
-                console.error(error)
-            })
+            axios
+                .post('group_buy_api.php', countData)
+                .then(res => {
+                    countOrderDisplay(res.data);
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        }
+
+        function getStoreDeliveryAmount(orderTotal) {
+            const storeId = $('#store_id').val();
+            if (storeId.length === 0) return;
+
+            axios
+                .get('group_buy_api.php?res=store&store_id=' + storeId)
+                .then(res => {
+                    const amount = parseInt(res.data.store_full_price);
+                    let amountHtml = '';
+                    // console.log(amount)
+                    if (orderTotal > amount) {
+                        amountHtml = `<span class="item group-full"><i class="fas fa-truck mr-1"></i>已成團</span>`
+                    } else {
+                        amountHtml = `<span class="item group-yet"><i class="fas fa-dizzy mr-1"></i>未成團</span>`
+                    }
+                    $('#deliveryAmount').empty().append(amountHtml);
+                })
+                .catch(error => {
+                    console.error(error)
+                })
 
 
-    }
+        }
 
-    function countOrderDisplay(totalData) {
-        // console.log(totalData)
+        function countOrderDisplay(totalData) {
+            console.log(totalData)
+            let orderTotalHeadHtml = '';
+            let orderTotalBodyHtml = '';
+            let orderTotalHtml = '';
+            let allTotal = 0;
 
-        let orderTotalHeadHtml = '';
-        let orderTotalBodyHtml = '';
-        let orderTotalHtml = '';
-        let allTotal = 0;
+            for (let k in totalData) {
+                let buyerName = totalData[k].buyerName.split(',');  // 訂購人
 
-        for (let k in totalData) {
-            let buyerName = totalData[k].buyerName.split(',');  // 訂購人
+                allTotal += parseInt(totalData[k].subTotal);  // 總金額
 
-            allTotal += parseInt(totalData[k].subTotal);  // 總金額
-
-            let buyerNameHtml = '';
-            buyerName.forEach((v, k)=>{
-                buyerNameHtml += `
+                let buyerNameHtml = '';
+                buyerName.forEach((v, k) => {
+                    buyerNameHtml += `
             <li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">${v}</li>
             `
-            })
-            orderTotalHeadHtml = `
+                })
+                orderTotalHeadHtml = `
             <div class="th row py-0 ">
+                <div class="col-sm-3 td">
+                    <span>點餐內容</span>
+                </div>
+                <div class="col-sm-2">
+                     <span>數量</span>
+                </div>
+                <div class="col-sm-2">
+                    <span>價格</span>
+                </div>
+                <div class="col-sm-2">
+                    <span>小計</span>
+                </div>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control border-0" value="點餐內容">
-                </div>
-                <div class="col-sm-2">
-                    <input type="text" class="form-control border-0" value="數量">
-                </div>
-                <div class="col-sm-2">
-                    <input type="text" class="form-control border-0" value="價格">
-                </div>
-                <div class="col-sm-2">
-                    <input type="text" class="form-control border-0" value="小計">
-                </div>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control border-0" value="訂購人">
+                    <span>訂購人</span>
                 </div>
             </div>
             `;
-            orderTotalBodyHtml += `
+                orderTotalBodyHtml += `
             <div class="tr row py-0">
                 <div class="col-sm-3">
-                    <input type="text" class="form-control border-0 mb-2" name="order_meal" value="${totalData[k].meal}"
-                           data-field="點餐內容" readonly>
+                    <span>${totalData[k].meal}</span>
                 </div>
                 <div class="col-sm-2">
-                    <input type="number" class="form-control border-0" name="order_price" value="${totalData[k].order_number}"
-                           data-field="數量" readonly>
+                    <span>${totalData[k].order_number}</span>
                 </div>
                 <div class="col-sm-2">
-                    <input type="number" class="form-control border-0" name="order_price" value="${totalData[k].price}"
-                           data-field="價格" readonly>
+                    <span>${totalData[k].price}</span>
                 </div>
                 <div class="col-sm-2">
-                    <input type="number" class="form-control border-0" name="order_price" value="${totalData[k].subTotal}"
-                           data-field="小計" readonly>
+                    <span>${totalData[k].subTotal}</span>
                 </div>
                 <div class="col-sm-3">
                     <ul class="d-flex flex-wrap">
@@ -715,22 +904,25 @@ $(function () {
                 </div>
             </div>
         `;
-            orderTotalHtml = `
+                orderTotalHtml = `
             <div class="th row py-0 ">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control border-0" value="${allTotal}">
+                    <span>NT$${allTotal}</span>
                 </div>
                 <div class="col-sm-3"></div>
             </div>  
             `
+            }
+            $('#orderTotal').empty().append(orderTotalHeadHtml).append(orderTotalBodyHtml).append(orderTotalHtml);
+
+            if ($('#orderTotalNum').length > 0) $('#orderTotalNum').empty().append(allTotal);
+
+            getStoreDeliveryAmount(allTotal);  // 獲取外送門檻是否達標
+
         }
-        $('#orderTotal').empty().append(orderTotalHeadHtml).append(orderTotalBodyHtml).append(orderTotalHtml);
-
-
-    }
 
         /**
          * @Range: Order.php
@@ -792,6 +984,145 @@ $(function () {
         }
 
 
+        /**
+         * @Range: Edit-Account.php
+         *
+         * Add host name , edit host name
+         *
+         */
+        function editAccount() {
+            $('#add_hostName').on('click', addHostNameHandle);
+            getHostName();
+        }
+
+        function addHostNameHandle() {
+            const addHostName = $('input[name="add_host_name"]');
+            if (addHostName.val().length === 0) {
+                Swal.fire(
+                    '操作錯誤',
+                    '沒有輸入資料',
+                    'error'
+                )
+                return;
+            }
+            let dataForm = new FormData();
+            dataForm.append('add_host_name', '1');
+            dataForm.append('host_name', addHostName.val());
+            addHostName.val('')
+
+            axios
+                .post('group_buy_api.php', dataForm)
+                .then(res => {
+                    Swal.fire(
+                        '操作成功',
+                        '新增一筆團購負責人',
+                        'success'
+                    )
+                    getHostName();
+                })
+                .catch(error => {
+                    Swal.fire(
+                        '操作失敗',
+                        '錯誤訊息' + error,
+                        'error'
+                    )
+                })
+        }
+
+        // Host name display
+        function getHostName() {
+            axios
+                .get('group_buy_api.php?res=hostname')
+                .then(res => {
+                    hostNameDisplay(res.data)
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        }
+
+        // Host Name Display
+        function hostNameDisplay(data) {
+            let hostNameHtml = ''
+            for (let v of data) {
+                hostNameHtml += `
+            <div class="col-sm-3 mt-2">
+                <div class="row no-gutters hostname-field">
+                    <div class="col-sm-8">
+                        <input type="hidden" name="host_id" value="${v['id']}">
+                        <input type="text" name="host_name"
+                               class="form-control "
+                               value="${v['host_name']}" disabled>
+                    </div>
+                    <div class="col-sm-4">
+                        <a href="javascript:;" class="btn-del-host" title="刪除此項">
+                            <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm101.8-262.2L295.6 256l62.2 62.2c4.7 4.7 4.7 12.3 0 17l-22.6 22.6c-4.7 4.7-12.3 4.7-17 0L256 295.6l-62.2 62.2c-4.7 4.7-12.3 4.7-17 0l-22.6-22.6c-4.7-4.7-4.7-12.3 0-17l62.2-62.2-62.2-62.2c-4.7-4.7-4.7-12.3 0-17l22.6-22.6c4.7-4.7 12.3-4.7 17 0l62.2 62.2 62.2-62.2c4.7-4.7 12.3-4.7 17 0l22.6 22.6c4.7 4.7 4.7 12.3 0 17z"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            `;
+            }
+            $('#hostname_block').empty().append(hostNameHtml);
+            $('.btn-del-host').on('click', delHostName);
+        }
+
+
+        // Delete Host name
+        function delHostName() {
+            const btn = $(this);
+            const hostId = btn.parents('.hostname-field').find('input[name="host_id"]').val();
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger mr-3'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: '你確定嗎？',
+                text: "這項操作不能復原",
+                showCancelButton: true,
+                confirmButtonText: '是的！我要刪除',
+                cancelButtonText: '不，我再想想好了',
+                reverseButtons: true
+            }).then((result) => {
+
+                if (result.value) {
+                    axios
+                        .get('group_buy_api.php?res=del_hostname&host_id=' + hostId)
+                        .then(res => {
+                            if (res.data !== 'success') return;
+                            Swal.fire(
+                                '操作成功',
+                                '你刪除了一筆資料',
+                                'success'
+                            )
+                            getHostName();
+                        })
+                        .catch(err => {
+                            Swal.fire(
+                                '操作失敗',
+                                '錯誤訊息' + err,
+                                'error'
+                            )
+                        })
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        '操作取消',
+                        '你的資料安全無虞 :)',
+                        'error'
+                    )
+                }
+            })
+
+
+        }
     }
 )
 

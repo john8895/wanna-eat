@@ -13,5 +13,6 @@ if($_SERVER['REQUEST_METHOD']==='GET' && !empty($_GET)){
 function delete_user(){
     $sql = "DELETE FROM store WHERE id = {$_GET['id']};";
     connect_mysql($sql);
-    header('Location: index.php');
+    echo 'success';
+//    header('Location: index.php');
 }

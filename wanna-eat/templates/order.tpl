@@ -2,78 +2,110 @@
 {include file="head.tpl"}
 {include file="header.tpl"}
 <main class="page__order">
-    <div class="page__banner" style="background-image: url(./language/img/hero1.webp)">
+    <div class="inner__banner">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <h1 class="title">填寫訂購單</h1>
 
-    </div>
-    {*    Group buy information*}
-    <div class="container-fluid">
-        <!-- 開團 -->
-        <div class="row modal-wrap">
-            <div class="col-sm-12 store-item no-gutters px-0">
-
-                <div class="card px-3 py-4">
-                    <div class="title">{$item.store_name}（團購聯絡人：{$item.group_host}）</div>
-                    <div class="res__info">
-                        <span>{$item.store_phone}</span>
-                        &emsp;|&emsp;
-                        <span>外送金額：$200</span>
-                        &emsp;|&emsp;
-                        <span>目前金額：$250</span>
-                        &emsp;|&emsp;
-                        <span>收單時間：{$item.end_time}</span>
-                        {if $store.description !=''}
-                            <div>
-                                <i class="fas fa-angle-right mr-1 text-black-50"></i>餐廳簡介：{$store.description}
-                            </div>
-                        {/if}
-                        {if $item.remark !=''}
-                            <div>
-                                <i class="fas fa-angle-right mr-3 text-black-50"></i>團購注意事項：{$item.remark}
-                            </div>
-                        {/if}
-                    </div>
-                </div>
-
+                <nav class="jh-breadcrumb">
+                    <ol>
+                        <li><a href="index.php">首頁</a></li>
+                        <li>填寫訂購單</li>
+                    </ol>
+                </nav>
 
             </div>
+        </div>
+    </div>
+    {*    Group buy information*}
+    <div class="container">
+        <!-- 開團 -->
+        <div class="row modal-wrap no-gutters order__header">
 
-            <div class="col-sm-12 mt-4 px-0">
+            <div class="col-sm-6 res-info">
                 {if isset($error)}
                     <div class="form-group text-danger">
                         {$error}
                     </div>
                 {/if}
-                <div class="card accordion">
-                    <div class="card-header">
-                        <div>菜單</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="text-center">
-                            <a href="{$store.images}" title="" target="_blank">
-                                <img src="{$store.images}" alt="" class="img-fluid" style="max-height: 1000px">
-                            </a>
-                        </div>
-                    </div>
+                <input type="hidden" value="{$store.id}" id="store_id">
+                <div class="title">{$item.store_name}</div>
+                <ul class="sub-title">
+                    {if $store.description !=''}
+                        <li>
+                            餐廳簡介：{$store.description}
+                        </li>
+                    {/if}
+                    {if $item.remark !=''}
+                        <li>
+                            團購注意事項：{$item.remark}
+                        </li>
+                    {/if}
+                </ul>
+                <ul class="description">
+                    <li><i class="fas fa-angle-right mr-2 text-black-50"></i>團購負責人：{$item.group_host}</li>
+                    <li><i class="fas fa-angle-right mr-2 text-black-50"></i>電話：{$item.store_phone}</li>
+                    <li><i class="fas fa-angle-right mr-2 text-black-50"></i>外送門檻：
+                        {if isset($store.store_full_price) }
+                            {if $store.store_full_price === '0' }
+                                不限制
+                            {else}
+                                ${$store.store_full_price}
 
-                </div>
+                            {/if}
+                        {/if}
+
+                    </li>
+                    <li><i class="fas fa-angle-right mr-2 text-black-50"></i>目前金額：$<span id="orderTotalNum">0</span>
+                        <span id="deliveryAmount"></span>
+                    </li>
+                    <li><i class="fas fa-angle-right mr-2 text-black-50"></i>收單時間：{$item.end_time}</li>
+
+                </ul>
+
 
             </div>
+            <div class="col-sm-6 res-cover">
+                {if isset($store.store_cover)}
+                    <img src="{$store.store_cover}" alt="" class="img-fluid img-thumbnail">
+                {else}
+                    <img src="./language/img/fake_store_img.jpg" alt="" class="img-fluid img-thumbnail">
+                {/if}
+            </div>
+        </div>
 
 
+        <div class="row res-menu innerPage-section">
+            <div class="col-sm-12 mt-4 px-0">
+                <div class="text-center">
+                    <div class="sec-title">
+                        <h3>菜單</h3>
+                        <div class="sub-title">Restaurant menu</div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a href="{$store.images}" title="" target="_blank">
+                        <img src="{$store.images}" alt="" class="img-fluid img-thumbnail" style="max-height: 1000px">
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
 
     {*   Order list display *}
-    <div class="container">
+    <div class="container innerPage-section mt-3">
         <div class="row">
-
-
-            <div class="col-sm-12 mt-5">
-                <div class="card accordion">
-                    <div class="card-header">
-                        <h4 class="title h5">增加訂單</h4>
+            <div class="col-sm-12">
+                <div class="text-center">
+                    <div class="sec-title">
+                        <h3>增加訂單</h3>
+                        <div class="sub-title">Add orders</div>
                     </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="card accordion">
                     <div class="card-body">
                         <form id="order_form" method="post">
                             <input type="hidden" value="{$order_id}" name="add_order_id" id="order_id">
@@ -112,8 +144,8 @@
                                 </div>
                             </div>
 
-                            <div class="form-group mt-2">
-                                <button type="submit" class="btn btn-danger rounded-lg" id="submit_order">送出一筆訂單
+                            <div class="form-group mt-2 text-center">
+                                <button type="submit" class="btn btn-default" id="submit_order">送出一筆訂單
                                 </button>
                             </div>
                         </form>
@@ -124,11 +156,13 @@
 
 
             <div class="col-sm-12 mt-4">
-                <div class="card accordion">
-                    <div class="card-header">
-                        <h4 class="title h5">訂單列表</h4>
-
+                <div class="text-center">
+                    <div class="sec-title">
+                        <h3>訂單列表</h3>
+                        <div class="sub-title">Order list</div>
                     </div>
+                </div>
+                <div class="card">
                     <div class="card-body">
                         <div id="order_list" class="order_list"></div>
                     </div>
@@ -136,43 +170,29 @@
             </div>
 
             <div class="col-sm-12 mt-4">
-                <div class="card accordion">
-                    <div class="card-header">
-                        <h4 class="title h5">訂單統計</h4>
-
+                <div class="text-center">
+                    <div class="sec-title">
+                        <h3>訂單統計</h3>
+                        <div class="sub-title">Order total</div>
                     </div>
-
-
-                    <div class="card-body">
-                        <div id="ordersNum" class="mb-3 h6"></div>
-
-                        <div class="card table border">
-
-                            <div class="card-body">
-
-
-                                <div id="orderTotal"></div>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
                 </div>
+                <div id="ordersNum" class="mb-3 h6"></div>
+                <div class="card table border">
+                    <div class="card-body">
+                        <div id="orderTotal" class="order-total"></div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="col-sm-12">
-                <a href="javascript:window.history.back()" class="btn btn-dark mt-5 px-3">
+                <a href="javascript:window.history.back()" class="btn btn-dark mt-5 px-3 rounded-0">
                     <i class="fas fa-reply mr-2"></i>回上一頁
                 </a>
             </div>
 
-
         </div>
     </div>
-
-
 </main>
 {include file="footer.tpl"}
 {include file="js.tpl"}
