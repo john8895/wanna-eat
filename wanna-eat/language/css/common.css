@@ -431,7 +431,7 @@ a:hover {
   background-color: #EB4847;
   color: #fff;
   border-radius: 0;
-  padding: 5px 20px;
+  padding: 7px 20px;
   font-size: 15px;
 }
 .btn-default:hover {
@@ -777,6 +777,7 @@ ul.pagination-numbers,
 .page__order .order_list > .row {
   position: relative;
 }
+
 .page__edit-info .hostname-block {
   background-color: #F5F5F5;
   padding: 20px 0;

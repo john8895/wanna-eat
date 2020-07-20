@@ -61,7 +61,7 @@ a {
     background-color: $first-color;
     color: #fff;
     border-radius: 0;
-    padding: 5px 20px;
+    padding: 7px 20px;
     font-size: 15px;
 
     &:hover {
@@ -491,18 +491,22 @@ ul.pagination-numbers,
 
     .order_list {
 
+        &:before {
+            // TODO 已收單狀態顯示
+            //content: '已收單';
+            //position: absolute;
+            //background-color: rgba(255,255,255,0.3);
+            //top: 0;
+            //left: 0;
+            //right: 0;
+            //bottom: 0;
+            //z-index: 1;
+        }
+
         & > .row {
             position: relative;
 
-            &:before {
-                //content: attr(data-index);
-                //position: absolute;
-                //top: 0;
-                //z-index: 2;
-                //background-color: #d9d9d9;
-                //padding: 0 2px;
-                //font-size: 13px;
-            }
+
         }
     }
 
