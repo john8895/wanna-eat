@@ -232,9 +232,9 @@ $(function () {
 
         // Upload image preview
         function readUrl(input, jq_appendElement) {
-            if(input.files && input.files[0]){
+            if (input.files && input.files[0]) {
                 var reader = new FileReader();
-                $(reader).on('load',function (e) {
+                $(reader).on('load', function (e) {
                     const img = $('<img>').attr('src', e.target.result);
                     img.addClass('preview-image img-thumbnail');
                     jq_appendElement.empty().append(img);
@@ -244,8 +244,8 @@ $(function () {
         }
 
         function submitAddStore() {
-            $('#addStoreForm').on('submit',function () {
-                if(!checkInputVal($('input[name=name]'), '餐廳名稱')){
+            $('#addStoreForm').on('submit', function () {
+                if (!checkInputVal($('input[name=name]'), '餐廳名稱')) {
                     return false;
                 }
             })
@@ -462,7 +462,7 @@ $(function () {
             const interval = 1;
 
             const itemId = $('.group-leftTime').attr('data-itemId');
-            console.log('itemId:',itemId)
+            console.log('itemId:', itemId)
             setInterval(function () {
                 duration = moment(duration).add(interval, 'seconds');
                 // $('#countdown').text( duration.format('HH:mm:ss').toString() );
@@ -626,23 +626,42 @@ $(function () {
             const calcData = calcOrders(ordersData);
             const totalPrice = calcData.totalPrice;
             const totalName = calcData.totalName;
-            // $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單，總金額 ${totalPrice} 元`);
             $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單`);
 
             // Display
             let orderListHtml = '';
             for (let i = 0; i < ordersData.length; i++) {
+
+                // Payment Amount
+
+
+                // Payment Status
+                let paymentStatus = '';
+                if(ordersData[i].order_paymentStatus === '1'){
+                    paymentStatus = '<span class="paid"><i class="fas fa-check-circle"></i>已付款</span>';
+                }else{
+                    const amount = ordersData[i].order_price * ordersData[i].order_number + ' 元';  // Unpaid Amount
+                    paymentStatus = `<span class="unpaid" data-amount="${amount}"><i class="fas fa-dollar-sign"></i>未付款</span>`;
+                }
+
                 orderListHtml += `
         <div class="row py-2 rounded order-item" data-index="${i + 1}">
             <div class="col-sm-1 text-right px-1">
-                <span>${i + 1}. </span>
+                <span class="mr-3">${i + 1}. </span>
+            </div>
+            <div class="col-sm-1 text-right px-1 form-check pt-2">
+                <input class="form-check-input" type="checkbox" value="${ordersData[i].order_paymentStatus}" id="defaultCheck_${i}"
+                        name="order_paymentStatus" data-field="付款狀態" ${ordersData[i].order_paymentStatus === '1' ? 'checked' : ''}>
+                <label class="form-check-label" for="defaultCheck_${i}">
+                    ${paymentStatus}
+                </label>
             </div>
             <div class="col-sm-2 px-1">
                 <input type="hidden" name="field_id" value="${ordersData[i].field_id}" class="field_id">
                 <input type="text" class="form-control" value="${ordersData[i].order_name}" name="order_name"
                        placeholder="請輸入姓名 *" data-field="姓名">
             </div>
-            <div class="col-sm-3 px-1">
+            <div class="col-sm-2 px-1">
                 <input type="text" class="form-control" value="${ordersData[i].order_meal}" name="order_meal"
                        placeholder="請輸入餐點名稱 *" data-field="餐點名稱">
             </div>
@@ -760,18 +779,24 @@ $(function () {
         function editOrder() {
             const orderEl = $(this);
             const orderName = orderEl.attr('name');  // Field name
-            const orderValue = orderEl.val();
+            let orderValue = orderEl.val();
             const orderId = $('#order_id').val();
             const field_id = orderEl.parents('.order-item').find('.field_id').val();
             const orderTitle = orderEl.attr('data-field')
 
             // Check input value not empty.
-            if (orderName !== 'order_remark') {  // Order remark not require.
+            const exc = ['order_remark', 'order_paymentStatus'];
+            if (exc.indexOf(orderName) === -1) {  // if not found
                 if (!checkInputVal(orderEl, orderTitle)) {
-                    // ordersDisplay();  // Reload order data
                     return;
                 }
             }
+
+            // Order Payment Status Check
+            if(orderName === 'order_paymentStatus' && orderEl.is(':checked')) orderValue = 1;
+            if(orderName === 'order_paymentStatus' && !orderEl.is(':checked')) orderValue = 0;
+
+
             // Post form
             let orderData = new FormData();
             orderData.append('edit_order', 'true');
@@ -847,7 +872,7 @@ $(function () {
         }
 
         function countOrderDisplay(totalData) {
-            console.log(totalData)
+            // console.log(totalData)
             let orderTotalHeadHtml = '';
             let orderTotalBodyHtml = '';
             let orderTotalHtml = '';

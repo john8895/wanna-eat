@@ -87,10 +87,10 @@ a {
     .navbar-brand {
         color: black;
         font-family: 'Noto Sans TC', sans-serif;
-        @include breakpoint(320){
+        @include breakpoint(320) {
             font-size: 24px;
         }
-        @include breakpoint(lg){
+        @include breakpoint(lg) {
             font-size: 33px;
         }
 
@@ -134,11 +134,11 @@ a {
             transition: .1s ease-in-out;
             visibility: hidden;
             opacity: 0;
-            @include breakpoint(320){
+            @include breakpoint(320) {
                 right: 0;
                 left: auto;
             }
-            @include breakpoint(1366){
+            @include breakpoint(1366) {
                 left: 0;
                 right: auto;
             }
@@ -167,10 +167,10 @@ a {
         .f-icon {
             color: #626262;
             transition: .4s linear;
-            @include breakpoint(320){
+            @include breakpoint(320) {
                 font-size: 21px;
             }
-            @include breakpoint(lg){
+            @include breakpoint(lg) {
                 font-size: 23px;
             }
         }
@@ -420,10 +420,6 @@ ul.pagination-numbers,
 /* ==================================
  * Order
  * ================================== */
-.page__order {
-}
-
-
 .order__header {
     padding: 20px 20px;
 
@@ -456,6 +452,57 @@ ul.pagination-numbers,
     }
 }
 
+input[name=order_paymentStatus] {
+
+    & + label {
+        font-size: 14px;
+        cursor: pointer;
+        transition: .2s linear;
+
+        .paid,.unpaid {
+            padding: 0 3px;
+        }
+
+        .paid {
+            background-color: #eee;
+            color: black;
+
+            &:hover {
+                background-color: $first-color;
+                color: #fff;
+            }
+        }
+        .unpaid {
+            background-color: $first-color;
+            color: #fff;
+            position: relative;
+
+            @include breakpoint(lg){
+                &:before {
+                    content: attr(data-amount);
+                    position: absolute;
+                    bottom: 101%;
+                    color: #000;
+                    right: 0;
+                    padding: 0 4px;
+                    font-size: 13px;
+                    background-color: #eee;
+                }
+            }
+
+
+            &:hover {
+                background-color: darken($first-color, 5%);
+                color: #fff;
+            }
+        }
+
+        i {
+            margin-right: 2px;
+        }
+    }
+}
+
 
 /* ==================================
  * Pages
@@ -470,15 +517,15 @@ ul.pagination-numbers,
 .page__order {
     .order-item {
         transition: .2s linear;
-        cursor: pointer;
+        //cursor: pointer;
 
         & div[class^="col-"]:first-child {
             line-height: 38px;
         }
 
-        &:hover {
-            background-color: gold;
-        }
+        //&:hover {
+        //    background-color: gold;
+        //}
 
         .icon-md {
             fill: gray;
@@ -505,8 +552,6 @@ ul.pagination-numbers,
 
         & > .row {
             position: relative;
-
-
         }
     }
 
@@ -557,7 +602,7 @@ ul.pagination-numbers,
             text-align: center;
             display: inline-block;
 
-            &:not(:first-child){
+            &:not(:first-child) {
                 margin-top: 6px;
             }
 
@@ -601,6 +646,7 @@ ul.pagination-numbers,
         transition: .3s linear;
     }
 }
+
 .store-item {
     a.title {
 
@@ -652,7 +698,7 @@ ul.pagination-numbers,
 
 
 /* ==================================
- * Orders
+ * Orders  /  order.php
  * ================================== */
 .accordion {
     .card-header {
@@ -725,7 +771,7 @@ ul.pagination-numbers,
     .group-yet {
         background-color: #999;
         cursor: alias;
-        
+
         &:hover {
             background-color: #998;
         }

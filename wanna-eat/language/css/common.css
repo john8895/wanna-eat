@@ -749,6 +749,47 @@ ul.pagination-numbers,
   margin-bottom: 10px;
 }
 
+input[name=order_paymentStatus] + label {
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s linear;
+}
+input[name=order_paymentStatus] + label .paid, input[name=order_paymentStatus] + label .unpaid {
+  padding: 0 3px;
+}
+input[name=order_paymentStatus] + label .paid {
+  background-color: #eee;
+  color: black;
+}
+input[name=order_paymentStatus] + label .paid:hover {
+  background-color: #EB4847;
+  color: #fff;
+}
+input[name=order_paymentStatus] + label .unpaid {
+  background-color: #EB4847;
+  color: #fff;
+  position: relative;
+}
+@media (min-width: 992px) {
+  input[name=order_paymentStatus] + label .unpaid:before {
+    content: attr(data-amount);
+    position: absolute;
+    bottom: 101%;
+    color: #000;
+    right: 0;
+    padding: 0 4px;
+    font-size: 13px;
+    background-color: #eee;
+  }
+}
+input[name=order_paymentStatus] + label .unpaid:hover {
+  background-color: #e93130;
+  color: #fff;
+}
+input[name=order_paymentStatus] + label i {
+  margin-right: 2px;
+}
+
 /* ==================================
  * Pages
  * ================================== */
@@ -760,13 +801,9 @@ ul.pagination-numbers,
 
 .page__order .order-item {
   transition: 0.2s linear;
-  cursor: pointer;
 }
 .page__order .order-item div[class^=col-]:first-child {
   line-height: 38px;
-}
-.page__order .order-item:hover {
-  background-color: gold;
 }
 .page__order .order-item .icon-md {
   fill: gray;
@@ -890,7 +927,7 @@ ul.pagination-numbers,
 }
 
 /* ==================================
- * Orders
+ * Orders  /  order.php
  * ================================== */
 .accordion .card-header {
   cursor: pointer;
