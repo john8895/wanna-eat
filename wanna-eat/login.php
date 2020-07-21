@@ -12,6 +12,32 @@ if(!isset($logged)){
 
 global $error_message;
 
+/* TODO: 在這台電腦記得我 2020.07.21
+session_start();
+if(!empty($_POST["login"])) {
+    $conn = mysqli_connect("localhost", "root", "", "blog_samples");
+    $sql = "Select * from members where member_name = '" . $_POST["member_name"] . "'";
+    if(!isset($_COOKIE["member_login"])) {
+        $sql .= " AND member_password = '" . md5($_POST["member_password"]) . "'";
+    }
+    $result = mysqli_query($conn,$sql);
+    $user = mysqli_fetch_array($result);
+    if($user) {
+        $_SESSION["member_id"] = $user["member_id"];
+
+        if(!empty($_POST["remember"])) {
+            setcookie ("member_login",$_POST["member_name"],time()+ (10 * 365 * 24 * 60 * 60));
+        } else {
+            if(isset($_COOKIE["member_login"])) {
+                setcookie ("member_login","");
+            }
+        }
+    } else {
+        $message = "Invalid Login";
+    }
+*/
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $smarty->assign('username', $_POST['username']);
     $smarty->assign('password', $_POST['password']);
@@ -41,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+if (isset($_COOKIE['member_login'])) $smarty->assign('member_login', '1');
 
 if (isset($error_message)) {
     $smarty->assign('error', $error_message);

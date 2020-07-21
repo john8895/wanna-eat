@@ -74,7 +74,7 @@
                         <div class="card">
                             <div class="store-image">
                                 <a href="group-buy.php?id={$item.id}" title="發起{$item.name}的團購">
-                                    {if isset($item.store_cover)}
+                                    {if $item.store_cover !== ''}
                                         <img src="{$item.store_cover}" alt="" class="">
                                     {else}
                                         <img src="./language/img/noimg.jpg" alt="" class="">
