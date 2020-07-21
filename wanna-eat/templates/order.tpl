@@ -1,7 +1,7 @@
 {* filename: order.tpl *}
 {include file="head.tpl"}
 {include file="header.tpl"}
-<main class="page__order">
+<main class="page__order {if ($time_up)}history_order{/if} ">
     <div class="inner__banner">
         <div class="container">
             <div class="d-flex justify-content-between">
@@ -21,19 +21,27 @@
     <div class="container">
         <!-- 開團 -->
         <div class="row modal-wrap no-gutters order__header">
-
+            <div class="col-sm-12 text-center mb-4">
+                {if $time_up}
+                    <div class="form-group text-danger">
+                        <i class="fas fa-info-circle mr-1"></i>時間截止已收單，此單無法繼續訂購！
+                    </div>
+                {/if}
+            </div>
             <div class="col-sm-6 res-info">
                 {if isset($error)}
                     <div class="form-group text-danger">
                         {$error}
                     </div>
                 {/if}
+
+
                 <input type="hidden" value="{$store.id}" id="store_id">
                 <div class="title">{$item.store_name}</div>
                 <ul class="sub-title">
                     {if $store.description !=''}
                         <li>
-                            餐廳簡介：{$store.description}
+                            簡介：{$store.description}
                         </li>
                     {/if}
                     {if $item.remark !=''}
@@ -59,7 +67,10 @@
                     <li><i class="fas fa-angle-right mr-2 text-black-50"></i>目前金額：$<span id="orderTotalNum">0</span>
                         <span id="deliveryAmount"></span>
                     </li>
-                    <li><i class="fas fa-angle-right mr-2 text-black-50"></i>收單時間：{$item.end_time}</li>
+                    <li>
+                        <i class="fas fa-angle-right mr-2 text-black-50"></i>{if $time_up}已收單，截止時間：{$item.end_time}
+                        {else}收單時間：{$item.end_time}{/if}
+                    </li>
 
                 </ul>
 
@@ -95,7 +106,7 @@
 
     {*   Order list display *}
     <div class="container innerPage-section mt-3">
-        <div class="row">
+        <div class="row{if $time_up} d-none{/if}">
             <div class="col-sm-12">
                 <div class="text-center">
                     <div class="sec-title">
@@ -153,8 +164,9 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-
+        <div class="row">
             <div class="col-sm-12 mt-4">
                 <div class="text-center">
                     <div class="sec-title">
@@ -186,12 +198,14 @@
             </div>
 
             <div class="col-sm-12">
-                <div class="mt-5 d-flex justify-content-lg-between">
+                <div class="mt-5 d-flex justify-content-lg-between align-items-baseline">
                     <a href="javascript:window.history.back()" class="btn btn-dark px-3 rounded-0 mr-3">
                         <i class="fas fa-reply mr-2"></i>回上一頁
                     </a>
+{*                    TODO: 立刻收單*}
 {*                    <a href="javascript:;" class="btn btn-default">*}
 {*                        <i class="fas fa-check-circle mr-2"></i>立刻收單*}
+{*                        <small class="d-block mt-1">收單後無法繼續下訂單</small>*}
 {*                    </a>*}
                 </div>
             </div>

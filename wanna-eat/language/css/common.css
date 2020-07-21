@@ -815,6 +815,23 @@ input[name=order_paymentStatus] + label i {
   position: relative;
 }
 
+.history_order .order_list:before {
+  content: "已收單";
+  position: absolute;
+  background-color: rgba(235, 72, 71, 0.28);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  font-size: 1020%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(238, 238, 238, 0.5);
+  overflow: hidden;
+}
+
 .page__edit-info .hostname-block {
   background-color: #F5F5F5;
   padding: 20px 0;

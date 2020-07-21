@@ -25,10 +25,10 @@
                         <div class="card">
                             <div class="store-image">
                                 <a href="edit.php?id={$item.id}" title="編輯 {$item.name} 的資訊">
-                                    {if isset($item.store_cover)}
+                                    {if $item.store_cover !== ''}
                                         <img src="{$item.store_cover}" alt="" class="">
                                     {else}
-                                        <img src="http://fakeimg.pl/550x440" alt="">
+                                        <img src="./language/img/noimg.jpg" alt="">
                                     {/if}
                                 </a>
                             </div>

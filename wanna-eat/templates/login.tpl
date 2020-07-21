@@ -48,12 +48,12 @@
                                            required
                                            name="password">
                                 </div>
-                                <div class="checkbox mb-3 text-right">
-                                    <label>
-                                        <input type="checkbox" value="remember-me"{if isset($member_login) && $member_login === '1'} checked{/if}> 記得我
-                                    </label>
-                                </div>
-                                <div class="col-sm-12 text-center">
+{*                                <div class="checkbox mb-3 text-right">*}
+{*                                    <label>*}
+{*                                        <input type="checkbox" name="remember_me" value="remember_me"{if isset($member_login) && $member_login === '1'} checked{/if}> 記得我*}
+{*                                    </label>*}
+{*                                </div>*}
+                                <div class="col-sm-12 text-center mt-4">
                                     <button class="btn btn-default" type="submit">登入</button>
                                 </div>
                             </div>

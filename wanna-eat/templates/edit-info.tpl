@@ -40,6 +40,41 @@
 
             <div class="row hostname-block" id="hostname_block"></div>
 
+        </div>
+    </section>
+    <div class="section">
+        <div class="container">
+            <div class="row pt-4">
+                <div class="col-sm-12 mt-4 px-0">
+                    <div class="text-center">
+                        <div class="sec-title">
+                            <h3>店家標籤</h3>
+                            <div class="sub-title">Restaurant Tag</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group text-danger"></div>
+                    <div class="row no-gutters">
+                        <label class="col-sm-2 col-form-label text-right">新增標籤：</label>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <input type="text" name="add_host_name"
+                                       class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
+                                       placeholder="請輸入新標籤名稱" autofocus>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <button type="submit" class="btn btn-default mb-2 ml-2" id="add_storeTag">確認新增</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5"></div>
+            <small class="text-muted">※ 如果要修改的話，請刪除之後新增即可</small>
+
+            <div class="row hostname-block" id="storeTag_block"></div>
+
             <div class="row">
                 <div class="col-sm-12">
                     <a href="javascript:window.history.back()" class="btn btn-dark mt-5 px-3 rounded-0">
@@ -47,6 +82,12 @@
                     </a>
                 </div>
             </div>
+        </div>
+    </div>
+
+
+
+
         </div>
     </section>
 </main>

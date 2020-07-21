@@ -52,7 +52,16 @@ function groupDisplay($smarty)
     $result = connect_mysql($sql);
     $group_buy_item = mysqli_fetch_assoc($result);
 
+//    var_dump(strtotime($group_buy_item['end_time']), time());
+    $current_time = time();
+    $order_end_time = strtotime($group_buy_item['end_time']);
+    $time_up = false;
+    if ($order_end_time <= $current_time){
+        $time_up = true;
+    }
+
     storeDisplay($smarty, $group_buy_item['store_id']);  // Store display
+    $smarty->assign('time_up', $time_up);
     $smarty->assign('item', $group_buy_item);
 }
 

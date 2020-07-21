@@ -1,4 +1,23 @@
 /**
+ * SweetAlert Class
+ */
+class SwalAlert {
+    constructor(status, title, description) {
+        this.status = status;
+        this.title = title;
+        this.description = description;
+    }
+
+    fire() {
+        return Swal.fire(
+            this.title,
+            this.description,
+            this.status
+        )
+    }
+}
+
+/**
  * @Range: index.php,
  *
  * Modal display
@@ -637,9 +656,9 @@ $(function () {
 
                 // Payment Status
                 let paymentStatus = '';
-                if(ordersData[i].order_paymentStatus === '1'){
+                if (ordersData[i].order_paymentStatus === '1') {
                     paymentStatus = '<span class="paid"><i class="fas fa-check-circle"></i>已付款</span>';
-                }else{
+                } else {
                     const amount = ordersData[i].order_price * ordersData[i].order_number + ' 元';  // Unpaid Amount
                     paymentStatus = `<span class="unpaid" data-amount="${amount}"><i class="fas fa-dollar-sign"></i>未付款</span>`;
                 }
@@ -793,8 +812,8 @@ $(function () {
             }
 
             // Order Payment Status Check
-            if(orderName === 'order_paymentStatus' && orderEl.is(':checked')) orderValue = 1;
-            if(orderName === 'order_paymentStatus' && !orderEl.is(':checked')) orderValue = 0;
+            if (orderName === 'order_paymentStatus' && orderEl.is(':checked')) orderValue = 1;
+            if (orderName === 'order_paymentStatus' && !orderEl.is(':checked')) orderValue = 0;
 
 
             // Post form
@@ -1020,14 +1039,13 @@ $(function () {
             getHostName();
         }
 
+
+
         function addHostNameHandle() {
             const addHostName = $('input[name="add_host_name"]');
             if (addHostName.val().length === 0) {
-                Swal.fire(
-                    '操作錯誤',
-                    '沒有輸入資料',
-                    'error'
-                )
+                const swalAlert = new SwalAlert('error', '操作錯誤', '沒有輸入資料')
+                swalAlert.fire();
                 return;
             }
             let dataForm = new FormData();
@@ -1038,19 +1056,13 @@ $(function () {
             axios
                 .post('group_buy_api.php', dataForm)
                 .then(res => {
-                    Swal.fire(
-                        '操作成功',
-                        '新增一筆團購負責人',
-                        'success'
-                    )
+                    const swalAlert = new SwalAlert('success', '操作成功', '新增一筆團購負責人')
+                    swalAlert.fire();
                     getHostName();
                 })
                 .catch(error => {
-                    Swal.fire(
-                        '操作失敗',
-                        '錯誤訊息' + error,
-                        'error'
-                    )
+                    const swalAlert = new SwalAlert('error', '操作失敗', '錯誤訊息' + error)
+                    swalAlert.fire();
                 })
         }
 
