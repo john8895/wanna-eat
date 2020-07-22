@@ -234,6 +234,7 @@ $(function () {
             showOrder();
         }
         if ($('#add_hostName').length) editAccount();
+        if ($('#add_storeTag').length) addStoreTag();
         if ($('.btn-del-store').length) deleteStore();
         if ($('#groupBuyForm').length) submitGroupBuy();
         if ($('#addStoreForm').length) submitAddStore();
@@ -1034,11 +1035,43 @@ $(function () {
          * Add host name , edit host name
          *
          */
-        function editAccount() {
-            $('#add_hostName').on('click', addHostNameHandle);
-            getHostName();
+        class AjaxGetData {
+            constructor(api, successCallback) {
+                this.api = api;
+                this.successCallback = successCallback;
+            }
+
+            getData(api, successCallback) {
+                console.log(2)
+                axios
+                    .get(api)
+                    .then(res => {
+                        successCallback(res.data)
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            }
         }
 
+        let getHostName = new AjaxGetData();
+        getHostName.getData('group_buy_api.php?res=hostname', hostNameDisplay)
+
+        // TODO function 會比class先宣告，所以在function內呼叫class就會變undefind
+        function editAccount() {
+            console.log(1)
+            $('#add_hostName').on('click', addHostNameHandle);
+            // const getHostName = new AjaxGetData();
+            // getHostName.getData('group_buy_api.php?res=hostname', hostNameDisplay)
+            // getHostName();
+            // getHostName1.getData('group_buy_api.php?res=hostname', hostNameDisplay)
+
+        }
+
+        function addStoreTag() {
+            $('#add_storeTag').on('click', addHostNameHandle);
+            getStoreTag();
+        }
 
 
         function addHostNameHandle() {
@@ -1066,17 +1099,25 @@ $(function () {
                 })
         }
 
-        // Host name display
-        function getHostName() {
-            axios
-                .get('group_buy_api.php?res=hostname')
-                .then(res => {
-                    hostNameDisplay(res.data)
-                })
-                .catch(err => {
-                    console.error(err);
-                })
+
+        function getStoreTag() {
+
         }
+
+
+        // Host name display
+
+
+        // function getHostName() {
+        //     axios
+        //         .get('group_buy_api.php?res=hostname')
+        //         .then(res => {
+        //             hostNameDisplay(res.data)
+        //         })
+        //         .catch(err => {
+        //             console.error(err);
+        //         })
+        // }
 
         // Host Name Display
         function hostNameDisplay(data) {
