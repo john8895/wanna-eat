@@ -25,6 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     case 'store':
                         getStore();
                         break;
+                    case 'store_tags':
+                        getStoreTags();
+                        break;
                     case 'order_list':
                         if (!$_GET['order_id'] || empty($_GET['order_id'])) {
                             echo 'Invalid order id';
@@ -310,4 +313,16 @@ function deleteHostName(){
     $sql = "DELETE FROM hosts WHERE id={$host_id}";
     if(!connect_mysql($sql)) echo 'error';
     echo 'success';
+}
+
+/** Get store tags */
+function getStoreTags(){
+    $sql = "SELECT store_tag FROM store";
+    $result = connect_mysql($sql);
+    $new_item = array();
+    while ($row = $result->fetch_assoc()){
+        $new_item[] = $row;
+    }
+    $json = json_encode($new_item);
+    echo $json;
 }

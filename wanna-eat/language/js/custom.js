@@ -2,10 +2,12 @@
  * SweetAlert Class
  */
 class SwalAlert {
-    constructor(status, title, description) {
+    constructor(title, description, confirmText, status, callbackFunc) {
         this.status = status;
         this.title = title;
         this.description = description;
+        this.confirmText = confirmText;
+        this.callbackFunc = callbackFunc;
     }
 
     fire() {
@@ -14,6 +16,66 @@ class SwalAlert {
             this.description,
             this.status
         )
+    }
+
+    fireConfirm() {
+        Swal.fire({
+            title: this.title,
+            text: this.description,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: this.confirmText
+        }).then((result) => {
+            if (result.value) {
+                this.callbackFunc();
+            }
+        })
+    }
+}
+
+// Ajax Get Data
+class AjaxData {
+    constructor(api, callback, data) {
+        this.api = api;
+        this.callback = callback;
+        this.data = data;
+    }
+
+    get() {
+        axios
+            .get(this.api)
+            .then(res => {
+                // console.log(res)
+                this.callback(res.data);
+                // return true;
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    }
+
+    // Get echo 'success'
+    post() {
+        axios.post(this.api, this.data).then(res => {
+            console.log(res.data)
+            if (res.data === 'success') {
+                const showMessage = new SwalAlert('增加成功', '訂單已新增', '', 'success')
+                showMessage.fire()
+                this.callback();
+            }
+        }).catch(err => {
+            console.error(err)
+        })
+    }
+
+    // Get json
+    postJson() {
+        axios.post(this.api, this.data).then(res => {
+            this.callback(res.data);
+        }).catch(err => {
+            console.error(err)
+        })
     }
 }
 
@@ -287,33 +349,15 @@ $(function () {
             $('.btn-del-store').on('click', function (e) {
                 e.preventDefault();
                 const itemId = $(this).attr('data-itemId') || 0;
-                Swal.fire({
-                    title: '你確定嗎？',
-                    text: "刪除資料不可復原！",
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: '是的，我要刪除'
-                }).then((result) => {
-                    if (result.value) deleteAct();
-                })
-
-                let deleteAct = function () {
-                    axios.get('delete.php?id=' + itemId)
-                        .then(res => {
-                            if (res.data === 'success') {
-                                Swal.fire(
-                                    '資料已刪除!',
-                                    '刪除一筆餐廳資料',
-                                    'success'
-                                )
-                            }
-                            window.location = 'edit-res.php';
-                        })
-                        .catch(err => {
-                            console.error(err)
-                        })
+                let deleteHandle = function () {
+                    const alertInfo = new SwalAlert('資料已刪除！', '刪除一筆餐廳資料', '', 'success');
+                    deleteAct.get()
+                    alertInfo.fire()
+                    window.location = 'edit-res.php';
                 }
+                const confirmAlert = new SwalAlert('你確定嗎？', '刪除資料不可復原！', '是的，我要刪除', '', deleteHandle)
+                confirmAlert.fireConfirm();
+                const deleteAct = new AjaxData('delete.php?id=' + itemId, '')
             })
         }
 
@@ -506,61 +550,15 @@ $(function () {
             const group_id = $(this).data('groupid');
             if (!group_id) return;
 
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: true
-            })
+            const delGroupBuyAct = new AjaxData(`group_buy_api.php?del_group=${group_id}`, showOrder);
+            const delGroupBuyVar = function () {
+                delGroupBuyAct.get();
+                const alertInfo = new SwalAlert('操作成功', '一筆團購單已刪除', '', 'success');
+                alertInfo.fire();
+            }
 
-            swalWithBootstrapButtons.fire({
-                title: '你確定要刪除嗎？',
-                text: "這項操作是沒辦法還原的！",
-                showCancelButton: true,
-                confirmButtonText: '是的，我要刪除',
-                cancelButtonText: '取消',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.value) {
-                    delGroupBuyHandle(group_id);
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    swalWithBootstrapButtons.fire(
-                        '團購單操作取消',
-                        '您的資料是安全的 :)',
-                        'error'
-                    )
-                }
-            })
-        }
-
-
-        function delGroupBuyHandle(group_id) {
-            if (!group_id) return;
-            axios
-                .get(`group_buy_api.php?del_group=${group_id}`)
-                .then(res => {
-                    // console.log(res)
-                    if (!res.data === 'success') {
-                        Swal.fire(
-                            '操作失敗',
-                            '您並未刪除任何資料 :(',
-                            'error'
-                        )
-                    }
-                    Swal.fire(
-                        '團購單操作成功',
-                        '您的資料已經被刪除 :)',
-                        'success'
-                    )
-                    showOrder();
-                })
-                .catch(error => {
-                    console.error(error)
-                })
+            let alertInfo = new SwalAlert('你確定要刪除嗎？', "這項操作是沒辦法還原的！", '是的，我要刪除', '', delGroupBuyVar);
+            alertInfo.fireConfirm()
         }
 
 
@@ -580,48 +578,13 @@ $(function () {
         // Orders display
         function ordersDisplay() {
             const order_id = $('#order_id').val();
-
-            // If not order id
-            if (!order_id) {
-                let timerInterval;
-                Swal.fire({
-                    title: '未獲取到訂單編號',
-                    html: '<b></b> 毫秒後跳轉到首頁',
-                    icon: 'error',
-                    timer: 3000,
-                    timerProgressBar: true,
-                    onBeforeOpen: () => {
-                        Swal.showLoading()
-                        timerInterval = setInterval(() => {
-                            const content = Swal.getContent()
-                            if (content) {
-                                const b = content.querySelector('b')
-                                if (b) {
-                                    b.textContent = Swal.getTimerLeft()
-                                }
-                            }
-                        }, 100)
-                    },
-                    onClose: () => {
-                        clearInterval(timerInterval)
-                    }
-                }).then((result) => {
-                    /* Read more about handling dismissals below */
-                    if (result.dismiss === Swal.DismissReason.timer) {
-                        // console.log('I was closed by the timer')
-                        // window.location.href = 'index.php';
-                    }
-                })
-            }
-            // Ajax to get order list
-            axios.get(`group_buy_api.php?res=order_list&order_id=${order_id}`).then(res => {
-                // console.log('res.data:',res.data)
-                ordersListDisplay(res.data)
+            if (!order_id) return;
+            let callback = function (data) {
+                ordersListDisplay(data)
                 countOrders(order_id);
-
-            }).catch(err => {
-                console.error(err)
-            })
+            }
+            const submitOrder = new AjaxData(`group_buy_api.php?res=order_list&order_id=${order_id}`, callback);
+            submitOrder.get()
         }
 
 
@@ -757,21 +720,8 @@ $(function () {
             order_price.val('');
             order_remark.val('');
 
-            axios.post('group_buy_api.php', data).then(res => {
-                // console.log(res.data)
-                if (res.data === 'success') {
-                    Swal.fire(
-                        '增加成功',
-                        '訂單已新增',
-                        'success'
-                    )
-                    ordersDisplay();
-                }
-            }).catch(err => {
-                console.error(err)
-            })
-
-
+            const submitOrder = new AjaxData('group_buy_api.php', ordersDisplay, data)
+            submitOrder.post();
         }
 
 
@@ -857,38 +807,25 @@ $(function () {
             countData.append('count_order', 'true');
             countData.append('order_id', order_id);
 
-            axios
-                .post('group_buy_api.php', countData)
-                .then(res => {
-                    countOrderDisplay(res.data);
-                })
-                .catch(error => {
-                    console.error(error)
-                })
+            const submitData = new AjaxData('group_buy_api.php', countOrderDisplay, countData);
+            submitData.postJson();
         }
 
         function getStoreDeliveryAmount(orderTotal) {
             const storeId = $('#store_id').val();
             if (storeId.length === 0) return;
-
-            axios
-                .get('group_buy_api.php?res=store&store_id=' + storeId)
-                .then(res => {
-                    const amount = parseInt(res.data.store_full_price);
-                    let amountHtml = '';
-                    // console.log(amount)
-                    if (orderTotal > amount) {
-                        amountHtml = `<span class="item group-full"><i class="fas fa-truck mr-1"></i>已成團</span>`
-                    } else {
-                        amountHtml = `<span class="item group-yet"><i class="fas fa-dizzy mr-1"></i>未成團</span>`
-                    }
-                    $('#deliveryAmount').empty().append(amountHtml);
-                })
-                .catch(error => {
-                    console.error(error)
-                })
-
-
+            const getDeliveryAmountHandle = function (data) {
+                const amount = parseInt(data.store_full_price);
+                let amountHtml = '';
+                if (orderTotal > amount) {
+                    amountHtml = `<span class="item group-full"><i class="fas fa-truck mr-1"></i>已成團</span>`
+                } else {
+                    amountHtml = `<span class="item group-yet"><i class="fas fa-dizzy mr-1"></i>未成團</span>`
+                }
+                $('#deliveryAmount').empty().append(amountHtml);
+            }
+            const submitData = new AjaxData('group_buy_api.php?res=store&store_id=' + storeId, getDeliveryAmountHandle);
+            submitData.get();
         }
 
         function countOrderDisplay(totalData) {
@@ -978,54 +915,12 @@ $(function () {
         function deleteOrder(event) {
             event.preventDefault();
             const fieldId = $(this).parents('.order-item').find('.field_id').val();
-
-            // Are you sure to delete this record?
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: true
-            })
-
-            swalWithBootstrapButtons.fire({
-                title: '你確定要刪除嗎？',
-                text: "這項操作是沒辦法還原的！",
-                showCancelButton: true,
-                confirmButtonText: '是的，我要刪除',
-                cancelButtonText: '取消',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.value) {
-                    deleteOrderAct();
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    swalWithBootstrapButtons.fire(
-                        '訂單操作取消',
-                        '您的資料是安全的 :)',
-                        'error'
-                    )
-                }
-            })
-
-            function deleteOrderAct() {
-                axios.get(`group_buy_api.php?del=${fieldId}`).then(res => {
-                    // console.log(res.data)
-                    if (res.data === 'success') {
-                        Swal.fire(
-                            '刪除成功',
-                            '訂單已更新',
-                            'success'
-                        )
-                        ordersDisplay();
-                    }
-                }).catch(err => {
-                    console.error(err)
-                })
+            let deleteOrderHandel = function () {
+                const delOrder = new AjaxData(`group_buy_api.php?del=${fieldId}`, ordersDisplay)
+                delOrder.get();
             }
-
+            const alertConfirm = new SwalAlert('你確定要刪除嗎？', "這項操作是沒辦法還原的！", '是的，我要刪除', '', deleteOrderHandel)
+            alertConfirm.fireConfirm();
         }
 
 
@@ -1035,37 +930,10 @@ $(function () {
          * Add host name , edit host name
          *
          */
-        class AjaxGetData {
-            constructor(api, successCallback) {
-                this.api = api;
-                this.successCallback = successCallback;
-            }
-
-            getData(api, successCallback) {
-                console.log(2)
-                axios
-                    .get(api)
-                    .then(res => {
-                        successCallback(res.data)
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    })
-            }
-        }
-
-        let getHostName = new AjaxGetData();
-        getHostName.getData('group_buy_api.php?res=hostname', hostNameDisplay)
-
-        // TODO function 會比class先宣告，所以在function內呼叫class就會變undefind
         function editAccount() {
-            console.log(1)
             $('#add_hostName').on('click', addHostNameHandle);
-            // const getHostName = new AjaxGetData();
-            // getHostName.getData('group_buy_api.php?res=hostname', hostNameDisplay)
-            // getHostName();
-            // getHostName1.getData('group_buy_api.php?res=hostname', hostNameDisplay)
-
+            const getHostName = new AjaxData('group_buy_api.php?res=hostname', hostNameDisplay);
+            getHostName.get()
         }
 
         function addStoreTag() {
@@ -1073,53 +941,6 @@ $(function () {
             getStoreTag();
         }
 
-
-        function addHostNameHandle() {
-            const addHostName = $('input[name="add_host_name"]');
-            if (addHostName.val().length === 0) {
-                const swalAlert = new SwalAlert('error', '操作錯誤', '沒有輸入資料')
-                swalAlert.fire();
-                return;
-            }
-            let dataForm = new FormData();
-            dataForm.append('add_host_name', '1');
-            dataForm.append('host_name', addHostName.val());
-            addHostName.val('')
-
-            axios
-                .post('group_buy_api.php', dataForm)
-                .then(res => {
-                    const swalAlert = new SwalAlert('success', '操作成功', '新增一筆團購負責人')
-                    swalAlert.fire();
-                    getHostName();
-                })
-                .catch(error => {
-                    const swalAlert = new SwalAlert('error', '操作失敗', '錯誤訊息' + error)
-                    swalAlert.fire();
-                })
-        }
-
-
-        function getStoreTag() {
-
-        }
-
-
-        // Host name display
-
-
-        // function getHostName() {
-        //     axios
-        //         .get('group_buy_api.php?res=hostname')
-        //         .then(res => {
-        //             hostNameDisplay(res.data)
-        //         })
-        //         .catch(err => {
-        //             console.error(err);
-        //         })
-        // }
-
-        // Host Name Display
         function hostNameDisplay(data) {
             let hostNameHtml = ''
             for (let v of data) {
@@ -1145,69 +966,101 @@ $(function () {
             $('.btn-del-host').on('click', delHostName);
         }
 
+        function addHostNameHandle() {
+            const addHostName = $('input[name="add_host_name"]');
+            if (addHostName.val().length === 0) {
+                const swalAlert = new SwalAlert('error', '操作錯誤', '沒有輸入資料')
+                swalAlert.fire();
+                return;
+            }
+            let dataForm = new FormData();
+            dataForm.append('add_host_name', '1');
+            dataForm.append('host_name', addHostName.val());
+            addHostName.val('')
+
+            axios
+                .post('group_buy_api.php', dataForm)
+                .then(res => {
+                    const swalAlert = new SwalAlert('success', '操作成功', '新增一筆團購負責人')
+                    swalAlert.fire();
+                    getHostName();
+                })
+                .catch(error => {
+                    const swalAlert = new SwalAlert('error', '操作失敗', '錯誤訊息: ' + error)
+                    swalAlert.fire();
+                })
+        }
+
+
+        // TODO
+        function getStoreTag() {
+            const getStoreTag = new AjaxData('group_buy_api.php?res=store_tags', storeTagsDisplay);
+            getStoreTag.get();
+        }
+
+
+        // Host name display
+        function getHostName() {
+            const getHostName = new AjaxData('group_buy_api.php?res=hostname', storeTagsDisplay)
+            getHostName.get();
+        }
+
+        function storeTagsDisplay(data) {
+
+            // Store tags handle
+            let storeTag = [];
+            data.forEach(v => {
+                const newTag = v.store_tag.split(',')
+                storeTag.push(newTag.flat());
+            })
+            const newTags = storeTag.flat();  // 展開多維陣列
+
+            let storeTagsHtml = ''
+            for (let v of newTags) {
+                storeTagsHtml += `
+            <div class="col-sm-3 mt-2">
+                <div class="row no-gutters hostname-field">
+                    <div class="col-sm-8">
+                        <input type="hidden" name="store_tag_id" value="${v['id']}">
+                        <input type="text" name="store_tag"
+                               class="form-control "
+                               value="${v['store_tag']}" disabled>
+                    </div>
+                    <div class="col-sm-4">
+                        <a href="javascript:;" class="btn-del-storeTag" title="刪除此項">
+                            <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm101.8-262.2L295.6 256l62.2 62.2c4.7 4.7 4.7 12.3 0 17l-22.6 22.6c-4.7 4.7-12.3 4.7-17 0L256 295.6l-62.2 62.2c-4.7 4.7-12.3 4.7-17 0l-22.6-22.6c-4.7-4.7-4.7-12.3 0-17l62.2-62.2-62.2-62.2c-4.7-4.7-4.7-12.3 0-17l22.6-22.6c4.7-4.7 12.3-4.7 17 0l62.2 62.2 62.2-62.2c4.7-4.7 12.3-4.7 17 0l22.6 22.6c4.7 4.7 4.7 12.3 0 17z"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            `;
+            }
+            $('#storeTag_block').empty().append(storeTagsHtml);
+            // $('.btn-del-storeTag').on('click', delStoreTag);
+        }
+
+        // function delStoreTag(){
+        //     const btn = $(this);
+        //     const hostId = btn.parents('.hostname-field').find('input[name="host_id"]').val();
+        //     const delHostName = new AjaxData('group_buy_api.php?res=del_hostname&host_id=' + hostId, getHostName);
+        //     const delHostNameHandle = function () {
+        //         delHostName.get();
+        //     }
+        //     const alertConfirm = new SwalAlert('你確定嗎？', "這項操作不能復原", '是的！我要刪除', '', delHostNameHandle);
+        //     alertConfirm.fireConfirm()
+        // }
+
 
         // Delete Host name
         function delHostName() {
             const btn = $(this);
             const hostId = btn.parents('.hostname-field').find('input[name="host_id"]').val();
-
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger mr-3'
-                },
-                buttonsStyling: false
-            })
-
-            swalWithBootstrapButtons.fire({
-                title: '你確定嗎？',
-                text: "這項操作不能復原",
-                showCancelButton: true,
-                confirmButtonText: '是的！我要刪除',
-                cancelButtonText: '不，我再想想好了',
-                reverseButtons: true
-            }).then((result) => {
-
-                if (result.value) {
-                    axios
-                        .get('group_buy_api.php?res=del_hostname&host_id=' + hostId)
-                        .then(res => {
-                            if (res.data !== 'success') return;
-                            Swal.fire(
-                                '操作成功',
-                                '你刪除了一筆資料',
-                                'success'
-                            )
-                            getHostName();
-                        })
-                        .catch(err => {
-                            Swal.fire(
-                                '操作失敗',
-                                '錯誤訊息' + err,
-                                'error'
-                            )
-                        })
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    swalWithBootstrapButtons.fire(
-                        '操作取消',
-                        '你的資料安全無虞 :)',
-                        'error'
-                    )
-                }
-            })
-
-
+            const delHostName = new AjaxData('group_buy_api.php?res=del_hostname&host_id=' + hostId, getHostName);
+            const delHostNameHandle = function () {
+                delHostName.get();
+            }
+            const alertConfirm = new SwalAlert('你確定嗎？', "這項操作不能復原", '是的！我要刪除', '', delHostNameHandle);
+            alertConfirm.fireConfirm()
         }
     }
 )
-
-// SweetAlert 2 jquery plugin
-// warning, error, success, info, and question
-// Swal.fire(
-//     'Good job!',
-//     'You clicked the button!',
-//     'success'
-// )
