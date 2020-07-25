@@ -46,7 +46,7 @@ class AjaxData {
         axios
             .get(this.api)
             .then(res => {
-                // console.log(res)
+                console.log(res.data)
                 this.callback(res.data);
                 // return true;
             })
@@ -977,7 +977,7 @@ $(function () {
             let storeTags = []
             data.forEach(v => {
                 const storeId = parseInt(v.id)
-                console.log(v)
+                // console.log(v)
                 //TODO 能執行但會報錯 因為 v.store_tag = undefined
                 const tags = v.store_tag.split(',')  // 取出單一tag
                 tags.forEach(item => {
@@ -1053,10 +1053,8 @@ $(function () {
 
         function getStoreTag() {
             const getStoreTag = new AjaxData('group_buy_api.php?res=store_tags', storeTagsDisplay);
-            getStoreTag.get();
+            // getStoreTag.get(); TODO 先註解
         }
-
-
 
 
         function delStoreTag() {
@@ -1064,8 +1062,6 @@ $(function () {
             const storeId = tagField.find('input[name="store_tag_id"]').val();
             const storeTag = tagField.find('input[name="store_tag"]').val();
             const delStoreTag = new AjaxData('group_buy_api.php?res=del_tag&store_id=' + storeId, getStoreTag);
-
-            console.log(storeTag, storeId)
             const delHostNameHandle = function () {
                 delStoreTag.get();
             }
