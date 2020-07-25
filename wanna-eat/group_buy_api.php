@@ -317,7 +317,7 @@ function deleteHostName(){
 
 /** Get store tags */
 function getStoreTags(){
-    $sql = "SELECT store_tag FROM store";
+    $sql = "SELECT store_tag, id FROM store";
     $result = connect_mysql($sql);
     $new_item = array();
     while ($row = $result->fetch_assoc()){

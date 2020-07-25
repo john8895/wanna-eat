@@ -1006,25 +1006,44 @@ $(function () {
         }
 
         function storeTagsDisplay(data) {
+            "use strict"
+            console.log(data)
 
-            // Store tags handle
-            let storeTag = [];
+            let storeTags = []
             data.forEach(v => {
-                const newTag = v.store_tag.split(',')
-                storeTag.push(newTag.flat());
-            })
-            const newTags = storeTag.flat();  // 展開多維陣列
+                const storeId = parseInt(v.id)
+                const tags = v.store_tag.split(',')  // 取出單一tag
 
-            let storeTagsHtml = ''
-            for (let v of newTags) {
+                console.log(tags)
+
+                tags.forEach(v => {
+                    storeTags[v] = storeId;
+                })
+            })
+            // console.log(storeTags);
+            dd()
+            // for (let storeTag of storeTags) {
+            //     console.log('storeTag=',storeTag)
+            //     $('#storeTag_block').text(storeTag)
+            // }
+            let storeTagsHtml = '';
+            // for(let i = 0; i<storeTags.length; i++){
+            //     console.log(i)
+            //     console.log(storeTags[i])
+            // }
+            // storeTags.forEach(v=>{
+            //     console.log(v)
+            // })
+
+            storeTags.forEach((value, key) => {
                 storeTagsHtml += `
             <div class="col-sm-3 mt-2">
-                <div class="row no-gutters hostname-field">
+                <div class="row no-gutters storeTag-field">
                     <div class="col-sm-8">
-                        <input type="hidden" name="store_tag_id" value="${v['id']}">
+                        <input type="hidden" name="store_tag_id" value="${value}">
                         <input type="text" name="store_tag"
                                class="form-control "
-                               value="${v['store_tag']}" disabled>
+                               value="${key}" disabled>
                     </div>
                     <div class="col-sm-4">
                         <a href="javascript:;" class="btn-del-storeTag" title="刪除此項">
@@ -1034,21 +1053,26 @@ $(function () {
                 </div>
             </div>
             `;
-            }
+            })
+
             $('#storeTag_block').empty().append(storeTagsHtml);
-            // $('.btn-del-storeTag').on('click', delStoreTag);
+            $('.btn-del-storeTag').on('click', delStoreTag);
         }
 
-        // function delStoreTag(){
-        //     const btn = $(this);
-        //     const hostId = btn.parents('.hostname-field').find('input[name="host_id"]').val();
-        //     const delHostName = new AjaxData('group_buy_api.php?res=del_hostname&host_id=' + hostId, getHostName);
-        //     const delHostNameHandle = function () {
-        //         delHostName.get();
-        //     }
-        //     const alertConfirm = new SwalAlert('你確定嗎？', "這項操作不能復原", '是的！我要刪除', '', delHostNameHandle);
-        //     alertConfirm.fireConfirm()
-        // }
+        function delStoreTag() {
+            const btn = $(this);
+            const storeId = btn.parents('.storeTag-field').find('input[name="store_tag_id"]').val();
+
+            console.log(storeId)
+            dd()
+
+            const delHostName = new AjaxData('group_buy_api.php?res=del_hostname&host_id=' + hostId, getHostName);
+            const delHostNameHandle = function () {
+                delHostName.get();
+            }
+            const alertConfirm = new SwalAlert('你確定嗎？', "這項操作不能復原", '是的！我要刪除', '', delHostNameHandle);
+            alertConfirm.fireConfirm()
+        }
 
 
         // Delete Host name
