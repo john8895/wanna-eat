@@ -61,7 +61,7 @@
                             <div class="form-group">
                                 <input type="text" name="add_host_name"
                                        class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
-                                       placeholder="請輸入新標籤名稱" autofocus>
+                                       placeholder="請輸入新標籤名稱">
                             </div>
                         </div>
                         <div class="col-sm-4">

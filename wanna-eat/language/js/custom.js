@@ -58,9 +58,9 @@ class AjaxData {
     // Get echo 'success'
     post() {
         axios.post(this.api, this.data).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data === 'success') {
-                const showMessage = new SwalAlert('增加成功', '訂單已新增', '', 'success')
+                const showMessage = new SwalAlert('操作成功', '資料已新增', '', 'success')
                 showMessage.fire()
                 this.callback();
             }
@@ -295,7 +295,7 @@ $(function () {
         if ($('.page__index').length || $('.page__group-buy-now').length || $('.layout__header').length) {
             showOrder();
         }
-        if ($('#add_hostName').length) editAccount();
+        if ($('#add_hostName').length) addHostName();
         if ($('#add_storeTag').length) addStoreTag();
         if ($('.btn-del-store').length) deleteStore();
         if ($('#groupBuyForm').length) submitGroupBuy();
@@ -930,16 +930,19 @@ $(function () {
          * Add host name , edit host name
          *
          */
-        function editAccount() {
+        function addHostName() {
             $('#add_hostName').on('click', addHostNameHandle);
+            // 一開始先載入所有 hostname
             const getHostName = new AjaxData('group_buy_api.php?res=hostname', hostNameDisplay);
             getHostName.get()
         }
 
         function addStoreTag() {
             $('#add_storeTag').on('click', addHostNameHandle);
-            getStoreTag();
+            const getStoreTag = new AjaxData('group_buy_api.php?res=store_tags', storeTagsDisplay);
+            getStoreTag.get();
         }
+
 
         function hostNameDisplay(data) {
             let hostNameHtml = ''
@@ -966,84 +969,48 @@ $(function () {
             $('.btn-del-host').on('click', delHostName);
         }
 
-        function addHostNameHandle() {
-            const addHostName = $('input[name="add_host_name"]');
-            if (addHostName.val().length === 0) {
-                const swalAlert = new SwalAlert('error', '操作錯誤', '沒有輸入資料')
-                swalAlert.fire();
-                return;
-            }
-            let dataForm = new FormData();
-            dataForm.append('add_host_name', '1');
-            dataForm.append('host_name', addHostName.val());
-            addHostName.val('')
-
-            axios
-                .post('group_buy_api.php', dataForm)
-                .then(res => {
-                    const swalAlert = new SwalAlert('success', '操作成功', '新增一筆團購負責人')
-                    swalAlert.fire();
-                    getHostName();
-                })
-                .catch(error => {
-                    const swalAlert = new SwalAlert('error', '操作失敗', '錯誤訊息: ' + error)
-                    swalAlert.fire();
-                })
-        }
-
-
-        // TODO
-        function getStoreTag() {
-            const getStoreTag = new AjaxData('group_buy_api.php?res=store_tags', storeTagsDisplay);
-            getStoreTag.get();
-        }
-
-
-        // Host name display
-        function getHostName() {
-            const getHostName = new AjaxData('group_buy_api.php?res=hostname', storeTagsDisplay)
-            getHostName.get();
-        }
 
         function storeTagsDisplay(data) {
             "use strict"
-            console.log(data)
+            // console.log(data)
 
             let storeTags = []
             data.forEach(v => {
                 const storeId = parseInt(v.id)
+                console.log(v)
+                //TODO 能執行但會報錯 因為 v.store_tag = undefined
                 const tags = v.store_tag.split(',')  // 取出單一tag
-
-                console.log(tags)
-
-                tags.forEach(v => {
-                    storeTags[v] = storeId;
+                tags.forEach(item => {
+                    storeTags.push({tag: item, storeId: storeId.toString()})
                 })
             })
-            // console.log(storeTags);
-            dd()
-            // for (let storeTag of storeTags) {
-            //     console.log('storeTag=',storeTag)
-            //     $('#storeTag_block').text(storeTag)
-            // }
-            let storeTagsHtml = '';
-            // for(let i = 0; i<storeTags.length; i++){
-            //     console.log(i)
-            //     console.log(storeTags[i])
-            // }
-            // storeTags.forEach(v=>{
-            //     console.log(v)
-            // })
 
-            storeTags.forEach((value, key) => {
+            // console.log(storeTags)
+            let result = [], tempArr = []
+            storeTags.forEach(item => {
+                if (!this[item.tag]) {
+                    this[item.tag] = {tag: item.tag, id: ''}
+                    result.push(this[item.tag])
+                }
+                let idSp = this[item.tag].id.length > 0 ? ',' : ''
+                tempArr.push(idSp + item.storeId)
+                this[item.tag].id += tempArr
+                tempArr = []
+            })
+            // console.log(result)
+
+
+            let storeTagsHtml = '';
+            result.forEach((value, key) => {
+                // console.log(value);
                 storeTagsHtml += `
             <div class="col-sm-3 mt-2">
                 <div class="row no-gutters storeTag-field">
                     <div class="col-sm-8">
-                        <input type="hidden" name="store_tag_id" value="${value}">
+                        <input type="hidden" name="store_tag_id" value="${value.id}">
                         <input type="text" name="store_tag"
                                class="form-control "
-                               value="${key}" disabled>
+                               value="${value.tag}" disabled>
                     </div>
                     <div class="col-sm-4">
                         <a href="javascript:;" class="btn-del-storeTag" title="刪除此項">
@@ -1059,16 +1026,48 @@ $(function () {
             $('.btn-del-storeTag').on('click', delStoreTag);
         }
 
+
+        // Add Host Name
+        function addHostNameHandle() {
+            const addHostName = $('input[name="add_host_name"]');
+            if (addHostName.val().length === 0) {
+                const swalAlert = new SwalAlert('error', '操作錯誤', '沒有輸入資料')
+                swalAlert.fire();
+                return;
+            }
+            let dataForm = new FormData();
+            dataForm.append('add_host_name', '1');
+            dataForm.append('host_name', addHostName.val());
+            addHostName.val('')
+
+            const submitData = new AjaxData('group_buy_api.php', getHostName, dataForm);
+            submitData.post()
+        }
+
+
+        // Host name display
+        function getHostName() {
+            const getHostName = new AjaxData('group_buy_api.php?res=hostname', hostNameDisplay)
+            getHostName.get();
+        }
+
+        function getStoreTag() {
+            const getStoreTag = new AjaxData('group_buy_api.php?res=store_tags', storeTagsDisplay);
+            getStoreTag.get();
+        }
+
+
+
+
         function delStoreTag() {
-            const btn = $(this);
-            const storeId = btn.parents('.storeTag-field').find('input[name="store_tag_id"]').val();
+            const tagField = $(this).parents('.storeTag-field');
+            const storeId = tagField.find('input[name="store_tag_id"]').val();
+            const storeTag = tagField.find('input[name="store_tag"]').val();
+            const delStoreTag = new AjaxData('group_buy_api.php?res=del_tag&store_id=' + storeId, getStoreTag);
 
-            console.log(storeId)
-            dd()
-
-            const delHostName = new AjaxData('group_buy_api.php?res=del_hostname&host_id=' + hostId, getHostName);
+            console.log(storeTag, storeId)
             const delHostNameHandle = function () {
-                delHostName.get();
+                delStoreTag.get();
             }
             const alertConfirm = new SwalAlert('你確定嗎？', "這項操作不能復原", '是的！我要刪除', '', delHostNameHandle);
             alertConfirm.fireConfirm()

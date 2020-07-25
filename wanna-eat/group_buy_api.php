@@ -39,9 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     case 'hostname':
                         getHhostName();
                         break;
-                    // Delete orders
                     case 'del_hostname':
                         deleteHostName();
+                        break;
+                    case 'del_tag':
+                        deleteStoreTags();
                         break;
                 }
                 break;
@@ -314,7 +316,20 @@ function deleteHostName(){
     if(!connect_mysql($sql)) echo 'error';
     echo 'success';
 }
+/** delete store tags in edit-info.php
+ */
+function deleteStoreTags(){
+    echo 'OK';
+    die();
+    $store_id = $_GET['store_id'];
+    var_dump($store_id);
+    die();
 
+
+    $sql = "UPDATE FROM store WHERE id={$store_id}";
+    if(!connect_mysql($sql)) echo 'error';
+    echo 'success';
+}
 /** Get store tags */
 function getStoreTags(){
     $sql = "SELECT store_tag, id FROM store";
