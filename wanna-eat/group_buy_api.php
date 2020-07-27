@@ -323,6 +323,9 @@ function deleteStoreTags(){
     var_dump($store_id);
     // TODO 多個id要拆開成array
 
+    $store_id_arr = explode(',', $store_id);
+
+
     die();
     $sql = "UPDATE FROM store WHERE id={$store_id}";
     if(!connect_mysql($sql)) echo 'error';
