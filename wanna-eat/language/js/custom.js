@@ -1062,7 +1062,7 @@ $(function () {
             const tagField = $(this).parents('.storeTag-field');
             const storeId = tagField.find('input[name="store_tag_id"]').val();
             const storeTags = tagField.find('input[name="store_tag"]').val();
-            const delStoreTag = new AjaxData('group_buy_api.php?res=del_tag&store_id=' + storeId + '&store_tag=' + storeTags, getStoreTag);
+            const delStoreTag = new AjaxData('group_buy_api.php?res=del_tag&store_id=' + storeId + '&store_tags=' + storeTags, getStoreTag);
             const delHostNameHandle = function () {
                 delStoreTag.get();
             }
