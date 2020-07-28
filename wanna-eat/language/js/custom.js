@@ -46,6 +46,7 @@ class AjaxData {
         axios
             .get(this.api)
             .then(res => {
+                console.log(this.api)
                 console.log(res.data)
                 this.callback(res.data);
                 // return true;

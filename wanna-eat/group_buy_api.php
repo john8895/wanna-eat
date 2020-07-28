@@ -319,12 +319,16 @@ function deleteHostName(){
 /** delete store tags in edit-info.php
  */
 function deleteStoreTags(){
+    if(empty($_GET['store_id'])){
+        echo 'failure';
+        return;
+    }
+
     $store_id = $_GET['store_id'];
-    var_dump($store_id);
     // TODO 多個id要拆開成array
 
     $store_id_arr = explode(',', $store_id);
-
+    var_dump($store_id_arr);
 
     die();
     $sql = "UPDATE FROM store WHERE id={$store_id}";
