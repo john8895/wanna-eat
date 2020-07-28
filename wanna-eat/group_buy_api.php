@@ -89,7 +89,7 @@ function getGroupBuy()
 
         if ($end_time < $now) {  // 如果截止日比當前早表示已過期，就不顯示
             continue;
-        }else{
+        } else {
             $new_item[] = $item;
         }
     }
@@ -100,7 +100,8 @@ function getGroupBuy()
 }
 
 
-function getGroupHistory(){
+function getGroupHistory()
+{
     $result = connect_mysql("SELECT * FROM group_buy");
     $new_item = array();
     while ($item = $result->fetch_assoc()) {
@@ -157,6 +158,7 @@ function getStores()
     echo $order_json_data;
     $result->close();
 }
+
 /** Get stores in order.php */
 function getStore()
 {
@@ -164,7 +166,7 @@ function getStore()
     $sql = "SELECT * FROM store WHERE id={$store_id}";
     $result = connect_mysql($sql);
     $new_item = array();
-    while ($row = $result->fetch_assoc()){
+    while ($row = $result->fetch_assoc()) {
         $new_item[] = $row;
     }
 //    $order_json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
@@ -240,7 +242,7 @@ function orderTotal()
     $sql = "SELECT * FROM orders WHERE order_id={$order_id}";
     $result = connect_mysql($sql);
     $new_item = array();
-    while ($rows = $result->fetch_assoc()){
+    while ($rows = $result->fetch_assoc()) {
         $new_item[] = $rows;
     }
     $result->close();
@@ -264,7 +266,7 @@ function orderTotal()
                 $temp_num += intval($item['order_number']);
                 $limit = 1;  // 標記
             }
-        }else{
+        } else {
 //            $totalNumber++;
             $temp_num = (int)$v[0]['order_number'];
         }
@@ -290,18 +292,20 @@ function orderTotal()
 
 /** Add host name in edit-info.php
  */
-function addHostName(){
+function addHostName()
+{
     $host_name = $_POST['host_name'];
     $sql = "INSERT INTO hosts (id, host_name) VALUES (null, '{$host_name}')";
     $result = connect_mysql($sql);
-    if($result) echo 'success';
+    if ($result) echo 'success';
 }
 
-function getHhostName(){
+function getHhostName()
+{
     $sql = "SELECT * FROM hosts";
     $result = connect_mysql($sql);
     $new_result = array();
-    while ($row = $result->fetch_assoc()){
+    while ($row = $result->fetch_assoc()) {
         $new_result[] = $row;
     }
     $order_json_data = json_encode($new_result);  // 轉為json格式，轉譯處理中文
@@ -310,37 +314,49 @@ function getHhostName(){
 
 /** delete host name in edit-info.php
  */
-function deleteHostName(){
+function deleteHostName()
+{
     $host_id = $_GET['host_id'];
     $sql = "DELETE FROM hosts WHERE id={$host_id}";
-    if(!connect_mysql($sql)) echo 'error';
+    if (!connect_mysql($sql)) echo 'error';
     echo 'success';
 }
+
 /** delete store tags in edit-info.php
  */
-function deleteStoreTags(){
-    if(empty($_GET['store_id'])){
+function deleteStoreTags()
+{
+    if (empty($_GET['store_id']) || empty($_GET['store_tags'])) {
         echo 'failure';
         return;
     }
 
     $store_id = $_GET['store_id'];
-    // TODO 多個id要拆開成array
-
     $store_id_arr = explode(',', $store_id);
-    var_dump($store_id_arr);
+//    var_dump($store_id_arr);
+//    $row = [];
+//    while ($row = $store_id_arr){
+//        echo $row;
+//    }
+    foreach ($store_id_arr as $k => $v) {
+        $sql = "UPDATE FROM store WHERE id={$v}";
+        // TODO 找到store 要移除  $_GET['store_tags'] 2020.07.28
+        echo $sql;
+    }
 
     die();
     $sql = "UPDATE FROM store WHERE id={$store_id}";
-    if(!connect_mysql($sql)) echo 'error';
+    if (!connect_mysql($sql)) echo 'error';
     echo 'success';
 }
+
 /** Get store tags */
-function getStoreTags(){
+function getStoreTags()
+{
     $sql = "SELECT store_tag, id FROM store";
     $result = connect_mysql($sql);
     $new_item = array();
-    while ($row = $result->fetch_assoc()){
+    while ($row = $result->fetch_assoc()) {
         $new_item[] = $row;
     }
     $json = json_encode($new_item);
