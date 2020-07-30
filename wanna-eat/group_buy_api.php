@@ -326,11 +326,13 @@ function deleteHostName()
  */
 function deleteStoreTags()
 {
-    if (empty($_GET['store_id']) || empty($_GET['store_tags'])) {
-        echo 'failure';
-        return;
-    }
-
+//    if (empty($_GET['store_id']) || empty($_GET['store_tags'])) {
+//        echo 'failure';
+//        return;
+//    }
+    echo 'store_tag=' . $_GET['store_tags'];
+    die();
+    $store_tags = $_GET['store_tags'];
     $store_id = $_GET['store_id'];
     $store_id_arr = explode(',', $store_id);
 //    var_dump($store_id_arr);
@@ -341,11 +343,12 @@ function deleteStoreTags()
     foreach ($store_id_arr as $k => $v) {
         $sql = "UPDATE FROM store WHERE id={$v}";
         // TODO 找到store 要移除  $_GET['store_tags'] 2020.07.28
+
         echo $sql;
     }
-
+    $sql = "UPDATE store SET store_tag='飯,麵' WHERE id={$store_id}";
     die();
-    $sql = "UPDATE FROM store WHERE id={$store_id}";
+//    $sql = "UPDATE FROM store WHERE id={$store_id}";
     if (!connect_mysql($sql)) echo 'error';
     echo 'success';
 }
