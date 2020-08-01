@@ -343,7 +343,6 @@ function deleteStoreTags()
     foreach ($store_id_arr as $k => $v) {
         $sql = "UPDATE FROM store WHERE id={$v}";
         // TODO 找到store 要移除  $_GET['store_tags'] 2020.07.28
-
         echo $sql;
     }
     $sql = "UPDATE store SET store_tag='飯,麵' WHERE id={$store_id}";
