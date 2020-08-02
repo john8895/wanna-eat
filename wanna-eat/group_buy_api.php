@@ -330,18 +330,53 @@ function deleteStoreTags()
 //        echo 'failure';
 //        return;
 //    }
-    echo 'store_tag=' . $_GET['store_tags'];
-    die();
-    $store_tags = $_GET['store_tags'];
+    // 先找到數據，再將符合的TAG刪除，最後更新數據
     $store_id = $_GET['store_id'];
     $store_id_arr = explode(',', $store_id);
+    $store_tags = $_GET['store_tags'];
+    $store_tag_arr = explode(',', $store_tags);
+
+    // id
+    foreach ($store_id_arr as $k => $v) {
+//        echo $v;  // 22 => id
+        $sql = "SELECT * FROM store WHERE id={$v};";
+        $result = connect_mysql($sql);
+        $tags = "";
+        while ($row = $result->fetch_assoc()){
+            $tags = $row["store_tag"];
+        }
+//        echo $tags;  // string(16) "外送,茶葉蛋"
+        $tags_arr = explode(',', $tags);
+
+        foreach ($store_tag_arr as $k2 => $v2){
+//            echo gettype($v2);
+//            var_dump(in_array($v2, $tags_arr));
+
+            if(in_array($v2, $tags_arr)){
+                echo $v2;
+                // todo 如果要刪除的tag存在數據當中，就要從數據中刪除該string
+            }
+
+        }
+    }
+    die();
+    $sql = "UPDATE store SET store_tag='外送,茶葉蛋' WHERE id={$v};";
+
+    // tag
+
+
+
+
 //    var_dump($store_id_arr);
 //    $row = [];
 //    while ($row = $store_id_arr){
 //        echo $row;
 //    }
+    //
+
+
     foreach ($store_id_arr as $k => $v) {
-        $sql = "UPDATE FROM store WHERE id={$v}";
+        $sql = "UPDATE store SET store_tag='外送,茶葉蛋' WHERE id=22;";
         // TODO 找到store 要移除  $_GET['store_tags'] 2020.07.28
         echo $sql;
     }
