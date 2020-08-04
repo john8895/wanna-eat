@@ -332,29 +332,31 @@ function deleteStoreTags()
 //    }
     // 先找到數據，再將符合的TAG刪除，最後更新數據
     $store_id = $_GET['store_id'];
-    $store_id_arr = explode(',', $store_id);
+    $store_id_arr = explode(',', $store_id);  // tag 所屬的id
     $store_tags = $_GET['store_tags'];
-    $store_tag_arr = explode(',', $store_tags);
+    $store_tag_arr = explode(',', $store_tags);  // 要刪除的tag
 
     // id
     foreach ($store_id_arr as $k => $v) {
 //        echo $v;  // 22 => id
+        // 取出要刪除tag所屬id
         $sql = "SELECT * FROM store WHERE id={$v};";
         $result = connect_mysql($sql);
         $tags = "";
         while ($row = $result->fetch_assoc()){
             $tags = $row["store_tag"];
         }
-//        echo $tags;  // string(16) "外送,茶葉蛋"
-        $tags_arr = explode(',', $tags);
+        $data_tags = explode(',', $tags);  // 數據裡的tag
 
         foreach ($store_tag_arr as $k2 => $v2){
 //            echo gettype($v2);
 //            var_dump(in_array($v2, $tags_arr));
 
-            if(in_array($v2, $tags_arr)){
-                echo $v2;
+            // 刪除數據裡的tag
+            if(in_array($v2, $data_tags)){
+                var_dump($data_tags);
                 // todo 如果要刪除的tag存在數據當中，就要從數據中刪除該string
+
             }
 
         }
