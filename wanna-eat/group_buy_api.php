@@ -336,6 +336,7 @@ function deleteStoreTags()
     $store_tags = $_GET['store_tags'];
     $store_tag_arr = explode(',', $store_tags);  // 要刪除的tag
 
+    $data_tags = array();
     // id
     foreach ($store_id_arr as $k => $v) {
 //        echo $v;  // 22 => id
@@ -343,50 +344,27 @@ function deleteStoreTags()
         $sql = "SELECT * FROM store WHERE id={$v};";
         $result = connect_mysql($sql);
         $tags = "";
-        while ($row = $result->fetch_assoc()){
+        while ($row = $result->fetch_assoc()) {
             $tags = $row["store_tag"];
         }
-        $data_tags = explode(',', $tags);  // 數據裡的tag
+        $data_tags = explode(',', $tags);  // 數據裡的tag拆成array
 
-        foreach ($store_tag_arr as $k2 => $v2){
-//            echo gettype($v2);
-//            var_dump(in_array($v2, $tags_arr));
-
+        foreach ($store_tag_arr as $k2 => $v2) {
             // 刪除數據裡的tag
-            if(in_array($v2, $data_tags)){
-                var_dump($data_tags);
-                // todo 如果要刪除的tag存在數據當中，就要從數據中刪除該string
-
+            if (in_array($v2, $data_tags)) {
+                unset($data_tags[array_search($v2, $data_tags)]);  // 刪除不要的tag
+//                var_dump($data_tags);
             }
-
         }
+        $sava_tags = count($data_tags) === 0 ? "" : $data_tags;  // 如果刪光了就存空字串
+        $sava_tags = implode(",", $data_tags);  // array to string 與 explode 是一對
+
+//        var_dump($sava_tags);  // 刪除後字串
+        $sql = "UPDATE store SET store_tag='{$sava_tags}' WHERE id={$v};";
+        if (!connect_mysql($sql)) echo 'fail';
     }
-    die();
-    $sql = "UPDATE store SET store_tag='外送,茶葉蛋' WHERE id={$v};";
 
-    // tag
-
-
-
-
-//    var_dump($store_id_arr);
-//    $row = [];
-//    while ($row = $store_id_arr){
-//        echo $row;
-//    }
-    //
-
-
-    foreach ($store_id_arr as $k => $v) {
-        $sql = "UPDATE store SET store_tag='外送,茶葉蛋' WHERE id=22;";
-        // TODO 找到store 要移除  $_GET['store_tags'] 2020.07.28
-        echo $sql;
-    }
-    $sql = "UPDATE store SET store_tag='飯,麵' WHERE id={$store_id}";
-    die();
-//    $sql = "UPDATE FROM store WHERE id={$store_id}";
-    if (!connect_mysql($sql)) echo 'error';
-    echo 'success';
+    echo 'success'; // TODO 刪除成功 要做介面的刪除，新增
 }
 
 /** Get store tags */
