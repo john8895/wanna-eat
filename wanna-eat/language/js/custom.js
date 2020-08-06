@@ -46,8 +46,8 @@ class AjaxData {
         axios
             .get(this.api)
             .then(res => {
-                console.log(this.api)
-                console.log(res.data)
+                // console.log(this.api)
+                // console.log(res.data)
                 this.callback(res.data);
                 // return true;
             })
@@ -973,37 +973,34 @@ $(function () {
 
         function storeTagsDisplay(data) {
             "use strict"
-            // console.log(data)
-
             let storeTags = []
             data.forEach(v => {
                 const storeId = parseInt(v.id)
-                // console.log(v)
-                //TODO 能執行但會報錯 因為 v.store_tag = undefined
                 const tags = v.store_tag.split(',')  // 取出單一tag
                 tags.forEach(item => {
                     storeTags.push({tag: item, storeId: storeId.toString()})
                 })
             })
 
-            // console.log(storeTags)
+            // tag 所屬 id 組成 可輸出之 array
             let result = [], tempArr = []
             storeTags.forEach(item => {
-                if (!this[item.tag]) {
+                if (!this[item.tag]) {  // 如果第一次載入
                     this[item.tag] = {tag: item.tag, id: ''}
                     result.push(this[item.tag])
                 }
-                let idSp = this[item.tag].id.length > 0 ? ',' : ''
+                let idSp = this[item.tag].id.length > 0 ? ',' : ''  // 如果array不為空，在資料後方加分號
                 tempArr.push(idSp + item.storeId)
                 this[item.tag].id += tempArr
-                tempArr = []
+                tempArr = []  // 清空array
             })
-            // console.log(result)
 
 
+            // 輸出資料
             let storeTagsHtml = '';
-            result.forEach((value, key) => {
+            for (const value of result) {
                 // console.log(value);
+                if(value.tag === '') continue;  // 如果tag為空則不輸出
                 storeTagsHtml += `
             <div class="col-sm-3 mt-2">
                 <div class="row no-gutters storeTag-field">
@@ -1021,7 +1018,7 @@ $(function () {
                 </div>
             </div>
             `;
-            })
+            }
 
             $('#storeTag_block').empty().append(storeTagsHtml);
             $('.btn-del-storeTag').on('click', delStoreTag);
@@ -1054,7 +1051,7 @@ $(function () {
 
         function getStoreTag() {
             const getStoreTag = new AjaxData('group_buy_api.php?res=store_tags', storeTagsDisplay);
-            // getStoreTag.get(); TODO 先註解
+            getStoreTag.get();
         }
 
 
@@ -1065,6 +1062,7 @@ $(function () {
             const delStoreTag = new AjaxData('group_buy_api.php?res=del_tag&store_id=' + storeId + '&store_tags=' + storeTags, getStoreTag);
             const delHostNameHandle = function () {
                 delStoreTag.get();
+
             }
             const alertConfirm = new SwalAlert('你確定嗎？', "這項操作不能復原", '是的！我要刪除', '', delHostNameHandle);
             alertConfirm.fireConfirm()

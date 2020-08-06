@@ -332,57 +332,40 @@ function deleteStoreTags()
 //    }
     // 先找到數據，再將符合的TAG刪除，最後更新數據
     $store_id = $_GET['store_id'];
-    $store_id_arr = explode(',', $store_id);
+    $store_id_arr = explode(',', $store_id);  // tag 所屬的id
     $store_tags = $_GET['store_tags'];
-    $store_tag_arr = explode(',', $store_tags);
-
+    $store_tag_arr = explode(',', $store_tags);  // 要刪除的tag
+//    echo $store_tags;
+    $data_tags = array();
     // id
     foreach ($store_id_arr as $k => $v) {
 //        echo $v;  // 22 => id
+        // 取出要刪除tag所屬id
         $sql = "SELECT * FROM store WHERE id={$v};";
         $result = connect_mysql($sql);
         $tags = "";
         while ($row = $result->fetch_assoc()) {
             $tags = $row["store_tag"];
         }
-//        echo $tags;  // string(16) "外送,茶葉蛋"
-        $tags_arr = explode(',', $tags);
+        $data_tags = explode(',', $tags);  // 數據裡的tag拆成array
 
         foreach ($store_tag_arr as $k2 => $v2) {
-//            echo gettype($v2);
-//            var_dump(in_array($v2, $tags_arr));
+            // 刪除數據裡的tag
+//            echo "v2=".$v2;
 
-            if (in_array($v2, $tags_arr)) {
-                echo $v2;
-                // todo 如果要刪除的tag存在數據當中，就要從數據中刪除該string
+            if (in_array($v2, $data_tags)) {
+                unset($data_tags[array_search($v2, $data_tags)]);  // 刪除不要的tag
+//                var_dump($data_tags);  // 刪除後字串
             }
-
         }
+        $save_tags = count($data_tags) === 0 ? "" : implode(",", $data_tags);  // 如果刪光了就存空字串  // array to string 與 explode 是一對
+
+//        var_dump($save_tags);  // 刪除後字串
+        $sql = "UPDATE store SET store_tag='{$save_tags}' WHERE id={$v};";
+        if (!connect_mysql($sql)) echo 'fail';
     }
-    die();
-    $sql = "UPDATE store SET store_tag='外送,茶葉蛋' WHERE id={$v};";
 
-    // tag
-
-
-//    var_dump($store_id_arr);
-//    $row = [];
-//    while ($row = $store_id_arr){
-//        echo $row;
-//    }
-    //
-
-
-    foreach ($store_id_arr as $k => $v) {
-        $sql = "UPDATE store SET store_tag='外送,茶葉蛋' WHERE id=22;";
-        // TODO 找到store 要移除  $_GET['store_tags'] 2020.07.28
-        echo $sql;
-    }
-    $sql = "UPDATE store SET store_tag='飯,麵' WHERE id={$store_id}";
-    die();
-//    $sql = "UPDATE FROM store WHERE id={$store_id}";
-    if (!connect_mysql($sql)) echo 'error';
-    echo 'success';
+    echo 'success'; // TODO 在店家新增那邊增加店家標籤，更新資料庫即可有新標籤
 }
 
 /** Get store tags */
