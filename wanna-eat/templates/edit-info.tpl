@@ -53,7 +53,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12">
+                <div class="col-sm-12 d-none">
                     <div class="form-group text-danger"></div>
                     <div class="row no-gutters">
                         <label class="col-sm-2 col-form-label text-right">新增標籤：</label>
@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div class="mt-5"></div>
-            <small class="text-muted">※ 如果要修改的話，請刪除之後新增即可</small>
+            <small class="text-muted">※ 如果要新增，請至新增或編輯餐廳</small>
 
             <div class="row hostname-block" id="storeTag_block"></div>
 

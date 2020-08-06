@@ -73,6 +73,18 @@
                             </div>
 
                             <div class="row">
+                                <label class="col-sm-2 col-form-label text-right">標籤</label>
+                                <div class="col-sm-10">
+                                    <div class="form-group">
+                                        <input type="text" name="store_tag"
+                                               class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
+                                               {if isset($store_tag)}value="{$store_tag}"{/if}
+                                               placeholder="標籤分類，輸入多個標籤請以逗號「,」分隔">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
                                 <label class="col-sm-2 col-form-label text-right">上傳封面</label>
                                 <div class="col-sm-10">
                                     <div class="form-group">

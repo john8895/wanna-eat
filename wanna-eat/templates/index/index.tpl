@@ -69,6 +69,19 @@
             </header>
 
             <div class="row">
+
+                <div id="store_tags">
+                    <ul class="d-flex justify-content-start">
+                        <li><a href="">麵</a></li>
+                        <li>飯</li>
+                        <li>外食</li>
+                        <li>外送</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="row">
                 {foreach from=$stores item=item}
                     <div class="col-sm-4 mb-3">
                         <div class="card">

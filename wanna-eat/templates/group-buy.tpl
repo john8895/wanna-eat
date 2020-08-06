@@ -39,7 +39,8 @@
                             <div class="store-text row">
                                 <div class="form-group col-sm-12">
                                     <label>團購負責人 *</label>
-                                    <input type="text" class="form-control" value="" placeholder="請輸入名稱" name="group_host_new"> 或
+                                    <input type="text" class="form-control" value="" placeholder="請輸入名稱"
+                                           name="group_host_new"> 或
                                     <select name="group_host" class="form-control">
                                         <option value="0" selected>請選擇團購負責人</option>
                                         {foreach from=$hosts item=item}
@@ -52,19 +53,26 @@
                                 <div class="form-group col-sm-6">
                                     <label>
                                         餐廳名稱<input type="text" value="{$item.name}" name="store_name" readonly
-                                                    class="form-control">
+                                                   class="form-control">
                                     </label>
                                 </div>
 
                                 <div class="form-group col-sm-6">
                                     <label>
                                         餐廳電話<input type="text" value="{$item.phone}" name="store_phone" readonly
-                                                    class="form-control">
+                                                   class="form-control">
                                     </label>
                                 </div>
                                 {if isset({$item.description})}
                                     <div class="form-group col-sm-12">
                                         簡介：{$item.description}
+                                    </div>
+                                {/if}
+
+                                {if isset({$item.store_tag})}
+                                    <div class="form-group col-sm-12">
+                                            標籤<input type="text" value="{$item.store_tag}" name="store_name" readonly
+                                                     class="form-control">
                                     </div>
                                 {/if}
 
@@ -74,7 +82,8 @@
                                         <div class="input-group date" id="datetimepicker_date"
                                              data-target-input="nearest">
                                             <input type="text" class="form-control datetimepicker-input"
-                                                   data-target="#datetimepicker_date" name="endTime_day" required placeholder="必須填寫"/>
+                                                   data-target="#datetimepicker_date" name="endTime_day" required
+                                                   placeholder="必須填寫"/>
                                             <div class="input-group-append" data-target="#datetimepicker_date"
                                                  data-toggle="datetimepicker">
                                                 <div class="input-group-text">
@@ -92,7 +101,8 @@
                                         <div class="input-group date" id="datetimepicker_time"
                                              data-target-input="nearest">
                                             <input type="text" class="form-control datetimepicker-input"
-                                                   data-target="#datetimepicker_time" name="end_time_hour" required placeholder="必須填寫"/>
+                                                   data-target="#datetimepicker_time" name="end_time_hour" required
+                                                   placeholder="必須填寫"/>
                                             <div class="input-group-append" data-target="#datetimepicker_time"
                                                  data-toggle="datetimepicker">
                                                 <div class="input-group-text">
@@ -108,15 +118,16 @@
 
                                 <div class="form-group col-sm-12">
                                     <label>外送金額 NT$</label>
-                                    <input type="number" value="{$item.store_full_price}" name="full_price" class="form-control"
+                                    <input type="number" value="{$item.store_full_price}" name="full_price"
+                                           class="form-control"
                                            placeholder="請輸入外送金額，不限制填 0" readonly disabled>
 
                                 </div>
 
                                 <div class="form-group col-sm-12">
                                     <label>注意事項</label>
-                                        <input type="text" value="" name="remark" class="form-control"
-                                               placeholder="請輸入注意事項">
+                                    <input type="text" value="" name="remark" class="form-control"
+                                           placeholder="請輸入注意事項">
 
                                 </div>
                             </div>
@@ -127,7 +138,7 @@
                         </div>
 
 
-{*                        菜單*}
+                        {*                        菜單*}
                         <div class="col-sm-6">
                             <div class="store-image store-text">
                                 {if isset($item.images)}

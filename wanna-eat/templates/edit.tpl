@@ -73,6 +73,18 @@
                         </div>
 
                         <div class="row">
+                            <label class="col-sm-2 col-form-label text-right">標籤</label>
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <input type="text" name="store_tag"
+                                           class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
+                                           value="{$item.store_tag}"
+                                           placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <label class="col-sm-2 col-form-label text-right">上傳/更新封面</label>
                             <div class="col-sm-10">
                                 <div class="form-group">

@@ -40,6 +40,7 @@ function edit_user($smarty)
     $item['description'] = $_POST['description'];
     $item['store_full_price'] = $_POST['store_full_price'] === '' ? 0 : $_POST['store_full_price'];
     $smarty->assign('item', $item);
+    $item['store_tag'] = $_POST['store_tag'];
 
     // 校驗
     if (empty($_POST['name'])) {
@@ -109,7 +110,7 @@ function edit_user($smarty)
     }
 
     // 更新數據
-    $sql = "UPDATE store SET name='{$item['name']}', phone='{$item['phone']}', store_full_price={$item['store_full_price']}, description='{$item['description']}'{$sql_store_cover}{$sql_image} WHERE id = {$item['id']};";
+    $sql = "UPDATE store SET name='{$item['name']}', phone='{$item['phone']}', store_full_price={$item['store_full_price']}, description='{$item['description']}'{$sql_store_cover}{$sql_image}, store_tag='{$item['store_tag']}' WHERE id = {$item['id']};";
     connect_mysql($sql);
     header('Location: index.php');
 }

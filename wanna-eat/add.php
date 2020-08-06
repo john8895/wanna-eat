@@ -47,6 +47,7 @@ function add_store()
     $store['phone'] = $_POST['phone'];
     $store['description'] = $_POST['description'];
     $store['store_full_price'] = 0;
+    $store['store_tag'] = $_POST['store_tag'];
 
     // 校驗圖片
     // empty($_FILES['images'] -> 有欄位但沒填 有變數無值
@@ -139,7 +140,7 @@ function add_store()
     if(!$_FILES['images']['size']) $store['images'] = '';
 
     // 數據校驗完畢 寫入資料庫
-    $sql = "INSERT INTO store (id, name, description, phone, store_cover, images, store_full_price) values (null, '{$store['name']}', '{$store['description']}', '{$store['phone']}', '{$store['store_cover']}', '{$store['images']}', {$store['store_full_price']})";
+    $sql = "INSERT INTO store (id, name, description, phone, store_cover, images, store_full_price, store_tag) values (null, '{$store['name']}', '{$store['description']}', '{$store['phone']}', '{$store['store_cover']}', '{$store['images']}', {$store['store_full_price']}, '{$store['store_tag']}')";
     connect_mysql($sql);
     header('Location: index.php');
 }
