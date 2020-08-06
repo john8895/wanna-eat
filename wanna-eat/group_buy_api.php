@@ -342,17 +342,17 @@ function deleteStoreTags()
         $sql = "SELECT * FROM store WHERE id={$v};";
         $result = connect_mysql($sql);
         $tags = "";
-        while ($row = $result->fetch_assoc()){
+        while ($row = $result->fetch_assoc()) {
             $tags = $row["store_tag"];
         }
 //        echo $tags;  // string(16) "外送,茶葉蛋"
         $tags_arr = explode(',', $tags);
 
-        foreach ($store_tag_arr as $k2 => $v2){
+        foreach ($store_tag_arr as $k2 => $v2) {
 //            echo gettype($v2);
 //            var_dump(in_array($v2, $tags_arr));
 
-            if(in_array($v2, $tags_arr)){
+            if (in_array($v2, $tags_arr)) {
                 echo $v2;
                 // todo 如果要刪除的tag存在數據當中，就要從數據中刪除該string
             }
@@ -363,8 +363,6 @@ function deleteStoreTags()
     $sql = "UPDATE store SET store_tag='外送,茶葉蛋' WHERE id={$v};";
 
     // tag
-
-
 
 
 //    var_dump($store_id_arr);
