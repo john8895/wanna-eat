@@ -17,13 +17,27 @@ require_once './assets/inc/check-login.php';
  * mysql
  * ======================
  */
-$sql = 'SELECT * FROM store';
-$result = connect_mysql($sql);
 
-$stores = array();
-while ($rows = mysqli_fetch_assoc($result)) {
-    $stores[] = $rows;
+
+class mainData
+{
+    public function getStore()
+    {
+        $sql = 'SELECT * FROM store';
+        $result = connect_mysql($sql);
+        $stores = array();
+        while ($rows = mysqli_fetch_assoc($result)) {
+            $stores[] = $rows;
+        }
+        foreach ($stores as $k=>$item) {
+            $tags = explode(',', $item['store_tag']);
+            $stores[$k]['tags'] = $tags;
+        }
+        return $stores;
+    }
 }
 
-$smarty->assign('stores', $stores);
+$main = new mainData();
+var_dump($main->getStore());
+$smarty->assign('stores', $main->getStore());
 $smarty->display('layout.tpl');

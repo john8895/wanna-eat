@@ -270,7 +270,56 @@ a {
 
     }
 }
+/* ==================================
+ * Web component
+ * ================================== */
+.tab {
+    display: flex;
+    border-bottom: 1px solid #ddd;
 
+    .tab-item {
+        margin-bottom: -1px;
+
+        > a {
+            border-radius: 4px;
+            border: 1px solid transparent;
+            padding: 15px 22px;
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
+
+            &:hover {
+                background-color: #eee;
+                border-color: #eee #eee #ddd;
+            }
+        }
+
+        &.active a {
+            color: #555;
+            cursor: default;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-bottom-color: transparent;
+        }
+    }
+}
+
+.main-content {
+    padding: 20px;
+
+    .main-content-item {
+        display: none;
+
+        h4 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        &.selected {
+            display: block;
+        }
+    }
+}
 /* ==================================
  * inner__banner, breadcrumb
  * ================================== */

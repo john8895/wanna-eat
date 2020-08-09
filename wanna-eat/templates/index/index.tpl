@@ -14,17 +14,17 @@
     <section class="main__slider">
         <div class="owl-carousel owl-theme">
             <div class="slider-item">
-{*                <div class="text-block">*}
-{*                    <h4 class="title">本月訂購最多次餐廳</h4>*}
-{*                    <div class="description">累計訂餐次數 15 次，最熱門的餐點是…</div>*}
-{*                </div>*}
+                {*                <div class="text-block">*}
+                {*                    <h4 class="title">本月訂購最多次餐廳</h4>*}
+                {*                    <div class="description">累計訂餐次數 15 次，最熱門的餐點是…</div>*}
+                {*                </div>*}
                 <img src="./language/img/banner1.jpg" alt="">
             </div>
             <div class="slider-item">
-{*                <div class="text-block">*}
-{*                    <h4 class="title">本月最熱門飲料</h4>*}
-{*                    <div class="description">累計團購人數 80人次</div>*}
-{*                </div>*}
+                {*                <div class="text-block">*}
+                {*                    <h4 class="title">本月最熱門飲料</h4>*}
+                {*                    <div class="description">累計團購人數 80人次</div>*}
+                {*                </div>*}
                 <img src="./language/img/banner2.jpg" alt="">
             </div>
         </div>
@@ -37,7 +37,7 @@
                 <div class="row">
                     <div class="col-sm-12 mb-3 mt-5 text-center">
                         <h4 class="h1 title">進行中團購</h4>
-{*                        <div class="sub-title">Group buy in progress</div>*}
+                        {*                        <div class="sub-title">Group buy in progress</div>*}
                     </div>
                 </div>
             </header>
@@ -70,15 +70,32 @@
 
             <div class="row">
 
-                <div id="store_tags">
-                    <ul class="d-flex justify-content-start">
-                        <li><a href="">麵</a></li>
-                        <li>飯</li>
-                        <li>外食</li>
-                        <li>外送</li>
-                    </ul>
-                </div>
+{*                <div id="store_tags">*}
+{*                    <ul class="d-flex justify-content-start">*}
+{*                        <li><a href="">麵</a></li>*}
+{*                        <li>飯</li>*}
+{*                        <li>外食</li>*}
+{*                        <li>外送</li>*}
+{*                    </ul>*}
 
+
+{*                </div>*}
+
+{*                <div class="wrap">*}
+{*                    <ul class="tab">*}
+{*                        {foreach from=$stores item=v1}*}
+{*                            {foreach from=$v1.tags item=v2}*}
+{*                                <li class="tab-item active" data-id="{$v1.id}"><a href="javascript:;">{$v2}</a></li>*}
+{*                            {/foreach}*}
+{*                        {/foreach}*}
+{*                    </ul>*}
+{*                    <div class="main-content">*}
+{*                        <div class="main-content-item *}{* selected *}{*">*}
+{*                        </div>*}
+{*                    </div>*}
+{*                </div>*}
+
+{* TODO 2020.08.08 要做餐廳的篩選               *}
             </div>
 
             <div class="row">

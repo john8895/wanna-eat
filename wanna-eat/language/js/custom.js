@@ -1080,5 +1080,17 @@ $(function () {
             const alertConfirm = new SwalAlert('你確定嗎？', "這項操作不能復原", '是的！我要刪除', '', delHostNameHandle);
             alertConfirm.fireConfirm()
         }
+
+
+        // Dynamic Tabs
+        (function dynamicTabs(){
+            $('.tab li').click(function () {
+                $(this).addClass('active').siblings().removeClass('active');
+                let index = $(this).index();
+                $('.main-content-item').eq(index).addClass('selected').siblings().removeClass('selected')
+            })
+        })()
+
+
     }
 )
