@@ -90,10 +90,30 @@
 {*                        {/foreach}*}
 {*                    </ul>*}
 {*                    <div class="main-content">*}
-{*                        <div class="main-content-item *}{* selected *}{*">*}
+{*                        <div class="main-content-item  selected">*}
 {*                        </div>*}
 {*                    </div>*}
 {*                </div>*}
+
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        {foreach from=$stores item=store}
+                            {$store.name}
+                            {foreach from=$store.tags item=tag key=tag_key}
+                                    {$tag}
+{*                                <a class="nav-item nav-link" id="nav-home-{$k2}" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">{$v2}</a>*}
+                            {/foreach}
+                        {/foreach}
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    {foreach from=$stores item=v1}
+{*                        {foreach from=$v1.tags item=v2 key=k2}*}
+{*                            <div class="tab-pane fade show" id="nav{$k2}" role="tabpanel" aria-labelledby="nav-home-{$k2}">{$v1.name}</div>*}
+{*                        {/foreach}*}
+                    {/foreach}
+                </div>
+
 
 {* TODO 2020.08.08 要做餐廳的篩選               *}
             </div>
