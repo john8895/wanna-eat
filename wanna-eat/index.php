@@ -38,6 +38,5 @@ class mainData
 }
 
 $main = new mainData();
-var_dump($main->getStore());
 $smarty->assign('stores', $main->getStore());
 $smarty->display('layout.tpl');
