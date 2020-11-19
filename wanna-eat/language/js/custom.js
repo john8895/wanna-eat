@@ -444,6 +444,7 @@ $(function () {
             }
             let orderBlock = '';
             for (let i = 0; i < groupBuyData.length; i++) {
+                console.log(groupBuyData)
                 // Calc orders
                 const orderCalc = indexOrdersCalc(totalOrders, groupBuyData[i].id)
                 const oneOrderSum = orderCalc.totalPrice;

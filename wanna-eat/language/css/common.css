@@ -566,6 +566,7 @@ a:hover {
 .main__slider {
   position: relative;
   padding-bottom: 20px;
+  display: none;
 }
 .main__slider .slider-item {
   display: -webkit-box;
