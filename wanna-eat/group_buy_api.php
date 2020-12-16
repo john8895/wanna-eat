@@ -57,6 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             case 'del_group':
                 deleteGroupBuy();
                 break;
+            // Close Order
+            case 'closeOrder':
+                closeOrder();
+                break;
             default:
                 break;
         }
@@ -371,7 +375,23 @@ function deleteStoreTags()
 /** Get store tags */
 function getStoreTags()
 {
+
     $sql = "SELECT store_tag, id FROM store";
+    $result = connect_mysql($sql);
+    $new_item = array();
+    while ($row = $result->fetch_assoc()) {
+        $new_item[] = $row;
+    }
+    $json = json_encode($new_item);
+    echo $json;
+}
+
+function closeOrder(){
+    $end_time = $_GET['end_time'];
+    $order_id = $_GET['order_id'];
+    $sql = "UPDATE group_buy SET end_time={$end_time} WHERE id={$order_id}";
+    echo $sql;
+    die();
     $result = connect_mysql($sql);
     $new_item = array();
     while ($row = $result->fetch_assoc()) {

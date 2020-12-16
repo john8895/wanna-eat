@@ -4,7 +4,7 @@ require_once("../libs/Smarty.class.php");
 require_once './assets/inc/connect.php';  // Connect Mysql
 global $smarty;
 $smarty = new Smarty;
-require_once './assets/inc/check-login-inner.php';  // Check Login Status
+//require_once './assets/inc/check-login-inner.php';  // Check Login Status
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -94,6 +94,7 @@ function groupBuySubmit()
     $group_buy['store_id'] = $_POST['store_id'];
     $group_buy['store_name'] = $_POST['store_name'];
     $group_buy['store_phone'] = $_POST['store_phone'];
+    $group_buy['store_tags'] = $_POST['store_tags'];
 //    $group_buy['group_host'] = $_POST['group_host'];
     $group_buy['remark'] = $_POST['remark'];
     $group_buy['order_field_id'] = $_POST['order_field_id'];
@@ -109,7 +110,9 @@ function groupBuySubmit()
 //    saveOrderData($group_buy['id'], $group_buy['order_field_id']);
 
     // Save to Mysql
-    $sql = "INSERT INTO group_buy (id, store_name, store_phone, group_host, end_time, remark, store_id) VALUES ({$group_buy['id']}, '{$group_buy['store_name']}', '{$group_buy['store_phone']}', '{$group_buy['group_host']}', '{$end_time}', '{$group_buy['remark']}',{$group_buy['store_id']});";
+    $sql = "INSERT INTO group_buy (id, store_name, store_phone, group_host, end_time, remark, store_id, store_tags) VALUES ({$group_buy['id']}, '{$group_buy['store_name']}', '{$group_buy['store_phone']}', '{$group_buy['group_host']}', '{$end_time}', '{$group_buy['remark']}',{$group_buy['store_id']},'{$group_buy['store_tags']}');";
+//    echo $sql;
+//    die;
     connect_mysql($sql);
     header('Location: group-buy-now.php');
 }

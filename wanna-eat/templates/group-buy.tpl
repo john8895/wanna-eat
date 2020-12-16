@@ -71,7 +71,7 @@
 
                                 {if isset({$item.store_tag})}
                                     <div class="form-group col-sm-12">
-                                            標籤<input type="text" value="{$item.store_tag}" name="store_name" readonly
+                                            標籤<input type="text" value="{$item.store_tag}" name="store_tags" readonly
                                                      class="form-control">
                                     </div>
                                 {/if}

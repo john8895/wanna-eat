@@ -215,6 +215,7 @@ a {
 .main__slider {
     position: relative;
     padding-bottom: 20px;
+    display: none;
 
     .slider-item {
         @include jh-flex;

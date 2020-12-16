@@ -1,5 +1,8 @@
 <script src="./language/js/jquery.js"></script>
 <script src="./language/js/bootstrap.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+{*production*}
+{*<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>*}
 {*<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>*}
 <script src="./language/js/axios.min.js"></script>
 <script src="./language/js/moment.js"></script>

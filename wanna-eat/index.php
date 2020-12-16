@@ -9,7 +9,7 @@ $smarty = new Smarty;
 $smarty->setTemplateDir('./templates/');
 
 /** Check Login Status */
-require_once './assets/inc/check-login.php';
+//require_once './assets/inc/check-login.php';
 
 
 /*
@@ -38,6 +38,5 @@ class mainData
 }
 
 $main = new mainData();
-var_dump($main->getStore());
 $smarty->assign('stores', $main->getStore());
 $smarty->display('layout.tpl');

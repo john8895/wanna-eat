@@ -380,7 +380,7 @@ $(function () {
                         const res2 = res[1];
                         const res3 = res[2];
                         const groupBuyHistory = res[3].data;
-                        // console.log(res[3].data)
+                        // console.log(res1)
                         groupBuyDisplay(res1.data, res2.data, res3.data, groupBuyHistory)
                     })
                 )
@@ -444,6 +444,7 @@ $(function () {
             }
             let orderBlock = '';
             for (let i = 0; i < groupBuyData.length; i++) {
+                // console.log(groupBuyData)
                 // Calc orders
                 const orderCalc = indexOrdersCalc(totalOrders, groupBuyData[i].id)
                 const oneOrderSum = orderCalc.totalPrice;
@@ -1094,3 +1095,43 @@ $(function () {
 
     }
 )
+
+
+const app = new Vue({
+    delimiters: ['%%','%%'],
+    el: '#app',
+    data: {
+        closeDisabled: false,
+    },
+    mounted: function (){
+    },
+    methods: {
+        closeOrder: function () {
+            const orderEndTime = document.getElementById('order_endTime')
+            const endTime = new Date(orderEndTime.textContent);
+            const today = new Date();
+            // console.log('endTime:',endTime)
+            console.log('today:',today)
+            // console.log((today - endTime) < 0)  // < 0 time is not end
+            // console.log(new Date(today - 10000))
+            if((today - endTime) < 0){
+                // time is not end
+                const newTime = new Date(today - 10000);
+                // const mo = newTime.getMonth() > 9 ? newTime.getMonth() : '0' + newTime.getMonth()
+                const h = newTime.getHours() > 9 ? newTime.getHours() : '0' + newTime.getHours()
+                const m = newTime.getMinutes() > 9 ? newTime.getMinutes() : '0' + newTime.getMinutes()
+                const s = newTime.getSeconds() > 9 ? newTime.getSeconds() : '0' + newTime.getSeconds()
+                const nowTime = `${newTime.getFullYear()}-${newTime.getMonth()}-${newTime.getDate()} ${h}:${m}:${s}`
+                const order_id = document.getElementById('order_id').value
+                const url = `group_buy_api.php?order_id=${order_id}&nowtime=${nowTime}`
+                axios.get(url)
+                    .then(res =>{
+                        console.log(res)
+                    })
+                // console.log(nowTime)
+                // console.log(order_id)
+            }
+
+        }
+    }
+})

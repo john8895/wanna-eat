@@ -1,7 +1,7 @@
 {* filename: order.tpl *}
 {include file="head.tpl"}
 {include file="header.tpl"}
-<main class="page__order {if ($time_up)}history_order{/if} ">
+<main class="page__order {if ($time_up)}history_order{/if} " id="app">
     <div class="inner__banner">
         <div class="container">
             <div class="d-flex justify-content-between">
@@ -37,6 +37,7 @@
 
 
                 <input type="hidden" value="{$store.id}" id="store_id">
+                <input type="hidden" value="{$order_id}" id="order_id">
                 <div class="title">{$item.store_name}</div>
                 <ul class="sub-title">
                     {if $store.description !=''}
@@ -69,10 +70,18 @@
                     </li>
                     <li>
                         <i class="fas fa-angle-right mr-2 text-black-50"></i>{if $time_up}已收單，截止時間：{$item.end_time}
-                        {else}收單時間：{$item.end_time}{/if}
+                        {else}收單時間：<span id="order_endTime">{$item.end_time}</span>{/if}
                     </li>
 
                 </ul>
+                {if isset($logged) && $logged}
+                {else}
+                    {if !$time_up}
+                        <div class="text-left mt-4">
+                            <button class="btn btn-danger" @click="closeOrder">立即收單</button>
+                        </div>
+                    {/if}
+                {/if}
 
 
             </div>
@@ -202,11 +211,11 @@
                     <a href="javascript:window.history.back()" class="btn btn-dark px-3 rounded-0 mr-3">
                         <i class="fas fa-reply mr-2"></i>回上一頁
                     </a>
-{*                    TODO: 立刻收單*}
-{*                    <a href="javascript:;" class="btn btn-default">*}
-{*                        <i class="fas fa-check-circle mr-2"></i>立刻收單*}
-{*                        <small class="d-block mt-1">收單後無法繼續下訂單</small>*}
-{*                    </a>*}
+                    {*                    TODO: 立刻收單*}
+                    {*                    <a href="javascript:;" class="btn btn-default">*}
+                    {*                        <i class="fas fa-check-circle mr-2"></i>立刻收單*}
+                    {*                        <small class="d-block mt-1">收單後無法繼續下訂單</small>*}
+                    {*                    </a>*}
                 </div>
             </div>
 
