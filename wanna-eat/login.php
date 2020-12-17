@@ -1,5 +1,4 @@
 <?php
-/* filename: login.php */
 require_once("../libs/Smarty.class.php");
 require_once("./assets/inc/connect.php");
 $smarty = new Smarty;
@@ -8,34 +7,7 @@ if(!isset($logged)){
     $logged = false;
     $smarty->assign('logged', $logged);
 }
-//var_dump($logged);
-
 global $error_message;
-
-
-//session_start();
-//if(!empty($_POST["login"])) {
-//    $conn = mysqli_connect("localhost", "root", "", "blog_samples");
-//    $sql = "Select * from members where member_name = '" . $_POST["member_name"] . "'";
-//    if(!isset($_COOKIE["member_login"])) {
-//        $sql .= " AND member_password = '" . md5($_POST["member_password"]) . "'";
-//    }
-//    $result = mysqli_query($conn,$sql);
-//    $user = mysqli_fetch_array($result);
-//    if($user) {
-//        $_SESSION["member_id"] = $user["member_id"];
-//
-//        if(!empty($_POST["remember"])) {
-//            setcookie ("member_login",$_POST["member_name"],time()+ (10 * 365 * 24 * 60 * 60));
-//        } else {
-//            if(isset($_COOKIE["member_login"])) {
-//                setcookie ("member_login","");
-//            }
-//        }
-//    } else {
-//        $message = "Invalid Login";
-//    }
-
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -62,14 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         session_start();
         $_SESSION['logged_in'] = true;
         $_SESSION['name'] = $users['username'];
-
-//        if(!empty($_POST["remember_me"])) {  // is checked
-//            setcookie ("member_login",$_POST["member_name"],time()+ (10 * 365 * 24 * 60 * 60));
-//        } else {
-//            if(isset($_COOKIE["member_login"])) {
-//                setcookie ("member_login","");
-//            }
-//        }
 
         header('Location: index.php');
     }else{

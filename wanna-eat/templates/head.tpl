@@ -8,10 +8,8 @@
     <title>今天要吃啥？</title>
     <link rel="stylesheet" href="language/css/bootstrap.css">
     <link rel="stylesheet" href="language/css/tempusdominus-bootstrap-4.min.css" />
-{*    <link rel="stylesheet" href="language/css/owl.carousel.css" />*}
     <link rel="stylesheet" href="./language/css/all.min.css" />
     <link rel="stylesheet" href="language/css/common.css">
-{*    <link rel="stylesheet" href="language/css/index.css">*}
     <link rel="icon" type="image/png" sizes="any" href="./language/img/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">

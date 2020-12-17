@@ -211,11 +211,6 @@
                     <a href="javascript:window.history.back()" class="btn btn-dark px-3 rounded-0 mr-3">
                         <i class="fas fa-reply mr-2"></i>回上一頁
                     </a>
-                    {*                    TODO: 立刻收單*}
-                    {*                    <a href="javascript:;" class="btn btn-default">*}
-                    {*                        <i class="fas fa-check-circle mr-2"></i>立刻收單*}
-                    {*                        <small class="d-block mt-1">收單後無法繼續下訂單</small>*}
-                    {*                    </a>*}
                 </div>
             </div>
 

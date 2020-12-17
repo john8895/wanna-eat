@@ -5,29 +5,15 @@ function orderTotal($order_id)
 {
     $sql = "SELECT * FROM orders WHERE order_id={$order_id};";
     $result = connect_mysql($sql);
-    /*
-    * 1. 總金額  yes
-    * 2. 總人數  yes
-    * 3. 訂購餐點 -> 不重複 array_unique  *
-    * 4. 價錢 -> 價錢 * 數量 = 小計
-    * 5. 訂購人 ->
-    * 結果：排骨飯 50 * 2 = 100  | 阿熊、阿貓、阿翰
-    */
     $new_item = [];
     while ($item = $result->fetch_assoc()) {
         $new_item[] = $item;
     }
-//    var_dump($new_item);
 
     $meal_obj = [];
     foreach ($new_item as $k => $v) {
         $meal_obj[$v['order_meal']][] = $v;
     }
-    var_dump($meal_obj);
-
-    echo '--------------------------------';
-    echo "<br>";
-    echo '--------------------------------';
 
     $meal = [];
     $totalBuyer = [];
@@ -62,8 +48,4 @@ function orderTotal($order_id)
         $totalNumber = 0;
         $temp_num = 0;
     }
-    var_dump($meal);
-
-
 }
-

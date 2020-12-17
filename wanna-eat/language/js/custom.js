@@ -46,10 +46,7 @@ class AjaxData {
         axios
             .get(this.api)
             .then(res => {
-                // console.log(this.api)
-                // console.log(res.data)
                 this.callback(res.data);
-                // return true;
             })
             .catch(err => {
                 console.error(err);
@@ -366,7 +363,6 @@ $(function () {
         // Get group-buy data
         function showOrder() {
             // axios get multiple urls
-
             const total_orders = axios.get('group_buy_api.php?res=total_orders');
             const groupBuy = axios.get('group_buy_api.php?res=buy');
             // 如果在歷史團購單頁，就讀取歷史團購單
@@ -381,7 +377,6 @@ $(function () {
                         const res2 = res[1];
                         const res3 = res[2];
                         const groupBuyHistory = res[3].data;
-                        // console.log(res1)
                         groupBuyDisplay(res1.data, res2.data, res3.data, groupBuyHistory)
                     })
                 )
@@ -402,7 +397,6 @@ $(function () {
 
         // Calc total price and total people of order id.
         function indexOrdersCalc(json, order_id) {
-            // console.log(json, order_id)
             let sum = 0;
             let name = [];
             json.forEach(item => {
@@ -445,7 +439,6 @@ $(function () {
             }
             let orderBlock = '';
             for (let i = 0; i < groupBuyData.length; i++) {
-                // console.log(groupBuyData)
                 // Calc orders
                 const orderCalc = indexOrdersCalc(totalOrders, groupBuyData[i].id)
                 const oneOrderSum = orderCalc.totalPrice;
@@ -454,15 +447,7 @@ $(function () {
 
                 // Calc left time
                 const end_time = new Date(groupBuyData[i].end_time).getTime();
-
-                // console.log(end_time)
-                // 覆蓋moment.js內建函數，以分鐘計算
-                // moment.fn.fromNow = function (a) {
-                //     return moment().diff(this, 'minute');
-                // }
                 const left_time = moment(end_time).fromNow()  // 比較當日獲取還剩幾分鐘收單
-                // countdownGroupBuy(left_time);
-
 
                 // Get store data
                 let storeCover = './language/img/noimg.jpg';
@@ -501,9 +486,6 @@ $(function () {
             <div class="card-body text-center">
             <span id="store_name">${groupBuyData[i].store_name}</span>
             <ul>
-<!--                <li>訂單金額：$${oneOrderSum}</li>-->
-<!--                <li>外送金額：$${storeFullPrice}</li>-->
-<!--                <li>收單時間：${Math.abs(left_time)} 分鐘</li>-->
                 <li class="orderBtn">
                     <div class="mt-2 text-center">
                         <button class="btn btn-outline-danger del-group-btn  border-top-0 border-left-0 border-right-0" data-groupid="${groupBuyData[i].id}">刪除此單</button>
@@ -520,27 +502,25 @@ $(function () {
         }
 
 
-        function countdownGroupBuy(left_time) {
-            var now = moment(),
-                // duration = moment().hours(0).minutes(0).seconds(0),
-                duration = left_time;
-            origin = moment().hours(12).minutes(10).seconds(30);
-            console.log('duration', duration)
-            const interval = 1;
-
-            const itemId = $('.group-leftTime').attr('data-itemId');
-            console.log('itemId:', itemId)
-            setInterval(function () {
-                duration = moment(duration).add(interval, 'seconds');
-                // $('#countdown').text( duration.format('HH:mm:ss').toString() );
-                var timeLeft = moment(moment(origin).diff(moment(duration))).format('HH:mm:ss').toString();
-                console.log(timeLeft)
-                return timeLeft;
-                // $('#countdown1').text( timeLeft );
-
-            }, 1000);
-
-        }
+        // function countdownGroupBuy(left_time) {
+        //     var now = moment(),
+        //         duration = left_time;
+        //     origin = moment().hours(12).minutes(10).seconds(30);
+        //     console.log('duration', duration)
+        //     const interval = 1;
+        //
+        //     const itemId = $('.group-leftTime').attr('data-itemId');
+        //     console.log('itemId:', itemId)
+        //     setInterval(function () {
+        //         duration = moment(duration).add(interval, 'seconds');
+        //         // $('#countdown').text( duration.format('HH:mm:ss').toString() );
+        //         var timeLeft = moment(moment(origin).diff(moment(duration))).format('HH:mm:ss').toString();
+        //         console.log(timeLeft)
+        //         return timeLeft;
+        //         // $('#countdown1').text( timeLeft );
+        //
+        //     }, 1000);
+        // }
 
 
         /**
@@ -618,9 +598,6 @@ $(function () {
             let orderListHtml = '';
             for (let i = 0; i < ordersData.length; i++) {
 
-                // Payment Amount
-
-
                 // Payment Status
                 let paymentStatus = '';
                 if (ordersData[i].order_paymentStatus === '1') {
@@ -678,9 +655,6 @@ $(function () {
             } else {
                 $('#order_list').empty().append(orderListHtml);
             }
-            // Call calc orders
-            // countOrders(ordersData);
-
             // Call edit order function
             $('#order_list input[name^="order"]').on('change', editOrder);
 
@@ -832,7 +806,6 @@ $(function () {
         }
 
         function countOrderDisplay(totalData) {
-            // console.log(totalData)
             let orderTotalHeadHtml = '';
             let orderTotalBodyHtml = '';
             let orderTotalHtml = '';
@@ -1138,7 +1111,6 @@ const app = new Vue({
                     }, 2000)
                 }
             }
-
         }
     }
 })

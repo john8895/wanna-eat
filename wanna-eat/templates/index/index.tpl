@@ -1,30 +1,10 @@
 <main class="page__index page__res-list" id="app">
-    {*
-    <section>
-        <div class="container" id="app">
-            <div class="row">
-                <div class="col-sm-12 text-center mb-5">
-                    <a href="" class="btn btn-info mr-2" id="wanna_eat">今天要吃啥？</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    *}
-
     <section class="main__slider">
         <div class="owl-carousel owl-theme">
             <div class="slider-item">
-                {*                <div class="text-block">*}
-                {*                    <h4 class="title">本月訂購最多次餐廳</h4>*}
-                {*                    <div class="description">累計訂餐次數 15 次，最熱門的餐點是…</div>*}
-                {*                </div>*}
                 <img src="./language/img/banner1.jpg" alt="">
             </div>
             <div class="slider-item">
-                {*                <div class="text-block">*}
-                {*                    <h4 class="title">本月最熱門飲料</h4>*}
-                {*                    <div class="description">累計團購人數 80人次</div>*}
-                {*                </div>*}
                 <img src="./language/img/banner2.jpg" alt="">
             </div>
         </div>
@@ -37,7 +17,6 @@
                 <div class="row">
                     <div class="col-sm-12 mb-3 mt-5 text-center">
                         <h4 class="h1 title">進行中團購</h4>
-                        {*                        <div class="sub-title">Group buy in progress</div>*}
                     </div>
                 </div>
             </header>

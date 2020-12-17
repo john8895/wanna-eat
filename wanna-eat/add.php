@@ -53,7 +53,6 @@ function add_store()
     // empty($_FILES['images'] -> 有欄位但沒填 有變數無值
     // !$_FILES['images'] -> 變數未設置 代表無此欄位 無變數
 
-    // TODO 校驗改為function 才不用處理兩次
     /*
     function validationImage($imgVar){
         if (!isset($_FILES[$imgVar]) && !$_FILES[$imgVar]) {

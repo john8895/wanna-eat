@@ -12,8 +12,6 @@ $smarty = new Smarty;
 
 global $order_id;
 
-//if ($_SERVER['REQUEST_METHOD'] !== 'GET') exit('<h1>失敗</h1>');
-
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!isset($_GET['id'])) {
         exit('<h1>必須有參數</h1>');
@@ -28,21 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //    orderHandler();
 }
-
-
-// Order data receive
-//function orderHandler(){
-//    if(!(isset($_POST['order_name']) ||
-//        isset($_POST['order_content']) ||
-//        isset($_POST['order_price']) ||
-//        isset($_POST['order_remark']))){
-//        $GLOBALS['error_message'] = '請正常使用表單';
-//        return;
-//    }
-//
-//    if(empty($_POST['order_name'])) $GLOBALS['error_message'] = '姓名不能為空'; return;
-//
-//}
 
 
 // Order Display
@@ -92,10 +75,6 @@ function orderDisplay($smarty, $order_id)
     }
     $smarty->assign('order_array', $order_item);
 }
-
-
-
-
 
 
 /** Output **/

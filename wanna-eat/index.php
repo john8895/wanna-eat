@@ -1,6 +1,4 @@
 <?php
-/* filename: index.php */
-
 require '../libs/Smarty.class.php';
 /** Connect Mysql */
 require_once './assets/inc/connect.php';
@@ -10,14 +8,6 @@ $smarty->setTemplateDir('./templates/');
 
 /** Check Login Status */
 //require_once './assets/inc/check-login.php';
-
-
-/*
- * ======================
- * mysql
- * ======================
- */
-
 
 class mainData
 {

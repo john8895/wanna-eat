@@ -100,19 +100,8 @@ function groupBuySubmit()
     $group_buy['order_field_id'] = $_POST['order_field_id'];
     $group_buy['id'] = generateTimeId();  // Generate Time id
 
-    // 接收訂單數據
-//    if (empty($_POST['order_name']) || empty($_POST['order_meal']) || empty($_POST['order_price'])){
-//        $GLOBALS['error_message'] = '訂單資料全都要填寫';
-//        return;
-//    }
-
-    // Save order  如果不為空 則校驗並接收
-//    saveOrderData($group_buy['id'], $group_buy['order_field_id']);
-
     // Save to Mysql
     $sql = "INSERT INTO group_buy (id, store_name, store_phone, group_host, end_time, remark, store_id, store_tags) VALUES ({$group_buy['id']}, '{$group_buy['store_name']}', '{$group_buy['store_phone']}', '{$group_buy['group_host']}', '{$end_time}', '{$group_buy['remark']}',{$group_buy['store_id']},'{$group_buy['store_tags']}');";
-//    echo $sql;
-//    die;
     connect_mysql($sql);
     header('Location: group-buy-now.php');
 }

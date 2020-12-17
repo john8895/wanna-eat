@@ -1,5 +1,4 @@
 <?php
-/* filename: connect.php */
 require_once 'config.php';
 
 function connect_mysql($sql){
