@@ -1,4 +1,4 @@
-<main class="page__index page__res-list">
+<main class="page__index page__res-list" id="app">
     {*
     <section>
         <div class="container" id="app">
