@@ -58,9 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 deleteGroupBuy();
                 break;
             // Close Order
-            case 'closeOrder':
-                closeOrder();
-                break;
             default:
                 break;
         }
@@ -73,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['edit_order'])) editOrder();
     if (isset($_POST['count_order'])) orderTotal();
     if (isset($_POST['add_host_name'])) addHostName();
+    if (isset($_POST['end_time'])) closeOrder();
 }
 
 
@@ -387,16 +385,9 @@ function getStoreTags()
 }
 
 function closeOrder(){
-    $end_time = $_GET['end_time'];
-    $order_id = $_GET['order_id'];
-    $sql = "UPDATE group_buy SET end_time={$end_time} WHERE id={$order_id}";
-    echo $sql;
-    die();
-    $result = connect_mysql($sql);
-    $new_item = array();
-    while ($row = $result->fetch_assoc()) {
-        $new_item[] = $row;
-    }
-    $json = json_encode($new_item);
-    echo $json;
+    $end_time = $_POST['end_time'];
+    $order_id = $_POST['order_id'];
+    $sql = "UPDATE group_buy SET end_time='{$end_time}' WHERE id={$order_id}";
+    if (!connect_mysql($sql)) echo 'fail';
+    echo 'success';
 }

@@ -1,6 +1,6 @@
 {include file="head.tpl"}
 {include file="header.tpl"}
-<main class="page__group-buy-now edit-group">
+<main class="page__group-buy-now edit-group" id="app">
     <div class="inner__banner">
         <div class="container">
             <div class="d-flex justify-content-between">

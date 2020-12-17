@@ -74,6 +74,7 @@ class AjaxData {
     postJson() {
         axios.post(this.api, this.data).then(res => {
             this.callback(res.data);
+            // console.log(res)
         }).catch(err => {
             console.error(err)
         })
@@ -1001,7 +1002,7 @@ $(function () {
             let storeTagsHtml = '';
             for (const value of result) {
                 // console.log(value);
-                if(value.tag === '') continue;  // 如果tag為空則不輸出
+                if (value.tag === '') continue;  // 如果tag為空則不輸出
                 storeTagsHtml += `
             <div class="col-sm-3 mt-2">
                 <div class="row no-gutters storeTag-field">
@@ -1084,7 +1085,7 @@ $(function () {
 
 
         // Dynamic Tabs
-        (function dynamicTabs(){
+        (function dynamicTabs() {
             $('.tab li').click(function () {
                 $(this).addClass('active').siblings().removeClass('active');
                 let index = $(this).index();
@@ -1098,23 +1099,20 @@ $(function () {
 
 
 const app = new Vue({
-    delimiters: ['%%','%%'],
+    delimiters: ['%%', '%%'],
     el: '#app',
     data: {
         closeDisabled: false,
     },
-    mounted: function (){
+    mounted: function () {
     },
     methods: {
         closeOrder: function () {
             const orderEndTime = document.getElementById('order_endTime')
             const endTime = new Date(orderEndTime.textContent);
             const today = new Date();
-            // console.log('endTime:',endTime)
-            console.log('today:',today)
-            // console.log((today - endTime) < 0)  // < 0 time is not end
-            // console.log(new Date(today - 10000))
-            if((today - endTime) < 0){
+            console.log('today:', today)
+            if ((today - endTime) < 0) {
                 // time is not end
                 const newTime = new Date(today - 10000);
                 // const mo = newTime.getMonth() > 9 ? newTime.getMonth() : '0' + newTime.getMonth()
@@ -1123,13 +1121,22 @@ const app = new Vue({
                 const s = newTime.getSeconds() > 9 ? newTime.getSeconds() : '0' + newTime.getSeconds()
                 const nowTime = `${newTime.getFullYear()}-${newTime.getMonth()}-${newTime.getDate()} ${h}:${m}:${s}`
                 const order_id = document.getElementById('order_id').value
-                const url = `group_buy_api.php?order_id=${order_id}&nowtime=${nowTime}`
-                axios.get(url)
-                    .then(res =>{
-                        console.log(res)
-                    })
-                // console.log(nowTime)
-                // console.log(order_id)
+                // Post form
+                let closeOrderData = new FormData();
+                closeOrderData.append('order_id', order_id);
+                closeOrderData.append('end_time', nowTime);
+                const act = new AjaxData('group_buy_api.php', closeOrderHandler, closeOrderData)
+                act.postJson();
+            }
+
+            function closeOrderHandler(res) {
+                if (res === 'success') {
+                    const success = new SwalAlert('已收單', '此單已無法增加訂單')
+                    success.fire();
+                    setTimeout(function () {
+                        location.reload()
+                    }, 2000)
+                }
             }
 
         }
