@@ -6,7 +6,7 @@
                 <a href="index.php" class="navbar-brand">今天要吃啥<span>？</span></a>
                 <nav class="header__account">
                     <ul class="d-flex header__nav-settings">
-                        {if isset($logged) && !$logged}
+                        {if !isset($logged) || !$logged}
                             <li class="link-item">
                                 <a href="login.php" class="drop-link mr-3" title="登入">
                                     <i class="f-icon fas fa-user-circle"></i>

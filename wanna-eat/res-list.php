@@ -6,7 +6,7 @@ require_once './assets/inc/connect.php';
 $smarty = new Smarty;
 
 /** Check Login Status */
-//require_once './assets/inc/check-login.php';
+require_once './assets/inc/check-login-inner.php';
 
 
 $sql = 'SELECT * FROM store';

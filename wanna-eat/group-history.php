@@ -4,7 +4,7 @@ require_once("../libs/Smarty.class.php");
 require_once './assets/inc/connect.php';  // Connect Mysql
 global $smarty;
 $smarty = new Smarty;
-//require_once './assets/inc/check-login-inner.php';  // Check Login Status
+require_once './assets/inc/check-login-inner.php';  // Check Login Status
 
 
 if (isset($error_message)) {

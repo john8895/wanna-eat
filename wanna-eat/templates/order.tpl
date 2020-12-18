@@ -75,7 +75,6 @@
 
                 </ul>
                 {if isset($logged) && $logged}
-                {else}
                     {if !$time_up}
                         <div class="text-left mt-4">
                             <button class="btn btn-danger" @click="closeOrder">立即收單</button>

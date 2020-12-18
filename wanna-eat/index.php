@@ -7,7 +7,7 @@ $smarty = new Smarty;
 $smarty->setTemplateDir('./templates/');
 
 /** Check Login Status */
-//require_once './assets/inc/check-login.php';
+require_once './assets/inc/check-login.php';
 
 class mainData
 {
