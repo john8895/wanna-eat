@@ -52,6 +52,7 @@
                     {/if}
                 </ul>
                 <ul class="description">
+                    <li><i class="fas fa-angle-right mr-2 text-black-50"></i>訂單編號：{$order_id}</li>
                     <li><i class="fas fa-angle-right mr-2 text-black-50"></i>團購負責人：{$item.group_host}</li>
                     <li><i class="fas fa-angle-right mr-2 text-black-50"></i>電話：{$item.store_phone}</li>
                     <li><i class="fas fa-angle-right mr-2 text-black-50"></i>外送門檻：
