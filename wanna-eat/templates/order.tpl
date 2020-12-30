@@ -52,7 +52,9 @@
                     {/if}
                 </ul>
                 <ul class="description">
-                    <li><i class="fas fa-angle-right mr-2 text-black-50"></i>訂單編號：{$order_id}</li>
+                    <li><i class="fas fa-angle-right mr-2 text-black-50"></i>訂單編號：{$order_id|substr:-4}
+                        <br><small class="text-muted">當日訂單可用 LINE 機器人訂餐，<button class="btn btn-sm border" data-toggle="modal" data-target="#lineBotQrcodeModal">顯示 QRCode</button></small>
+                    </li>
                     <li><i class="fas fa-angle-right mr-2 text-black-50"></i>團購負責人：{$item.group_host}</li>
                     <li><i class="fas fa-angle-right mr-2 text-black-50"></i>電話：{$item.store_phone}</li>
                     <li><i class="fas fa-angle-right mr-2 text-black-50"></i>外送門檻：
@@ -82,6 +84,29 @@
                         </div>
                     {/if}
                 {/if}
+
+
+                {* modal*}
+                <div class="modal fade" id="lineBotQrcodeModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">〔今天要吃啥？〕訂餐小幫手</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-center">
+                                    <img src="./language/img/linebotqrcode.png" alt="">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
             </div>
