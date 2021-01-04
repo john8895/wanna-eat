@@ -80,12 +80,12 @@ function groupBuySubmit()
     // 校驗日期時間
     // $_POST['endTime_day'] = '07-02'
     if (!validationTime($_POST['endTime_day'], 'date')) {
-        $GLOBALS['error_message'] = '截止日期格式錯誤';
+        $GLOBALS['error_message'] = 'Deadline format is wrong(Date).';
         return;
     }
     //  $_POST['end_time'] = '12-00'
     if (!validationTime($_POST['end_time_hour'], 'time')) {
-        $GLOBALS['error_message'] = '截止時間格式錯誤';
+        $GLOBALS['error_message'] = 'Deadline format is wrong(Time).';
         return;
     }
 
@@ -144,7 +144,7 @@ function saveOrderData($order_id, $field_id)
 function validationTime($subject, $type)
 {
     // TODO 分別校驗日期、時間， 07-15=01-12, 00-59   12-00=00-23, 00-59
-    $date_pattern = '/\b2020\/[0-1][0-9]\/[0-3][0-9]/';
+    $date_pattern = '/\b202[0-9]\/[0-1][0-9]\/[0-3][0-9]/';
     $time_pattern = '/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/';
 //    $pattern = '/\d{2}-\d{2}/';
     $pattern = $type === 'date' ? $date_pattern : $time_pattern;
