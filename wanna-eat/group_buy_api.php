@@ -107,10 +107,10 @@ function getGroupHistory()
     $result = connect_mysql("SELECT * FROM group_buy");
     $new_item = array();
     while ($item = $result->fetch_assoc()) {
-        $now = date('Y-m-d H-i-s');
-        if ($item['end_time'] > $now) {  // 如果截止日比當前晚表示未過期，就不顯示
-            continue;
-        }
+//        $now = date('Y-m-d H-i-s');
+//        if ($item['end_time'] > $now) {  // 如果截止日比當前晚表示未過期，就不顯示
+//            continue;
+//        }
         $new_item[] = $item;
     }
 //    $json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
