@@ -30,7 +30,13 @@
 
 環境：PHP 5.26 + MySQL 
 
-### 一、設定資料庫連接資訊，可設定本機及遠端，以註解切換
+### 一、Clone
+
+```bash
+$ git clone https://github.com/john8895/wanna-eat.git
+```
+
+### 二、設定資料庫連接資訊，可設定本機及遠端，以註解切換
 
 wanna-eat/assets/inc/Config.php
 
@@ -52,7 +58,7 @@ define('DB_PASSWORD', '123456');
 date_default_timezone_set("Asia/Taipei");
 ```
 
-### 二、建立資料庫
+### 三、建立資料庫
 
 建立資料庫後，匯入以下SQL即可建立資料表及測試資料
 
