@@ -1092,7 +1092,7 @@ const app = new Vue({
                 const h = newTime.getHours() > 9 ? newTime.getHours() : '0' + newTime.getHours()
                 const m = newTime.getMinutes() > 9 ? newTime.getMinutes() : '0' + newTime.getMinutes()
                 const s = newTime.getSeconds() > 9 ? newTime.getSeconds() : '0' + newTime.getSeconds()
-                const nowTime = `${newTime.getFullYear()}-${newTime.getMonth()}-${newTime.getDate()} ${h}:${m}:${s}`
+                const nowTime = `${newTime.getFullYear()}-${newTime.getMonth() + 1}-${newTime.getDate()} ${h}:${m}:${s}`
                 const order_id = document.getElementById('order_id').value
                 // Post form
                 let closeOrderData = new FormData();
