@@ -65,9 +65,9 @@
                             <label class="col-sm-2 col-form-label text-right">外送金額</label>
                             <div class="col-sm-10">
                                 <div class="form-group">
-                                        <input name="store_full_price"
-                                                  class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
-                                                  placeholder="請輸入外送金額" value="{$item.store_full_price}">
+                                    <input name="store_full_price"
+                                           class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
+                                           placeholder="請輸入外送金額" value="{$item.store_full_price}">
                                 </div>
                             </div>
                         </div>
@@ -131,12 +131,14 @@
                             </div>
                         </div>
                     </div>
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-default mb-2">確認修改</button>
+                    </div>
+
+                </form>
             </div>
 
-            <div class="col-sm-12 form-group text-center mt-4">
-                <button type="submit" class="btn btn-default mb-2">確認修改</button>
-            </div>
-            </form>
+
             <div class="col-sm-12">
                 <a href="javascript:window.history.back()" class="btn btn-dark mt-5 px-3 rounded-0">
                     <i class="fas fa-reply mr-2"></i>回上一頁

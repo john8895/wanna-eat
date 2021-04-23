@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     edit_user($smarty);
+    echo "55";
 }
 
 // 顯示數據
