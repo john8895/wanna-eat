@@ -144,7 +144,7 @@ function saveOrderData($order_id, $field_id)
 function validationTime($subject, $type)
 {
     // TODO 分別校驗日期、時間， 07-15=01-12, 00-59   12-00=00-23, 00-59
-    $date_pattern = '/\b2020\/[0-1][0-9]\/[0-3][0-9]/';
+    $date_pattern = '/\b202[0-9]\/[0-1][0-9]\/[0-3][0-9]/';
     $time_pattern = '/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/';
 //    $pattern = '/\d{2}-\d{2}/';
     $pattern = $type === 'date' ? $date_pattern : $time_pattern;
