@@ -1,0 +1,29 @@
+extends include/_layout
+block vars
+    - var module='groupbuy-list'
+    - var headerClass = 'header-transparent'
+block content
+    main.page-groupbuy-list
+        section.store-list
+            .container-fluid
+                h2.section-title 最新 Mzai Eats 嗯災吃啥團購
+                .row
+                    -for(var i=1;i<=6;i++)
+                        .col-sm-6.col-md-4.col-xl-3.mt-4
+                            article.store-list__item
+                                .store-image(data-groupstart='已成團')
+                                    a(href='order.html',title='')
+                                        img(src='archive/p1.jpg',alt='')
+                                .store-meta
+                                    .store-name
+                                        a(href='order.html',title='')
+                                            | A Bao House 成都店
+                                    ul.d-flex.store-other-info
+                                        li.me-2
+                                            i.fa.fa-clock.me-1
+                                            | 7 天後收單
+                                        li
+                                            i.far.fa-user.me-1
+                                            | 5 人參加
+                .mt-5
+                include include/_pagination

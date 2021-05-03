@@ -1,0 +1,95 @@
+@import "../helpers/mixins";
+@import "../helpers/variable";
+
+// ======================================
+// innpage bg
+// ======================================
+.innerpage-banner {
+    background-size: cover;
+    background-position: center 30%;
+
+    // content
+    .vertical-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    //h1.title {
+    //    color: #fff;
+    //}
+
+    // overlay
+    .overlay {
+        z-index: 1;
+    }
+}
+
+
+// ======================================
+// breadcrumb
+// ======================================
+.jh-breadcrumb {
+    background: rgba(255, 255, 255, 0.9);
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+    font-size: 15px;
+    padding: 4px 8px;
+    display: inline-block;
+
+    ol {
+        list-style-type: none;
+        display: flex;
+        display: -ms-flex;
+        flex-wrap: wrap;
+    }
+
+    li {
+        font-size: 15px;
+        color: #888;
+
+        a {
+            font-weight: 500;
+            text-decoration: none;
+
+            &:hover {
+                //color: #ccc;
+                text-decoration: none;
+            }
+        }
+        // home ICON
+        &:first-child:before {
+            //content: "";
+            //background-image: url(../img/icon-home.svg);
+            //background-repeat: no-repeat;
+            //width: 13px;
+            //height: 13px;
+            //display: inline-block;
+            //margin-right: 9px;
+            //vertical-align: middle;
+            @include fontAwesome-icon('\f015');
+            margin-right: 8px;
+            color: #bdbdbd;
+        }
+
+        // each one ' / '
+        &:not(:last-child):after {
+            content: "/";
+            font-weight: normal;
+            font-family: "Font Awesome 5 Free";
+            padding-right: 7px;
+            padding-left: 7px;
+            color: #cccccc;
+            text-decoration: none;
+        }
+
+        &:last-child {
+            //color: #fff;
+        }
+
+        .active {
+            color: #6c757d;
+        }
+    }
+}

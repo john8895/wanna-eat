@@ -1,0 +1,57 @@
+extends include/_layout
+block vars
+    - var module='member'
+    - var headerClass = ''
+block content
+    main.page-m-groupbuy.page-admin
+        .container-fluid
+            .row
+                include include/_admin-sidebar
+                main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
+                    nav.jh-breadcrumb.mt-4.mb-3
+                        .container-fulid
+                            ol
+                                li
+                                    a(href='index.html',title='') 管理首頁
+                                //-
+                                    li
+                                        a(href='pdt-list.html',title='') 餐廳管理
+                                li 團購單管理
+
+                    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+                        h1.h2 團購單管理
+
+                    section.store-list
+                        .container-fluid
+                            //-
+                                table.table
+                                    thead
+                                    tbody
+                                        tr
+                                            td
+                            .row
+                                -for(var i=1;i<=9;i++)
+                                    .col-sm-6.col-xl-4.mb-5
+                                        article.store-list__item
+                                            .store-image
+                                                a(href='order.html',title='', target='_blank')
+                                                    img(src='archive/p1.jpg',alt='')
+                                            .store-meta
+                                                .store-name.d-flex.justify-content-between.align-items-center
+                                                    a(href='order.html',title='', target='_blank')
+                                                        | A Bao House 都店
+                                                    input.me-1(type='checkbox')
+                                                ul.d-flex.store-other-info
+                                                    li.me-2
+                                                        i.fa.fa-clock.me-1
+                                                        | 7 天後收單
+                                                    li
+                                                        i.far.fa-user.me-1
+                                                        | 5 人參加
+                            .border-top.text-end
+                                button.btn.btn-default.mt-4
+                                    i.fa.fa-
+                                    | 刪除所選取的項目
+
+                            //- Pagination
+                            include include/_pagination

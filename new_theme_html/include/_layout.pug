@@ -1,0 +1,42 @@
+//- layout.pug 2020.06.09
+//- 首頁與內頁的 header class有一個不同，首頁有加「transparent」，內頁都沒有
+//- 首頁與內頁的 body class不同，首頁有加「transparent-sticky-header」，內頁要移除不然 header 會壞
+include _mixins
+doctype html
+html
+    block vars
+        - var bodyClass = ''
+        - var headerClass = 'header--dark'
+        - var module=''
+
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='keywords' content='seo')
+        meta(name='description' content='網站敘述')
+        meta(property='og:title' content='網頁標題')
+        meta(property='og:image' content='要顯示的封面圖片路徑')
+        meta(property='og:url' content='網址')
+        meta(property='og:description' content='網站簡述')
+        link(rel='icon', href='images/favicon.png', type='image/x-icon')
+        title 線上訂購餐點 | 美食外送 App | Mzai Eats 嗯災吃啥
+        include _head
+
+        //-新增變數區塊，使首頁、內頁body class不同
+
+    body
+        block header
+            -if (module !== 'member')
+                header#header.header(class=headerClass)
+                    include  _header
+            -else
+                header.header.header-admin(class=headerClass)
+                    include _admin-header
+        block content
+        block footer
+            -if (module !== 'member')
+                include _footer
+        block js
+            include _js
+

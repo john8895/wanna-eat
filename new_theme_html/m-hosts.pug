@@ -1,0 +1,65 @@
+extends include/_layout
+block vars
+    - var module='member'
+    - var headerClass = ''
+block content
+    main.page-m-hosts.page-admin
+        .container-fluid
+            .row
+                include include/_admin-sidebar
+                main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
+                    nav.jh-breadcrumb.mt-4.mb-3
+                        .container-fulid
+                            ol
+                                li
+                                    a(href='index.html',title='') 管理首頁
+                                //-
+                                    li
+                                        a(href='pdt-list.html',title='') 餐廳管理
+                                li 團購主管理
+                    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+                        h1.h2 團購主管理
+
+                        button.btn.btn-primary(type='button' data-bs-toggle='modal' data-bs-target='#addHostModal')
+                            i.fa.fa-plus-circle.me-2
+                            | 新增團購主
+
+                    p.description
+                        | 如果要修改的話，請刪除之後新增即可
+                    section.hosts-list
+                        .row
+                            -for(var i=1;i<=9;i++)
+                                .col-sm-6.col-md-4.col-lg-3.mt-2
+                                    .hostname-field.d-flex
+                                        div
+                                            input(type='hidden' name='host_id' value='1')
+                                            input.form-control(type='text' name='host_name' value='阿翰' disabled='')
+                                        div
+                                            a.btn-delete(href='javascript:;' title='刪除此項')
+                                                svg.icon-md(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                                    path(d='M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm101.8-262.2L295.6 256l62.2 62.2c4.7 4.7 4.7 12.3 0 17l-22.6 22.6c-4.7 4.7-12.3 4.7-17 0L256 295.6l-62.2 62.2c-4.7 4.7-12.3 4.7-17 0l-22.6-22.6c-4.7-4.7-4.7-12.3 0-17l62.2-62.2-62.2-62.2c-4.7-4.7-4.7-12.3 0-17l22.6-22.6c4.7-4.7 12.3-4.7 17 0l62.2 62.2 62.2-62.2c4.7-4.7 12.3-4.7 17 0l22.6 22.6c4.7 4.7 4.7 12.3 0 17z')
+                        //-
+                            .border-top.text-end
+                                button.btn.btn-default.mt-4
+                                    i.fa.fa-
+                                    | 刪除所選取的項目
+
+                        //- Pagination
+                            include include/_pagination
+                    #addHostModal.modal.fade.add-host-modal(tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true')
+                        .modal-dialog.modal-lg
+                            .modal-content
+                                .modal-body
+                                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                    .modal-body-content
+                                        h3.modal-title
+                                            | 新增團購主
+
+                                        .form-group
+                                            .row.no-gutters
+                                                label.col-lg-2.col-form-label 負責人：
+                                                .col-lg-5.mb-3
+                                                    .form-group
+                                                        input.form-control(type='text' name='add_host_name' placeholder='請輸入團購負責人名稱')
+                                                .col-lg-4
+                                                    button#add_hostName.btn.btn-default.mb-2.ml-2(type='submit') 確認新增

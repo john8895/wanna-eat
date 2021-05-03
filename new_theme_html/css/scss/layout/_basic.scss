@@ -1,0 +1,78 @@
+@import "../helpers/variable";
+@import "../helpers/mixins";
+// ======================================
+// Reset
+// ======================================
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+    line-height: 1.2;
+    font-weight: 600;
+    color: $font-color1;
+}
+
+// ======================================
+// Common
+// ======================================
+body {
+    font-family: "Source Sans Pro", "Microsoft JhengHei", sans-serif;
+    color: $first-color;
+    overflow-x: hidden;
+}
+
+img {
+    transition: all 0.2s ease 0s;
+    -moz-transition: all 0.2s ease 0s;
+    -webkit-transition: all 0.2s ease 0s;
+    -o-transition: all 0.2s ease 0s;
+}
+
+img {
+    outline: none;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: $first-color;
+    outline: none;
+    // @include transition(.3s ease-in-out);
+
+    &:hover {
+        color: $font-color1;
+        text-decoration: none;
+        // @include transition(.3s ease-in-out);
+    }
+    &:focus, &:active, &:link {
+        outline: none;
+    }
+}
+
+// ::-moz-selection, ::selection {
+//     background-color: #e6ae49;
+//     color: #FFF;
+// }
+
+// .col-xs-6, .col-320-6, .col-320-3 {
+//     position: relative;
+//     width: 100%;
+//     min-height: 1px;
+//     padding-right: 15px;
+//     padding-left: 15px;
+// }
+
+// @media all and (min-width: 320px) {
+//     .col-320-6 {
+//         width: 50%;
+//     }
+// }
+
+// @media all and (min-width: 320px) {
+//     .col-320-3 {
+//         width: 25%;
+//     }
+// }
+
+// @media all and (min-width: 414px) {
+//     .col-xs-6 {
+//         width: 50%;
+//     }
+// }

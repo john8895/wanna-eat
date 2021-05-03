@@ -1,0 +1,15 @@
+@import "variable";
+html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote, pre, form, fieldset, table, th, td, figure {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+ol, ul {
+    list-style: none;
+}

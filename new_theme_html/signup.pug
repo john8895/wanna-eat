@@ -1,0 +1,22 @@
+extends include/_layout
+block vars
+    - var module='signup'
+    - var headerClass = ''
+block content
+    main.page-signup.form-signin
+        form
+            //-
+                img.mb-4(src='images/logo.svg' alt='' width='146' height='24')
+            h1.h3.mb-2.fw-normal 請登入
+            .form-floating
+                input#floatingInput.form-control(type='email' placeholder='name@example.com')
+                label(for='floatingInput') Email address
+            .form-floating
+                input#floatingPassword.form-control(type='password' placeholder='Password')
+                label(for='floatingPassword') Password
+            //-
+                .checkbox.mb-3
+                    label
+                        input(type='checkbox' value='remember-me')
+                        |  Remember me
+            button.w-100.btn.btn-lg.btn-primary(type='submit') 登入

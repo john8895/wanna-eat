@@ -1,0 +1,96 @@
+@import "../helpers/mixins";
+@import "../helpers/variable";
+
+// ======================================
+// pagination
+// ======================================
+.jh-pagination-wraper {
+    display: inline-block;
+}
+
+.pagination {
+    margin: 20px 0;
+
+    > li {
+        display: inline;
+        float: left;
+
+        > a {
+            color: #888;
+            padding: 10px 16px;
+            font-size: 18px;
+            line-height: 1;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin: 0 -1px 0;
+            font-weight: 500;
+
+            &:hover {
+                background-color: darken(#eee, 1%);
+            }
+        }
+
+        &:first-child a {
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+        }
+        &:last-child a {
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+    }
+
+    > .active {
+        & > a {
+            color: #fff;
+            border-color: #ddd;
+            background: $main-color;
+
+            &:hover {
+                background-color: darken($main-color, 10%);
+            }
+        }
+    }
+}
+
+ul.pagination-numbers,
+.pagination .pagination-numbers,
+.pagination-numbers {
+    display: inline-block;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-left: 0;
+    text-align: right;
+    width: 100%;
+}
+
+.pagination-numbers {
+    li {
+        display: inline-block;
+        float: left;
+        list-style: outside none none;
+        margin-bottom: 0;
+        padding: 0 4px;
+
+        a {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            display: block;
+            float: left;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 33px;
+            transition: all 0.2s linear 0s;
+            color: #282828;
+            background-color: #f7f7f7;
+            height: 36px;
+            width: 36px;
+            text-align: center;
+
+            &:hover, &.active {
+                color: #fff;
+                background-image: linear-gradient(141deg, #14ad63 41.97%, #08a057 41.97%);
+            }
+        }
+    }
+}

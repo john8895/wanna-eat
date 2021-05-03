@@ -1,0 +1,105 @@
+extends include/_layout
+block vars
+    - var module='member'
+    - var headerClass = ''
+block content
+    main.page-m-store-detail.page-admin
+        .container-fluid
+            .row
+                include include/_admin-sidebar
+                main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
+                    nav.jh-breadcrumb.mt-4.mb-3
+                        .container-fulid
+                            ol
+                                li
+                                    a(href='index.html',title='') 管理首頁
+                                //-
+                                li
+                                    a(href='m-store-list.html',title='') 餐廳管理
+                                li 編輯餐廳
+                    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+                        h1.h2 編輯餐廳
+                        //-
+                            button.btn.btn-primary(type='button' data-bs-toggle='modal' data-bs-target='#addStoreModal')
+                                i.fa.fa-plus-circle.me-2
+                                | 新增餐廳
+                    section.store-edit
+                        .container-fluid
+                            //-
+                                h3.modal-title
+                                    | 基本資料
+                            form#addStoreForm(action='add.php' method='post' enctype='multipart/form-data')
+                                div
+                                    .row.mb-2
+                                        label.col-sm-2.col-form-label.addstore-label
+                                            i.fa.fa-user.me-2
+                                            span
+                                                |餐廳名稱
+                                        .col-sm-10
+                                            .form-group
+                                                input.form-control.border-left-0.border-right-0.border-bottom(type='text' name='name' placeholder='請輸入餐廳名稱 *')
+                                    .row.mb-2
+                                        label.col-sm-2.col-form-label.addstore-label
+                                            i.fa.fa-phone.me-2
+                                            span
+                                                |餐廳電話
+                                        .col-sm-10
+                                            .form-group
+                                                input.form-control.border-left-0.border-right-0.border-bottom(type='text' name='phone' placeholder='請輸入餐廳電話')
+                                    .row.mb-2
+                                        label.col-sm-2.col-form-label.addstore-label
+                                            i.fa.fa-info-circle.me-2
+                                            span
+                                                |餐廳介紹
+                                        .col-sm-10
+                                            .form-group
+                                                textarea.form-control(name='description' cols='30' rows='3' placeholder='請輸入餐廳介紹')
+                                    .row.mb-2
+                                        label.col-sm-2.col-form-label.addstore-label
+                                            i.fa.fa-link.me-2
+                                            span
+                                                | 相關網址
+                                        .col-sm-10
+                                            .form-group
+                                                input.form-control.border-left-0.border-right-0.border-bottom(type='number' name='store_full_price' placeholder='')
+                                    .row.mb-2
+                                        label.col-sm-2.col-form-label.addstore-label
+                                            i.fa.fa-coins.me-2
+                                            span
+                                                | 外送金額
+                                        .col-sm-10
+                                            .form-group
+                                                input.form-control.border-left-0.border-right-0.border-bottom(type='number' name='store_full_price' placeholder='滿多少錢才可外送，不限制請輸入 0')
+                                    .row.mb-2
+                                        label.col-sm-2.col-form-label.addstore-label
+                                            i.fa.fa-tags.me-2
+                                            span
+                                                | 分類標籤
+                                        .col-sm-10
+                                            .form-group
+                                                input.form-control.border-left-0.border-right-0.border-bottom(type='text' name='store_tag' placeholder='標籤分類，輸入多個標籤請以逗號「,」分隔')
+                                    .row.mb-2
+                                        label.col-sm-2.col-form-label.addstore-label
+                                            i.fab.fa-intercom.me-2
+                                            span
+                                                | 上傳封面
+                                        .col-sm-10
+                                            .form-group
+                                                input#input_addStoreCover.form-control-file(type='file' name='store_cover')
+                                                small.form-text.text-muted
+                                                    | 請上傳圖片類型檔案，大小不超過 1 MB
+                                                #store_cover_preview
+                                    .row
+                                        label.col-sm-2.col-form-label.addstore-label
+                                            i.fab.fa-elementor.me-2
+                                            span
+                                                | 上傳菜單
+                                        .col-sm-10
+                                            .form-group
+                                                input#input_addStoreMenu.form-control-file(type='file' name='images')
+                                                small.form-text.text-muted
+                                                    | 請上傳圖片類型檔案，大小不超過 1 MB
+                                                #store_menu_preview
+                                .form-group.text-center.mt-4
+                                    button.btn.btn-gray.me-3(type='button', onclick='history.back()') 回上一頁
+                                    button.btn.btn-default(type='submit') 確認修改

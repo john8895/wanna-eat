@@ -1,0 +1,287 @@
+extends include/_layout
+block vars
+    - var module='order'
+    - var headerClass = ''
+block content
+    main.page-order
+        section.order-fixed
+            .container-fluid
+                .d-flex.justify-content-between.flex-wrap
+                    ul.d-flex.flex-wrap
+                        li
+                            i.fa.fa-user-friends.me-3
+                            | 阿翰的團購訂單
+                        li
+                            | &nbsp;&nbsp;·&nbsp;&nbsp;
+                            | 共 5 個人
+                        li
+                            | &nbsp;&nbsp;·&nbsp;&nbsp;
+                            | 總計：$300
+
+                    .btn-check-order.text-end
+                        button.btn.me-2(type='button' data-bs-toggle='modal' data-bs-target='#addOrderModal')
+                            | 查看訂單
+                            i.fa.fa-long-arrow-alt-right.ms-2
+        section.innerpage-banner(style='background-image:url(archive/innerpage-banner.jpg);')
+            .innerpage-text
+                h1.innerpage-title
+                    |大胖肉羹 中國醫店
+                ul.store-meta
+                    li
+                        i.fa.fa-circle
+                        | 75-100TWD 費用
+                    li
+                        i.fa.fa-circle
+                        | 準時
+                    li
+                        i.fa.fa-circle
+                        | 滿 500 外送
+            .function-button
+                button.btn.btn-modal-call.me-2(type='button' data-bs-toggle='modal' data-bs-target='#addOrderModal')
+                    i.fa.fa-file-signature
+                    | 增加/修改訂單
+                button.btn.btn-modal-call.me-2(type='button' data-bs-toggle='modal' data-bs-target='#orderCountModal')
+                    i.fa.fa-clipboard-check
+                    | 訂單統計
+                button.btn.btn-modal-call.me-2(type='button')
+                    i.fa.fa-power-off
+                    | 立即結單
+                button.btn.btn-modal-call(type='button')
+                    i.fa.fa-user-plus
+                    | 恢復開團
+
+            #addOrderModal.modal.fade.order-modal(tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true')
+                .modal-dialog.modal-xl
+                    .modal-content
+                        .modal-body.order-modal-body
+                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                            .order-modal-body__content
+                                section.order-add
+                                    h3.order-modal-title
+                                        //-i.fa.fa-plus-circle.me-2
+                                        | 增加訂單
+                                    p.description 依序輸入資訊，按下送出即可增加訂單。訂單會自動統計一樣的餐點，相同餐點但不同價格，請寫不同名稱，例如：餛飩麵+小菜、餛飩麵+滷蛋。
+                                    form#order_form(method='post')
+                                        input#order_id(type='hidden' value='210423143111' name='add_order_id')
+                                        .row
+                                            .col-xl-2
+                                                input.form-control(type='text' name='add_order_name' placeholder='請輸入姓名 *')
+                                            .col-xl-3
+                                                input.form-control(type='text' name='add_order_meal' placeholder='請輸入餐點名稱 *')
+                                            .col-xl-2
+                                                input.form-control(type='number' name='add_order_price' placeholder='請輸入價格 *')
+                                            .col-xl-2
+                                                .form-group
+                                                    select.form-control(name='add_order_number')
+                                                        option(value='0' disabled='disabled') 請選擇數量
+                                                        option(value='1' selected='selected') 1
+                                                        option(value='2') 2
+                                                        option(value='3') 3
+                                                        option(value='4') 4
+                                                        option(value='5') 5
+                                                        option(value='6') 6
+                                                        option(value='7') 7
+                                                        option(value='8') 8
+                                                        option(value='9') 9
+                                                        option(value='10') 10
+                                            .col-xl-3
+                                                input.form-control(type='text' name='add_order_remark' placeholder='請輸入備註')
+                                        .mt-4
+                                            button#submit_order.btn.btn-default(type='submit')
+                                                | 送出一筆訂單
+                                section.order-list.mt-5.order-edit
+                                    h3.order-modal-title
+                                        //-i.fa.fa-pen-square.me-2
+                                        | 修改訂單
+                                    p.description
+                                        | 如要修改訂單，直接修改欄位內容，改完點旁邊一下或按 Enter ，系統即會自動儲存。
+
+                                    #order_list.order_list
+                                        .row.py-2.rounded.order-item(data-index='1')
+                                            .order-item__field.sn-number.col-xl-1.px-0
+                                                span.number.me-3 1.
+                                            .order-item__field.payment-status.paid.col-xl-1.px-0.form-check.pt-2
+                                                input#defaultCheck_0.form-check-input(type='checkbox' value='1' name='order_paymentStatus' data-field='付款狀態' checked='checked')
+                                                label.form-check-label(for='defaultCheck_0')
+                                                    span.unpaid(data-amount='70 元')
+                                                        i.fas.fa-dollar-sign
+                                                        | 已付款
+                                            .order-item__field.col-xl-2.px-1
+                                                input.field_id(type='hidden' name='field_id' value='60826a029ea90')
+                                                label.label-mobile(for='')
+                                                    i.fa.fa-user.me-2
+                                                    |姓名
+                                                input.form-control(type='text' value='愛吃飯' name='order_name' placeholder='請輸入姓名 *' data-field='姓名')
+                                            .order-item__field.col-xl-2.px-1
+                                                label.label-mobile(for='')
+                                                    i.fa.fa-utensils.me-2
+                                                    |餐點名稱
+                                                input.form-control(type='text' value='肉絲炒飯' name='order_meal' placeholder='請輸入餐點名稱 *' data-field='餐點名稱')
+                                            .order-item__field.col-xl-2.px-1
+                                                label.label-mobile(for='')
+                                                    i.fa.fa-coins.me-2
+                                                    |價格
+                                                input.form-control(type='number' value='70' name='order_price' placeholder='請輸入價格 *' data-field='價格')
+                                            .order-item__field.col-xl-1.px-1
+                                                label.label-mobile(for='')
+                                                    i.fa.fa-calculator.me-2
+                                                    |數量
+                                                input.form-control(type='number' value='1' name='order_number' placeholder='請輸入數量 *' data-field='數量')
+                                            .order-item__field.col-xl-2.px-1
+                                                label.label-mobile(for='')
+                                                    i.fa.fa-marker.me-2
+                                                    |備註
+                                                input.form-control(type='text' value='不要洋蔥' name='order_remark' placeholder='請輸入備註' data-field='備註')
+                                            .order-item__field.col-xl-1.px-1
+                                                label.label-mobile(for='')
+                                                    i.fa.fa-trash.me-2
+                                                    |刪除
+                                                a.btn.delete_order(title='刪除此筆訂單')
+                                                    svg.icon-md(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                                        path(d='M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zM124 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H124z')
+
+                                        .row.py-2.rounded.order-item(data-index='2')
+                                            .order-item__field.sn-number.col-xl-1.px-0
+                                                span.number.me-3 2.
+                                            .order-item__field.payment-status.unpaid.col-xl-1.px-0.form-check.pt-2
+                                                input#defaultCheck_1.form-check-input(type='checkbox' value='0' name='order_paymentStatus' data-field='付款狀態')
+                                                label.form-check-label(for='defaultCheck_0')
+                                                    span.unpaid(data-amount='70 元')
+                                                        i.fas.fa-dollar-sign
+                                                        | 未付款
+                                            .order-item__field.col-xl-2.px-1
+                                                input.field_id(type='hidden' name='field_id' value='60826a029ea90')
+                                                label.label-mobile(for='')
+                                                    i.fa.fa-user.me-2
+                                                    |姓名
+                                                input.form-control(type='text' value='愛吃飯' name='order_name' placeholder='請輸入姓名 *' data-field='姓名')
+                                            .order-item__field.col-xl-2.px-1
+                                                label.label-mobile(for='')
+                                                    i.fa.fa-utensils.me-2
+                                                    |餐點名稱
+                                                input.form-control(type='text' value='肉絲炒飯' name='order_meal' placeholder='請輸入餐點名稱 *' data-field='餐點名稱')
+                                            .order-item__field.col-xl-2.px-1
+                                                label.label-mobile(for='')
+                                                    i.fa.fa-coins.me-2
+                                                    |價格
+                                                input.form-control(type='number' value='70' name='order_price' placeholder='請輸入價格 *' data-field='價格')
+                                            .order-item__field.col-xl-1.px-1
+                                                label.label-mobile(for='')
+                                                    i.fa.fa-calculator.me-2
+                                                    |數量
+                                                input.form-control(type='number' value='1' name='order_number' placeholder='請輸入數量 *' data-field='數量')
+                                            .order-item__field.col-xl-2.px-1
+                                                label.label-mobile(for='')
+                                                    i.fa.fa-marker.me-2
+                                                    |備註
+                                                input.form-control(type='text' value='不要洋蔥' name='order_remark' placeholder='請輸入備註' data-field='備註')
+                                            .order-item__field.col-xl-1.px-1
+                                                label.label-mobile(for='')
+                                                    i.fa.fa-trash.me-2
+                                                    |刪除
+                                                a.btn.delete_order(title='刪除此筆訂單')
+                                                    svg.icon-md(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                                        path(d='M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zM124 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H124z')
+
+            #orderCountModal.modal.fade.order-modal(tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true')
+                .modal-dialog.modal-xl
+                    .modal-content
+                        .modal-body.order-modal-body
+                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                            .order-modal-body__content
+
+                                section.order-total
+                                    h3.order-modal-title
+                                        | 訂單統計
+                                    p.mb-2
+                                        |共有 2 人參與團購，累積有 2 筆訂單
+
+                                    #orderTotal.order-total__content
+                                        .th.order-total__content__title.row
+                                            .col-sm-3
+                                                span 點餐內容
+                                            .col-sm-2
+                                                span 備註
+                                            .col-sm-1
+                                                span 數量
+                                            .col-sm-1
+                                                span 價格
+                                            .col-sm-2
+                                                span 小計
+                                            .col-sm-3
+                                                span 訂購人
+                                        .tr.row
+                                            .col-sm-3
+                                                span 肉絲炒飯
+                                            .col-sm-2
+                                                span 備註
+                                            .col-sm-1
+                                                span 1
+                                            .col-sm-1
+                                                span 70
+                                            .col-sm-2
+                                                span 70
+                                            .col-sm-3
+                                                ul.d-flex.flex-wrap
+                                                    li.btn.btn-outline-success.px-1.mr-2 愛吃飯
+                                        .tr.row
+                                            .col-sm-3
+                                                span 肉絲炒麵
+                                            .col-sm-2
+                                                span 備註
+                                            .col-sm-1
+                                                span 1
+                                            .col-sm-1
+                                                span 70
+                                            .col-sm-2
+                                                span 70
+                                            .col-sm-3
+                                                ul.d-flex.flex-wrap
+                                                    li.btn.btn-outline-success.px-1.mr-2 愛吃麵
+                                        .th.order-total__content__all-total.row
+                                            .col-sm-3
+                                            .col-sm-2
+                                            .col-sm-2
+                                                span.justify-content-end
+                                                    |總計
+                                                    span.total-number-mobile.ms-1 140
+                                            .col-sm-2
+                                                span.total-number-desktop 140
+                                            .col-sm-3
+        section.store-info
+            .container-fluid
+                ul.d-flex.flex-column
+                    li.category
+                        i.fa.fa-folder-open
+                        | 中式美食
+                    li.address
+                        i.fa.fa-map-marker-alt
+                        |台中市北區梅亭街253號, Taichung, 404
+                    li.intro
+                        i.fa.fa-info-circle
+                        |各式炒飯、現炒餐點，每週五公休
+                    li.link
+                        i.fa.fa-link
+                        a(href='javascript:;',title='', target='_blank')
+                            |相關網站
+
+        section.groupbuy
+            .container-fluid
+                h3.groupbuy-title 菜單及圖庫 Restaurant menu
+                .row.gx-0
+                    -for(var i = 1; i<=6;i++)
+                        article.groupbuy-meta
+                            .store-image
+                                a(href='archive/menu.jpg' data-lightbox='image-1' data-title='菜單')
+                                    img(src='archive/menu.jpg',alt='')
+                        //-
+                            .col-sm-6.col-md-4.mb-4
+                                article.groupbuy-meta
+                                    .store-text
+                                        | 菜單
+                                    .store-image
+                                        a(href='archive/menu.jpg' data-lightbox='image-1' data-title='菜單')
+                                            img(src='archive/menu.jpg',alt='')
+        .remark
+            .container-fluid
+                em 上開資訊是由我們所合作之商家合作夥伴所提供。如對上開資訊有任何疑問，請直接與商家合作夥伴聯繫。

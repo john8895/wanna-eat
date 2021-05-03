@@ -1,0 +1,53 @@
+#navbarHeader.bg-light.sidebar(style='')
+    .p-4
+        button.btn-login(onclick='location.href="m-index.html"')
+            |登入
+        .user-info.mt-4
+            a.user-info__avatar(href='https://github.com/john8895/wanna-eat',title='檢視嗯災吃啥專案資訊',target='_blank')
+                i.fab.fa-github
+                //-
+                    img(src='archive/avatar.png',alt='')
+            .user-info__account
+                div
+                    | 訂餐小幫手
+                a(href='https://github.com/john8895/wanna-eat',title='檢視嗯災吃啥專案資訊',target='_blank')
+                    | 檢視本專案資訊
+        ul.sidebar__nav.nav.nav-pills.flex-column.mb-auto
+            li.nav-item
+                a.nav-link.link-dark(href='groupbuy-now-list.html',title='')
+                    i.fas.fa-bookmark
+                    | 進行中團購
+            li
+                a.nav-link.link-dark(href='store-list.html',title='')
+                    i.fas.fa-hands-helping
+                    | 登錄餐廳
+            li
+                a.nav-link.link-dark(href='history-list.html',title='')
+                    i.fas.fa-history
+                    | 歷史團購
+            //-
+                li
+                    a.nav-link.link-dark(href='#',title='')
+                        i.fas.fa-tag
+                        | 優惠
+        a.link-logout(href='javascript:;',title='')
+            | 登出
+    hr
+    .d-flex.align-items-center.p-3
+        img(src='images/mzaieats-applogo.svg',width='56',height='56')
+        .app-text.ms-3
+            |App 為您帶來更多美食佳餚。
+.sidebar-layout
+.navbar.navbar-dark.bg-lighj.shadow-sm
+    .container-fluid
+        .menu-controller.d-flex
+            button.menu-btn#menuBtn(aria-label='主瀏覽選單')
+                svg(aria-hidden='true' focusable='false' viewBox='0 0 20 20')
+                    path(d='M19.167 3.333H.833v2.5h18.334v-2.5zm0 5.834H.833v2.5h18.334v-2.5zM.833 15h18.334v2.5H.833V15z')
+            a.navbar-brand.d-flex.align-items-center(href='index.html',title='')
+                img(src='images/logo.svg',alt='', width='146', height='24')
+        .recommend-eat
+            i.fas.fa-utensils
+            span.recommend-text 今天推薦你吃
+            a(href='order.html',title='')
+                span.store-name 龍品魚丸店

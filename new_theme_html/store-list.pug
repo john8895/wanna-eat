@@ -1,0 +1,22 @@
+extends include/_layout
+block vars
+    - var module='store-list'
+    - var headerClass = 'header-transparent'
+block content
+    main.page-store-list
+        section.store-list
+            .container-fluid
+                h2.section-title 最新 Mzai Eats 嗯災吃啥登錄餐廳
+                .row
+                    -for(var i=1;i<=6;i++)
+                        .col-sm-6.col-md-4.col-xl-3.mt-4
+                            article.store-list__item
+                                .store-image
+                                    a(href='groupbuy.html',title='')
+                                        img(src='archive/p1.jpg',alt='')
+                                .store-meta.d-flex.mt-2
+                                    .store-name
+                                        a(href='groupbuy.html',title='')
+                                           | A Bao House 成都店
+                .mt-5
+                include include/_pagination

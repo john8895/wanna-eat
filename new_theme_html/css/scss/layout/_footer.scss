@@ -1,0 +1,52 @@
+@import "../helpers/variable";
+@import "../helpers/mixins";
+
+.footer {
+    background-color: #000;
+    padding: 60px 40px 50px;
+
+    .copyright {
+        border-top: 1px solid #fff;
+        margin-top: 30px;
+        padding-top: 40px;
+        margin-bottom: 20px;
+        color: #fff;
+        font-size: 13px;
+    }
+    .social-buttons {
+        i {
+            font-size: 19px;
+            color: #fff;
+        }
+    }
+
+    a {
+        color: #fff;
+
+        &:hover {
+        }
+    }
+
+    .widget {
+        @include breakpoint(320){
+            margin-bottom: 40px;
+        }
+        @include breakpoint(md){
+            margin-bottom: 0;
+        }
+        li {
+            margin-bottom: 15px;
+        }
+    }
+    .appstore {
+        margin-bottom: 40px;
+        @include breakpoint(md){
+            margin-bottom: 0;
+        }
+        img {
+        }
+    }
+    .container-fluid {
+        padding: 0;
+    }
+}
