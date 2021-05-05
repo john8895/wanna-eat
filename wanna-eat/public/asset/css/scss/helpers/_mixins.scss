@@ -1,0 +1,135 @@
+// ======================================
+// font-fluid
+// ======================================
+// @mixin h1-fluid {
+//     font-size: calc(1rem + 1.1vw);
+//     line-height: calc(1.4rem + 4.8vw);
+// }
+
+// @mixin h2-fluid {
+//     font-size: calc(1rem + 2vw);
+//     line-height: calc(1.4rem + 2.4vw);
+// }
+
+// @mixin h3-fluid {
+//     font-size: calc(1rem + 0.5vw);
+//     line-height: calc(1.4rem + 1.2vw);
+// }
+
+// @mixin p-fluid {
+//     font-size: calc(1rem + 0.5vw);
+//     line-height: calc(1.4rem + 0.6vw);
+// }
+
+
+// ======================================
+// Common
+// ======================================
+
+//FontAwesome Icon
+@mixin fontAwesome-icon($icon: '', $fontFamily: 'Font Awesome 5 Free') {
+    font-family: $fontFamily;
+    font-weight: 900;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    content: $icon;
+    @content;
+}
+
+//-限高：多行
+@mixin line-height-limit($row:2, $maxHeight: 71px) {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $row;
+    line-height: 1.5em;
+    max-height: $maxHeight;
+    height: auto;
+    @content;
+    // -webkit-line-clamp: 2;
+    // line-height: 1.5em;
+    // height: 71px;
+}
+
+//-限高：單行
+@mixin line-height-limit-single {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    @content;
+}
+
+@mixin order($order_number...){
+    -ms-flex-order: $order_number;
+    order: $order_number;
+}
+
+// RWD
+@mixin breakpoint($point) {
+    @if $point == sl {
+        @media all and (min-width: 1921px) {
+            @content;
+        }
+    } @else if $point == 1600 {
+        @media all and (min-width: 1600px) {
+            @content;
+        }
+    } @else if $point == 1440 {
+        @media all and (min-width: 1440px) {
+            @content;
+        }
+    } @else if $point == 1366 {
+        @media all and (min-width: 1366px) {
+            @content;
+        }
+    } @else if $point == xl {
+        @media all and (min-width: 1200px) {
+            @content;
+        }
+    } @else if $point == lg {
+        @media all and (min-width: 992px) {
+            @content;
+        }
+    } @else if $point == md {
+        @media all and (min-width: 768px) {
+            @content;
+        }
+    } @else if $point == sm {
+        @media all and (min-width: 576px) {
+            @content;
+        }
+    } @else if $point == xs {
+        @media all and (min-width: 415px) {
+            @content;
+        }
+    } @else if $point == s {
+        @media all and (max-width: 414px) {
+            @content;
+        }
+    } @else if $point == 375 {
+        @media all and (min-width: 375px) {
+            @content;
+        }
+    } @else if $point == 360 {
+        @media all and (min-width: 360px) {
+            @content;
+        }
+    } @else if $point == 320 {
+        @media all and (min-width: 320px) {
+            @content;
+        }
+    } @else if $point == 568 {
+        @media all and (min-width: 568px) and (orientation: landscape) {
+            @content;
+        }
+    } @else if $point == 1024 {
+        @media all and (min-width: 1024px) and (orientation: landscape) {
+            @content;
+        }
+    }
+}

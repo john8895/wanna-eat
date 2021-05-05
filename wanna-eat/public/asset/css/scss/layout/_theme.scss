@@ -1,0 +1,304 @@
+@import "../helpers/mixins";
+@import "../helpers/variable";
+// ======================================
+// Reset
+// ======================================
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+    line-height: 1.2;
+    font-weight: 600;
+    color: #000;
+}
+
+body {
+    //font-family: "Microsoft JhengHei" ;
+    font-family: sans-serif;
+}
+
+section {
+    padding: 30px 0;
+}
+
+a {
+    color: $main-color;
+    text-decoration: none;
+
+    &:hover {
+        //text-decoration: underline;
+    }
+}
+
+.container-fluid {
+    @include breakpoint(320) {
+        padding: 0 20px;
+    }
+    @include breakpoint(xl) {
+        padding: 0 40px;
+    }
+}
+
+.page-admin {
+    .container-fluid {
+        padding: 0 10px;
+    }
+}
+
+.header-admin {
+    .navbar-brand {
+        background-color: #fff;
+    }
+}
+
+%btn-default {
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 15px;
+    outline: none;
+    border: none;
+    border-radius: 0;
+}
+
+.btn-default {
+    @extend %btn-default;
+    background-color: #000;
+    color: #fff;
+
+    &:hover {
+        color: #fff;
+        background-color: $main-color;
+    }
+}
+
+.btn-gray {
+    @extend %btn-default;
+    background-color: #999;
+    color: #fff;
+}
+
+.icon-md {
+    width: 20px;
+    height: 20px;
+}
+
+.innerpage-banner {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    padding: 130px 10px 20px 10px;
+
+    @include breakpoint(md) {
+        padding: 130px 30px 20px 0;
+    }
+
+    .function-button {
+        margin-top: 20px;
+
+        @media all and (min-width: 867px) {
+            margin-top: 0;
+        }
+
+        .btn {
+            margin-bottom: 10px;
+            @include breakpoint(md) {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .innerpage-text {
+        padding: 0 0 0 20px;
+        color: white;
+    }
+
+    .innerpage-title {
+        color: white;
+        font-size: 33px;
+        font-weight: normal;
+        text-shadow: 2px 2px 3px #00000075;
+    }
+
+    .store-meta {
+        display: flex;
+        margin-top: 10px;
+        font-size: 14px;
+        text-shadow: 2px 2px 3px #00000075;
+
+        i {
+            font-size: 4px;
+            margin-right: 9px;
+            //color: $main-color;
+            vertical-align: middle;
+            padding-bottom: 1px;
+        }
+    }
+
+
+    li {
+        margin-right: 9px;
+    }
+
+    .btn-modal-call {
+        background-color: #fff;
+        border-radius: 40px;
+        font-size: 15px;
+        padding: 7px 15px;
+        margin-top: 15px;
+
+        i {
+            font-size: 17px;
+            margin-right: 8px;
+            color: #000;
+        }
+
+        &:hover {
+            background-color: #ccc;
+        }
+    }
+}
+
+.store-info {
+    padding: 27px 0 27px;
+    font-size: 14px;
+    border-bottom: 1px solid #E2E2E2;
+    margin-bottom: 20px;
+
+    i {
+        font-size: 13px;
+        margin-right: 7px;
+        min-width: 15px;
+        text-align: center;
+    }
+
+    li {
+        line-height: 2;
+    }
+}
+
+.groupbuy-modal {
+    .modal-dialog {
+        max-width: 458px;
+    }
+
+    .groupbuy-body {
+        padding: 30px 30px 25px;
+
+        &__content {
+            .title {
+                font-size: 36px;
+                margin-bottom: 20px;
+                margin-top: 20px;
+                font-weight: normal;
+            }
+
+            .description {
+                color: #999;
+                margin-bottom: 23px;
+            }
+
+            .store-detail {
+                margin-top: 17px;
+                margin-bottom: 22px;
+
+                i {
+                    color: #000;
+                    margin-right: 10px;
+                    width: 16px;
+                    text-align: center;
+                }
+
+                li {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+}
+
+.groupbuy-title {
+    font-size: 20px;
+    font-weight: normal;
+    margin-bottom: 25px;
+}
+
+.groupbuy-meta {
+    border: 1px solid #E2E2E2;
+    width: auto;
+    padding: 1px 0;
+    margin-left: -1px;
+
+    .store-text {
+        padding: 15px;
+        //display: flex;
+        //align-items: center;
+        //justify-content: center;
+        flex-basis: 50%;
+    }
+
+    .store-image {
+        //display: flex;
+        //justify-content: flex-end;
+
+        img {
+            width: 158px;
+            height: 158px;
+            object-fit: fill;
+        }
+    }
+
+}
+
+.store-other-info {
+    font-size: 14px;
+    color: #5f5f5f;
+    margin-top: 2px;
+
+    li {
+        &:first-child {
+            i {
+                color: $main-color;
+            }
+        }
+    }
+}
+
+.remark {
+    em {
+        font-style: normal;
+        font-size: 12px;
+        color: #676767;
+    }
+}
+
+em.red {
+    color: #DC3545;
+    font-style: normal;
+    margin-left: 10px;
+}
+
+.ab-banner {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 140px 0;
+}
+
+.ab-list {
+    &__item {
+        position: relative;
+
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            height: 22%;
+            background-color: #0000002b;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .ab-title {
+            font-size: 18px;
+        }
+    }
+}

@@ -1,0 +1,186 @@
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+/*
+ * Sidebar
+ */
+.sidebar {
+  position: fixed;
+  top: 0;
+  width: 190px;
+  bottom: 0;
+  /* rtl:remove */
+  left: 0;
+  z-index: 100;
+  /* Behind the navbar */
+  padding: 48px 0 0;
+  /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  transition: 0.2s ease-in-out;
+  transform: translateX(-100%);
+}
+@media all and (min-width: 768px) {
+  .sidebar {
+    transform: translateX(0);
+  }
+}
+.sidebar.show {
+  transform: translateX(0);
+  transition: 0.2s ease-in-out;
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* Scrollable contents if viewport is shorter than content. */
+}
+
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
+}
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #727272;
+}
+.sidebar .nav-link.active {
+  color: #007bff;
+}
+.sidebar .nav-link:hover .feather, .sidebar .nav-link.active .feather {
+  color: inherit;
+}
+.sidebar .nav-link:hover {
+  color: #007bff;
+}
+
+.sidebar-heading {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+/*
+ * Navbar
+ */
+.navbar-brand {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-size: 1rem;
+  background-color: rgba(0, 0, 0, 0.25);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
+}
+
+.navbar .navbar-toggler {
+  top: 0.25rem;
+  right: 1rem;
+}
+.navbar .form-control {
+  padding: 0.75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.form-control-dark {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.form-control-dark:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+}
+
+.accordion-item {
+  border: none;
+  background-color: transparent;
+}
+
+.accordion-button {
+  background-color: transparent;
+}
+
+.accordion-button-nosub {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.8rem 1.25rem;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  overflow-anchor: none;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: normal;
+  margin-bottom: 18px;
+}
+
+.modal-body-content {
+  padding: 20px 20px 30px;
+}
+
+.btn-delete {
+  vertical-align: sub;
+}
+.btn-delete svg {
+  fill: #DC3545;
+}
+.btn-delete svg:hover {
+  fill: #05944f;
+}
+
+@media all and (min-width: 768px) {
+  .admin-header .navbar-toggler {
+    display: none;
+  }
+}
+
+@media all and (min-width: 576px) {
+  .addstore-modal-body__content .addstore-label {
+    text-align: right;
+  }
+  .addstore-modal-body__content .addstore-label span {
+    display: none;
+  }
+}
+@media all and (min-width: 992px) {
+  .addstore-modal-body__content .addstore-label span {
+    display: inline-block;
+  }
+}
+
+@media all and (min-width: 576px) {
+  .store-edit .addstore-label {
+    text-align: right;
+  }
+  .store-edit .addstore-label span {
+    display: none;
+  }
+}
+@media all and (min-width: 992px) {
+  .store-edit .addstore-label span {
+    display: inline-block;
+  }
+}
+
+.category-list, .hosts-list {
+  padding: 10px 20px;
+}
+.category-list .storeTag-field .btn-delete, .category-list .hostname-field .btn-delete, .hosts-list .storeTag-field .btn-delete, .hosts-list .hostname-field .btn-delete {
+  margin-left: 10px;
+}
+
+/*# sourceMappingURL=dashboard.css.map */

@@ -13,3 +13,8 @@ define('DB_PASSWORD', '123456');
 
 // 時區 - 如未設定從mysql讀出的中文數據會變亂碼
 date_default_timezone_set("Asia/Taipei");
+
+class Config {
+    private $file_path = ""
+
+}

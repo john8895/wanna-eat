@@ -1,0 +1,164 @@
+@import "../helpers/variable";
+@import "../helpers/mixins";
+
+.header {
+    position: relative;
+    //padding-bottom: 40px;
+
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        width: 280px;
+        left: -100%;
+        top: 0;
+        bottom: 0;
+        z-index: 10;
+        //transform: translateX(-100%);
+        transition: .2s ease-in-out .1s;
+        overflow-y: auto;
+        opacity: 0;
+        visibility: hidden;
+
+        &.show {
+            //transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+            left: 0;
+        }
+
+        &__nav {
+            li {
+                i {
+                    margin-right: 17px;
+                    color: #000;
+                    width: 20px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    .sidebar-layout {
+        background-color: #00000082;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        display: none;
+        z-index: 5;
+
+        &.show {
+            display: block;
+        }
+    }
+}
+
+.btn-login {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 17px;
+    width: 100%;
+    outline: none;
+    border: none;
+    //margin-bottom: 15px;
+    &:hover {
+        background-color: #212121;
+    }
+}
+
+.menu-btn {
+    width: 18px;
+    height: 18px;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    margin-right: 32px;
+    padding: 6px 0 0;
+}
+
+.navbar {
+    & > .container-fluid {
+        @include breakpoint(320) {
+            padding: 0 20px;
+        }
+        @include breakpoint(md) {
+            padding: 0 40px;
+        }
+        justify-content: flex-start;
+    }
+
+    .menu-btn {
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+}
+
+.recommend-eat {
+    background-color: #ededed;
+    display: block;
+    font-size: 16px;
+    border-bottom: 1px solid #e3e3e3;
+    padding: 15px 18px 12px;
+    margin-top: 5px;
+    @include breakpoint(md) {
+
+        padding: 15px 25px 12px;
+        margin-left: 20px;
+        min-width: 400px;
+    }
+
+    i {
+        margin-right: 20px;
+        font-size: 18px;
+    }
+
+    .recommend-text {
+        margin-right: 6px;
+    }
+}
+
+.user-info {
+    display: flex;
+    margin-bottom: 20px;
+    align-items: center;
+
+
+    &__avatar {
+        img, i {
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+        }
+
+        i {
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #c0c0c0;
+            font-size: 25px;
+            color: #000;
+        }
+    }
+
+    &__account {
+        margin-left: 15px;
+
+    }
+}
+
+.link-logout {
+    color: #666;
+    font-size: 16px;
+    margin-top: 20px;
+    display: inline-block;
+}

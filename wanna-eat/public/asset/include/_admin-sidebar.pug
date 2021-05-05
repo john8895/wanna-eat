@@ -1,0 +1,113 @@
+nav#sidebarMenu.col-md-3.col-lg-2.d-md-block.bg-light.sidebar.collapse
+    #adminSidebarMenu.position-sticky.pt-4
+        //-
+        ul.nav.flex-column
+            li.nav-item
+                a.accordion-button-nosub.nav-link.active(aria-current='page' href='m-index.html',title='')
+                    i.fa.fa-house-user.me-3
+                    |              管理首頁
+            li.nav-item
+                a.accordion-button-nosub.nav-link(href='m-groupbuy.html',title='')
+                    i.fa.fa-users.me-3
+                    |               團購單
+            li.nav-item
+                a.accordion-button-nosub.nav-link(href='m-store-list.html',title='')
+                    i.fa.fa-store.me-3
+                    |               餐廳
+            li.nav-item
+                a.accordion-button-nosub.nav-link(href='m-category.html',title='')
+                    i.far.fa-folder-open.me-3
+                    |               分類
+            li.nav-item
+                a.accordion-button-nosub.nav-link(href='m-hosts.html',title='')
+                    i.fa.fa-street-view.me-3
+                    |               團購主
+
+
+        //-
+            #accordionFlushAdmin.accordion.accordion-flush
+                .accordion-item
+                    h2.accordion-header
+                            a.accordion-button-nosub(href='m-index.html',title='')
+                                span.me-2(data-feather='home')
+                                |  管理首頁
+                .accordion-item
+                    h2#flush-headingOne.accordion-header
+                        button.accordion-button.collapsed(type='button' data-bs-toggle='collapse' data-bs-target='#flush-collapseOne' aria-expanded='false' aria-controls='flush-collapseOne')
+                            span.me-2(data-feather='figma')
+                            |  團購單
+                    #flush-collapseOne.accordion-collapse.collapse(aria-labelledby='flush-headingOne' data-bs-parent='#accordionFlushAdmin')
+                        .accordion-body
+                            ul.nav.flex-column
+                                li.nav-item
+                                    a.nav-link.active(aria-current='page' href='m-store-list.html',title='')
+                                        i.fa.fa-plus-square.me-2
+                                        |              新增團購單
+                                li.nav-item
+                                    a.nav-link(href='order.html?',title='')
+                                        i.fa.fa-pen-square.me-2
+                                        |               編輯團購單
+                                li.nav-item
+                                    a.nav-link(href='m-groupbuy-list.html',title='')
+                                        i.fa.fa-trash-alt.me-2
+                                        |               刪除團購單
+                .accordion-item
+                    h2#flush-headingTwo.accordion-header
+                        button.accordion-button.collapsed(type='button' data-bs-toggle='collapse' data-bs-target='#flush-collapseTwo' aria-expanded='false' aria-controls='flush-collapseTwo')
+                            span.me-2(data-feather='coffee')
+                            |  餐廳管理
+                    #flush-collapseTwo.accordion-collapse.collapse(aria-labelledby='flush-headingTwo' data-bs-parent='#accordionFlushAdmin')
+                        .accordion-body
+                            ul.nav.flex-column
+                                li.nav-item
+                                    a.nav-link.active(aria-current='page' href='#',title='')
+                                        i.fa.fa-plus-square.me-2
+                                        |              新增餐廳
+                                li.nav-item
+                                    a.nav-link(href='m-store-list.html',title='')
+                                        i.fa.fa-pen-square.me-2
+                                        |               編輯餐廳
+                                li.nav-item
+                                    a.nav-link(href='m-store-list.html',title='')
+                                        i.fa.fa-trash-alt.me-2
+                                        |               刪除餐廳
+                .accordion-item
+                    h2#flush-headingThree.accordion-header
+                        button.accordion-button.collapsed(type='button' data-bs-toggle='collapse' data-bs-target='#flush-collapseThree' aria-expanded='false' aria-controls='flush-collapseThree')
+                            span.me-2(data-feather='users')
+                            |   分類管理
+                    #flush-collapseThree.accordion-collapse.collapse(aria-labelledby='flush-headingThree' data-bs-parent='#accordionFlushAdmin')
+                        .accordion-body
+                            ul.nav.flex-column
+                                li.nav-item
+                                    a.nav-link.active(aria-current='page' href='#',title='')
+                                        i.fa.fa-plus-square.me-2
+                                        |              新增分類
+                                li.nav-item
+                                    a.nav-link(href='#',title='')
+                                        i.fa.fa-pen-square.me-2
+                                        |               編輯分類
+                                li.nav-item
+                                    a.nav-link(href='#',title='')
+                                        i.fa.fa-trash-alt.me-2
+                                        |               刪除分類
+                .accordion-item
+                    h2#flush-headingFour.accordion-header
+                        button.accordion-button.collapsed(type='button' data-bs-toggle='collapse' data-bs-target='#flush-collapseFour' aria-expanded='false' aria-controls='flush-collapseFour')
+                            span.me-2(data-feather='users')
+                            |   團購負責人
+                    #flush-collapseFour.accordion-collapse.collapse(aria-labelledby='flush-headingFour' data-bs-parent='#accordionFlushAdmin')
+                        .accordion-body
+                            ul.nav.flex-column
+                                li.nav-item
+                                    a.nav-link.active(aria-current='page' href='#',title='')
+                                        i.fa.fa-plus-square.me-2
+                                        |              新增團購主
+                                li.nav-item
+                                    a.nav-link(href='#',title='')
+                                        i.fa.fa-pen-square.me-2
+                                        |               編輯團購主
+                                li.nav-item
+                                    a.nav-link(href='#',title='')
+                                        i.fa.fa-trash-alt.me-2
+                                        |               刪除團購主

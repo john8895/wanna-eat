@@ -1,0 +1,71 @@
+@import "../helpers/mixins";
+@import "../helpers/variable";
+// ======================================
+// menu
+// ======================================
+.sidebar-nav ul.subs {
+
+    .has-child {
+        position: relative;
+        margin-bottom: 6px;
+
+        &:before {
+            content: "";
+            position: absolute;
+            left: -9px;
+            width: 15px;
+            height: 15px;
+            top: 7px;
+            background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMzg0LDI2NUgyNjR2MTE5aC0xN1YyNjVIMTI4di0xN2gxMTlWMTI4aDE3djEyMGgxMjBWMjY1eiIvPjwvZz48L3N2Zz4=);
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        &.extend {
+            &:before {
+                background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNTEycHgiIGlkPSJMYXllcl8xIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNMzg0LDI2NUgxMjh2LTE3aDI1NlYyNjV6Ii8+PC9nPjwvc3ZnPg==);
+            }
+        }
+
+
+        & > a {
+            padding-left: 9px;
+            font-size: 15px;
+
+            &.limit-height {
+                @include line-height-limit(2, 46px)
+            }
+        }
+    }
+
+    a {
+        &:hover {
+            color: #7095ef;
+            transition: 0.3s ease-in-out;
+        }
+
+        &.active {
+            color: #ccc;
+        }
+    }
+
+    .navLink + .subs {
+        display: none;
+    }
+
+    .open + .subs {
+        display: block;
+    }
+
+    .subs {
+        margin: 5px 0 0 20px;
+
+        li {
+            border-bottom: 0;
+
+            &:before {
+                margin-right: 10px;
+                color: #000;
+            }
+        }
+    }
+}

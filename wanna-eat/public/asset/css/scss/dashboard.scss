@@ -1,0 +1,228 @@
+@import "helpers/mixins";
+@import "helpers/variable";
+
+.feather {
+    width: 16px;
+    height: 16px;
+    vertical-align: text-bottom;
+}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    width: 190px;
+    bottom: 0;
+
+    /* rtl:remove */
+    left: 0;
+    z-index: 100;
+
+    /* Behind the navbar */
+    padding: 48px 0 0;
+
+    /* Height of navbar */
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    transition: .2s ease-in-out;
+    transform: translateX(-100%);
+    @include breakpoint(md) {
+        transform: translateX(0);
+    }
+
+    &.show {
+        transform: translateX(0);
+        transition: .2s ease-in-out;
+    }
+
+    //@include breakpoint(md){
+    //    display: block;
+    //}
+}
+
+//@media (max-width: 767.98px) {
+//    .sidebar {
+//        top: 5rem;
+//    }
+//}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    /* Scrollable contents if viewport is shorter than content. */
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+
+    .feather {
+        margin-right: 4px;
+        color: #727272;
+    }
+
+    &.active {
+        color: #007bff;
+    }
+
+    &:hover .feather, &.active .feather {
+        color: inherit;
+    }
+
+    &:hover {
+        color: #007bff;
+    }
+}
+
+.sidebar-heading {
+    font-size: .75rem;
+    text-transform: uppercase;
+}
+
+/*
+ * Navbar
+ */
+
+.navbar-brand {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+    font-size: 1rem;
+    background-color: rgba(0, 0, 0, 0.25);
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
+}
+
+.navbar {
+    .navbar-toggler {
+        top: .25rem;
+        right: 1rem;
+    }
+
+    .form-control {
+        padding: .75rem 1rem;
+        border-width: 0;
+        border-radius: 0;
+    }
+}
+
+.form-control-dark {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
+
+    &:focus {
+        border-color: transparent;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+    }
+}
+
+.accordion-item {
+    border: none;
+    background-color: transparent;
+}
+
+.accordion-button {
+    background-color: transparent;
+}
+
+.accordion-button-nosub {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.8rem 1.25rem;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    overflow-anchor: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, border-radius .15s ease;
+}
+
+// m-store
+.modal-title {
+    font-size: 24px;
+    font-weight: normal;
+    margin-bottom: 18px;
+}
+
+.modal-body-content {
+    padding: 20px 20px 30px;
+}
+
+.btn-delete {
+    vertical-align: sub;
+
+    svg {
+        fill: #DC3545;
+
+        &:hover {
+            fill: $main-color;
+        }
+    }
+}
+
+.admin-header {
+    .navbar-toggler {
+        @include breakpoint(md) {
+            display: none;
+        }
+    }
+}
+
+.addstore-modal-body {
+    &__content {
+        .addstore-label {
+            @include breakpoint(sm) {
+                text-align: right;
+                span {
+                    display: none;
+                }
+            }
+            @include breakpoint(lg) {
+                span {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}
+
+.store-edit {
+    .addstore-label {
+        //color: #7c7c7c;
+        @include breakpoint(sm) {
+            text-align: right;
+            span {
+                display: none;
+            }
+        }
+        @include breakpoint(lg) {
+            span {
+                display: inline-block;
+            }
+        }
+    }
+}
+
+.category-list, .hosts-list {
+    padding: 10px 20px;
+
+    .storeTag-field, .hostname-field {
+        .btn-delete {
+            margin-left: 10px;
+        }
+    }
+}
+.add-host-modal {
+
+}
