@@ -109,7 +109,7 @@
             <div class="row">
                 <div class="col-sm-6 col-md-4 col-xl-3">
                     <article class="store-list__item">
-                        <div class="store-image"><a href="groupbuy.html" title=""><img src="archive/p1.jpg" alt=""></a>
+                        <div class="store-image"><a href="groupbuy.php" title=""><img src="archive/p1.jpg" alt=""></a>
                         </div>
                         <div class="store-meta d-flex">
                             <div class="store-name"><a href="groupbuy.html" title="">A Bao House 成都店</a></div>
