@@ -3,6 +3,12 @@ include "dbh-inc.php";
 
 class Store extends dbh
 {
+    private $storeId;
+
+    public function __construct($storeId=false)
+    {
+       $this->storeId = $storeId;
+    }
 
     public function getStore()
     {
@@ -20,14 +26,12 @@ class Store extends dbh
             }
             return $data;
         }
-//        $stores = array();
-//        while ($rows = mysqli_fetch_assoc($result)) {
-//            $stores[] = $rows;
-//        }
-//        foreach ($stores as $k=>$item) {
-//            $tags = explode(',', $item['store_tag']);
-//            $stores[$k]['tags'] = $tags;
-//        }
-//        return $stores;
+    }
+
+    public function deleteStore()
+    {
+        $sql = "DELETE FROM store WHERE id = {$this->storeId}";
+        $result = $this->connect()->query($sql);
+        return 'success';
     }
 }

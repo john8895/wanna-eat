@@ -1,18 +1,11 @@
 <?php
-/* filename: edit.php */
 
-/** Connect Mysql */
-require_once './assets/inc/connect.php';
+require_once './assets/includes/store-inc.php';
 
 if($_SERVER['REQUEST_METHOD']==='GET' && !empty($_GET)){
-    delete_user();
+    $deleteStore = new Store($_GET['id']);
+    $deleteStore->deleteStore();
+    header('Location: index.php');
 }else{
     header('Location: index.php');
-}
-
-function delete_user(){
-    $sql = "DELETE FROM store WHERE id = {$_GET['id']};";
-    connect_mysql($sql);
-    echo 'success';
-//    header('Location: index.php');
 }
