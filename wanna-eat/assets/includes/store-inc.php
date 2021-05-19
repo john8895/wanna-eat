@@ -5,9 +5,9 @@ class Store extends dbh
 {
     private $storeId;
 
-    public function __construct($storeId=false)
+    public function __construct($storeId = false)
     {
-       $this->storeId = $storeId;
+        $this->storeId = $storeId;
     }
 
     public function getStore()
@@ -30,10 +30,13 @@ class Store extends dbh
 
     public function deleteStore()
     {
-        $result = $this->connect()->prepare('DELETE FROM store WHERE id = ?');
+        $sql = "DELETE FROM store WHERE id = ?";
         $storeId = $this->storeId;
+
+        $result = $this->connect()->prepare($sql);
         $result->bind_param('i', $storeId);
         $result->execute();
+
         $num_rows = $result->num_rows;
 
         echo $storeId;
