@@ -66,21 +66,23 @@ class Store extends dbh
 
     public function deleteStore(): string
     {
-        $sql = "DELETE FROM `store` WHERE `id` = ?";
         $storeId = $this->storeId;
+        $sql = "DELETE FROM `store` WHERE `id` = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $storeId);
+        $stmt->execute();
+//        $result = $this->connect()->prepare($sql);
+//        $result->bind_param("i", $storeId);
+//        $result->execute();
 
-        $result = $this->connect()->prepare($sql);
-        $result->bind_param("i", $storeId);
-        $result->execute();
-
-        echo $storeId;
+//        echo $storeId;
 //        $sql = "DELETE FROM store WHERE id = '{$storeId}'";
         echo $sql;
 //        $result = $this->connect()->query($sql);
-        $num_rows = $result->num_rows;
-        $result->close();
+//        $num_rows = $result->num_rows;
+//        $result->close();
 
-        echo $num_rows;
+//        echo $num_rows;
         return 'success';
     }
 

@@ -15,8 +15,8 @@ class dbh {
         $conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
 
 //        $conn->query("SET NAMES utf8");
-        mysqli_set_charset($conn, 'utf8');
-        date_default_timezone_set("Asia/Taipei");
+//        mysqli_set_charset($conn, 'utf8');
+//        date_default_timezone_set("Asia/Taipei");
         return $conn;
     }
 }
