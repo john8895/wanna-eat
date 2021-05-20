@@ -3,7 +3,9 @@
 
 require_once("../libs/Smarty.class.php");
 /** Connect Mysql */
-require_once './assets/inc/connect.php';
+//require_once './assets/inc/connect.php';
+
+require_once './assets/includes/store-inc.php';
 
 global $smarty;
 $smarty = new Smarty;
@@ -20,7 +22,9 @@ require_once './assets/inc/check-login-inner.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $smarty->assign('name', $_POST['name']);
     $smarty->assign('phone', $_POST['phone']);
-    add_store();
+//    add_store();
+    $add = new Store($_POST['name'], $_POST['description'], $_POST['phone'], $_FILES['store_cover'], $_FILES['images'], $_POST['store_full_price'], $_POST['store_tag']);
+    $add->addStore();
 }
 
 
