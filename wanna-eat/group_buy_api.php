@@ -71,14 +71,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['count_order'])) orderTotal();
     if (isset($_POST['add_host_name'])) addHostName();
     if (isset($_POST['end_time'])) closeOrder();
+    if (isset($_POST['new_time'])) continueOrder();
 }
 
 
 /**
  * @Range: group-buy.php
- *
  * Get group_buy data
- *
  * @throws Exception
  */
 function getGroupBuy()
@@ -107,10 +106,6 @@ function getGroupHistory()
     $result = connect_mysql("SELECT * FROM group_buy");
     $new_item = array();
     while ($item = $result->fetch_assoc()) {
-//        $now = date('Y-m-d H-i-s');
-//        if ($item['end_time'] > $now) {  // 如果截止日比當前晚表示未過期，就不顯示
-//            continue;
-//        }
         $new_item[] = $item;
     }
 //    $json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
@@ -223,7 +218,6 @@ function editOrder()
 
     $sql = "UPDATE orders SET {$order['order_field_name']}='{$order['order_field_value']}' WHERE field_id='{$order['order_field_id']}';";
     connect_mysql($sql);
-//    orderTotal($order['order_id']);
     echo 'success';
 }
 
@@ -373,7 +367,6 @@ function deleteStoreTags()
 /** Get store tags */
 function getStoreTags()
 {
-
     $sql = "SELECT store_tag, id FROM store";
     $result = connect_mysql($sql);
     $new_item = array();
@@ -388,6 +381,14 @@ function closeOrder(){
     $end_time = $_POST['end_time'];
     $order_id = $_POST['order_id'];
     $sql = "UPDATE group_buy SET end_time='{$end_time}' WHERE id={$order_id}";
+    if (!connect_mysql($sql)) echo 'fail';
+    echo 'success';
+}
+
+function continueOrder(){
+    $order_id = $_POST['order_id'];
+    $new_time = $_POST['new_time'];
+    $sql = "UPDATE group_buy SET end_time='{$new_time}' WHERE id={$order_id}";
     if (!connect_mysql($sql)) echo 'fail';
     echo 'success';
 }

@@ -23,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     add_store();
 }
 
-
 function add_store()
 {
     global $store;
