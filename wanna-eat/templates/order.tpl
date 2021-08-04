@@ -71,14 +71,18 @@
                     </li>
                     <li>
                         <i class="fas fa-angle-right mr-2 text-black-50"></i>{if $time_up}已收單，截止時間：{$item.end_time}
-                        {else}收單時間：<span id="order_endTime">{$item.end_time}</span>{/if}
+                        {else}收單時間：<span id="order_endTime" ref="order_endTime">{$item.end_time}</span>{/if}
                     </li>
 
                 </ul>
                 {if isset($logged) && $logged}
                     {if !$time_up}
                         <div class="text-left mt-4">
-                            <button class="btn btn-danger" @click="closeOrder">立即收單</button>
+                            <button class="btn btn-danger" @click="endOrderTime();">立即收單</button>
+                        </div>
+                    {else}
+                        <div class="text-left mt-4">
+                            <button class="btn btn-success" @click="continueOrderTime('{$order_id}');">繼續訂購</button>
                         </div>
                     {/if}
                 {/if}
@@ -128,7 +132,7 @@
                 <div class="card accordion">
                     <div class="card-body">
                         <form id="order_form" method="post">
-                            <input type="hidden" value="{$order_id}" name="add_order_id" id="order_id">
+                            <input type="hidden" value="{$order_id}" name="add_order_id" id="order_id" ref="orderId">
                             <div class="row">
                                 <div class="col-sm-2">
                                     <input type="text" class="form-control" name="add_order_name" placeholder="請輸入姓名 *">

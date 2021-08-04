@@ -9,7 +9,7 @@ class SwalAlert {
         this.confirmText = confirmText;
         this.callbackFunc = callbackFunc;
     }
-
+    
     fire() {
         return Swal.fire(
             this.title,
@@ -17,7 +17,7 @@ class SwalAlert {
             this.status
         )
     }
-
+    
     fireConfirm() {
         Swal.fire({
             title: this.title,
@@ -36,12 +36,12 @@ class SwalAlert {
 
 // Ajax Get Data
 class AjaxData {
-    constructor(api, callback, data) {
+    constructor(api = '', callback, data) {
         this.api = api;
         this.callback = callback;
         this.data = data;
     }
-
+    
     get() {
         axios
             .get(this.api)
@@ -52,7 +52,7 @@ class AjaxData {
                 console.error(err);
             })
     }
-
+    
     // Get echo 'success'
     post() {
         axios.post(this.api, this.data).then(res => {
@@ -66,12 +66,11 @@ class AjaxData {
             console.error(err)
         })
     }
-
-    // Get json
+    
+    // Post json
     postJson() {
         axios.post(this.api, this.data).then(res => {
             this.callback(res.data);
-            // console.log(res)
         }).catch(err => {
             console.error(err)
         })
@@ -80,9 +79,7 @@ class AjaxData {
 
 /**
  * @Range: index.php,
- *
  * Modal display
- *
  */
 $(function () {
     "use strict"
@@ -93,12 +90,12 @@ $(function () {
         let modal = $(this).parents('.store-text').find('.modal');
         let height = $(document).height();
         let step = 1;
-
+        
         // 顯示modal
         modal.slideDown('fast');
         // 插入圖片
         modal.find('.img').replaceWith('<img src="' + img_path + '" style="max-height: ' + height + 'px">')
-
+        
         // 關閉modal
         modal.on('click', function (e) {
             $(this).slideUp('fast');
@@ -113,17 +110,17 @@ $(function () {
             modal.find('img').css('transform', 'scale(' + step + ')');
         })
     })
-
+    
     // Random store
     function wanna_eat() {
         let timer, last_pick;
-
+        
         $('#wanna_eat').on('click', function (e) {
             e.preventDefault();
             clearInterval(timer);
             let item = $('.store-item');
             let limit = 0;
-
+            
             item.removeClass('pick-color');
             timer = setInterval(function () {
                 let r = parseInt(Math.random() * item.length);
@@ -132,18 +129,18 @@ $(function () {
                     r = parseInt(Math.random() * item.length);
                 }
                 console.log(last_pick, r)
-
+                
                 // r = r === last_pick ? parseInt(Math.random() * item.length) : r;
                 item.removeClass('pick-color').eq(r).addClass('pick-color');
                 limit++;
                 if (limit > 8) clearInterval(timer);
             }, 100)
-
-
+            
+            
         })
     }
-
-
+    
+    
     (function goTop() {
         $(window).on('scroll', function () {
             const height = $(window).height();
@@ -154,7 +151,7 @@ $(function () {
                 $('#gotop').slideUp(500);
             }
         })
-
+        
         $('#gotop').on('click', function () {
             $('html, body').animate({
                 scrollTop: 0
@@ -300,8 +297,8 @@ $(function () {
         if ($('#groupBuyForm').length) submitGroupBuy();
         if ($('#addStoreForm').length) submitAddStore();
         if ($('#input_addStoreCover').length) addStoreImagePreview();
-
-
+        
+        
         function addStoreImagePreview() {
             $('#input_addStoreCover').on('change', function () {
                 readUrl(this, $('#store_cover_preview'));
@@ -310,7 +307,7 @@ $(function () {
                 readUrl(this, $('#store_menu_preview'));
             })
         }
-
+        
         // Upload image preview
         function readUrl(input, jq_appendElement) {
             if (input.files && input.files[0]) {
@@ -323,7 +320,7 @@ $(function () {
                 reader.readAsDataURL(input.files[0])  // image to base64
             }
         }
-
+        
         function submitAddStore() {
             $('#addStoreForm').on('submit', function () {
                 if (!checkInputVal($('input[name=name]'), '餐廳名稱')) {
@@ -331,8 +328,8 @@ $(function () {
                 }
             })
         }
-
-
+        
+        
         // Group buy submit Check
         function submitGroupBuy() {
             $('#groupBuyForm').on('submit', function () {
@@ -343,7 +340,7 @@ $(function () {
                 }
             })
         }
-
+        
         function deleteStore() {
             $('.btn-del-store').on('click', function (e) {
                 e.preventDefault();
@@ -359,7 +356,7 @@ $(function () {
                 const deleteAct = new AjaxData('delete.php?id=' + itemId, '')
             })
         }
-
+        
         // Get group-buy data
         function showOrder() {
             // axios get multiple urls
@@ -368,7 +365,7 @@ $(function () {
             // 如果在歷史團購單頁，就讀取歷史團購單
             const groupBuyHistory = $('.page__group-history').length ? axios.get('group_buy_api.php?res=buy_history') : 0;
             const store_info = axios.get('group_buy_api.php?res=stores');
-
+            
             axios
                 .all([groupBuy, total_orders, store_info, groupBuyHistory])
                 .then(
@@ -389,12 +386,12 @@ $(function () {
                         console.error(error[1].errors)
                         console.error(error[2].errors)
                         console.error(error[3].errors)
-
+                        
                     })
                 )
         }
-
-
+        
+        
         // Calc total price and total people of order id.
         function indexOrdersCalc(json, order_id) {
             let sum = 0;
@@ -411,7 +408,8 @@ $(function () {
                 totalName: totalName,
             };
         }
-
+        
+        
         /**
          *
          * @param groupBuy  進行中團購單
@@ -430,7 +428,7 @@ $(function () {
                 groupBuyData = groupBuy;
                 groupText = '進行中團購&nbsp;&nbsp;';
             }
-
+            
             if (groupBuyData.length === 0) {
                 $('#current_groupBuy').text('目前還沒有團購 :(').addClass('text-center');
             } else {
@@ -444,11 +442,11 @@ $(function () {
                 const oneOrderSum = orderCalc.totalPrice;
                 const oneOrderNum = orderCalc.totalName.length;
                 const groupId = parseInt(groupBuyData[i].store_id);
-
+                
                 // Calc left time
                 const end_time = new Date(groupBuyData[i].end_time).getTime();
                 const left_time = moment(end_time).fromNow()  // 比較當日獲取還剩幾分鐘收單
-
+                
                 // Get store data
                 let storeCover = './language/img/noimg.jpg';
                 let storeFullPrice = 0;
@@ -460,7 +458,7 @@ $(function () {
                     }
                 }
                 if (storeCover == null) storeCover = './language/img/noimg.jpg';
-
+                
                 // group full & yet
                 let groupFull = '';
                 if (oneOrderSum >= storeFullPrice) {
@@ -468,7 +466,7 @@ $(function () {
                 } else {
                     groupFull = `<div class="item group-yet">未成團</div>`;
                 }
-
+                
                 orderBlock += `
         <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
         <div class="card group-list-item">
@@ -498,66 +496,41 @@ $(function () {
             }
             $('.order-block').empty().append(orderBlock);
             $('.del-group-btn').on('click', delGroupBuy)
-
+            
         }
-
-
-        // function countdownGroupBuy(left_time) {
-        //     var now = moment(),
-        //         duration = left_time;
-        //     origin = moment().hours(12).minutes(10).seconds(30);
-        //     console.log('duration', duration)
-        //     const interval = 1;
-        //
-        //     const itemId = $('.group-leftTime').attr('data-itemId');
-        //     console.log('itemId:', itemId)
-        //     setInterval(function () {
-        //         duration = moment(duration).add(interval, 'seconds');
-        //         // $('#countdown').text( duration.format('HH:mm:ss').toString() );
-        //         var timeLeft = moment(moment(origin).diff(moment(duration))).format('HH:mm:ss').toString();
-        //         console.log(timeLeft)
-        //         return timeLeft;
-        //         // $('#countdown1').text( timeLeft );
-        //
-        //     }, 1000);
-        // }
-
-
+        
+        
         /**
          * @Range: index.php
-         *
          * Delete group-buy
-         *
          */
         function delGroupBuy() {
             const group_id = $(this).data('groupid');
             if (!group_id) return;
-
+            
             const delGroupBuyAct = new AjaxData(`group_buy_api.php?del_group=${group_id}`, showOrder);
             const delGroupBuyVar = function () {
                 delGroupBuyAct.get();
                 const alertInfo = new SwalAlert('操作成功', '一筆團購單已刪除', '', 'success');
                 alertInfo.fire();
             }
-
+            
             let alertInfo = new SwalAlert('你確定要刪除嗎？', "這項操作是沒辦法還原的！", '是的，我要刪除', '', delGroupBuyVar);
             alertInfo.fireConfirm()
         }
-
-
+        
+        
         /**
          * @Range: Order.php
-         *
          * Get order item of these order.
-         *
          */
         // Only order page load
         if ($('.page__order').length) {
             ordersDisplay();
             $('#order_form').on('submit', submitOrder);  // Submit order
         }
-
-
+        
+        
         // Orders display
         function ordersDisplay() {
             const order_id = $('#order_id').val();
@@ -569,8 +542,8 @@ $(function () {
             const submitOrder = new AjaxData(`group_buy_api.php?res=order_list&order_id=${order_id}`, callback);
             submitOrder.get()
         }
-
-
+        
+        
         // Calc price
         function calcOrders(json) {
             let sum = 0;
@@ -585,19 +558,19 @@ $(function () {
                 totalName: totalName,
             };
         }
-
-
+        
+        
         // Orders display
         function ordersListDisplay(ordersData) {
             const calcData = calcOrders(ordersData);
             const totalPrice = calcData.totalPrice;
             const totalName = calcData.totalName;
             $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單`);
-
+            
             // Display
             let orderListHtml = '';
             for (let i = 0; i < ordersData.length; i++) {
-
+                
                 // Payment Status
                 let paymentStatus = '';
                 if (ordersData[i].order_paymentStatus === '1') {
@@ -606,7 +579,7 @@ $(function () {
                     const amount = ordersData[i].order_price * ordersData[i].order_number + ' 元';  // Unpaid Amount
                     paymentStatus = `<span class="unpaid" data-amount="${amount}"><i class="fas fa-dollar-sign"></i>未付款</span>`;
                 }
-
+                
                 orderListHtml += `
         <div class="row py-2 rounded order-item" data-index="${i + 1}">
             <div class="col-sm-1 text-right px-1">
@@ -657,12 +630,12 @@ $(function () {
             }
             // Call edit order function
             $('#order_list input[name^="order"]').on('change', editOrder);
-
+            
             // Call delete order function
             $('.delete_order').on('click', deleteOrder);
         }
-
-
+        
+        
         /**
          * @Range: Order.php
          *
@@ -678,12 +651,12 @@ $(function () {
             const order_price = $('input[name=add_order_price]');
             const order_number = $('select[name=add_order_number] :selected');
             const order_remark = $('input[name=add_order_remark]');
-
+            
             if (!checkInputVal(order_price, '價格')) return;
             if (!checkInputVal(order_number, '數量')) return;
             if (!checkInputVal(order_meal, '餐點內容')) return;
             if (!checkInputVal(order_name, '姓名')) return;
-
+            
             let data = new FormData();
             data.append('add_order', 'true');
             data.append('order_id', order_id.val());
@@ -696,12 +669,12 @@ $(function () {
             order_meal.val('');
             order_price.val('');
             order_remark.val('');
-
+            
             const submitOrder = new AjaxData('group_buy_api.php', ordersDisplay, data)
             submitOrder.post();
         }
-
-
+        
+        
         // Check input value not empty
         function checkInputVal(element, elName) {
             if (!element.val()) {
@@ -715,8 +688,8 @@ $(function () {
             }
             return true;
         }
-
-
+        
+        
         /**
          * @Range: Order.php
          *
@@ -730,7 +703,7 @@ $(function () {
             const orderId = $('#order_id').val();
             const field_id = orderEl.parents('.order-item').find('.field_id').val();
             const orderTitle = orderEl.attr('data-field')
-
+            
             // Check input value not empty.
             const exc = ['order_remark', 'order_paymentStatus'];
             if (exc.indexOf(orderName) === -1) {  // if not found
@@ -738,12 +711,12 @@ $(function () {
                     return;
                 }
             }
-
+            
             // Order Payment Status Check
             if (orderName === 'order_paymentStatus' && orderEl.is(':checked')) orderValue = 1;
             if (orderName === 'order_paymentStatus' && !orderEl.is(':checked')) orderValue = 0;
-
-
+            
+            
             // Post form
             let orderData = new FormData();
             orderData.append('edit_order', 'true');
@@ -751,7 +724,7 @@ $(function () {
             orderData.append('order_field_name', orderName);
             orderData.append('order_field_value', orderValue);
             orderData.append('field_id', field_id);
-
+            
             axios.post('group_buy_api.php', orderData).then(res => {
                 // console.log(res.data)
                 if (res.data === 'success') {
@@ -766,10 +739,10 @@ $(function () {
             }).catch(err => {
                 console.error(err)
             })
-
+            
         }
-
-
+        
+        
         /**
          * @Range: Order.php
          *
@@ -778,16 +751,16 @@ $(function () {
          */
         function countOrders(order_id) {
             if (!order_id) return;
-
+            
             // Post form
             let countData = new FormData();
             countData.append('count_order', 'true');
             countData.append('order_id', order_id);
-
+            
             const submitData = new AjaxData('group_buy_api.php', countOrderDisplay, countData);
             submitData.postJson();
         }
-
+        
         function getStoreDeliveryAmount(orderTotal) {
             const storeId = $('#store_id').val();
             if (storeId.length === 0) return;
@@ -804,18 +777,18 @@ $(function () {
             const submitData = new AjaxData('group_buy_api.php?res=store&store_id=' + storeId, getDeliveryAmountHandle);
             submitData.get();
         }
-
+        
         function countOrderDisplay(totalData) {
             let orderTotalHeadHtml = '';
             let orderTotalBodyHtml = '';
             let orderTotalHtml = '';
             let allTotal = 0;
-
+            
             for (let k in totalData) {
                 let buyerName = totalData[k].buyerName.split(',');  // 訂購人
-
+                
                 allTotal += parseInt(totalData[k].subTotal);  // 總金額
-
+                
                 let buyerNameHtml = '';
                 buyerName.forEach((v, k) => {
                     buyerNameHtml += `
@@ -875,13 +848,13 @@ $(function () {
             `
             }
             $('#orderTotal').empty().append(orderTotalHeadHtml).append(orderTotalBodyHtml).append(orderTotalHtml);
-
+            
             if ($('#orderTotalNum').length > 0) $('#orderTotalNum').empty().append(allTotal);
-
+            
             getStoreDeliveryAmount(allTotal);  // 獲取外送門檻是否達標
-
+            
         }
-
+        
         /**
          * @Range: Order.php
          *
@@ -898,8 +871,8 @@ $(function () {
             const alertConfirm = new SwalAlert('你確定要刪除嗎？', "這項操作是沒辦法還原的！", '是的，我要刪除', '', deleteOrderHandel)
             alertConfirm.fireConfirm();
         }
-
-
+        
+        
         /**
          * @Range: Edit-Account.php
          *
@@ -912,14 +885,14 @@ $(function () {
             const getHostName = new AjaxData('group_buy_api.php?res=hostname', hostNameDisplay);
             getHostName.get()
         }
-
+        
         function addStoreTag() {
             $('#add_storeTag').on('click', addHostNameHandle);
             const getStoreTag = new AjaxData('group_buy_api.php?res=store_tags', storeTagsDisplay);
             getStoreTag.get();
         }
-
-
+        
+        
         function hostNameDisplay(data) {
             let hostNameHtml = ''
             for (let v of data) {
@@ -944,8 +917,8 @@ $(function () {
             $('#hostname_block').empty().append(hostNameHtml);
             $('.btn-del-host').on('click', delHostName);
         }
-
-
+        
+        
         function storeTagsDisplay(data) {
             "use strict"
             let storeTags = []
@@ -956,7 +929,7 @@ $(function () {
                     storeTags.push({tag: item, storeId: storeId.toString()})
                 })
             })
-
+            
             // tag 所屬 id 組成 可輸出之 array
             let result = [], tempArr = []
             storeTags.forEach(item => {
@@ -969,8 +942,8 @@ $(function () {
                 this[item.tag].id += tempArr
                 tempArr = []  // 清空array
             })
-
-
+            
+            
             // 輸出資料
             let storeTagsHtml = '';
             for (const value of result) {
@@ -994,12 +967,12 @@ $(function () {
             </div>
             `;
             }
-
+            
             $('#storeTag_block').empty().append(storeTagsHtml);
             $('.btn-del-storeTag').on('click', delStoreTag);
         }
-
-
+        
+        
         // Add Host Name
         function addHostNameHandle() {
             const addHostName = $('input[name="add_host_name"]');
@@ -1012,24 +985,24 @@ $(function () {
             dataForm.append('add_host_name', '1');
             dataForm.append('host_name', addHostName.val());
             addHostName.val('')
-
+            
             const submitData = new AjaxData('group_buy_api.php', getHostName, dataForm);
             submitData.post()
         }
-
-
+        
+        
         // Host name display
         function getHostName() {
             const getHostName = new AjaxData('group_buy_api.php?res=hostname', hostNameDisplay)
             getHostName.get();
         }
-
+        
         function getStoreTag() {
             const getStoreTag = new AjaxData('group_buy_api.php?res=store_tags', storeTagsDisplay);
             getStoreTag.get();
         }
-
-
+        
+        
         function delStoreTag() {
             const tagField = $(this).parents('.storeTag-field');
             const storeId = tagField.find('input[name="store_tag_id"]').val();
@@ -1037,13 +1010,13 @@ $(function () {
             const delStoreTag = new AjaxData('group_buy_api.php?res=del_tag&store_id=' + storeId + '&store_tags=' + storeTags, getStoreTag);
             const delHostNameHandle = function () {
                 delStoreTag.get();
-
+                
             }
             const alertConfirm = new SwalAlert('你確定嗎？', "這項操作不能復原", '是的！我要刪除', '', delHostNameHandle);
             alertConfirm.fireConfirm()
         }
-
-
+        
+        
         // Delete Host name
         function delHostName() {
             const btn = $(this);
@@ -1055,8 +1028,8 @@ $(function () {
             const alertConfirm = new SwalAlert('你確定嗎？', "這項操作不能復原", '是的！我要刪除', '', delHostNameHandle);
             alertConfirm.fireConfirm()
         }
-
-
+        
+        
         // Dynamic Tabs
         (function dynamicTabs() {
             $('.tab li').click(function () {
@@ -1065,43 +1038,54 @@ $(function () {
                 $('.main-content-item').eq(index).addClass('selected').siblings().removeClass('selected')
             })
         })()
-
-
+        
+        
     }
 )
 
-
-const app = new Vue({
+const app = Vue.createApp({
     delimiters: ['%%', '%%'],
-    el: '#app',
-    data: {
-        closeDisabled: false,
-    },
-    mounted: function () {
+    data() {
+        let state = {
+            endOrder: false,
+        }
+        let order = {
+            orderEndTime: '',
+        }
+        return {
+            closeDisabled: false,
+            state,
+            order,
+        }
     },
     methods: {
-        closeOrder: function () {
-            const orderEndTime = document.getElementById('order_endTime')
+        setState(newState) {
+            this.state = {
+                ...this.state,
+                ...newState
+            }
+        },
+        endOrderTimeHandler() {
+            const orderEndTime = this.$refs['order_endTime'];
             const endTime = new Date(orderEndTime.textContent);
             const today = new Date();
-            console.log('today:', today)
-            if ((today - endTime) < 0) {
-                // time is not end
-                const newTime = new Date(today - 10000);
-                // const mo = newTime.getMonth() > 9 ? newTime.getMonth() : '0' + newTime.getMonth()
-                const h = newTime.getHours() > 9 ? newTime.getHours() : '0' + newTime.getHours()
-                const m = newTime.getMinutes() > 9 ? newTime.getMinutes() : '0' + newTime.getMinutes()
-                const s = newTime.getSeconds() > 9 ? newTime.getSeconds() : '0' + newTime.getSeconds()
-                const nowTime = `${newTime.getFullYear()}-${newTime.getMonth() + 1}-${newTime.getDate()} ${h}:${m}:${s}`
-                const order_id = document.getElementById('order_id').value
-                // Post form
-                let closeOrderData = new FormData();
-                closeOrderData.append('order_id', order_id);
-                closeOrderData.append('end_time', nowTime);
-                const act = new AjaxData('group_buy_api.php', closeOrderHandler, closeOrderData)
-                act.postJson();
-            }
-
+            
+            if ((today - endTime) > 0) return;
+            
+            const newTime = new Date(today - 10000);
+            const h = newTime.getHours() > 9 ? newTime.getHours() : '0' + newTime.getHours()
+            const m = newTime.getMinutes() > 9 ? newTime.getMinutes() : '0' + newTime.getMinutes()
+            const s = newTime.getSeconds() > 9 ? newTime.getSeconds() : '0' + newTime.getSeconds()
+            const nowTime = `${newTime.getFullYear()}-${newTime.getMonth() + 1}-${newTime.getDate()} ${h}:${m}:${s}`
+            const order_id = this.$refs['orderId'].value;
+            
+            // Post form
+            let closeOrderData = new FormData();
+            closeOrderData.append('order_id', order_id);
+            closeOrderData.append('end_time', nowTime);
+            const act = new AjaxData('group_buy_api.php', closeOrderHandler, closeOrderData)
+            act.postJson();
+            
             function closeOrderHandler(res) {
                 if (res === 'success') {
                     const success = new SwalAlert('已收單', '此單已無法增加訂單')
@@ -1111,6 +1095,48 @@ const app = new Vue({
                     }, 2000)
                 }
             }
+        },
+        continueOrderTimeHandler(orderId) {
+            // 從資料庫取出結束時間， 加上比今天多一點時間，再寫回資料庫
+            const currentTime = new Date();
+            currentTime.setHours(currentTime.getHours() + 4);
+            console.log(currentTime)
+            // Thu Aug 05 2021 03:10:15 GMT+0800 (Taipei Standard Time)
+            // 要轉為 210804091829
+            
+            const h = currentTime.getHours() > 9 ? currentTime.getHours() : '0' + currentTime.getHours()
+            const m = currentTime.getMinutes() > 9 ? currentTime.getMinutes() : '0' + currentTime.getMinutes()
+            const s = currentTime.getSeconds() > 9 ? currentTime.getSeconds() : '0' + currentTime.getSeconds()
+            const nowTime = `${currentTime.getFullYear()}-${currentTime.getMonth() + 1}-${currentTime.getDate()} ${h}:${m}:${s}`
+            
+            let orderEndTimeData = new FormData();
+            orderEndTimeData.append('order_id', orderId);
+            orderEndTimeData.append('new_time', nowTime);
+            const act = new AjaxData(`group_buy_api.php`, getOrderEndTimeHandler, orderEndTimeData).postJson();
+            
+            function getOrderEndTimeHandler(res) {
+                if (res === 'success') {
+                    const success = new SwalAlert('已恢復訂單', '可以繼續訂購').fire()
+                    // success.fire();
+                    setTimeout(function () {
+                        location.reload()
+                    }, 2000)
+                }
+            }
+        },
+        endOrderTime() {
+            this.setState({
+                endOrder: true
+            })
+            this.endOrderTimeHandler();
+        },
+        continueOrderTime(orderId) {
+            this.setState({
+                endOrder: false
+            })
+            this.continueOrderTimeHandler(orderId);
         }
     }
-})
+});
+
+app.mount('#app');
