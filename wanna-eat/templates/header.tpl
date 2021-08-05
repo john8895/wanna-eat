@@ -71,9 +71,12 @@
                     <li class="nav-item">
                         <a href="res-list.php" class="nav-link">餐廳列表</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="group-history.php" class="nav-link">歷史團購單</a>
-                    </li>
+
+                    {if isset($logged) && $logged}
+                        <li class="nav-item">
+                            <a href="group-history.php" class="nav-link">歷史團購單</a>
+                        </li>
+                    {/if}
 
                     {*
                     <li class="nav-item dropdown">

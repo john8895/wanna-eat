@@ -56,7 +56,7 @@ class AjaxData {
     // Get echo 'success'
     post() {
         axios.post(this.api, this.data).then(res => {
-            // console.log(res.data)
+            console.log(res)
             if (res.data === 'success') {
                 const showMessage = new SwalAlert('操作成功', '資料已新增', '', 'success')
                 showMessage.fire()
@@ -358,7 +358,14 @@ $(function () {
         }
         
         // Get group-buy data
-        function showOrder() {
+        function showOrder(res = '') {
+            
+            if(res === 'error') {
+                return new SwalAlert('操作失敗', '未登入或是找不到該訂單 ID，沒有資料被刪除', '', 'error').fire();
+            }else if(res === 'success') {
+                const alert = new SwalAlert('操作成功', '已刪除一筆團購單', '', 'success').fire();
+            }
+            
             // axios get multiple urls
             const total_orders = axios.get('group_buy_api.php?res=total_orders');
             const groupBuy = axios.get('group_buy_api.php?res=buy');
@@ -418,7 +425,6 @@ $(function () {
          * @param groupBuyHistory  歷史團購單
          */
         function groupBuyDisplay(groupBuy, totalOrders, stores, groupBuyHistory) {
-            // console.log(groupBuy)
             let groupBuyData;
             let groupText = '';
             if (groupBuyHistory) {
@@ -496,7 +502,6 @@ $(function () {
             }
             $('.order-block').empty().append(orderBlock);
             $('.del-group-btn').on('click', delGroupBuy)
-            
         }
         
         
@@ -508,13 +513,17 @@ $(function () {
             const group_id = $(this).data('groupid');
             if (!group_id) return;
             
-            const delGroupBuyAct = new AjaxData(`group_buy_api.php?del_group=${group_id}`, showOrder);
-            const delGroupBuyVar = function () {
-                delGroupBuyAct.get();
-                const alertInfo = new SwalAlert('操作成功', '一筆團購單已刪除', '', 'success');
-                alertInfo.fire();
-            }
+            let delData = new FormData();
+            delData.append('group_id',group_id);
             
+            const delGroupBuyAct = new AjaxData(`group_buy_api.php`, showOrder, delData);
+            
+            const delGroupBuyVar = function () {
+                delGroupBuyAct.postJson();
+                // const alertInfo = new SwalAlert('操作成功', '一筆團購單已刪除', '', 'success');
+                // alertInfo.fire();
+            }
+
             let alertInfo = new SwalAlert('你確定要刪除嗎？', "這項操作是沒辦法還原的！", '是的，我要刪除', '', delGroupBuyVar);
             alertInfo.fireConfirm()
         }
@@ -692,9 +701,7 @@ $(function () {
         
         /**
          * @Range: Order.php
-         *
          * Edit order
-         *
          */
         function editOrder() {
             const orderEl = $(this);
@@ -715,7 +722,6 @@ $(function () {
             // Order Payment Status Check
             if (orderName === 'order_paymentStatus' && orderEl.is(':checked')) orderValue = 1;
             if (orderName === 'order_paymentStatus' && !orderEl.is(':checked')) orderValue = 0;
-            
             
             // Post form
             let orderData = new FormData();
@@ -739,15 +745,12 @@ $(function () {
             }).catch(err => {
                 console.error(err)
             })
-            
         }
         
         
         /**
          * @Range: Order.php
-         *
          * Calc orders
-         *
          */
         function countOrders(order_id) {
             if (!order_id) return;
@@ -857,9 +860,7 @@ $(function () {
         
         /**
          * @Range: Order.php
-         *
          * Delete order
-         *
          */
         function deleteOrder(event) {
             event.preventDefault();
@@ -875,9 +876,7 @@ $(function () {
         
         /**
          * @Range: Edit-Account.php
-         *
          * Add host name , edit host name
-         *
          */
         function addHostName() {
             $('#add_hostName').on('click', addHostNameHandle);
@@ -1038,8 +1037,6 @@ $(function () {
                 $('.main-content-item').eq(index).addClass('selected').siblings().removeClass('selected')
             })
         })()
-        
-        
     }
 )
 

@@ -47,15 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         break;
                 }
                 break;
-
             // Delete orders
             case 'del':
                 deleteOrder();
-                break;
-
-            // Delete group-buy
-            case 'del_group':
-                deleteGroupBuy();
                 break;
             // Close Order
             default:
@@ -72,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_host_name'])) addHostName();
     if (isset($_POST['end_time'])) closeOrder();
     if (isset($_POST['new_time'])) continueOrder();
+    if (isset($_POST['group_id'])) deleteGroupBuy();
 }
 
 
@@ -118,10 +113,15 @@ function getGroupHistory()
 /** Delete group buy */
 function deleteGroupBuy()
 {
-    $group_id = $_GET['del_group'];
-    $sql = "DELETE FROM group_buy WHERE id='{$group_id}';";
-    connect_mysql($sql);
-    echo 'success';
+    $group_id = $_POST['group_id'];
+    session_start();
+    if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
+        echo 'error';  // Login Failed
+    }else{
+        $sql = "DELETE FROM group_buy WHERE id='{$group_id}';";
+        connect_mysql($sql);
+        echo 'success';
+    }
 }
 
 
@@ -377,7 +377,8 @@ function getStoreTags()
     echo $json;
 }
 
-function closeOrder(){
+function closeOrder()
+{
     $end_time = $_POST['end_time'];
     $order_id = $_POST['order_id'];
     $sql = "UPDATE group_buy SET end_time='{$end_time}' WHERE id={$order_id}";
@@ -385,7 +386,8 @@ function closeOrder(){
     echo 'success';
 }
 
-function continueOrder(){
+function continueOrder()
+{
     $order_id = $_POST['order_id'];
     $new_time = $_POST['new_time'];
     $sql = "UPDATE group_buy SET end_time='{$new_time}' WHERE id={$order_id}";
