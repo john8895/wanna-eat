@@ -56,7 +56,7 @@ class AjaxData {
     // Get echo 'success'
     post() {
         axios.post(this.api, this.data).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.data === 'success') {
                 const showMessage = new SwalAlert('操作成功', '資料已新增', '', 'success')
                 showMessage.fire()
@@ -70,6 +70,7 @@ class AjaxData {
     // Post json
     postJson() {
         axios.post(this.api, this.data).then(res => {
+            console.log(res)
             this.callback(res.data);
         }).catch(err => {
             console.error(err)
@@ -654,6 +655,7 @@ $(function () {
         // Submit order handle
         function submitOrder(event) {
             event.preventDefault()
+            console.log('submitOrder')
             const order_id = $('input[name=add_order_id]');
             const order_name = $('input[name=add_order_name]');
             const order_meal = $('input[name=add_order_meal]');
@@ -667,7 +669,8 @@ $(function () {
             if (!checkInputVal(order_name, '姓名')) return;
             
             let data = new FormData();
-            data.append('add_order', 'true');
+            data.append('method', 'postOrder');
+            // data.append('add_order', 'true');
             data.append('order_id', order_id.val());
             data.append('order_name', order_name.val());
             data.append('order_meal', order_meal.val());
@@ -725,7 +728,8 @@ $(function () {
             
             // Post form
             let orderData = new FormData();
-            orderData.append('edit_order', 'true');
+            orderData.append('method', 'editOrder');
+            // orderData.append('edit_order', 'true');
             orderData.append('order_id', orderId);
             orderData.append('order_field_name', orderName);
             orderData.append('order_field_value', orderValue);
@@ -757,9 +761,10 @@ $(function () {
             
             // Post form
             let countData = new FormData();
-            countData.append('count_order', 'true');
+            countData.append('method', 'getOrders');
+            // countData.append('count_order', 'true');
             countData.append('order_id', order_id);
-            
+    
             const submitData = new AjaxData('group_buy_api.php', countOrderDisplay, countData);
             submitData.postJson();
         }
@@ -788,6 +793,7 @@ $(function () {
             let allTotal = 0;
             
             for (let k in totalData) {
+                console.log(totalData)
                 let buyerName = totalData[k].buyerName.split(',');  // 訂購人
                 
                 allTotal += parseInt(totalData[k].subTotal);  // 總金額

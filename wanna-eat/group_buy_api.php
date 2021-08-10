@@ -2,6 +2,7 @@
 /** Connect Mysql */
 require_once './assets/inc/connect.php';
 require_once './assets/inc/config.php';
+require_once './assets/include/order.inc.php';
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -60,9 +61,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['add_order'])) submitOrder();
-    if (isset($_POST['edit_order'])) editOrder();
-    if (isset($_POST['count_order'])) orderTotal();
+
+    $method = $_POST['method'];
+    $order = new Order($method);
+
+    switch ($method) {
+        case 'postOrder':
+            $order->postOrder();
+            break;
+        case 'getOrders':
+            $order->getOrders();
+            break;
+        case 'editOrder':
+            $order->editOrder();
+            break;
+        case 'line':
+            $order->postLine();
+            break;
+        default:
+            break;
+    }
+
+//    if (isset($_POST['add_order'])) {
+////      submitOrder();
+//    }
+//    if (isset($_POST['edit_order'])) editOrder();
+//    if (isset($_POST['count_order'])) orderTotal();
     if (isset($_POST['add_host_name'])) addHostName();
     if (isset($_POST['end_time'])) closeOrder();
     if (isset($_POST['new_time'])) continueOrder();
@@ -117,7 +141,7 @@ function deleteGroupBuy()
     session_start();
     if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
         echo 'error';  // Login Failed
-    }else{
+    } else {
         $sql = "DELETE FROM group_buy WHERE id='{$group_id}';";
         connect_mysql($sql);
         echo 'success';

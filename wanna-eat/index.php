@@ -2,6 +2,7 @@
 require '../libs/Smarty.class.php';
 /** Connect Mysql */
 require_once './assets/inc/connect.php';
+require_once './assets/include/store.inc.php';
 
 $smarty = new Smarty;
 $smarty->setTemplateDir('./templates/');
@@ -9,24 +10,7 @@ $smarty->setTemplateDir('./templates/');
 /** Check Login Status */
 require_once './assets/inc/check-login.php';
 
-class mainData
-{
-    public function getStore()
-    {
-        $sql = 'SELECT * FROM store';
-        $result = connect_mysql($sql);
-        $stores = array();
-        while ($rows = mysqli_fetch_assoc($result)) {
-            $stores[] = $rows;
-        }
-        foreach ($stores as $k=>$item) {
-            $tags = explode(',', $item['store_tag']);
-            $stores[$k]['tags'] = $tags;
-        }
-        return $stores;
-    }
-}
+$getStore = new store();
 
-$main = new mainData();
-$smarty->assign('stores', $main->getStore());
+$smarty->assign('stores', $getStore->index());
 $smarty->display('layout.tpl');
