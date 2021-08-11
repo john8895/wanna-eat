@@ -5,81 +5,8 @@ require_once('../assets/inc/connect.php');
 require_once('../assets/include/connect.inc.php');
 
 //$userId = 'Uadc6b08a44873820d6446554f0f2f790';
-//$userId = '01';
-//$sql = "SELECT * FROM users WHERE username = '{$userId}' LIMIT 1;";
-//$result = connect_mysql($sql);
-////$result = $resultTemp->fetch_assoc();
-//if ($result->num_rows > 0) {
-//    $resultItems = array();
-//    while ($rows = $result->fetch_assoc()) {
-//        $resultItems = $rows;
-//    }
-//    echo '嗨！' . $resultItems['nick_name'] . ' 歡迎回來！';
-//    var_dump($resultItems);
-//} else {
-//    echo '此帳號不存在！';
-//}
-//die();
-//$conn = new Connect();
-//$sql = "SELECT * FROM group_buy WHERE id = 1;";
-//$result = $conn->query($sql);
-//print_r($result);
-//die();
-//$result = connect_mysql($sql);
-//if ($result->num_rows > 0) {
-//    $resultItems = array();
-//    while ($rows = $result->fetch_assoc()) {
-//        $resultItems = $rows;
-//    }
-//    print_r(json_decode($resultItems['store_name'], true));
-//}
-//die();
-//$state = new stdClass();
-//$state->memberStatus = 'none';
-//echo $state->memberStatus;
-//die();
-//$userId = 'Uc0ff3b94ad5950bb70d9b7ee84e804d1';
-//$lineBot = new lineBot();
-//$result = $lineBot->getUserContext($userId);
-//print_r($result['context']);
-//$userId = '00';
-//$lineBot = new lineBot($userId);
-//$lineBot->postContext('postMember');
-//$sendMessage = "嗨！帳號不存在，請輸入你的暱稱，幫你建立帳號喔！";
-//echo $sendMessage;
-//die();
-//(function(){
-//    echo "yes! it's work!";
-// })();
-//call_user_func(function(){
-//    echo "yes! it's work!";
-//});
-//$func = function($name){
-//  echo "我是$name";
-//};
-//$func('小明');
-//die();
-//echo __DIR__ . '/LINEBotTiny.php';
-//die();
-//$userId = '00';
-//$lineBot = new LineBot($userId);
-//$context = new stdClass();
-//$context->state = 'order';
-//$lineBot->setContext($context);
-//die();
-//$userId = 'Uadc6b08a44873820d6446554f0f2f790';
-//$lineBot = new LineBot($userId);
-//$currentState = $lineBot->getContext();
-//var_dump($currentState);
-////if (!$currentState) {
-////    $lineBot->setContext('state', 'order');
-////}
-//die();
-
-//$userId = 'Uadc6b08a44873820d6446554f0f2f790';
 //$lineBot = new LineBot($userId);
 //$nickName = $lineBot->getNickName();  // 取得暱稱(有userId)
-////$currentState = $lineBot->getContext();  // 資料庫有沒有記錄
 //var_dump($nickName);
 //die();
 
@@ -190,7 +117,7 @@ class LineBot
         $connect->query($sql);
     }
 
-    
+
     public function updateContext($stateName, $contextValue)
     {
         $connect = new Connect();
