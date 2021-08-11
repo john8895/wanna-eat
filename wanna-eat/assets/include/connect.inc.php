@@ -19,13 +19,14 @@ class Connect
 
     public function query($sql)
     {
-        if (!$result = $this->connection->query($sql)) exit('<h1>Operation database failed</h1>');
+        $result = $this->connection->query($sql);
+//        if (!$result = $this->connection->query($sql)) exit('<h1>Operation database failed</h1>');
         $this->close();
         return $result;
     }
 
 
-    public function fetch_assoc($num_rows)
+    public function fetch_assoc($num_rows): array
     {
         $result = array();
         while ($rows = $num_rows->fetch_assoc()) {

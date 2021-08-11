@@ -1,8 +1,8 @@
 <?php
-require_once('./LINEBotTiny.php');
-require_once '../assets/include/order.inc.php';
-require_once '../assets/inc/connect.php';
-require_once '../assets/include/connect.inc.php';
+require_once(__DIR__ . '/LINEBotTiny.php');
+require_once('../assets/include/order.inc.php');
+require_once('../assets/inc/connect.php');
+require_once('../assets/include/connect.inc.php');
 
 //$userId = 'Uadc6b08a44873820d6446554f0f2f790';
 //$userId = '01';
@@ -20,7 +20,6 @@ require_once '../assets/include/connect.inc.php';
 //    echo '此帳號不存在！';
 //}
 //die();
-
 //$conn = new Connect();
 //$sql = "SELECT * FROM group_buy WHERE id = 1;";
 //$result = $conn->query($sql);
@@ -35,70 +34,210 @@ require_once '../assets/include/connect.inc.php';
 //    print_r(json_decode($resultItems['store_name'], true));
 //}
 //die();
-
 //$state = new stdClass();
 //$state->memberStatus = 'none';
 //echo $state->memberStatus;
 //die();
+//$userId = 'Uc0ff3b94ad5950bb70d9b7ee84e804d1';
+//$lineBot = new lineBot();
+//$result = $lineBot->getUserContext($userId);
+//print_r($result['context']);
+//$userId = '00';
+//$lineBot = new lineBot($userId);
+//$lineBot->postContext('postMember');
+//$sendMessage = "嗨！帳號不存在，請輸入你的暱稱，幫你建立帳號喔！";
+//echo $sendMessage;
+//die();
+//(function(){
+//    echo "yes! it's work!";
+// })();
+//call_user_func(function(){
+//    echo "yes! it's work!";
+//});
+//$func = function($name){
+//  echo "我是$name";
+//};
+//$func('小明');
+//die();
+//echo __DIR__ . '/LINEBotTiny.php';
+//die();
+//$userId = '00';
+//$lineBot = new LineBot($userId);
+//$context = new stdClass();
+//$context->state = 'order';
+//$lineBot->setContext($context);
+//die();
+//$userId = 'Uadc6b08a44873820d6446554f0f2f790';
+//$lineBot = new LineBot($userId);
+//$currentState = $lineBot->getContext();
+//var_dump($currentState);
+////if (!$currentState) {
+////    $lineBot->setContext('state', 'order');
+////}
+//die();
+
+//$userId = 'Uadc6b08a44873820d6446554f0f2f790';
+//$lineBot = new LineBot($userId);
+//$nickName = $lineBot->getNickName();  // 取得暱稱(有userId)
+////$currentState = $lineBot->getContext();  // 資料庫有沒有記錄
+//var_dump($nickName);
+//die();
 
 $channelAccessToken = 'fLjvFXAZfRDqcTMr5tSOaMAYAeA3kv03qYjcFkYQHjy8GntgfAM491knLIwvvH6g1QBH312V2IVYO0UlWJb/pgb/TkLuqNywQQiQHwiamOEl5JmUeR2kHQ4+CLifZ63q6597VUGSjIsRz7A+cUgBIQdB04t89/1O/w1cDnyilFU=';
 $channelSecret = '42699015866d7b2329e0f9fa2cfebce0';
-
 $client = new LINEBotTiny($channelAccessToken, $channelSecret);
-$eventArray = $client->parseEvents();
-$event = call_user_func_array('array_merge', $eventArray);  // 展開二維陣列
 
-// 如果訊息類型為文字
-if ($event['message']['type'] === 'text') {
+
+function lineBotHandler($client, $event)
+{
+    $userId = $event['source']['userId'];
+    $lineBot = new LineBot($userId);
+
+    if (!$event || !$client) return;
+    if ($event['message']['type'] !== 'text') {
+        $sendMessage = "阿鬼，你還是說中文吧！(提示：用文字訊息)";
+        $lineBot->replyTextMessage($client, $event, $sendMessage);
+        return;
+    }
+
     $userMessage = strtolower($event['message']['text']);  // 使用者送出的文字
+    $nickName = $lineBot->getNickName();  // 取得暱稱(有userId)
+    $currentState = $lineBot->getContext();  // 資料庫有沒有記錄
 
-    $connect = new Connect();
-    $lineBot = new LineBot();
+    if ($currentState['state'] === 'postMember') {
+        // 輸入暱稱建立帳號
+        $nickName = $userMessage;
+        $lineBot->postMember($nickName);
+        $lineBot->setContext('state', 'memberSuccess');
+        $sendMessage = "帳號幫你建立好囉，你的暱稱是{$nickName}，登入密碼是000000，請輸入 order 開始訂餐";
+        $lineBot->replyTextMessage($client, $event, $sendMessage);
+        return;
+    }
+
+    if ($userMessage !== 'order') {
+        $sendMessage = "嗨！若要開始訂餐請輸入 order";
+        $lineBot->replyTextMessage($client, $event, $sendMessage);
+        return;
+    }
+
+
+    // 輸入 order 之後...
+    if (!$currentState) {  // 如果沒有狀態，登記為 order
+        $lineBot->setContext('state', 'order');
+    }
+
+    // 帳號不存在，提示輸入暱稱
+    if (!$nickName) {
+        $lineBot->updateContext('state', 'postMember');
+        $sendMessage = "嗨！帳號不存在，請輸入你的暱稱，幫你建立帳號喔！";
+        $lineBot->replyTextMessage($client, $event, $sendMessage);
+        return;
+    }
+
+    if ($currentState['state'] !== 'order') {  // 如果狀態不是 order 改為 order
+        $lineBot->updateContext('state', 'order');
+    }
+
 
     // 進入訂餐流程
-    if ($userMessage === 'order') {
-        $userId = $event['source']['userId'];
-        $sql = "SELECT * FROM users WHERE username = '{$userId}' LIMIT 1;";
-        $resultTemp = $connect->query($sql);
-        // userId 存在
-        if ($resultTemp->num_rows > 0) {
-            $result = $connect->fetch_assoc($resultTemp);
-            $sendMessage = "嗨！{$result['nick_name']}，歡迎回來！目前團購單如下：";
-            $lineBot->replyTextMessage($client, $event, $sendMessage);
-        } else {
-            // userId 不存在
+//    $lineBot->replyTextMessage($client, $event, '進入訂餐模式');
 
+    // userId 存在
+    $sendMessage = "嗨！{$nickName}，歡迎回來！目前團購單如下：";
+    $lineBot->replyTextMessage($client, $event, $sendMessage);
 
-            $context = 'accountBuild';
-            $lineBot->postUserContext($userId, $context);
-
-            $sendMessage = "嗨！帳號不存在，請輸入你的暱稱，幫你建立帳號喔！";
-            $lineBot->replyTextMessage($client, $event, $sendMessage);
-        }
-
-//        $data = json_encode($userMessage, JSON_UNESCAPED_UNICODE);
-//        $sql = "INSERT INTO group_buy (id, store_name, store_phone, group_host, end_time, store_id) VALUES (0001, '{$data}' , '1', '1', '2020-07-04 18:21:00', 15);";
-//        connect_mysql($sql);
-    }
+// 測試用
+//    $data = json_encode($currentState['state'], JSON_UNESCAPED_UNICODE);
+//    $sql = "INSERT INTO group_buy (id, store_name, store_phone, group_host, end_time, store_id) VALUES (0001, '{$data}' , '1', '1', '2020-07-04 18:21:00', 15);";
+//    connect_mysql($sql);
+//    die();
 }
+
+// 同時會有多個 $event
+foreach ($client->parseEvents() as $event) {
+    lineBotHandler($client, $event);
+}
+
 
 class LineBot
 {
-    // 儲存使用者狀態
-    public function postUserContext($userId, $context)
+    public $userId;
+
+    public function __construct($userId)
+    {
+        $this->userId = $userId;
+    }
+
+
+    public function setContext($stateName, $contextValue)
+    {
+        $context = new stdClass();
+        $context->$stateName = $contextValue;
+        $data = json_encode($context, JSON_UNESCAPED_UNICODE);
+
+        if(!$this->getContext()){  // 如果資料不存在就新建
+            $this->postContext($data);
+            return;
+        }
+        $this->updateContext($stateName, $contextValue);  // 存在就更新
+    }
+
+
+    public function postContext($data)
     {
         $connect = new Connect();
-        $data = json_encode($context, JSON_UNESCAPED_UNICODE);
-        $sql = "INSERT INTO line_bot (user_id, context) VALUES ('$userId', $data);";
+        $sql = "INSERT INTO line_bot (user_id, context) VALUES ('$this->userId', '$data');";
         $connect->query($sql);
     }
 
-    // 讀取使用者狀態
-    public function getUserContext($userId)
+    
+    public function updateContext($stateName, $contextValue)
     {
-
+        $connect = new Connect();
+        $context = new stdClass();
+        $context->$stateName = $contextValue;
+        $data = json_encode($context, JSON_UNESCAPED_UNICODE);
+        $sql = "UPDATE line_bot set context='$data' WHERE user_id='$this->userId' LIMIT 1;";
+        $connect->query($sql);
     }
-    // 發送訊息給使用者
+
+
+    public function getContext()
+    {
+        $connect = new Connect();
+        $sql = "SELECT context FROM line_bot WHERE user_id = '$this->userId' LIMIT 1;";
+        $resultTemp = $connect->query($sql);
+        if ($resultTemp->num_rows > 0) {
+            $result = $connect->fetch_assoc($resultTemp);
+            return json_decode($result['context'], true);  // 轉成 array
+        } else {
+            return false;
+        }
+    }
+
+
+    public function getNickName()
+    {
+        $sql = "SELECT * FROM users WHERE username = '{$this->userId}' LIMIT 1;";
+        $connect = new Connect();
+        $resultTemp = $connect->query($sql);
+        if ($resultTemp->num_rows > 0) {
+            $result = $connect->fetch_assoc($resultTemp);
+            return $result['nick_name'];
+        } else {
+            return false;
+        }
+    }
+
+
+    public function postMember($nick_name)
+    {
+        $password = '000000';
+        $sql = "INSERt INTO users (username, password, nick_name) VALUES ('$this->userId', '$password', '$nick_name');";
+        $connect = new Connect();
+        $connect->query($sql);
+    }
+
     public function replyTextMessage($client, $event, $sendMessage)
     {
         $client->replyMessage(array(
@@ -111,11 +250,6 @@ class LineBot
         ));
     }
 }
-
-
-//$data = json_encode($userMessage, JSON_UNESCAPED_UNICODE);
-//$sql = "INSERT INTO group_buy (id, store_name, store_phone, group_host, end_time, store_id) VALUES (0001, '{$data}' , '1', '1', '2020-07-04 18:21:00', 15);";
-//connect_mysql($sql);
 
 die();
 
