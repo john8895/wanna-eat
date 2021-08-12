@@ -4,7 +4,7 @@ require_once('../assets/include/order.inc.php');
 require_once('../assets/inc/connect.php');
 require_once('../assets/include/connect.inc.php');
 // Config
-define('CHANNEL_ACCESS_TOKEN','fLjvFXAZfRDqcTMr5tSOaMAYAeA3kv03qYjcFkYQHjy8GntgfAM491knLIwvvH6g1QBH312V2IVYO0UlWJb/pgb/TkLuqNywQQiQHwiamOEl5JmUeR2kHQ4+CLifZ63q6597VUGSjIsRz7A+cUgBIQdB04t89/1O/w1cDnyilFU=');
+define('CHANNEL_ACCESS_TOKEN', 'fLjvFXAZfRDqcTMr5tSOaMAYAeA3kv03qYjcFkYQHjy8GntgfAM491knLIwvvH6g1QBH312V2IVYO0UlWJb/pgb/TkLuqNywQQiQHwiamOEl5JmUeR2kHQ4+CLifZ63q6597VUGSjIsRz7A+cUgBIQdB04t89/1O/w1cDnyilFU=');
 define('CHANNEL_SECRET', '42699015866d7b2329e0f9fa2cfebce0');
 // State
 define('CONTEXT_STATE', 'state');
@@ -12,11 +12,17 @@ define('CONTEXT_ORDER_MODE', 'orderMode');
 define('STATE_ORDER', 'order');
 define('STATE_POST_MEMBER', 'postMember');
 define('STATE_CHOOSE_GROUP_BUY', 'chooseGroupBuy');
+define('STATE_MENU_OPTIONS', 'menuOptions');
+define('STATE_POST_ORDER', 'postOrder');
 // Command
 define('COMMEND_RESET', '#reset');
 define('COMMEND_ORDER', 'order');
 
-//die();
+// Test Area
+$orderContent = '雞排飯，90，1，不要飯';
+$orderContent = explode($orderContent, '，');
+print_r($orderContent);
+die();
 
 $client = new LINEBotTiny(CHANNEL_ACCESS_TOKEN, CHANNEL_SECRET);
 
@@ -82,27 +88,61 @@ function lineBotHandler($client, $event)
             $lineBot->replyTextMessage($client, $event, '喂~看清楚再輸入啦，沒這選項吧，重新輸入！');
             return;
         }
-    }
 
-    // 輸入 0 取消訂單
-    if ($userMessage === '0') {
-        $sendMessage = "蛤~不訂囉？那下次再來嘿！愛你喔！~^^\"";
-        $lineBot->replyTextMessage($client, $event, $sendMessage);
-        $lineBot->setContext('state', 'reset');
-        $lineBot->setContext('orderMode', 'reset');
-        return;
-    }
-
-    // 選擇團購單
-    if($currentState['orderMode'] == STATE_CHOOSE_GROUP_BUY){
-        $groupBuys = $lineBot->getGroupBuy();
-        $groupBuysCount = count($groupBuys);
-        if ((int)$userMessage < $groupBuysCount) {
-            $lineBot->replyTextMessage($client, $event, "選擇成功！你選的是 $userMessage 號團購！");
+        // 輸入 0 取消訂單
+        if ($userMessage === '0') {
+            $sendMessage = "蛤~不訂囉？那下次再來吧！愛你喔！~";
+            $lineBot->replyTextMessage($client, $event, $sendMessage);
+            $lineBot->setContext('state', 'reset');
+            $lineBot->setContext('orderMode', 'reset');
             return;
         }
     }
 
+    // 選擇團購單
+    if ($currentState['orderMode'] == STATE_CHOOSE_GROUP_BUY) {
+        $groupBuys = $lineBot->getGroupBuy();
+        $groupBuysCount = count($groupBuys);
+        if ((int)$userMessage <= $groupBuysCount) {
+            $sendMessage = "選擇成功！你選的是 $userMessage 號團購！";
+            $sendMessage .= "\n\n【操作】\n按 0 取消\n按 1 顯示菜單\n按 2 直接點餐";
+            $lineBot->replyTextMessage($client, $event, $sendMessage);
+            $lineBot->setContext('orderMode', 'menuOptions');
+            return;
+        }
+    }
+
+    // 點餐模式
+    if($currentState['orderMode'] == STATE_POST_ORDER) {
+        // todo: 校驗格式
+        $orderContent = $userMessage;
+        $orderContent = explode($orderContent, '，');
+        $lineBot->replyTextMessage($client, $event, STATE_POST_ORDER);
+        return;
+    }
+
+    // 菜單選項
+    if($currentState['orderMode'] == STATE_MENU_OPTIONS){
+       if((int) $userMessage == 0){
+           $lineBot->setContext('orderMode', 'reset');
+           $lineBot->replyTextMessage($client, $event, '已經幫你取消了喔，回到上一步再重選一次團購單吧！');
+           return;
+       }
+       if((int) $userMessage == 2){
+           $sendMessage = "【點餐格式】\n";
+           $sendMessage .= "餐名，價格，數量，備註\n";
+           $sendMessage .= "雞排飯，90，1，不要飯\n\n";
+           $sendMessage .= "p.s. 以全型逗號分隔，其他方式不接受\n\n";
+           $sendMessage .= "現在你可以開始點餐囉！點吧！";
+           $lineBot->setContext('orderMode', 'postOrder');
+           $lineBot->replyTextMessage($client, $event, $sendMessage);
+           return;
+       }
+//        $lineBot->replyTextMessage($client, $event, 'OK');
+        return;
+    }
+
+    // todo: 要做點餐
     // 調出目前團購單
     if ($currentState['state'] == STATE_ORDER) {
         $lineBot->setContext('orderMode', 'chooseGroupBuy');
@@ -110,12 +150,12 @@ function lineBotHandler($client, $event)
         $groupBuys = $lineBot->getGroupBuy();
         $groupBuysCount = count($groupBuys);
 
-        $sendMessage = "嗨！{$nickName}，目前共有 {$groupBuysCount} 張團購單：\n";
+        $sendMessage = "【選擇團購單】\n嗨！{$nickName}，目前共有 {$groupBuysCount} 張團購單：\n";
         foreach ($groupBuys as $key => $groupBuy) {
             $snNum = $key + 1;
             $sendMessage .= "{$snNum}. {$groupBuy['store_name']}\n";
         }
-        $sendMessage .= "\n請輸入你要參加的團購單編號，如 1 或輸入 0 取消";
+        $sendMessage .= "\n【操作】\n按 0 取消\n按要參加的團購單號";
         $lineBot->replyTextMessage($client, $event, $sendMessage);
         return;
     }
