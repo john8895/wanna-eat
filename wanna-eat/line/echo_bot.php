@@ -4,16 +4,56 @@ require_once('../assets/include/order.inc.php');
 require_once('../assets/inc/connect.php');
 require_once('../assets/include/connect.inc.php');
 
-//$userId = 'Uadc6b08a44873820d6446554f0f2f790';
-//$lineBot = new LineBot($userId);
-//$nickName = $lineBot->getNickName();  // 取得暱稱(有userId)
-//var_dump($nickName);
-//die();
+// State
+//define('CONTEXT_STATE','state');
+//define('CONTEXT_ORDER_MODE', 'orderMode');
+//define('STATE_ORDER', 'order');
+//define('STATE_POST_MEMBER', 'postMember');
+//define('STATE_CHOOSE_GROUP_BUY', 'chooseGroupBuy');
+//
+//// Command
+//define('COMMEND_RESET', '#reset');
+//define('COMMEND_ORDER', '#order');
 
 $channelAccessToken = 'fLjvFXAZfRDqcTMr5tSOaMAYAeA3kv03qYjcFkYQHjy8GntgfAM491knLIwvvH6g1QBH312V2IVYO0UlWJb/pgb/TkLuqNywQQiQHwiamOEl5JmUeR2kHQ4+CLifZ63q6597VUGSjIsRz7A+cUgBIQdB04t89/1O/w1cDnyilFU=';
 $channelSecret = '42699015866d7b2329e0f9fa2cfebce0';
-$client = new LINEBotTiny($channelAccessToken, $channelSecret);
+//ini_set('display_errors','on');
+//$userId = '00';
+//$lineBot = new LineBot($userId);
+//$lineBot->setContext('state', 'order');
+//$userId = 'Uadc6b08a44873820d6446554f0f2f790';
+//$lineBot = new LineBot($userId);
 
+//$lineBot->setContext(CONTEXT_STATE, STATE_ORDER);
+//echo '#reset' == COMMEND_RESET;
+////$data = $lineBot->getContext();
+////var_dump($data);;
+//$data = CONTEXT_STATE;
+//echo $data == CONTEXT_STATE;
+
+//$context = new stdClass();
+//$context->CONTEXT_STATE = STATE_ORDER;
+//$lineBot->setContext('orderMode', STATE_CHOOSE_GROUP_BUY);
+////var_dump($context);
+//die();
+
+$client = new LINEBotTiny($channelAccessToken, $channelSecret);
+//$testEvent = json_encode(array(
+//    'type' => 'message',
+//    'message' => array(
+//        'type' => 'text',
+//        'id' => '14548533365070',
+//        'text' => '1'
+//    ),
+//    'timestamp' => '14548533365070',
+//    'source' => array(
+//        'type' => 'user',
+//        'userId' => '14548533365070'
+//    ),
+//    'replayToken' => '86e51a4503d94b96bdad4640e7671c65',
+//    'mode' => 'active'
+//), true);
+//echo $testEvent;
 
 function lineBotHandler($client, $event)
 {
@@ -26,55 +66,92 @@ function lineBotHandler($client, $event)
         $lineBot->replyTextMessage($client, $event, $sendMessage);
         return;
     }
-
     $userMessage = strtolower($event['message']['text']);  // 使用者送出的文字
     $nickName = $lineBot->getNickName();  // 取得暱稱(有userId)
     $currentState = $lineBot->getContext();  // 資料庫有沒有記錄
 
-    if ($currentState['state'] === 'postMember') {
+    // 操作指令 START
+    if ($userMessage == '#reset') {
+        $context = '';
+        $lineBot->updateContext($context);
+        $lineBot->replyTextMessage($client, $event, '取消所有狀態');
+        return;
+    }
+    // 操作指令 END
+
+    if ($currentState['state'] == 'postMember') {
         // 輸入暱稱建立帳號
         $nickName = $userMessage;
         $lineBot->postMember($nickName);
-        $lineBot->setContext('state', 'memberSuccess');
-        $sendMessage = "帳號幫你建立好囉，你的暱稱是{$nickName}，登入密碼是000000，請輸入 order 開始訂餐";
+        $lineBot->setContext('state', 'memberCreated');
+        $sendMessage = "帳號幫你建立好囉，你的暱稱是{$nickName}，網站登入密碼是000000，請輸入 #order 開始訂餐";
         $lineBot->replyTextMessage($client, $event, $sendMessage);
         return;
     }
-
-    if ($userMessage !== 'order') {
-        $sendMessage = "嗨！若要開始訂餐請輸入 order";
-        $lineBot->replyTextMessage($client, $event, $sendMessage);
-        return;
-    }
-
 
     // 輸入 order 之後...
-    if (!$currentState) {  // 如果沒有狀態，登記為 order
+    if ($userMessage == '#order') {
         $lineBot->setContext('state', 'order');
+        // 重新取得使用者狀態
+        $currentState = $lineBot->getContext();
+    }
+
+    // todo: error 一直卡在這裡
+    if ($currentState['state'] != 'order') {
+        $sendMessage = "嗨！若要開始訂餐請輸入 #order";
+//        $lineBot->replyTextMessage($client, $event, $currentState['state']);  // TEST
+        $lineBot->replyTextMessage($client, $event, $sendMessage);
+        return;
     }
 
     // 帳號不存在，提示輸入暱稱
     if (!$nickName) {
-        $lineBot->updateContext('state', 'postMember');
+        $lineBot->setContext('state', 'postMember');
         $sendMessage = "嗨！帳號不存在，請輸入你的暱稱，幫你建立帳號喔！";
         $lineBot->replyTextMessage($client, $event, $sendMessage);
         return;
     }
 
-    if ($currentState['state'] !== 'order') {  // 如果狀態不是 order 改為 order
-        $lineBot->updateContext('state', 'order');
+    $lineBot->setContext('orderMode', 'chooseGroupBuy');
+
+    // 輸入大於總團購單數
+    $groupBuys = $lineBot->getGroupBuy();
+    $groupBuysCount = count($groupBuys);
+    if ($userMessage > $groupBuysCount) {
+        $lineBot->replyTextMessage($client, $event, '喂~看清楚再輸入啦，沒這選項吧，重新輸入！');
+        return;
     }
 
+    if ($userMessage === '0') {
+        $sendMessage = "蛤~不訂囉？那下次再來嘿！愛你喔！~^^\"";
+        $lineBot->replyTextMessage($client, $event, $sendMessage);
+//        $lineBot->setContext('state', '');
+//        $lineBot->setContext('orderMode', '');
+        return;
+    }
 
-    // 進入訂餐流程
-//    $lineBot->replyTextMessage($client, $event, '進入訂餐模式');
+    if ($userMessage <= $groupBuysCount) {
+        $lineBot->setContext('orderMode', 'selected');
+        $lineBot->replyTextMessage($client, $event, "你點了編號 $userMessage");
+    }
 
-    // userId 存在
-    $sendMessage = "嗨！{$nickName}，歡迎回來！目前團購單如下：";
-    $lineBot->replyTextMessage($client, $event, $sendMessage);
+    // 調出目前團購單
+    if (true) {
+        $groupBuys = $lineBot->getGroupBuy();
+        $groupBuysCount = count($groupBuys);
+
+        $sendMessage = "嗨！{$nickName}，目前共有 {$groupBuysCount} 張團購單：\n";
+        foreach ($groupBuys as $key => $groupBuy) {
+            $snNum = $key + 1;
+            $sendMessage .= "{$snNum}. {$groupBuy['store_name']}\n";
+        }
+        $sendMessage .= "\n請輸入你要參加的團購單編號，如 2 或輸入 0 取消";
+        $lineBot->replyTextMessage($client, $event, $sendMessage);
+        return;
+    }
 
 // 測試用
-//    $data = json_encode($currentState['state'], JSON_UNESCAPED_UNICODE);
+//    $data = json_encode($currentState[CONTEXT_STATE], JSON_UNESCAPED_UNICODE);
 //    $sql = "INSERT INTO group_buy (id, store_name, store_phone, group_host, end_time, store_id) VALUES (0001, '{$data}' , '1', '1', '2020-07-04 18:21:00', 15);";
 //    connect_mysql($sql);
 //    die();
@@ -85,10 +162,9 @@ foreach ($client->parseEvents() as $event) {
     lineBotHandler($client, $event);
 }
 
-
 class LineBot
 {
-    public $userId;
+    private $userId;
 
     public function __construct($userId)
     {
@@ -96,17 +172,38 @@ class LineBot
     }
 
 
+    public function getGroupBuy(): array
+    {
+        $today = date('Y-m-d H:i:s');
+        $sql = "SELECT * FROM group_buy WHERE end_time >= '$today';";  // 交給資料庫去比對 大於今天的團購單
+        $connect = new Connect();
+        $numRows = $connect->query($sql);
+
+        $groupBuys = array();
+        while ($rows = $numRows->fetch_assoc()) {
+            $groupBuys[] = $rows;
+        }
+        return $groupBuys;
+    }
+
+
     public function setContext($stateName, $contextValue)
     {
+        $oldData = $this->getContext();
+//        $hasUserId = $this->getUserId();
         $context = new stdClass();
         $context->$stateName = $contextValue;
-        $data = json_encode($context, JSON_UNESCAPED_UNICODE);
 
-        if(!$this->getContext()){  // 如果資料不存在就新建
+        if (!$oldData) {  // 如果 userId 不存在就新建
+            $data = json_encode($context, JSON_UNESCAPED_UNICODE);
             $this->postContext($data);
             return;
         }
-        $this->updateContext($stateName, $contextValue);  // 存在就更新
+        $newData = json_decode(json_encode($context, JSON_UNESCAPED_UNICODE), true);
+        $mergeData = array_merge($oldData, $newData);  // Merge Array
+        $mergeData = json_encode($mergeData, JSON_UNESCAPED_UNICODE);
+
+        $this->updateContext($mergeData);  // 存在就更新
     }
 
 
@@ -118,28 +215,42 @@ class LineBot
     }
 
 
-    public function updateContext($stateName, $contextValue)
+    public function updateContext($data)
     {
         $connect = new Connect();
-        $context = new stdClass();
-        $context->$stateName = $contextValue;
-        $data = json_encode($context, JSON_UNESCAPED_UNICODE);
         $sql = "UPDATE line_bot set context='$data' WHERE user_id='$this->userId' LIMIT 1;";
         $connect->query($sql);
     }
 
+
+//    public function getUserId(): bool
+//    {
+//        $connect = new Connect();
+//        $sql = "SELECT user_id FROM line_bot WHERE user_id = '$this->userId';";
+//        $resultTemp = $connect->query($sql);
+//        $result = array();
+//
+//        if ($resultTemp->num_rows <= 0) return false;
+//        return true;
+////        while ($rows = $resultTemp->fetch_assoc()) {
+////            $result = $rows;
+////        }
+////        return json_decode($result['context'], true);  // 轉成 array
+//    }
 
     public function getContext()
     {
         $connect = new Connect();
         $sql = "SELECT context FROM line_bot WHERE user_id = '$this->userId' LIMIT 1;";
         $resultTemp = $connect->query($sql);
-        if ($resultTemp->num_rows > 0) {
-            $result = $connect->fetch_assoc($resultTemp);
-            return json_decode($result['context'], true);  // 轉成 array
-        } else {
-            return false;
+        $result = array();
+
+        if ($resultTemp->num_rows < 0) return false;
+        while ($rows = $resultTemp->fetch_assoc()) {
+            $result = $rows;
         }
+        return json_decode($result['context'], true);  // 轉成 array
+
     }
 
 
@@ -148,12 +259,14 @@ class LineBot
         $sql = "SELECT * FROM users WHERE username = '{$this->userId}' LIMIT 1;";
         $connect = new Connect();
         $resultTemp = $connect->query($sql);
-        if ($resultTemp->num_rows > 0) {
-            $result = $connect->fetch_assoc($resultTemp);
-            return $result['nick_name'];
-        } else {
-            return false;
+
+        if ($resultTemp->num_rows < 0) return false;
+
+        $result = array();
+        while ($rows = $resultTemp->fetch_assoc()) {
+            $result = $rows;
         }
+        return $result['nick_name'];
     }
 
 
@@ -165,6 +278,12 @@ class LineBot
         $connect->query($sql);
     }
 
+
+    /**
+     * @param $client
+     * @param $event
+     * @param $sendMessage
+     */
     public function replyTextMessage($client, $event, $sendMessage)
     {
         $client->replyMessage(array(
@@ -177,189 +296,3 @@ class LineBot
         ));
     }
 }
-
-die();
-
-foreach ($client->parseEvents() as $event) {
-    switch ($event['type']) {
-        case 'message': //訊息觸發
-            $message = $event['message'];
-            if (strtolower($message['type']) == "text") {
-                // 取得 User ID
-                // 輸入 order 進入訂餐流程
-                // 請輸入會員名稱
-                // 比對資料庫，如果不存在，請輸入新會員名稱
-//                $userId = 'Uadc6b08a44873820d6446554f0f2f790';
-//                $userId = '01';
-
-                // 如果存在，顯示會員名稱
-//                $data = json_encode($event);
-//                $sql = "INSERT INTO orders (order_id, order_name, order_meal, order_price, order_number, order_remark, field_id) VALUES ({$this->order_id}, '{$this->order_name}', '{$this->order_meal}', {$this->order_price}, {$this->order_number}, '{$this->order_remark}', '{$this->field_id}')";
-//                $sql = "INSERT INTO group_buy (id, store_name, store_phone, group_host, end_time, store_id) VALUES (0001, '{$data}' , '1', '1', '2020-07-04 18:21:00', 15);";
-//                connect_mysql($sql);
-
-//                $lineOrder = new Order();
-//                $orderName = $message['text'];
-//                $temp = $lineOrder->linePostOrder($orderName);
-//                if ($temp === 'success') {
-                // 後端收到資料之後
-//                    $response = $bot->getProfile('<userId>');
-//                    if ($response->isSucceeded()) {
-//                        $profile = $response->getJSONDecodedBody();
-//                        echo $profile['displayName'];
-//                        echo $profile['pictureUrl'];
-//                        echo $profile['statusMessage'];
-//                    }
-                // 載入LINE BOT
-//                    $bot = new LINEBot(
-//                        new CurlHTTPClient($channelAccessToken),
-//                        ['channelSecret' => $channelSecret]
-//                    );
-//
-//                    $response = $bot->getProfile($event->getUserId());
-////                    $profile = '';
-//                    if ($response->isSucceeded()) {
-//                        $profile = $response->getJSONDecodedBody();
-//                        //$profile 為陣列，內容裡會有對方的姓名、userId(這不確定是不是會變動)、圖像網址、狀態訊息
-//                    }
-
-
-//                $client->replyMessage(array(
-//                    'replyToken' => $event['replyToken'],
-//                    'messages' => array(
-//                        array(
-//                            'type' => 'text',
-//                            'text' => '您的訊息收到囉！',
-////                                'text' => $userName,
-////                                'text' => $event['timestamp'],
-////                                'text' => $event['source']['userId'],
-////                                'text' => $profile['displayName'],
-//                        ))
-//                ));
-
-//                }  // if(success)
-//                file_put_contents("debug.txt", file_get_contents("php://input") . "\r\n", FILE_APPEND);
-
-//                $client->replyMessage(array(
-//                    'replyToken' => $event['replyToken'],
-//                    'messages' => array(
-
-//                        array(
-//                            'type' => 'text',  // 訊息類型 (文字)
-//                            'text' => 'Hello, World!'  // 回覆訊息
-//                        )
-//                        array(
-//                            'type' => 'image',  // 訊息類型(圖片)
-//                            'originalContentUrl' => 'https://www.starpng.com/public/uploads/preview/panda-png-11582388237zzoycmriwv.png',  //回覆圖片
-//                            'previewImageUrl' => 'https://www.starpng.com/public/uploads/preview/panda-png-11582388237zzoycmriwv.png',  // 回覆的預覽圖片
-//                        )
-//                        array(
-//                            'type' => 'video', //訊息類型 (影片)
-//                            'originalContentUrl' => 'https://api.reh.tw/line/bot/example/assets/videos/example.mp4', //回覆影片
-//                            'previewImageUrl' => 'https://api.reh.tw/line/bot/example/assets/images/example.jpg' //回覆的預覽圖片
-//                        )
-//                        array(
-//                            'type' => 'audio', //訊息類型 (音樂)
-//                            'originalContentUrl' => $audiofileurl, //回覆音樂
-//                            'duration' => $milliseconds //音樂長度 (毫秒)
-//                        )
-//                        array(
-//                            'type' => 'location', //訊息類型 (位置)
-//                            'title' => 'Example location', //回覆標題
-//                            'address' => '台灣高雄市三民區大昌一路 98 號 (立志中學)', //回覆地址
-//                            'latitude' => 22.653742, //地址緯度
-//                            'longitude' => 120.32652400000006 //地址經度
-//                        )
-//                        array(
-//                            'type' => 'sticker', //訊息類型 (貼圖)
-//                            'packageId' => 1, //貼圖包 ID
-//                            'stickerId' => 1 //貼圖 ID
-//                        )
-//                        array(
-//                            'type' => 'template', //訊息類型 (模板)(手機才看得到)
-//                            'altText' => 'Example buttons template', //替代文字
-//                            'template' => array(
-//                                'type' => 'buttons', //類型 (按鈕)
-//                                'thumbnailImageUrl' => 'https://api.reh.tw/line/bot/example/assets/images/example.jpg', //圖片網址 <不一定需要>
-//                                'title' => 'Example Menu', //標題 <不一定需要>
-//                                'text' => 'Please select', //文字
-//                                'actions' => array(
-//                                    array(
-//                                        'type' => 'postback', //類型 (回傳)
-//                                        'label' => 'Postback example', //標籤 1
-//                                        'data' => 'action=buy&itemid=123' //資料
-//                                    ),
-//                                    array(
-//                                        'type' => 'message', //類型 (訊息)
-//                                        'label' => 'Message example', //標籤 2
-//                                        'text' => 'Message example' //用戶發送文字
-//                                    ),
-//                                    array(
-//                                        'type' => 'uri', //類型 (連結)
-//                                        'label' => 'Uri example', //標籤 3
-//                                        'uri' => 'https://github.com/GoneToneStudio/line-example-bot-tiny-php' //連結網址
-//                                    )
-//                                )
-//                            )
-//                        )
-
-//                    )));
-
-
-            }
-
-
-//            switch ($message['type']) {
-//                case 'text': //訊息為文字
-////                    require_once('includes/text.php'); //Type: Text
-//                    $client->replyMessage(array(
-//                        'replyToken' => $event['replyToken'],
-//                        'messages' => array(
-//                            array(
-//                                'type' => 'text',
-////                                'text' => $message['text'],
-////                                'text' => $profile['displayName']
-//                                'text' => '你好'
-//                            )
-//                        )
-//                    ));
-//                    break;
-//                default:
-////                    error_log('Unsupported message type: ' . $message['type']);
-//                    break;
-//            }
-            break;
-//        case 'postback': //postback 觸發
-//            //require_once('postback.php'); //postback
-//            break;
-//        case 'follow': //加為好友觸發
-//            $client->replyMessage(array(
-//                'replyToken' => $event['replyToken'],
-//                'messages' => array(
-//                    array(
-//                        'type' => 'text',
-//                        'text' => '您好，這是一個範例 Bot OuO
-//範例程式開源至 GitHub (包含教學)：
-//https://github.com/GoneTone/line-example-bot-php'
-//                    )
-//                )
-//            ));
-//            break;
-//        case 'join': //加入群組觸發
-//            $client->replyMessage(array(
-//                'replyToken' => $event['replyToken'],
-//                'messages' => array(
-//                    array(
-//                        'type' => 'text',
-//                        'text' => '大家好，這是一個範例 Bot OuO
-//範例程式開源至 GitHub (包含教學)：
-//https://github.com/GoneTone/line-example-bot-php'
-//                    )
-//                )
-//            ));
-//            break;
-        default:
-//            error_log('Unsupported event type: ' . $event['type']);
-            break;
-    }
-};
