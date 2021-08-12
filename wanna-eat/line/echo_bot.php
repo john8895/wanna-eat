@@ -3,57 +3,23 @@ require_once(__DIR__ . '/LINEBotTiny.php');
 require_once('../assets/include/order.inc.php');
 require_once('../assets/inc/connect.php');
 require_once('../assets/include/connect.inc.php');
-
+// Config
+define('CHANNEL_ACCESS_TOKEN','fLjvFXAZfRDqcTMr5tSOaMAYAeA3kv03qYjcFkYQHjy8GntgfAM491knLIwvvH6g1QBH312V2IVYO0UlWJb/pgb/TkLuqNywQQiQHwiamOEl5JmUeR2kHQ4+CLifZ63q6597VUGSjIsRz7A+cUgBIQdB04t89/1O/w1cDnyilFU=');
+define('CHANNEL_SECRET', '42699015866d7b2329e0f9fa2cfebce0');
 // State
-//define('CONTEXT_STATE','state');
-//define('CONTEXT_ORDER_MODE', 'orderMode');
-//define('STATE_ORDER', 'order');
-//define('STATE_POST_MEMBER', 'postMember');
-//define('STATE_CHOOSE_GROUP_BUY', 'chooseGroupBuy');
-//
-//// Command
-//define('COMMEND_RESET', '#reset');
-//define('COMMEND_ORDER', '#order');
+define('CONTEXT_STATE', 'state');
+define('CONTEXT_ORDER_MODE', 'orderMode');
+define('STATE_ORDER', 'order');
+define('STATE_POST_MEMBER', 'postMember');
+define('STATE_CHOOSE_GROUP_BUY', 'chooseGroupBuy');
+// Command
+define('COMMEND_RESET', '#reset');
+define('COMMEND_ORDER', 'order');
 
-$channelAccessToken = 'fLjvFXAZfRDqcTMr5tSOaMAYAeA3kv03qYjcFkYQHjy8GntgfAM491knLIwvvH6g1QBH312V2IVYO0UlWJb/pgb/TkLuqNywQQiQHwiamOEl5JmUeR2kHQ4+CLifZ63q6597VUGSjIsRz7A+cUgBIQdB04t89/1O/w1cDnyilFU=';
-$channelSecret = '42699015866d7b2329e0f9fa2cfebce0';
-//ini_set('display_errors','on');
-//$userId = '00';
-//$lineBot = new LineBot($userId);
-//$lineBot->setContext('state', 'order');
-//$userId = 'Uadc6b08a44873820d6446554f0f2f790';
-//$lineBot = new LineBot($userId);
-
-//$lineBot->setContext(CONTEXT_STATE, STATE_ORDER);
-//echo '#reset' == COMMEND_RESET;
-////$data = $lineBot->getContext();
-////var_dump($data);;
-//$data = CONTEXT_STATE;
-//echo $data == CONTEXT_STATE;
-
-//$context = new stdClass();
-//$context->CONTEXT_STATE = STATE_ORDER;
-//$lineBot->setContext('orderMode', STATE_CHOOSE_GROUP_BUY);
-////var_dump($context);
 //die();
 
-$client = new LINEBotTiny($channelAccessToken, $channelSecret);
-//$testEvent = json_encode(array(
-//    'type' => 'message',
-//    'message' => array(
-//        'type' => 'text',
-//        'id' => '14548533365070',
-//        'text' => '1'
-//    ),
-//    'timestamp' => '14548533365070',
-//    'source' => array(
-//        'type' => 'user',
-//        'userId' => '14548533365070'
-//    ),
-//    'replayToken' => '86e51a4503d94b96bdad4640e7671c65',
-//    'mode' => 'active'
-//), true);
-//echo $testEvent;
+$client = new LINEBotTiny(CHANNEL_ACCESS_TOKEN, CHANNEL_SECRET);
+
 
 function lineBotHandler($client, $event)
 {
@@ -71,35 +37,31 @@ function lineBotHandler($client, $event)
     $currentState = $lineBot->getContext();  // 資料庫有沒有記錄
 
     // 操作指令 START
-    if ($userMessage == '#reset') {
+    if ($userMessage == COMMEND_RESET) {
         $context = '';
         $lineBot->updateContext($context);
         $lineBot->replyTextMessage($client, $event, '取消所有狀態');
         return;
     }
-    // 操作指令 END
 
-    if ($currentState['state'] == 'postMember') {
+    if ($currentState['state'] == STATE_POST_MEMBER) {
         // 輸入暱稱建立帳號
         $nickName = $userMessage;
         $lineBot->postMember($nickName);
         $lineBot->setContext('state', 'memberCreated');
-        $sendMessage = "帳號幫你建立好囉，你的暱稱是{$nickName}，網站登入密碼是000000，請輸入 #order 開始訂餐";
+        $sendMessage = "帳號幫你建立好囉，你的暱稱是{$nickName}，網站登入密碼是000000，請輸入 " . COMMEND_ORDER . " 開始訂餐";
         $lineBot->replyTextMessage($client, $event, $sendMessage);
         return;
     }
 
-    // 輸入 order 之後...
-    if ($userMessage == '#order') {
+    if ($userMessage == COMMEND_ORDER) {
         $lineBot->setContext('state', 'order');
-        // 重新取得使用者狀態
-        $currentState = $lineBot->getContext();
+        $currentState = $lineBot->getContext();  // 重新取得使用者狀態
     }
 
-    // todo: error 一直卡在這裡
-    if ($currentState['state'] != 'order') {
-        $sendMessage = "嗨！若要開始訂餐請輸入 #order";
-//        $lineBot->replyTextMessage($client, $event, $currentState['state']);  // TEST
+    // 訂餐提示
+    if ($currentState['state'] != STATE_ORDER) {
+        $sendMessage = "嗨！若要開始訂餐請輸入 " . COMMEND_ORDER;
         $lineBot->replyTextMessage($client, $event, $sendMessage);
         return;
     }
@@ -112,31 +74,39 @@ function lineBotHandler($client, $event)
         return;
     }
 
-    $lineBot->setContext('orderMode', 'chooseGroupBuy');
-
     // 輸入大於總團購單數
-    $groupBuys = $lineBot->getGroupBuy();
-    $groupBuysCount = count($groupBuys);
-    if ($userMessage > $groupBuysCount) {
-        $lineBot->replyTextMessage($client, $event, '喂~看清楚再輸入啦，沒這選項吧，重新輸入！');
-        return;
+    if ($currentState['orderMode'] == STATE_CHOOSE_GROUP_BUY) {
+        $groupBuys = $lineBot->getGroupBuy();
+        $groupBuysCount = count($groupBuys);
+        if ($userMessage > $groupBuysCount) {  // 大於總團購單數
+            $lineBot->replyTextMessage($client, $event, '喂~看清楚再輸入啦，沒這選項吧，重新輸入！');
+            return;
+        }
     }
 
+    // 輸入 0 取消訂單
     if ($userMessage === '0') {
         $sendMessage = "蛤~不訂囉？那下次再來嘿！愛你喔！~^^\"";
         $lineBot->replyTextMessage($client, $event, $sendMessage);
-//        $lineBot->setContext('state', '');
-//        $lineBot->setContext('orderMode', '');
+        $lineBot->setContext('state', 'reset');
+        $lineBot->setContext('orderMode', 'reset');
         return;
     }
 
-    if ($userMessage <= $groupBuysCount) {
-        $lineBot->setContext('orderMode', 'selected');
-        $lineBot->replyTextMessage($client, $event, "你點了編號 $userMessage");
+    // 選擇團購單
+    if($currentState['orderMode'] == STATE_CHOOSE_GROUP_BUY){
+        $groupBuys = $lineBot->getGroupBuy();
+        $groupBuysCount = count($groupBuys);
+        if ((int)$userMessage < $groupBuysCount) {
+            $lineBot->replyTextMessage($client, $event, "選擇成功！你選的是 $userMessage 號團購！");
+            return;
+        }
     }
 
     // 調出目前團購單
-    if (true) {
+    if ($currentState['state'] == STATE_ORDER) {
+        $lineBot->setContext('orderMode', 'chooseGroupBuy');
+
         $groupBuys = $lineBot->getGroupBuy();
         $groupBuysCount = count($groupBuys);
 
@@ -145,10 +115,14 @@ function lineBotHandler($client, $event)
             $snNum = $key + 1;
             $sendMessage .= "{$snNum}. {$groupBuy['store_name']}\n";
         }
-        $sendMessage .= "\n請輸入你要參加的團購單編號，如 2 或輸入 0 取消";
+        $sendMessage .= "\n請輸入你要參加的團購單編號，如 1 或輸入 0 取消";
         $lineBot->replyTextMessage($client, $event, $sendMessage);
         return;
     }
+
+
+    $lineBot->replyTextMessage($client, $event, 'OK');
+    die();
 
 // 測試用
 //    $data = json_encode($currentState[CONTEXT_STATE], JSON_UNESCAPED_UNICODE);
@@ -189,11 +163,14 @@ class LineBot
 
     public function setContext($stateName, $contextValue)
     {
+        $users = $this->getUserData();
+        if (count($users) > 1) {  // 已有資料
+            $this->deleteUser();
+        }
+
         $oldData = $this->getContext();
-//        $hasUserId = $this->getUserId();
         $context = new stdClass();
         $context->$stateName = $contextValue;
-
         if (!$oldData) {  // 如果 userId 不存在就新建
             $data = json_encode($context, JSON_UNESCAPED_UNICODE);
             $this->postContext($data);
@@ -223,20 +200,26 @@ class LineBot
     }
 
 
-//    public function getUserId(): bool
-//    {
-//        $connect = new Connect();
-//        $sql = "SELECT user_id FROM line_bot WHERE user_id = '$this->userId';";
-//        $resultTemp = $connect->query($sql);
-//        $result = array();
-//
-//        if ($resultTemp->num_rows <= 0) return false;
-//        return true;
-////        while ($rows = $resultTemp->fetch_assoc()) {
-////            $result = $rows;
-////        }
-////        return json_decode($result['context'], true);  // 轉成 array
-//    }
+    // 取得用戶 user_id, context
+    public function getUserData(): array
+    {
+        $connect = new Connect();
+        $sql = "SELECT * FROM line_bot WHERE user_id = '$this->userId';";
+        $resultTemp = $connect->query($sql);
+        $result = array();
+        while ($rows = $resultTemp->fetch_assoc()) {
+            $result[] = $rows;
+        }
+        return $result;
+    }
+
+
+    public function deleteUser()
+    {
+        $connect = new Connect();
+        $sql = "DELETE FROM line_bot WHERE user_id = '$this->userId';";
+        return $connect->query($sql);
+    }
 
     public function getContext()
     {
@@ -245,6 +228,7 @@ class LineBot
         $resultTemp = $connect->query($sql);
         $result = array();
 
+        // todo: 這裡不該 return false
         if ($resultTemp->num_rows < 0) return false;
         while ($rows = $resultTemp->fetch_assoc()) {
             $result = $rows;
@@ -279,11 +263,6 @@ class LineBot
     }
 
 
-    /**
-     * @param $client
-     * @param $event
-     * @param $sendMessage
-     */
     public function replyTextMessage($client, $event, $sendMessage)
     {
         $client->replyMessage(array(

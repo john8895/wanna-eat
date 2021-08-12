@@ -20,7 +20,6 @@ class Connect
     public function query($sql)
     {
         $result = $this->connection->query($sql);
-//        if (!$result = $this->connection->query($sql)) exit('<h1>Operation database failed</h1>');
         $this->close();
         return $result;
     }
