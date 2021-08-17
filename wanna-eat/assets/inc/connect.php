@@ -10,3 +10,37 @@ function connect_mysql($sql){
     $conn->close();
     return $result;
 }
+
+class Connection
+{
+    private $dbHost;
+    private $dbName;
+    private $dbUser;
+    private $dbPassword;
+    private $statement;
+
+    public function __construct()
+    {
+        $this->dbHost = DB_HOST;
+        $this->dbName = DB_NAME;
+        $this->dbUser = DB_USER;
+        $this->dbPassword = DB_PASSWORD;
+    }
+
+    private function connect()
+    {
+
+        $this->statement = new PDO("mysql:host=$this->dbHost;dbname=$this->dbName;charset=utf8", $this->dbUser, $this->dbPassword);
+    }
+
+    public function query($sql)
+    {
+        $this->statement->query($sql);
+
+
+        while($row = $this->statement->fetch(PDO::FETCH_ASSOC))
+        {
+
+        }
+    }
+}

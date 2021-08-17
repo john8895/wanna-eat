@@ -79,6 +79,14 @@ function lineBotHandler($client, $event)
     $nickName = $lineBot->getNickName();  // 取得暱稱(有userId)
     $currentState = $lineBot->getContext();  // 取得目前狀態
 
+    // log
+    ($setLog = function($userId){
+        $message = '123';
+        $connect = new Connect();
+        $sql = "INSERT INTO line_log (user_id, message) VALUES ('$userId', '$message')";
+    })($userId);
+
+
     if($currentState == 'null'){
         $lineBot->replyTextMessage($client, $event, '錯誤！狀態碼為 null');
         return;
@@ -96,10 +104,26 @@ function lineBotHandler($client, $event)
         // 輸入暱稱建立帳號
         $nickName = $userMessage;
         $lineBot->postMember($nickName);
-        $lineBot->setContext('state', 'memberCreated');
-        $sendMessage = "帳號幫你建立好囉，你的暱稱是{$nickName}，網站登入密碼是000000，請輸入 " . COMMEND_ORDER . " 開始訂餐";
+//        $lineBot->setContext('state', 'memberCreated');
+
+        $lineBot->setContext('state', 'order');
+        $currentState = $lineBot->getContext();  // 重新取得使用者狀態
+
+        $lineBot->setContext('orderMode', 'chooseGroupBuy');
+        $groupBuys = $lineBot->getGroupBuy();
+        $groupBuysCount = count($groupBuys);
+        $sendMessage = "【選擇團購單】\n嗨！{$nickName}，目前共有 {$groupBuysCount} 張團購單：\n";
+        foreach ($groupBuys as $key => $groupBuy) {
+            $snNum = $key + 1;
+            $sendMessage .= "{$snNum}. {$groupBuy['store_name']}\n";
+        }
+        $sendMessage .= "\n【接下來】\n按 0 取消\n按 要參加的團購單號";
         $lineBot->replyTextMessage($client, $event, $sendMessage);
         return;
+
+//        $sendMessage = "帳號幫你建立好囉，你的暱稱是{$nickName}，請輸入 " . COMMEND_ORDER . " 開始訂餐";
+//        $lineBot->replyTextMessage($client, $event, $sendMessage);
+//        return;
     }
 
     if ($userMessage == COMMEND_ORDER) {
@@ -108,8 +132,9 @@ function lineBotHandler($client, $event)
     }
 
     // state 非 order
-    if ($currentState['state'] != STATE_ORDER) {
+    if ($currentState['state'] !== STATE_ORDER) {
         $sendMessage = "嗨！若要開始訂餐請輸入 " . COMMEND_ORDER;
+//        $lineBot->replyTextMessage($client, $event, $currentState['state'] . '123');
         $lineBot->replyTextMessage($client, $event, $sendMessage);
         return;
     }
@@ -150,6 +175,8 @@ function lineBotHandler($client, $event)
             $lineBot->replyTextMessage($client, $event, $sendMessage);
             return;
         }
+
+        $lineBot->replyTextMessage($client, $event, 'STATE_CHOOSE_GROUP_BUY 例外');
         return;
     }
 
@@ -242,6 +269,10 @@ function lineBotHandler($client, $event)
             $lineBot->replyTextMessage($client, $event, $sendMessage);
             return;
         }
+
+        $sendMessage = "輸入錯誤，沒有這個選項喔！";
+        $lineBot->replyTextMessage($client, $event, $sendMessage);
+//        $lineBot->replyTextMessage($client, $event, 'STATE_POST_ORDER_COMMAND 例外');
         return;
     }
 
@@ -305,6 +336,10 @@ function lineBotHandler($client, $event)
             $lineBot->replyTextMessage($client, $event, "【取消選擇團購單】\n哈囉~我已經幫你取消了，請再重選一次團購單吧！\n\n【接下來】\n按 任意鍵");
             return;
         }
+
+        $sendMessage = "輸入錯誤，沒有這個選項喔！";
+        $lineBot->replyTextMessage($client, $event, $sendMessage);
+//        $lineBot->replyTextMessage($client, $event, 'STATE_ORDER_SUCCESS 例外');
         return;
     }
 
@@ -338,6 +373,11 @@ function lineBotHandler($client, $event)
             $lineBot->replyTextMessage($client, $event, $sendMessage);
             return;
         }
+
+        $lineBot->setContext('orderMode', 'chooseGroupBuy');
+        $sendMessage = "輸入錯誤，沒有這個選項喔！";
+        $sendMessage .= "\n\n【接下來】\n按 0 取消\n按 1 顯示菜單(看完後按 2 點餐)\n按 2 直接點餐";
+        $lineBot->replyTextMessage($client, $event, $sendMessage);
         return;
     }
 
@@ -355,6 +395,9 @@ function lineBotHandler($client, $event)
         $lineBot->replyTextMessage($client, $event, $sendMessage);
         return;
     }
+
+    $lineBot->replyTextMessage($client, $event, 'END');
+    return;
 }
 
 // 同時會有多個 $event
@@ -370,7 +413,6 @@ class LineBot
     {
         $this->userId = $userId;
     }
-
 
     public function getGroupBuy(): array
     {
@@ -458,6 +500,12 @@ class LineBot
         $connect = new Connect();
         $sql = "DELETE FROM line_bot WHERE user_id = '$this->userId';";
         return $connect->query($sql);
+    }
+
+    public function setLog(){
+        $connect = new Connect();
+        $sql = "";
+
     }
 
 

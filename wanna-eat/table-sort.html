@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<style>
+        table {
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2
+        }
+	</style>
+</head>
+<body>
+<p>Click the button to sort the table alphabetically, by name:</p>
+<p>
+	<button onclick="sortTable()">Sort</button>
+</p>
+
+<table id="myTable">
+	<tr>
+		<th>Name</th>
+		<th>Country</th>
+	</tr>
+	<tr>
+		<td>高纖椰果奶茶</td>
+		<td>Sweden</td>
+	</tr>
+	<tr>
+		<td>四季春</td>
+		<td>UK</td>
+	</tr>
+	<tr>
+		<td>東方茶王</td>
+		<td>Germany</td>
+	</tr>
+	<tr>
+		<td>完熟東方奶茶</td>
+		<td>Germany</td>
+	</tr>
+	<tr>
+		<td>茉芯打爆檸</td>
+		<td>Italy</td>
+	</tr>
+	<tr>
+		<td>東方堅果艿茶</td>
+		<td>France</td>
+	</tr>
+	<tr>
+		<td>Island Trading</td>
+		<td>UK</td>
+	</tr>
+	<tr>
+		<td>Laughing Bacchus Winecellars</td>
+		<td>Canada</td>
+	</tr>
+</table>
+<script>
+    function sortTable() {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("myTable");
+        switching = true;
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[0];
+                y = rows[i + 1].getElementsByTagName("TD")[0];
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    }
+</script>
+</body>
+</html>

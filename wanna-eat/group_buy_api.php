@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
  */
 function getGroupBuy()
 {
-    $result = connect_mysql("SELECT * FROM group_buy");
+    $result = connect_mysql("SELECT * FROM group_buy ORDER BY end_time DESC");
     $new_item = array();
     while ($item = $result->fetch_assoc()) {
         $now = time();
@@ -122,7 +122,7 @@ function getGroupBuy()
 
 function getGroupHistory()
 {
-    $result = connect_mysql("SELECT * FROM group_buy");
+    $result = connect_mysql("SELECT * FROM group_buy ORDER BY end_time DESC");
     $new_item = array();
     while ($item = $result->fetch_assoc()) {
         $new_item[] = $item;

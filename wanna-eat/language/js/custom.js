@@ -361,9 +361,9 @@ $(function () {
         // Get group-buy data
         function showOrder(res = '') {
             
-            if(res === 'error') {
+            if (res === 'error') {
                 return new SwalAlert('操作失敗', '未登入或是找不到該訂單 ID，沒有資料被刪除', '', 'error').fire();
-            }else if(res === 'success') {
+            } else if (res === 'success') {
                 const alert = new SwalAlert('操作成功', '已刪除一筆團購單', '', 'success').fire();
             }
             
@@ -515,7 +515,7 @@ $(function () {
             if (!group_id) return;
             
             let delData = new FormData();
-            delData.append('group_id',group_id);
+            delData.append('group_id', group_id);
             
             const delGroupBuyAct = new AjaxData(`group_buy_api.php`, showOrder, delData);
             
@@ -524,7 +524,7 @@ $(function () {
                 // const alertInfo = new SwalAlert('操作成功', '一筆團購單已刪除', '', 'success');
                 // alertInfo.fire();
             }
-
+            
             let alertInfo = new SwalAlert('你確定要刪除嗎？', "這項操作是沒辦法還原的！", '是的，我要刪除', '', delGroupBuyVar);
             alertInfo.fireConfirm()
         }
@@ -588,6 +588,9 @@ $(function () {
                 } else {
                     const amount = ordersData[i].order_price * ordersData[i].order_number + ' 元';  // Unpaid Amount
                     paymentStatus = `<span class="unpaid" data-amount="${amount}"><i class="fas fa-dollar-sign"></i>未付款</span>`;
+                }
+                if (ordersData[i].order_remark == null) {
+                    ordersData[i].order_remark = '';
                 }
                 
                 orderListHtml += `
@@ -764,7 +767,7 @@ $(function () {
             countData.append('method', 'getOrders');
             // countData.append('count_order', 'true');
             countData.append('order_id', order_id);
-    
+            
             const submitData = new AjaxData('group_buy_api.php', countOrderDisplay, countData);
             submitData.postJson();
         }
@@ -793,7 +796,6 @@ $(function () {
             let allTotal = 0;
             
             for (let k in totalData) {
-                console.log(totalData)
                 let buyerName = totalData[k].buyerName.split(',');  // 訂購人
                 
                 allTotal += parseInt(totalData[k].subTotal);  // 總金額
@@ -824,7 +826,7 @@ $(function () {
             </div>
             `;
                 orderTotalBodyHtml += `
-            <div class="tr row py-0">
+            <div class="table-row tr row py-0">
                 <div class="col-sm-3">
                     <span>${totalData[k].meal}</span>
                 </div>
@@ -861,8 +863,10 @@ $(function () {
             if ($('#orderTotalNum').length > 0) $('#orderTotalNum').empty().append(allTotal);
             
             getStoreDeliveryAmount(allTotal);  // 獲取外送門檻是否達標
-            
+    
+            clickRowHighlight();
         }
+        
         
         /**
          * @Range: Order.php
@@ -1143,3 +1147,17 @@ const app = Vue.createApp({
 });
 
 app.mount('#app');
+
+function clickRowHighlight() {
+    const rows = document.querySelectorAll('.table-row');
+    rows.forEach((row, key) => {
+        row.addEventListener('click', () => {
+            const target = row.getAttribute('style');
+            if (target === null || target === '') {
+                row.style.backgroundColor = '#fffa4c';
+            } else if (target.indexOf('background') > -1) {
+                row.style.background = '';
+            }
+        })
+    })
+}
