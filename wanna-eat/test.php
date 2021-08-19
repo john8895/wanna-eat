@@ -12,10 +12,10 @@ $statement = $connection->query("SELECT * FROM orders");
 //    echo $row['order_name'] . "<br>";
 //}
 
-//while($row = $statement->fetch(PDO::FETCH_NUM)){
-////    echo $row['order_name'] . $row['order_meal'] . $row['order_price'] . "<br>";
-//    print_r($row);
-//}
+while($row = $statement->fetch(PDO::FETCH_NUM)){
+//    echo $row['order_name'] . $row['order_meal'] . $row['order_price'] . "<br>";
+    print_r($row);
+}
 while($row = $statement->fetch(PDO::FETCH_OBJ)){
 //    echo $row['order_name'] . $row['order_meal'] . $row['order_price'] . "<br>";
     print_r($row);

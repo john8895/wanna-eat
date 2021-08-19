@@ -29,18 +29,19 @@ class Connection
 
     private function connect()
     {
-
         $this->statement = new PDO("mysql:host=$this->dbHost;dbname=$this->dbName;charset=utf8", $this->dbUser, $this->dbPassword);
     }
 
     public function query($sql)
     {
+        $this->connect();
         $this->statement->query($sql);
-
-
         while($row = $this->statement->fetch(PDO::FETCH_ASSOC))
         {
-
+            print_r($row);
         }
     }
 }
+//$conn = new Connection();
+//$sql = "SELECT * FROM group_buy";
+//$result = $conn->query($sql);
