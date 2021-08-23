@@ -781,6 +781,7 @@ $(function () {
         }
         
         function countOrderDisplay(totalData) {
+            console.log(totalData)
             let orderTotalHeadHtml = '';
             let orderTotalBodyHtml = '';
             let orderTotalHtml = '';
