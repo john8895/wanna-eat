@@ -1,12 +1,13 @@
 <?php
 require_once 'config.php';
 
-function connect_mysql($sql){
-    $conn = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
-    if($conn->connect_error) exit('<h1>Database read failure</h1>');
+function connect_mysql($sql)
+{
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    if ($conn->connect_error) exit('<h1>Database read failure</h1>');
     mysqli_set_charset($conn, 'utf8');
 
-    if(!$result = $conn -> query($sql)) exit('<h1>Operation database failed</h1>');
+    if (!$result = $conn->query($sql)) exit('<h1>Operation database failed</h1>');
     $conn->close();
     return $result;
 }
@@ -17,7 +18,6 @@ class Connection
     private $dbName;
     private $dbUser;
     private $dbPassword;
-    private $statement;
 
     public function __construct()
     {
@@ -29,19 +29,20 @@ class Connection
 
     private function connect()
     {
-        $this->statement = new PDO("mysql:host=$this->dbHost;dbname=$this->dbName;charset=utf8", $this->dbUser, $this->dbPassword);
+        return new PDO("mysql:host=$this->dbHost;dbname=$this->dbName;charset=utf8", $this->dbUser, $this->dbPassword);
     }
 
     public function query($sql)
     {
-        $this->connect();
-        $this->statement->query($sql);
-        while($row = $this->statement->fetch(PDO::FETCH_ASSOC))
-        {
-            print_r($row);
-        }
-    }
+        $conn = $this->connect();
+        $result = $conn->prepare($sql);
+        $conn = null;  // Close connection
+        return $result;
+     }
 }
+
 //$conn = new Connection();
-//$sql = "SELECT * FROM group_buy";
-//$result = $conn->query($sql);
+//$sql = "SELECT * FROM group_buy WHERE id=:id";
+//$sth = $conn->query($sql);
+//$sth->execute(array(':id' => '200705164726'));
+//print_r($sth->fetchAll());

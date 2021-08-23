@@ -94,22 +94,20 @@ class Order
         connect_mysql($sql);
         echo 'success';
     }
-
-
-    public function linePostOrder($orderName): string
-    {
-        $this->order_id = '210810065103';
-        $this->order_name = $orderName;
-        $this->order_meal = '';
-        $this->order_price = '';
-//        $this->order_meal = $_POST['order_meal'];
-//        $this->order_price = $_POST['order_price'];
-        $this->order_number = 1;
-        $this->order_remark = '';
-        $this->field_id = uniqid();  // Unique field id
-//        $sql = "INSERT INTO orders (order_id, order_name, order_meal, order_price, order_number, order_remark, field_id) VALUES ({$this->order_id}, '{$this->order_name}', '{$this->order_meal}', {$this->order_price}, {$this->order_number}, '{$this->order_remark}', '{$this->field_id}')";
-//        connect_mysql($sql);
-        return 'success';
-//        return $sql;
-    }
+//    public function linePostOrder($orderName): string
+//    {
+//        $this->order_id = '210810065103';
+//        $this->order_name = $orderName;
+//        $this->order_meal = '';
+//        $this->order_price = '';
+////        $this->order_meal = $_POST['order_meal'];
+////        $this->order_price = $_POST['order_price'];
+//        $this->order_number = 1;
+//        $this->order_remark = '';
+//        $this->field_id = uniqid();  // Unique field id
+////        $sql = "INSERT INTO orders (order_id, order_name, order_meal, order_price, order_number, order_remark, field_id) VALUES ({$this->order_id}, '{$this->order_name}', '{$this->order_meal}', {$this->order_price}, {$this->order_number}, '{$this->order_remark}', '{$this->field_id}')";
+////        connect_mysql($sql);
+//        return 'success';
+////        return $sql;
+//    }
 }

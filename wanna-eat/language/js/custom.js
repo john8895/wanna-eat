@@ -765,7 +765,6 @@ $(function () {
             // Post form
             let countData = new FormData();
             countData.append('method', 'getOrders');
-            // countData.append('count_order', 'true');
             countData.append('order_id', order_id);
             
             const submitData = new AjaxData('group_buy_api.php', countOrderDisplay, countData);
