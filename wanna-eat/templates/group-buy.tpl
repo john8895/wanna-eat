@@ -65,7 +65,7 @@
                                 </div>
                                 {if isset({$item.description})}
                                     <div class="form-group col-sm-12">
-                                        簡介：{$item.description}
+                                        介紹：{$item.description}
                                     </div>
                                 {/if}
 
@@ -141,12 +141,12 @@
                         {*                        菜單*}
                         <div class="col-sm-6">
                             <div class="store-image store-text">
-                                {if isset($item.images)}
+                                {if $item.images != ''}
                                     <a href="{$item.images}" target="_blank" title="點選檢視大圖" class="btn-menu">
                                         <img src="{$item.images}" alt="" class="img-fluid img-thumbnail">
                                     </a>
                                 {else}
-                                    <img src="http://fakeimg.pl/300x300" alt="" class="img-fluid img-thumbnail">
+                                    <img src="./language/img/noimg.jpg" alt="" class="img-fluid img-thumbnail">
                                 {/if}
                                 <div class="image_show">
                                     <div class="modal">

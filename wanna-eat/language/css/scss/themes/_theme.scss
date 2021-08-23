@@ -689,7 +689,7 @@ input[name=order_paymentStatus] {
 
         &:hover {
             img {
-                transform: scale(1.1) rotate(2deg);
+                //transform: scale(1.1) rotate(2deg);
             }
         }
     }
@@ -697,9 +697,9 @@ input[name=order_paymentStatus] {
     img {
         height: 100%;
         margin: auto;
-        object-fit: cover;
+        object-fit: contain;
         width: 100%;
-        transition: .3s linear;
+        //transition: .3s linear;
     }
 }
 

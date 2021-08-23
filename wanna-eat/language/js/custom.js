@@ -463,7 +463,7 @@ $(function () {
                         storeFullPrice = stores[key].store_full_price;
                     }
                 }
-                if (storeCover == null) storeCover = './language/img/noimg.jpg';
+                if (storeCover === null || storeCover === '') storeCover = './language/img/noimg.jpg';
                 
                 // group full & yet
                 let groupFull = '';

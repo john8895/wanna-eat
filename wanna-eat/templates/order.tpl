@@ -90,10 +90,10 @@
 
             </div>
             <div class="col-sm-6 res-cover">
-                {if isset($store.store_cover)}
+                {if $store.store_cover != ''}
                     <img src="{$store.store_cover}" alt="" class="img-fluid img-thumbnail">
                 {else}
-                    <img src="./language/img/fake_store_img.jpg" alt="" class="img-fluid img-thumbnail">
+                    <img src="./language/img/noimg.jpg" alt="" class="img-fluid img-thumbnail">
                 {/if}
             </div>
         </div>
@@ -108,9 +108,14 @@
                     </div>
                 </div>
                 <div class="text-center">
+
+                    {if $store.images != ''}
                     <a href="{$store.images}" title="" target="_blank">
                         <img src="{$store.images}" alt="" class="img-fluid img-thumbnail" style="max-height: 1000px">
                     </a>
+                    {else}
+                        <img src="./language/img/noimg.jpg" alt="" class="img-fluid img-thumbnail" style="max-height: 1000px">
+                    {/if}
                 </div>
             </div>
         </div>

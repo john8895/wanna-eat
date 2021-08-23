@@ -16,7 +16,7 @@
             <header>
                 <div class="row">
                     <div class="col-sm-12 mb-3 mt-5 text-center">
-                        <h4 class="h1 title">進行中團購</h4>
+                        <h4 class="h1 title">最新團購</h4>
                     </div>
                 </div>
             </header>
