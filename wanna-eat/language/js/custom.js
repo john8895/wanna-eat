@@ -1,3 +1,7 @@
+import {Order} from './include/order.inc.js';
+
+// import { orderApp } from './include/order.app.js';
+
 /**
  * SweetAlert Class
  */
@@ -70,7 +74,7 @@ class AjaxData {
     // Post json
     postJson() {
         axios.post(this.api, this.data).then(res => {
-            console.log(res)
+            // console.log(res.data)
             this.callback(res.data);
         }).catch(err => {
             console.error(err)
@@ -540,19 +544,18 @@ $(function () {
             $('#order_form').on('submit', submitOrder);  // Submit order
         }
         
-        
         // Orders display
         function ordersDisplay() {
             const order_id = $('#order_id').val();
             if (!order_id) return;
             let callback = function (data) {
-                ordersListDisplay(data)
+                ordersListDisplay(data);
+                // calculateOrders(data);
                 countOrders(order_id);
             }
             const submitOrder = new AjaxData(`group_buy_api.php?res=order_list&order_id=${order_id}`, callback);
             submitOrder.get()
         }
-        
         
         // Calc price
         function calcOrders(json) {
@@ -569,15 +572,14 @@ $(function () {
             };
         }
         
-        
-        // Orders display
+        // 顯示訂單列表 Orders display
         function ordersListDisplay(ordersData) {
+            // console.log(ordersData)
             const calcData = calcOrders(ordersData);
             const totalPrice = calcData.totalPrice;
             const totalName = calcData.totalName;
             $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單`);
             
-            // Display
             let orderListHtml = '';
             for (let i = 0; i < ordersData.length; i++) {
                 
@@ -631,7 +633,6 @@ $(function () {
                       <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zM124 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H124z"></path></svg>
                 </a>
             </div>        
-
         </div>
         `
             }
@@ -651,9 +652,7 @@ $(function () {
         
         /**
          * @Range: Order.php
-         *
          * Submit order
-         *
          */
         // Submit order handle
         function submitOrder(event) {
@@ -764,8 +763,9 @@ $(function () {
             
             // Post form
             let countData = new FormData();
-            countData.append('method', 'getOrders');
+            countData.append('method', 'getFilterOrders');
             countData.append('order_id', order_id);
+            // console.log('countOrder')
             
             const submitData = new AjaxData('group_buy_api.php', countOrderDisplay, countData);
             submitData.postJson();
@@ -788,11 +788,13 @@ $(function () {
             submitData.get();
         }
         
+        
         function countOrderDisplay(totalData) {
             let orderTotalHeadHtml = '';
             let orderTotalBodyHtml = '';
             let orderTotalHtml = '';
             let allTotal = 0;
+            console.log('countOrderDisplay:', totalData);
             
             for (let k in totalData) {
                 let buyerName = totalData[k].buyerName.split(',');  // 訂購人
@@ -862,7 +864,7 @@ $(function () {
             if ($('#orderTotalNum').length > 0) $('#orderTotalNum').empty().append(allTotal);
             
             getStoreDeliveryAmount(allTotal);  // 獲取外送門檻是否達標
-    
+            
             clickRowHighlight();
         }
         
@@ -1106,9 +1108,6 @@ const app = Vue.createApp({
             // 從資料庫取出結束時間， 加上比今天多一點時間，再寫回資料庫
             const currentTime = new Date();
             currentTime.setHours(currentTime.getHours() + 4);
-            console.log(currentTime)
-            // Thu Aug 05 2021 03:10:15 GMT+0800 (Taipei Standard Time)
-            // 要轉為 210804091829
             
             const h = currentTime.getHours() > 9 ? currentTime.getHours() : '0' + currentTime.getHours()
             const m = currentTime.getMinutes() > 9 ? currentTime.getMinutes() : '0' + currentTime.getMinutes()
@@ -1123,7 +1122,7 @@ const app = Vue.createApp({
             function getOrderEndTimeHandler(res) {
                 if (res === 'success') {
                     const success = new SwalAlert('已恢復訂單', '可以繼續訂購').fire()
-                    // success.fire();
+                    success.fire();
                     setTimeout(function () {
                         location.reload()
                     }, 2000)
@@ -1141,7 +1140,121 @@ const app = Vue.createApp({
                 endOrder: false
             })
             this.continueOrderTimeHandler(orderId);
-        }
+        },
+        getOrdersById(orderId) {
+            const api = `group_buy_api.php?res=order_list&order_id=${orderId}`;
+            axios.get(api)
+                .then((response) => {
+                    // console.log(response.data);
+                    this.calculateOrders(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        },
+        calculateOrders(orderData) {
+            /* todo: 新的訂單統計：
+             * 1.同名餐點、價格合併，數量、小計加總，記錄所有訂購人
+             * 2.同名餐點但備註不同要分別列出：餐點名稱、數量、單價、訂購人、備註
+             * 3.訂單總計
+             * 4.共幾人訂購、累計幾筆訂單
+             */
+            // console.log(orderData);
+            let totalBuyer = [];
+            let orderResult = [];
+            let orderCount = 0;
+            let mark = 0;
+            // let mergeMeal = [{
+            //     'meal': '雞排單點',
+            //     'order_number': 1,
+            // }];
+            let mergeMeal = [];
+            let subTotalNum = 0;
+            let obj = {};
+            orderData.forEach((order) => {
+                console.log(order);
+// {order_id: "210811145659", order_name: "小陳", field_id: "6117b06e654ac", order_meal: "雞排飯", order_price: "90",…}
+                let id = order.order_meal;  // 雞排飯
+    
+    
+                const _orderPrice = parseInt(order.order_price);
+                const _orderNumber = parseInt(order.order_number);
+                
+                
+                // 如果訂單中有同名的餐點，就合併計數與加總
+                if (obj.hasOwnProperty(id)) {
+                    console.log('y', id)
+                    subTotalNum = obj[id].subTotal + _orderPrice;
+    
+                    obj[id].buyerName.push(order.order_name);  // 全部訂購人
+                    
+                    obj[id] = {
+                        'meal': id,  // 餐點名
+                        'price': parseInt(order.order_price),
+                        'orderNumber': obj[id].orderNumber + _orderNumber,
+                        'totalBuyer': obj[id].buyerName.length,
+                        'subTotal': subTotalNum,
+                        'buyerName': obj[id].buyerName,
+                    };
+                    
+                }else{  // 沒有同名餐點就建立物件
+                    console.log('n', id)
+                    
+                    obj[id] = {
+                        'meal': id,
+                        'price': _orderPrice,
+                        'orderNumber': _orderNumber,
+                        'totalBuyer': 1,
+                        'subTotal': _orderPrice,
+                        'buyerName': new Array(order.order_name),
+                    };
+                }
+                subTotalNum = 0;
+                
+                // if (!mergeMeal.length) {  // 還沒有資料
+                //     mergeMeal.push({
+                //         [order.order_meal]: 0,
+                //         'meal': order.order_meal,
+                //         'price': 0,
+                //         'order_number': 1,
+                //     });
+                // } else {
+                //     // Merge Order 合併計算訂單
+                //     mergeMeal = {
+                //         ...mergeMeal,
+                //     }
+                //     console.log(mergeMeal)
+                //
+                //
+                //     // mergeMeal.forEach((singleOrder, k) => {
+                //     //
+                //     //     // 組成新訂單
+                //     //     // todo: 應該搜尋object全部meal的value，有符合才算成立，不然每次都拿第一筆來比對
+                //     //
+                //     //     if (singleOrder.meal === order.order_meal) {  // 餐點名已存在
+                //     //         console.log('y', order.order_meal)
+                //     //
+                //     //         singleOrder['price'] = 0;
+                //     //         singleOrder['order_number'] = singleOrder['order_number'] += parseInt(order.order_number);
+                //     //     } else {  // 還沒有同名的餐點
+                //     //         console.log('n', order.order_meal)
+                //     //
+                //     //         mergeMeal.push({
+                //     //             'meal': order.order_meal,
+                //     //             'price': 0,
+                //     //             'order_number': 1,
+                //     //         });
+                //     //     }
+                //     // })
+                // }
+            })
+            let mergeOrder = Object.values(obj);  // ex: [ {} ]
+            console.log(mergeOrder)
+            console.log(obj)
+        },
+    },
+    created() {
+        this.getOrdersById('210811145659');
     }
 });
 

@@ -2,10 +2,8 @@
 require_once(__DIR__ . '/LINEBotTiny.php');
 require_once('../assets/include/order.inc.php');
 require_once('../assets/inc/connect.php');
-require_once('../assets/include/connect.inc.php');
+require_once('../assets/include/dbh.inc.php');
 // Config
-define('HTTP_HOST', $_SERVER['HTTP_HOST']);
-define('SERVER_ROOT_PATH', dirname(dirname(__FILE__)));
 define('CHANNEL_ACCESS_TOKEN', 'fLjvFXAZfRDqcTMr5tSOaMAYAeA3kv03qYjcFkYQHjy8GntgfAM491knLIwvvH6g1QBH312V2IVYO0UlWJb/pgb/TkLuqNywQQiQHwiamOEl5JmUeR2kHQ4+CLifZ63q6597VUGSjIsRz7A+cUgBIQdB04t89/1O/w1cDnyilFU=');
 define('CHANNEL_SECRET', '42699015866d7b2329e0f9fa2cfebce0');
 // State
@@ -25,44 +23,8 @@ define('COMMEND_ORDER', 'order');
 // Test Area
 //$userId = 'Uadc6b08a44873820d6446554f0f2f790';
 //$lineBot = new LineBot($userId);
-//////
-//$selectedNum = 1;  // 選擇的團購單號
-//$groupBuys = $lineBot->getGroupBuy();
-//$selectedGroupBuy = $groupBuys[$selectedNum - 1];  // 選擇的團購單
-//// 團購名
-//$orderStore = $selectedGroupBuy['store_name'];
-//$getOrders = $lineBot->getOrders();
-//// 總訂購人數
-//$numberOfOrders = count($getOrders);
-//
-//print_r($getOrders);
-//$orderTotalSum = array();
-//$orderNumberSum = array();
-//$orderNameSum = array();
-//$orderDetailsSum = array();
-//foreach ($getOrders as $key => $order) {
-//    $orderTotalSum[] = $order['order_price'];
-//    $orderNumberSum[] = $order['order_number'];
-//    $orderNameSum[] = $order['order_name'];
-//
-//    // 1. 小豬，雞排飯 $90 x 1 ，備註
-//    // 訂購詳細
-//    $snNum = ($key + 1) < 10 ? '0' . ($key + 1) : $key + 1;
-//    $orderDetailsSum[] = "$snNum.{$order['order_name']}：{$order['order_meal']} \${$order['order_price']} x{$order['order_number']} {$order['order_remark']}";
-//}
-//// 訂單總計
-//$orderTotal = array_sum($orderTotalSum);
-//// 餐點份數
-//$orderNumber = array_sum($orderNumberSum);
-//// 全部訂購姓名
-//$orderName = implode(', ', $orderNameSum);
-//// 訂單詳細
-//$orderDetails = $orderDetailsSum;
-//print_r($orderDetails);
-//die();
 
 $client = new LINEBotTiny(CHANNEL_ACCESS_TOKEN, CHANNEL_SECRET);
-
 
 function lineBotHandler($client, $event)
 {
@@ -80,11 +42,11 @@ function lineBotHandler($client, $event)
     $currentState = $lineBot->getContext();  // 取得目前狀態
 
     // log
-    ($setLog = function($userId){
-        $message = '123';
-        $connect = new Connect();
-        $sql = "INSERT INTO line_log (user_id, message) VALUES ('$userId', '$message')";
-    })($userId);
+//    ($setLog = function($userId){
+//        $message = '123';
+//        $connect = new Connect();
+//        $sql = "INSERT INTO line_log (user_id, message) VALUES ('$userId', '$message')";
+//    })($userId);
 
 
     if($currentState == 'null'){

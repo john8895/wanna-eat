@@ -32,6 +32,6 @@
 </script>
 
 <script src="./language/js/plugins.js"></script>
-<script src="./language/js/custom.js"></script>
+<script type="module" src="./language/js/custom.js"></script>
 </body>
 </html>

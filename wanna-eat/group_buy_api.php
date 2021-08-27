@@ -1,8 +1,8 @@
 <?php
 /** Connect Mysql */
-require_once './assets/inc/connect.php';
-require_once './assets/inc/config.php';
-require_once './assets/include/order.inc.php';
+require_once('./assets/inc/config.php');
+require_once('assets/inc/connect.php');
+require_once('assets/include/order.inc.php');
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -59,25 +59,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     $method = $_POST['method'];
-    $order = new Order($method);
+    $order = new Order();
 
     switch ($method) {
         case 'postOrder':
             $order->postOrder();
             break;
-        case 'getOrders':
-            $order->getOrders();
+        case 'getFilterOrders':
+            $order->getFilterOrders();
             break;
         case 'editOrder':
             $order->editOrder();
             break;
-        case 'line':
-            $order->postLine();
-            break;
+//        case 'line':
+//            $order->postLine();
+//            break;
         default:
             break;
     }

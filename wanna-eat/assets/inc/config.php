@@ -13,3 +13,6 @@ define('DB_PASSWORD', '123456');
 
 // 時區 - 如未設定從mysql讀出的中文數據會變亂碼
 date_default_timezone_set("Asia/Taipei");
+
+define('HTTP_HOST', $_SERVER['HTTP_HOST']);
+define('SERVER_ROOT_PATH', dirname(dirname(__FILE__) . '/wanna-eat'));
