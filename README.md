@@ -10,7 +10,7 @@
 
 ## 資訊
 
-1. DEMO網址（管理帳號及密碼都是 abc）：[http://eat.jgui.tw/](http://eat.jgui.tw/)
+1. DEMO網址（管理帳號及密碼都是 abc）：[https://eat.ahan-home.com/](https://eat.ahan-home.com/)
 2. Github：[https://github.com/john8895/wanna-eat/](https://github.com/john8895/wanna-eat/)
 3. LineBot開發中分支：[https://github.com/john8895/line-bot](https://github.com/john8895/line-bot)
 
