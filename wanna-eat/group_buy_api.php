@@ -73,9 +73,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'editOrder':
             $order->editOrder();
             break;
-//        case 'line':
-//            $order->postLine();
-//            break;
+        case 'continueOrder':
+            $order->continueOrder();
+            break;
+        case 'closeOrder':
+            $order->closeOrder();
+            break;
+        case 'deleteOrder':
+            $order->deleteOrder();
+            break;
         default:
             break;
     }
@@ -86,8 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //    if (isset($_POST['edit_order'])) editOrder();
 //    if (isset($_POST['count_order'])) orderTotal();
     if (isset($_POST['add_host_name'])) addHostName();
-    if (isset($_POST['end_time'])) closeOrder();
-    if (isset($_POST['new_time'])) continueOrder();
+//    if (isset($_POST['end_time'])) closeOrder();
+//    if (isset($_POST['new_time'])) continueOrder();
     if (isset($_POST['group_id'])) deleteGroupBuy();
 }
 
@@ -231,17 +237,17 @@ function getOrderList($_order_id)
 
 
 /** Edit order */
-function editOrder()
-{
-    $order['order_id'] = $_POST['order_id'];
-    $order['order_field_name'] = $_POST['order_field_name'];
-    $order['order_field_value'] = $_POST['order_field_value'];
-    $order['order_field_id'] = $_POST['field_id'];
-
-    $sql = "UPDATE orders SET {$order['order_field_name']}='{$order['order_field_value']}' WHERE field_id='{$order['order_field_id']}';";
-    connect_mysql($sql);
-    echo 'success';
-}
+//function editOrder()
+//{
+//    $order['order_id'] = $_POST['order_id'];
+//    $order['order_field_name'] = $_POST['order_field_name'];
+//    $order['order_field_value'] = $_POST['order_field_value'];
+//    $order['order_field_id'] = $_POST['field_id'];
+//
+//    $sql = "UPDATE orders SET {$order['order_field_name']}='{$order['order_field_value']}' WHERE field_id='{$order['order_field_id']}';";
+//    connect_mysql($sql);
+//    echo 'success';
+//}
 
 
 /** Delete order */
@@ -254,58 +260,58 @@ function deleteOrder()
 }
 
 
-function orderTotal()
-{
-    $order_id = $_POST['order_id'];
-    $sql = "SELECT * FROM orders WHERE order_id={$order_id}";
-    $result = connect_mysql($sql);
-    $new_item = array();
-    while ($rows = $result->fetch_assoc()) {
-        $new_item[] = $rows;
-    }
-    $result->close();
-    $meal_obj = array();
-    foreach ($new_item as $k => $v) {
-        $meal_obj[$v['order_meal']][] = $v;
-    }
-
-    $new_meal = array();
-    $totalBuyer = array();
-//    $totalNumber = 0;
-    $limit = 0;
-    $temp_num = 0;
-
-    foreach ($meal_obj as $k => $v) {
-        if (count($v) > 1) {
-            // 有超過1筆
-            foreach ($v as $item) {
-                $totalBuyer[] = $item['order_name'];
-//                $totalNumber++;
-                $temp_num += intval($item['order_number']);
-                $limit = 1;  // 標記
-            }
-        } else {
-//            $totalNumber++;
-            $temp_num = (int)$v[0]['order_number'];
-        }
-        // TODO: 餐點名稱相同但價格不同時 應該要做出響應提示
-        $new_meal[] = array(
-            "meal" => $k,
-            "price" => (int)$v[0]['order_price'],
-            "order_number" => $temp_num,
-            "totalBuyer" => count($v),  // 有幾個人點同一個餐
-            "subTotal" => (int)($v[0]['order_price'] * $temp_num),
-            "buyerName" => $limit !== 1 ? $v[0]['order_name'] : join(',', $totalBuyer),  // '阿貓,媽媽米,一原'
-        );
-        $totalBuyer = array();  // 清空array
-        $limit = 0;  // 清除標記
-//        $totalNumber = 0;
-        $temp_num = 0;
-    }
-//    $order_json_data = json_encode($new_meal, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
-    $order_json_data = json_encode($new_meal);  // 轉為json格式，轉譯處理中文
-    echo $order_json_data;
-}
+//function orderTotal()
+//{
+//    $order_id = $_POST['order_id'];
+//    $sql = "SELECT * FROM orders WHERE order_id={$order_id}";
+//    $result = connect_mysql($sql);
+//    $new_item = array();
+//    while ($rows = $result->fetch_assoc()) {
+//        $new_item[] = $rows;
+//    }
+//    $result->close();
+//    $meal_obj = array();
+//    foreach ($new_item as $k => $v) {
+//        $meal_obj[$v['order_meal']][] = $v;
+//    }
+//
+//    $new_meal = array();
+//    $totalBuyer = array();
+////    $totalNumber = 0;
+//    $limit = 0;
+//    $temp_num = 0;
+//
+//    foreach ($meal_obj as $k => $v) {
+//        if (count($v) > 1) {
+//            // 有超過1筆
+//            foreach ($v as $item) {
+//                $totalBuyer[] = $item['order_name'];
+////                $totalNumber++;
+//                $temp_num += intval($item['order_number']);
+//                $limit = 1;  // 標記
+//            }
+//        } else {
+////            $totalNumber++;
+//            $temp_num = (int)$v[0]['order_number'];
+//        }
+//        // TODO: 餐點名稱相同但價格不同時 應該要做出響應提示
+//        $new_meal[] = array(
+//            "meal" => $k,
+//            "price" => (int)$v[0]['order_price'],
+//            "order_number" => $temp_num,
+//            "totalBuyer" => count($v),  // 有幾個人點同一個餐
+//            "subTotal" => (int)($v[0]['order_price'] * $temp_num),
+//            "buyerName" => $limit !== 1 ? $v[0]['order_name'] : join(',', $totalBuyer),  // '阿貓,媽媽米,一原'
+//        );
+//        $totalBuyer = array();  // 清空array
+//        $limit = 0;  // 清除標記
+////        $totalNumber = 0;
+//        $temp_num = 0;
+//    }
+////    $order_json_data = json_encode($new_meal, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
+//    $order_json_data = json_encode($new_meal);  // 轉為json格式，轉譯處理中文
+//    echo $order_json_data;
+//}
 
 
 /** Add host name in edit-info.php
@@ -399,20 +405,20 @@ function getStoreTags()
     echo $json;
 }
 
-function closeOrder()
-{
-    $end_time = $_POST['end_time'];
-    $order_id = $_POST['order_id'];
-    $sql = "UPDATE group_buy SET end_time='{$end_time}' WHERE id={$order_id}";
-    if (!connect_mysql($sql)) echo 'fail';
-    echo 'success';
-}
+//function closeOrder()
+//{
+//    $end_time = $_POST['end_time'];
+//    $order_id = $_POST['order_id'];
+//    $sql = "UPDATE group_buy SET end_time='{$end_time}' WHERE id={$order_id}";
+//    if (!connect_mysql($sql)) echo 'fail';
+//    echo 'success';
+//}
 
-function continueOrder()
-{
-    $order_id = $_POST['order_id'];
-    $new_time = $_POST['new_time'];
-    $sql = "UPDATE group_buy SET end_time='{$new_time}' WHERE id={$order_id}";
-    if (!connect_mysql($sql)) echo 'fail';
-    echo 'success';
-}
+//function continueOrder()
+//{
+//    $order_id = $_POST['order_id'];
+//    $new_time = $_POST['new_time'];
+//    $sql = "UPDATE group_buy SET end_time='{$new_time}' WHERE id={$order_id}";
+//    if (!connect_mysql($sql)) echo 'fail';
+//    echo 'success';
+//}

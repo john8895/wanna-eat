@@ -1001,17 +1001,45 @@ input[name=order_paymentStatus] + label i {
 }
 .order-total .th:last-child {
   border-top: 1px solid #999;
-}
-.order-total span {
-  height: calc(1.5em + 0.75rem + 2px);
-  display: flex;
-  align-items: center;
+  margin-top: 10px;
 }
 .order-total .tr, .order-total .th {
   border-top: 1px solid #eee;
 }
 .order-total input[name^=order] {
   background-color: transparent;
+}
+.order-total .order-table {
+  justify-content: space-between;
+}
+.order-total .order-table .td {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(1.5em + 0.75rem + 5px);
+  flex-basis: calc((100% - 65px - 100px - 100px) / 3);
+}
+.order-total .order-table .td.sn {
+  flex-basis: 65px;
+  justify-content: center;
+}
+.order-total .order-table .td.num {
+  flex-basis: 100px;
+}
+.order-total .order-table.tr .sn span {
+  height: 24px;
+  width: 24px;
+  background-color: #f1f1f1;
+  outline: 2px solid #e8e8e8;
+  font-size: 13px;
+  font-family: monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.order-total .order-table .order-remarks i {
+  color: #F5DF00;
+  box-shadow: 1px 1px 1px #00000024;
 }
 
 .order-block .orderBtn {

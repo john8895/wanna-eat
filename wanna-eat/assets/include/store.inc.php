@@ -40,7 +40,7 @@ class Store
         $store['name'] = $_POST['name'];
         $store['phone'] = $_POST['phone'];
         $store['description'] = $_POST['description'];
-        $store['store_full_price'] = 0;
+        $store['store_full_price'] = $_POST['store_full_price'];
         $store['store_tag'] = $_POST['store_tag'];
 
         // 校驗圖片

@@ -17,7 +17,7 @@ class Connection
         $this->dbPassword = DB_PASSWORD;
     }
 
-    private function connect(): PDO
+    public function connect(): PDO
     {
         return new PDO("mysql:host=$this->dbHost;dbname=$this->dbName;charset=utf8", $this->dbUser, $this->dbPassword);
     }
@@ -28,6 +28,11 @@ class Connection
         $result = $conn->prepare($sql);
         $conn = null;  // Close connection
         return $result;
+    }
+
+    public function hasError($sth): bool
+    {
+        return $sth->errorCode() != '0000';
     }
 }
 

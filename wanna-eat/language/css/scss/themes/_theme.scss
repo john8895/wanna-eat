@@ -271,6 +271,7 @@ a {
 
     }
 }
+
 /* ==================================
  * Web component
  * ================================== */
@@ -321,6 +322,7 @@ a {
         }
     }
 }
+
 /* ==================================
  * inner__banner, breadcrumb
  * ================================== */
@@ -509,7 +511,7 @@ input[name=order_paymentStatus] {
         cursor: pointer;
         transition: .2s linear;
 
-        .paid,.unpaid {
+        .paid, .unpaid {
             padding: 0 3px;
         }
 
@@ -522,12 +524,13 @@ input[name=order_paymentStatus] {
                 color: #fff;
             }
         }
+
         .unpaid {
             background-color: $first-color;
             color: #fff;
             position: relative;
 
-            @include breakpoint(lg){
+            @include breakpoint(lg) {
                 &:before {
                     content: attr(data-amount);
                     position: absolute;
@@ -592,6 +595,7 @@ input[name=order_paymentStatus] {
         }
     }
 }
+
 .history_order {
     .order_list {
         &:before {
@@ -770,18 +774,8 @@ input[name=order_paymentStatus] {
         }
 
         &:last-child {
-            border-top: 1px solid #999;
+            border-top: 1px solid #999;    margin-top: 10px;
         }
-    }
-
-    .td {
-
-    }
-
-    span {
-        height: calc(1.5em + 0.75rem + 2px);
-        display: flex;
-        align-items: center;
     }
 
     .tr, .th {
@@ -790,6 +784,51 @@ input[name=order_paymentStatus] {
 
     input[name^="order"] {
         background-color: transparent;
+    }
+
+    .order-table {
+        justify-content: space-between;
+
+        .td {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(1.5em + 0.75rem + 5px);
+            flex-basis: calc((100% - 65px - 100px - 100px) / 3);
+
+            &.sn {
+                flex-basis: 65px;
+                justify-content: center;
+            }
+
+            &.num {
+                flex-basis: 100px;
+            }
+        }
+
+        &.tr {
+            .sn {
+                span {
+                    height: 24px;
+                    width: 24px;
+                    background-color: #f1f1f1;
+                    outline: 2px solid #e8e8e8;
+                    font-size: 13px;
+                    font-family: monospace;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+
+        }
+
+        .order-remarks {
+            i {
+                color: #F5DF00;
+                box-shadow: 1px 1px 1px #00000024;
+            }
+        }
     }
 }
 
