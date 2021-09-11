@@ -1,7 +1,7 @@
 {* filename: order.tpl *}
 {include file="head.tpl"}
 {include file="header.tpl"}
-<main class="page__order {if ($time_up)}history_order{/if} " id="app">
+<main class="page__order {if ($time_up)}history_order{/if} ">
     <div class="inner__banner">
         <div class="container">
             <div class="d-flex justify-content-between">
@@ -36,7 +36,7 @@
                 {/if}
 
 
-                <input type="hidden" value="{$store.id}" id="store_id">
+                <input type="hidden" value="{$store.id}" id="store_id" ref="storeId">
                 <input type="hidden" value="{$order_id}" id="order_id">
                 <div class="title">{$item.store_name}</div>
                 <ul class="sub-title">
@@ -66,7 +66,7 @@
                         {/if}
 
                     </li>
-                    <li><i class="fas fa-angle-right mr-2 text-black-50"></i>目前金額：$<span id="orderTotalNum">0</span>
+                    <li><i class="fas fa-angle-right mr-2 text-black-50"></i>目前金額：$ %% orderDetails.priceTotal %%
                         <span id="deliveryAmount"></span>
                     </li>
                     <li>
@@ -130,25 +130,25 @@
             <div class="col-sm-12">
                 <div class="card accordion">
                     <div class="card-body">
-                        <form id="order_form" method="post">
+                        <form id="order_form" method="post" @submit="postOrder">
                             <input type="hidden" value="{$order_id}" name="add_order_id" id="order_id" ref="orderId">
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <input type="text" class="form-control" name="add_order_name" placeholder="請輸入姓名 *">
+                                    <input type="text" class="form-control" name="add_order_name" placeholder="請輸入姓名 *" ref="orderName" v-model="postData.orderName">
                                 </div>
                                 <div class="col-sm-3">
                                     <input type="text" class="form-control" name="add_order_meal"
-                                           placeholder="請輸入餐點名稱 *">
+                                           placeholder="請輸入餐點名稱 *" ref="orderMeal" v-model="postData.orderMeal">
                                 </div>
                                 <div class="col-sm-2">
                                     <input type="number" class="form-control" name="add_order_price"
-                                           placeholder="請輸入價格 *">
+                                           placeholder="請輸入價格 *" ref="orderPrice" v-model="postData.orderPrice">
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="form-group">
-                                        <select name="add_order_number" class="form-control">
+                                        <select name="add_order_number" class="form-control" ref="orderNumber" v-model="postData.orderNumber">
                                             <option value="0" disabled>請選擇數量</option>
-                                            <option value="1" selected>1</option>
+                                            <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
                                             <option value="4">4</option>
@@ -163,7 +163,7 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <input type="text" class="form-control" name="add_order_remark"
-                                           placeholder="請輸入備註">
+                                           placeholder="請輸入備註" ref="orderRemark" v-model="postData.orderRemark">
                                 </div>
                             </div>
 
@@ -179,7 +179,7 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-12 mt-4">
+            <div class="col-sm-12 mt-4" v-if="ordersData.length">
                 <div class="text-center">
                     <div class="sec-title">
                         <h3>訂單列表</h3>
@@ -190,7 +190,7 @@
                     <div class="card-body">
                         <div id="order_list" class="order_list">
 
-                            <div v-if="ordersData">
+                            <div>
 
                                 <div class="row py-2 rounded order-item" :data-index="ordersKey + 1" v-for="(order, ordersKey) in ordersData" :key="ordersKey">
                                     <div class="col-sm-1 text-right px-1">
@@ -218,31 +218,34 @@
                                                placeholder="請輸入備註" data-field="備註" @change="editOrder($event)" :data-field-id="order.field_id">
                                     </div>
                                     <div class="col-sm-1 px-1">
-                                        <a class="btn delete_order" title="刪除此筆訂單">
+                                        <button type="button" class="btn delete_order" title="刪除此筆訂單" @click="deleteOrder($event)" :data-field-id="order.field_id">
                                             <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                                 <path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zM124 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H124z"></path>
                                             </svg>
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
 
                             </div>
 
-                            <div v-else>目前還沒有訂單 :(</div>
+{*                            <div v-else>目前還沒有訂單 :(</div>*}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-sm-12 mt-4">
+            <div class="col-sm-12 mt-4" v-if="ordersData.length">
                 <div class="text-center">
                     <div class="sec-title">
-                        <h3>{$item.store_name} 訂單統計</h3>
-                        <div class="sub-title">Order total</div>
+                        <h3 class="border-bottom pb-3">{$item.store_name} 訂單統計</h3>
+                        <div class="sub-title mt-3">
+                            <ul>
+                                <li>收單時間：{$item.end_time}</li>
+                                <li>共有 %% orderDetails.totalBuyerCount %% 個人參加團購，累積共 <b>%% orderDetails.totalOrderCount %%</b> 張訂單</li>
+                                <li class="mt-4">訂購電話：{$item.store_phone}</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div id="ordersNum" class="mb-3 h6">
-                    共有 %% orderDetails.totalBuyerCount %% 人參與團購，累積有 <b>%% orderDetails.totalOrderCount %%</b> 筆訂單
                 </div>
                 <div class="card table border">
                     <div class="card-body">
@@ -310,7 +313,7 @@
                                 <div class="col-sm-2"></div>
                                 <div class="col-sm-2"></div>
                                 <div class="col-sm-2">
-                                    <span>NT$ %% orderDetails.priceTotal %%</span>
+                                    <span>總金額 %% orderDetails.priceTotal %% 元</span>
                                 </div>
                                 <div class="col-sm-3"></div>
                             </div>

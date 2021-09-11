@@ -1,5 +1,5 @@
+<div id="app" v-cloak>
 <header class="layout__header">
-
     <div class="header-top">
         <div class="container">
             <div class="d-flex justify-content-between">

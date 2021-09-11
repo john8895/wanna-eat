@@ -1092,4 +1092,8 @@ input[name=order_paymentStatus] + label i {
   transition: 0.3s ease-in-out;
 }
 
+[v-cloak] {
+  display: none;
+}
+
 /*# sourceMappingURL=common.css.map */

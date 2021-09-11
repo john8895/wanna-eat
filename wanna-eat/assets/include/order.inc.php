@@ -6,12 +6,12 @@ class Order extends Connection
 {
     public function postOrder()
     {
-        $orderId = $_POST['order_id'];
-        $orderName = $_POST['order_name'];
-        $orderMeal = $_POST['order_meal'];
-        $orderPrice = $_POST['order_price'];
-        $orderNumber = $_POST['order_number'];
-        $orderRemark = $_POST['order_remark'];
+        $orderId = $_POST['orderId'];
+        $orderName = $_POST['orderName'];
+        $orderMeal = $_POST['orderMeal'];
+        $orderPrice = $_POST['orderPrice'];
+        $orderNumber = $_POST['orderNumber'];
+        $orderRemark = $_POST['orderRemark'];
         $fieldId = uniqid();  // Unique field id
 
         $this->connect();
@@ -102,11 +102,11 @@ class Order extends Connection
 
     public function deleteOrder()
     {
-        $delete_id = $_POST['del'];
+        $field_id = $_POST['field_id'];
         $this->connect();
-        $sql = "DELETE FROM orders WHERE field_id=:delete_id;";
+        $sql = "DELETE FROM orders WHERE field_id=:field_id;";
         $sth = $this->query($sql);
-        $sth->execute(array(':delete_id' => $delete_id));
+        $sth->execute(array(':field_id' => $field_id));
         if ($this->hasError($sth)) echo 0;
         echo 1;
     }
@@ -137,14 +137,3 @@ class Order extends Connection
         echo 1;
     }
 }
-
-// TEST
-//$order = new Order();
-//$result = $order->getFilterOrders();
-//$conn = new connection();
-////$sql = "SELECT * FROM orders";
-//$sql = "UPDATE group_buy SET end_time=' :new_time ' WHERE id= :orderId";
-//$sth = $conn->query($sql);
-//$sth->execute();
-//$result = $conn->hasError($sth);
-//print_r($result);

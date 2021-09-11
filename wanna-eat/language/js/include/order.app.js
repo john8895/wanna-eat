@@ -20,7 +20,7 @@
 //                 })
 //         },
 //         calculateOrders(orderData) {
-//             /* todo: 新的訂單統計：
+//             /* 新的訂單統計：
 //              * 1.同名餐點、價格合併，數量、小計加總，記錄所有訂購人
 //              * 2.同名餐點但備註不同要分別列出：餐點名稱、數量、單價、訂購人、備註
 //              * 3.訂單總計
@@ -40,7 +40,7 @@
 //                 }
 //                 const meal = order.order_meal;
 //                 // if (orderResult[key]['meal']) {
-//                 // todo: 相同餐點合在一起不知怎麼寫
+//                 // 相同餐點合在一起不知怎麼寫
 //                 // orderResult['meal']
 //                 orderResult.push({
 //                     'meal': order.order_meal,

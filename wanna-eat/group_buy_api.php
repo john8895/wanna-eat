@@ -3,11 +3,25 @@
 require_once('./assets/inc/config.php');
 require_once('assets/inc/connect.php');
 require_once('assets/include/order.inc.php');
+require_once('assets/include/store.inc.php');
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
+//    $method = $_GET['method'];
+//    $store = new Store();
+//
+//    switch ($method){
+//        case 'getStoreById':
+//            $store->getStoreById();
+//        break;
+//
+//        default:
+//        break;
+//    }
+
     foreach ($_GET as $key => $value) {
+
         switch ($key) {
             case 'res':
                 switch ($value) {
@@ -294,7 +308,7 @@ function deleteOrder()
 ////            $totalNumber++;
 //            $temp_num = (int)$v[0]['order_number'];
 //        }
-//        // TODO: 餐點名稱相同但價格不同時 應該要做出響應提示
+//        // 餐點名稱相同但價格不同時 應該要做出響應提示
 //        $new_meal[] = array(
 //            "meal" => $k,
 //            "price" => (int)$v[0]['order_price'],
@@ -389,7 +403,7 @@ function deleteStoreTags()
         if (!connect_mysql($sql)) echo 'fail';
     }
 
-    echo 'success'; // TODO 在店家新增那邊增加店家標籤，更新資料庫即可有新標籤
+    echo 'success'; // 在店家新增那邊增加店家標籤，更新資料庫即可有新標籤
 }
 
 /** Get store tags */

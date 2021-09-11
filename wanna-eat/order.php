@@ -14,8 +14,8 @@ global $order_id;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!isset($_GET['id'])) {
-        exit('<h1>必須有參數</h1>');
-//        header('Location: index.php');
+//        exit('<h1>必須有參數</h1>');
+        header('Location: index.php');
     }
     $order_id = $_GET['id'];
     orderDisplay($smarty, $order_id);  // Order display

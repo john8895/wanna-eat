@@ -571,81 +571,81 @@ $(function () {
         // }
         
         // 顯示訂單列表 Orders display
-        function ordersListDisplay(ordersData) {
-            const calcData = calcOrders(ordersData);
-            const totalPrice = calcData.totalPrice;
-            const totalName = calcData.totalName;
-            // $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單`);
-            
-            let orderListHtml = '';
-            for (let i = 0; i < ordersData.length; i++) {
-                
-                // Payment Status
-                let paymentStatus = '';
-                if (ordersData[i].order_paymentStatus === '1') {
-                    paymentStatus = '<span class="paid"><i class="fas fa-check-circle"></i>已付款</span>';
-                } else {
-                    const amount = ordersData[i].order_price * ordersData[i].order_number + ' 元';  // Unpaid Amount
-                    paymentStatus = `<span class="unpaid" data-amount="${amount}"><i class="fas fa-dollar-sign"></i>未付款</span>`;
-                }
-                if (ordersData[i].order_remark == null) {
-                    ordersData[i].order_remark = '';
-                }
-                
-                orderListHtml += `
-        <div class="row py-2 rounded order-item" data-index="${i + 1}">
-            <div class="col-sm-1 text-right px-1">
-                <span class="mr-3">${i + 1}. </span>
-            </div>
-            <!--
-            <div class="col-sm-1 text-right px-1 form-check pt-2">
-                <input class="form-check-input" type="checkbox" value="${ordersData[i].order_paymentStatus}" id="defaultCheck_${i}"
-                        name="order_paymentStatus" data-field="付款狀態" ${ordersData[i].order_paymentStatus === '1' ? 'checked' : ''}>
-                <label class="form-check-label" for="defaultCheck_${i}">
-                    ${paymentStatus}
-                </label>
-            </div>-->
-            <div class="col-sm-2 px-1">
-                <input type="hidden" name="field_id" value="${ordersData[i].field_id}" class="field_id">
-                <input type="text" class="form-control" value="${ordersData[i].order_name}" name="order_name"
-                       placeholder="請輸入姓名 *" data-field="姓名">
-            </div>
-            <div class="col-sm-3 px-1">
-                <input type="text" class="form-control" value="${ordersData[i].order_meal}" name="order_meal"
-                       placeholder="請輸入餐點名稱 *" data-field="餐點名稱">
-            </div>
-            <div class="col-sm-1 px-1">
-                <input type="number" class="form-control" value="${ordersData[i].order_price}" name="order_price"
-                       placeholder="請輸入價格 *" data-field="價格">
-            </div>
-            <div class="col-sm-1 px-1">
-                <input type="number" class="form-control" value="${ordersData[i].order_number}" name="order_number"
-                       placeholder="請輸入數量 *" data-field="數量">
-            </div>
-            <div class="col-sm-3 px-1">
-                <input type="text" class="form-control" value="${ordersData[i].order_remark}" name="order_remark"
-                       placeholder="請輸入備註" data-field="備註">
-            </div>
-            <div class="col-sm-1 px-1">
-                <a class="btn delete_order" title="刪除此筆訂單">
-                      <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zM124 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H124z"></path></svg>
-                </a>
-            </div>        
-        </div>
-        `
-            }
-            // Orders number
-            // if (ordersData.length === 0) {
-            //     $('#order_list').text('目前還沒有訂單 :(').addClass('text-center');
-            // } else {
-            //     // $('#order_list').empty().append(orderListHtml);
-            // }
-            // Call edit order function
-            $('#order_list input[name^="order"]').on('change', editOrder);
-            
-            // Call delete order function
-            $('.delete_order').on('click', deleteOrder);
-        }
+        // function ordersListDisplay(ordersData) {
+        //     const calcData = calcOrders(ordersData);
+        //     const totalPrice = calcData.totalPrice;
+        //     const totalName = calcData.totalName;
+        //     // $('#ordersNum').html(`共有 ${totalName.length} 人參與團購，累積有 <b>${ordersData.length}</b> 筆訂單`);
+        //
+        //     let orderListHtml = '';
+        //     for (let i = 0; i < ordersData.length; i++) {
+        //
+        //         // Payment Status
+        //         let paymentStatus = '';
+        //         if (ordersData[i].order_paymentStatus === '1') {
+        //             paymentStatus = '<span class="paid"><i class="fas fa-check-circle"></i>已付款</span>';
+        //         } else {
+        //             const amount = ordersData[i].order_price * ordersData[i].order_number + ' 元';  // Unpaid Amount
+        //             paymentStatus = `<span class="unpaid" data-amount="${amount}"><i class="fas fa-dollar-sign"></i>未付款</span>`;
+        //         }
+        //         if (ordersData[i].order_remark == null) {
+        //             ordersData[i].order_remark = '';
+        //         }
+        //
+        //         orderListHtml += `
+        // <div class="row py-2 rounded order-item" data-index="${i + 1}">
+        //     <div class="col-sm-1 text-right px-1">
+        //         <span class="mr-3">${i + 1}. </span>
+        //     </div>
+        //     <!--
+        //     <div class="col-sm-1 text-right px-1 form-check pt-2">
+        //         <input class="form-check-input" type="checkbox" value="${ordersData[i].order_paymentStatus}" id="defaultCheck_${i}"
+        //                 name="order_paymentStatus" data-field="付款狀態" ${ordersData[i].order_paymentStatus === '1' ? 'checked' : ''}>
+        //         <label class="form-check-label" for="defaultCheck_${i}">
+        //             ${paymentStatus}
+        //         </label>
+        //     </div>-->
+        //     <div class="col-sm-2 px-1">
+        //         <input type="hidden" name="field_id" value="${ordersData[i].field_id}" class="field_id">
+        //         <input type="text" class="form-control" value="${ordersData[i].order_name}" name="order_name"
+        //                placeholder="請輸入姓名 *" data-field="姓名">
+        //     </div>
+        //     <div class="col-sm-3 px-1">
+        //         <input type="text" class="form-control" value="${ordersData[i].order_meal}" name="order_meal"
+        //                placeholder="請輸入餐點名稱 *" data-field="餐點名稱">
+        //     </div>
+        //     <div class="col-sm-1 px-1">
+        //         <input type="number" class="form-control" value="${ordersData[i].order_price}" name="order_price"
+        //                placeholder="請輸入價格 *" data-field="價格">
+        //     </div>
+        //     <div class="col-sm-1 px-1">
+        //         <input type="number" class="form-control" value="${ordersData[i].order_number}" name="order_number"
+        //                placeholder="請輸入數量 *" data-field="數量">
+        //     </div>
+        //     <div class="col-sm-3 px-1">
+        //         <input type="text" class="form-control" value="${ordersData[i].order_remark}" name="order_remark"
+        //                placeholder="請輸入備註" data-field="備註">
+        //     </div>
+        //     <div class="col-sm-1 px-1">
+        //         <a class="btn delete_order" title="刪除此筆訂單">
+        //               <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zM124 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H124z"></path></svg>
+        //         </a>
+        //     </div>
+        // </div>
+        // `
+        //     }
+        //     // Orders number
+        //     // if (ordersData.length === 0) {
+        //     //     $('#order_list').text('目前還沒有訂單 :(').addClass('text-center');
+        //     // } else {
+        //     //     // $('#order_list').empty().append(orderListHtml);
+        //     // }
+        //     // Call edit order function
+        //     $('#order_list input[name^="order"]').on('change', editOrder);
+        //
+        //     // Call delete order function
+        //     $('.delete_order').on('click', deleteOrder);
+        // }
         
         
         /**
@@ -653,53 +653,53 @@ $(function () {
          * Submit order
          */
         // Submit order handle
-        function submitOrder(event) {
-            event.preventDefault()
-            const order_id = $('input[name=add_order_id]');
-            const order_name = $('input[name=add_order_name]');
-            const order_meal = $('input[name=add_order_meal]');
-            const order_price = $('input[name=add_order_price]');
-            const order_number = $('select[name=add_order_number] :selected');
-            const order_remark = $('input[name=add_order_remark]');
-            
-            if (!checkInputVal(order_price, '價格')) return;
-            if (!checkInputVal(order_number, '數量')) return;
-            if (!checkInputVal(order_meal, '餐點內容')) return;
-            if (!checkInputVal(order_name, '姓名')) return;
-            
-            let data = new FormData();
-            data.append('method', 'postOrder');
-            // data.append('add_order', 'true');
-            data.append('order_id', order_id.val());
-            data.append('order_name', order_name.val());
-            data.append('order_meal', order_meal.val());
-            data.append('order_number', order_number.val());
-            data.append('order_price', order_price.val());
-            data.append('order_remark', order_remark.val());
-            order_name.val('');
-            order_meal.val('');
-            order_price.val('');
-            order_remark.val('');
-            const submitOrder = new AjaxData('group_buy_api.php', ordersDisplay, data).post()
-        }
+        // function submitOrder(event) {
+        //     event.preventDefault()
+        //     const order_id = $('input[name=add_order_id]');
+        //     const order_name = $('input[name=add_order_name]');
+        //     const order_meal = $('input[name=add_order_meal]');
+        //     const order_price = $('input[name=add_order_price]');
+        //     const order_number = $('select[name=add_order_number] :selected');
+        //     const order_remark = $('input[name=add_order_remark]');
+        //
+        //     if (!checkInputVal(order_price, '價格')) return;
+        //     if (!checkInputVal(order_number, '數量')) return;
+        //     if (!checkInputVal(order_meal, '餐點內容')) return;
+        //     if (!checkInputVal(order_name, '姓名')) return;
+        //
+        //     let data = new FormData();
+        //     data.append('method', 'postOrder');
+        //     // data.append('add_order', 'true');
+        //     data.append('order_id', order_id.val());
+        //     data.append('order_name', order_name.val());
+        //     data.append('order_meal', order_meal.val());
+        //     data.append('order_number', order_number.val());
+        //     data.append('order_price', order_price.val());
+        //     data.append('order_remark', order_remark.val());
+        //     order_name.val('');
+        //     order_meal.val('');
+        //     order_price.val('');
+        //     order_remark.val('');
+        //     const submitOrder = new AjaxData('group_buy_api.php', ordersDisplay, data).post()
+        // }
         
         
         // Check input value not empty
-        function checkInputVal(element, elName) {
-            if (!element.val()) {
-                Swal.fire(
-                    '表單欄位檢查',
-                    `\`${elName}\` 欄位不可為空喔`,
-                    'warning'
-                )
-                element.addClass('is-invalid');
-                return false;
-            }
-            return true;
-        }
+        // function checkInputVal(element, elName) {
+        //     if (!element.val()) {
+        //         Swal.fire(
+        //             '表單欄位檢查',
+        //             `\`${elName}\` 欄位不可為空喔`,
+        //             'warning'
+        //         )
+        //         element.addClass('is-invalid');
+        //         return false;
+        //     }
+        //     return true;
+        // }
         
         
-        // 修改訂單 todo: 9/7 要改為vue寫法
+        // 修改訂單
         // function editOrder() {
         //     const orderEl = $(this);  // 修改的欄位
         //     const orderName = orderEl.attr('name');  // Field name
@@ -748,19 +748,20 @@ $(function () {
          * @Range: Order.php
          * Calc orders
          */
-        function countOrders(order_id) {
-            if (!order_id) return;
-            
-            // Post form
-            let countData = new FormData();
-            countData.append('method', 'getFilterOrders');
-            countData.append('order_id', order_id);
-            // console.log('countOrder')
-            
-            const submitData = new AjaxData('group_buy_api.php', countOrderDisplay, countData);
-            submitData.postJson();
-        }
+        // function countOrders(order_id) {
+        //     if (!order_id) return;
+        //
+        //     // Post form
+        //     let countData = new FormData();
+        //     countData.append('method', 'getFilterOrders');
+        //     countData.append('order_id', order_id);
+        //     // console.log('countOrder')
+        //
+        //     const submitData = new AjaxData('group_buy_api.php', countOrderDisplay, countData);
+        //     submitData.postJson();
+        // }
         
+        // todo 9/10 要改成vue寫法
         function getStoreDeliveryAmount(orderTotal) {
             const storeId = $('#store_id').val();
             if (storeId.length === 0) return;
@@ -779,8 +780,8 @@ $(function () {
         }
         
         
-        // todo: 列表要整個改為VUE 寫法
         function countOrderDisplay(totalData) {
+            console.log(4444)
             let orderTotalHeadHtml = '';
             let orderTotalBodyHtml = '';
             let orderTotalHtml = '';
@@ -853,8 +854,9 @@ $(function () {
             
             if ($('#orderTotalNum').length > 0) $('#orderTotalNum').empty().append(allTotal);
             
-            getStoreDeliveryAmount(allTotal);  // 獲取外送門檻是否達標
-            
+            // 獲取外送門檻 todo 9/10 要改成vue寫法
+            // getStoreDeliveryAmount(allTotal);  // 獲取外送門檻是否達標
+            // 統計高亮 todo 9/10 要改成vue寫法
             clickRowHighlight();
         }
         
@@ -863,17 +865,17 @@ $(function () {
          * @Range: Order.php
          * Delete order
          */
-        function deleteOrder(event) {
-            event.preventDefault();
-            const fieldId = $(this).parents('.order-item').find('.field_id').val();
-            
-            let deleteOrderHandel = function () {
-                const delOrder = new AjaxData(`group_buy_api.php?del=${fieldId}`, ordersDisplay)
-                delOrder.get();
-            }
-            const alertConfirm = new SwalAlert('你確定要刪除嗎？', "這項操作是沒辦法還原的！", '是的，我要刪除', '', deleteOrderHandel)
-            alertConfirm.fireConfirm();
-        }
+        // function deleteOrder(event) {
+        //     event.preventDefault();
+        //     const fieldId = $(this).parents('.order-item').find('.field_id').val();
+        //
+        //     let deleteOrderHandel = function () {
+        //         const delOrder = new AjaxData(`group_buy_api.php?del=${fieldId}`, ordersDisplay)
+        //         delOrder.get();
+        //     }
+        //     const alertConfirm = new SwalAlert('你確定要刪除嗎？', "這項操作是沒辦法還原的！", '是的，我要刪除', '', deleteOrderHandel)
+        //     alertConfirm.fireConfirm();
+        // }
         
         
         /**
@@ -1154,61 +1156,176 @@ const vueSetState = {
 // 訂單顯示
 const vueOrderDisplay = {
     data() {
+        let deliveryAmountLimit = false;
         return {
             ordersData: {},
+            deliveryAmountLimit,
         }
     },
     methods: {
-        // getOrderTotalById(_orderId) {
-        //     const orderId = _orderId.value;
-        //     const ref = this;
-        //     const api = `group_buy_api.php?res=order_list&order_id=${orderId}`;
-        //     axios.get(api)
-        //         .then((response) => {
-        //             this.calculateOrders(response.data);
-        //             this.orderData = response.data;
-        //             // this.calcOrdersTotal();
-        //         })
-        //         .catch((error) => {
-        //             console.log(error);
-        //         })
-        // },
+        // 載入團購訂單 #order.php
         getOrdersById() {
             if (!this.$refs['orderId']) return;
             const orderId = this.$refs['orderId'].value;
-            const api = `group_buy_api.php?res=order_list&order_id=${orderId}`;
+            const api = `${this.ORDER_API}?res=order_list&order_id=${orderId}`;
             
             this.fetchData(api, 'GET', this.ordersDisplay);
         },
+        // todo 9/10 用後端處理
+        getStoreById() {
+            // get storeId
+            
+            // this.fetchData(`${this.ORDER_API}?method=getStoreById&storeId=${storeId}`, 'GET', getStoreHandler);
+        },
+        // 獲取外送門檻
+        getStoreDeliveryAmount() {
+            if (!this.$refs['storeId']) return;
+            const storeId = this.$refs['storeId'].value;
+            const orderTotal = this.orderDetails.priceTotal;  // 訂單總金額
+            
+            const deliveryAmountHandler = (response) => {
+                response.json()
+                    .then((data) => {
+                        console.log(data);
+                        const limitAmount = parseInt(data.store_full_price);
+                        if (orderTotal >= limitAmount) {
+                            // 達外送門檻
+                            this.deliveryAmountLimit = true;
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            }
+            
+            this.fetchData(`${this.ORDER_API}?res=store&store_id=${storeId}`, 'GET', deliveryAmountHandler);
+        },
+        // 訂單顯示 #order.php
         ordersDisplay(orderData) {
             orderData.json()
                 .then(orderData => {
                     console.log(orderData)
+                    
                     this.ordersData = orderData;
                     this.calculateOrders(orderData);
                 })
         }
     },
     created() {
-    
+    },
+    beforeMount() {
     },
     mounted() {
-        this.getOrdersById();  // 載入讀取團購所屬訂單 order.php
     }
 }
 
 // 訂單操作
 const vueOrderOperation = {
+    data() {
+        let postData = {}
+        return {
+            postData,
+        }
+    },
     methods: {
+        // 增加訂單
+        postOrder(e) {
+            e.preventDefault();
+            // 取得訂單欄位資料
+            if (!this.checkInputNonEmpty(this.$refs['orderName'], '姓名')) return;
+            if (!this.checkInputNonEmpty(this.$refs['orderMeal'], '餐點內容')) return;
+            if (!this.checkInputNonEmpty(this.$refs['orderPrice'], '價格')) return;
+            if (!this.checkInputNonEmpty(this.$refs['orderNumber'], '數量')) return;
+            // 驗證金額為正整數
+            if (!this.validationAmount(this.$refs['orderPrice'], '價格')) return;
+            
+            // vue Proxy 操作
+            const orderProxyHandler = {
+                set(obj, prop, newVal) {
+                    obj[prop] = newVal;
+                    return true;
+                }
+            }
+            const postOrderProxy = new Proxy(this.postData, orderProxyHandler);
+            
+            // 存入vue變數
+            postOrderProxy.orderId = this.$refs['orderId'].value;
+            postOrderProxy.orderName = this.$refs['orderName'].value;
+            postOrderProxy.orderMeal = this.$refs['orderMeal'].value;
+            postOrderProxy.orderPrice = this.$refs['orderPrice'].value;
+            postOrderProxy.orderNumber = this.$refs['orderNumber'].value;
+            postOrderProxy.orderRemark = this.$refs['orderRemark'].value;
+            
+            const postOrderData = new FormData();
+            postOrderData.append('method', 'postOrder');
+            postOrderData.append('orderId', this.postData.orderId);
+            postOrderData.append('orderName', this.postData.orderName);
+            postOrderData.append('orderMeal', this.postData.orderMeal);
+            postOrderData.append('orderPrice', this.postData.orderPrice);
+            postOrderData.append('orderNumber', this.postData.orderNumber);
+            postOrderData.append('orderRemark', this.postData.orderRemark);
+            
+            // 清空欄位 Empty Field
+            this.postData = {};
+            
+            // POST
+            this.fetchData(this.ORDER_API, 'POST', this.getOrdersById, postOrderData);
+            this.smartAlert('訂單操作', '訂單成功送出！');
+        },
+        // 檢查input欄位是否為空
+        checkInputNonEmpty(_inputElement, _fieldName) {
+            this.checkElementNonExists(_inputElement, _fieldName);  // 檢查元素是否存在
+            
+            if (!_inputElement.value) {
+                this.smartAlert('訂單欄位檢查', `${_fieldName}不可為空`, 'error');
+                _inputElement.classList.add('is-invalid');
+                return false;
+            }
+            
+            _inputElement.classList.remove('is-invalid');  // 如果沒錯就移除class
+            return true;
+        },
+        // 檢查元素是否存在，不存在拋出錯誤
+        checkElementNonExists(_inputElement, _fieldName) {
+            if (!_inputElement) {
+                throw new Error(`${_fieldName}欄位不存在，得到結果：${_inputElement}`);
+            }
+        },
+        // 驗證輸入金額正確性
+        validationAmount(_fieldElement, _fieldName = '') {
+            const reg = /^[1-9]{1}[0-9]?/g;  // 1-無上限 正整數不可負數不可為 0
+            try {
+                if (_fieldElement.value.match(reg) === null) {
+                    this.smartAlert('欄位檢查提醒', `${_fieldName} 請輸入不為 0 的正整數(不能是負數)<br>注意！資料尚未更新`, 'error');
+                    _fieldElement.classList.add('is-invalid');
+                    return false;
+                }
+                _fieldElement.classList.remove('is-invalid');
+                return true;  // correct
+            } catch (error) {
+                console.log(error);
+            }
+            
+        },
         // 修改訂單
         editOrder(inputElement) {
-            console.log(inputElement)
+            if (!this.$refs['orderId']) throw new Error('Missing Order Id');
+            const orderId = this.$refs['orderId'].value;
             const editFieldElement = inputElement.target;
             const fieldName = editFieldElement.name;  // 修改欄位名
             const fieldValue = editFieldElement.value;  // 修改值
             const fieldId = editFieldElement.dataset.fieldId;  // 修改值
-            if(!document.querySelector('#order_id')) return;
-            const orderId = document.querySelector('#order_id').value;
+            
+            // 驗證金額為正整數
+            const amountValidation = () => {
+                console.log(editFieldElement.name)
+                if (editFieldElement.name === 'order_price' || editFieldElement.name === 'order_number') {
+                    if (!this.validationAmount(editFieldElement, editFieldElement.name)) return false;
+                    return true;
+                }
+            };
+            if (!amountValidation()) return;
+            
             
             // 建立post資料
             const editOrderData = new FormData();
@@ -1229,15 +1346,53 @@ const vueOrderOperation = {
                         console.log(error)
                     })
             }
+            // POST
+            this.fetchData(this.ORDER_API, 'POST', editOrderResultHandler, editOrderData);
+        },
+        // 刪除訂單
+        deleteOrder(_deleteElement) {
+            const deleteTarget = _deleteElement.target.closest('button');
+            if (!deleteTarget) return;
+            const fieldId = deleteTarget.dataset.fieldId;
             
-            const api = 'group_buy_api.php';
-            this.fetchData(api, 'POST', editOrderResultHandler, editOrderData);
+            const deleteOrderResultHandler = (response) => {
+                response.text()
+                    .then(result => {
+                        try {
+                            if (result) {
+                                this.smartAlert('刪除成功', '你的訂單已刪除', 'success');
+                                this.getOrdersById();
+                            }
+                        } catch (e) {
+                            throw new Error(`刪除訂單失敗！error：${e}`)
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            }
+            
+            const deleteOrderHandler = () => {
+                const deleteOrderData = new FormData();
+                deleteOrderData.append('method', 'deleteOrder');
+                deleteOrderData.append('field_id', fieldId);
+                this.fetchData(this.ORDER_API, 'POST', deleteOrderResultHandler, deleteOrderData);
+            }
+            
+            this.smartConfirmAlert('你確定要刪除嗎？', '這項操作是沒辦法還原的！', '是的，我要刪除', '', deleteOrderHandler);
+            
         }
     }
 }
 
 // POST與GET 操作
 const vueGetAndPost = {
+    data() {
+        const ORDER_API = 'group_buy_api.php';
+        return {
+            ORDER_API,
+        }
+    },
     methods: {
         fetchData(_api = '', _method = 'GET', _callback, _body = undefined) {
             // 狀態校驗
@@ -1263,8 +1418,10 @@ const vueGetAndPost = {
                 .then((response) => {
                     // console.log(response)
                     _callback(response);
+                    return true;
                 }).catch(err => {
-                console.log(err);
+                console.log(err, _callback);
+                return false;
             })
         }
     }
@@ -1276,6 +1433,9 @@ const vueAlert = {
         smartAlert(_title = '', _description = '', _status = 'success') {
             Swal.fire(
                 _title, _description, _status,
+                // todo 9/10 想加固定時間自動關閉  //
+                // timerProgressBar: true,
+                // https://sweetalert2.github.io/#configuration
             )
         },
         smartConfirmAlert(_title = '', _description = '', _confirmText = '', _status, _callback) {
@@ -1298,6 +1458,11 @@ const vueAlert = {
 // 訂單統計
 const vueOrderCalculator = {
     data() {
+        const orderDetails = {
+            totalBuyerCount: 0,
+            totalOrderCount: 0,
+            priceTotal: 0,
+        }
         return {
             orderTotal: {},
             orderDetails: {},
@@ -1324,7 +1489,6 @@ const vueOrderCalculator = {
                 
                 // 如果訂單中有同名的餐點，就合併計數與加總
                 if (obj.hasOwnProperty(id)) {
-                    // console.log('y', id)
                     subTotalNum = obj[id].subTotal + _orderPrice;
                     obj[id].buyerName.push(order.order_name);  // 全部訂購人
                     obj[id].remarks.push({
@@ -1342,7 +1506,6 @@ const vueOrderCalculator = {
                         'remarks': obj[id].remarks,
                     };
                 } else {  // 沒有同名餐點就建立物件
-                    // console.log('n', id)
                     obj[id] = {
                         'meal': id,
                         'price': _orderPrice,
@@ -1358,10 +1521,10 @@ const vueOrderCalculator = {
                 }
                 subTotalNum = 0;
             })
-            let mergeOrder = Object.values(obj);  // ex: [ {} ]
-            // console.log(mergeOrder)
+            let mergeOrder = Object.values(obj);  // 合併訂單物件 ex: [ {} ]
             this.orderTotal = mergeOrder;
         },
+        // 計算訂單細節
         calcOrdersTotal(data) {
             let priceTotal = 0;
             let buyerNameArr = [];
@@ -1376,6 +1539,7 @@ const vueOrderCalculator = {
                 'totalOrderCount': data.length,
                 'priceTotal': priceTotal,
             }
+            this.getStoreDeliveryAmount();  // 計算是否超過外送門檻
         },
     },
     computed: {

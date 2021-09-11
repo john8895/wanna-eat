@@ -1,6 +1,6 @@
 {include file="head.tpl"}
 {include file="header.tpl"}
-<main class="page__login" id="app">
+<main class="page__login">
     <div class="inner__banner">
         <div class="container">
             <div class="d-flex justify-content-between">

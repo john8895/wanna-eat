@@ -1,6 +1,6 @@
 {include file="head.tpl"}
 {include file="header.tpl"}
-<main id="app">
+<main>
     <div class="container">
         <h1 class="text-center my-3 h3">設定開團聯絡人</h1>
         <hr>

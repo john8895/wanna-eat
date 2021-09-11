@@ -901,3 +901,7 @@ input[name=order_paymentStatus] {
 
     }
 }
+// 隱藏 vue 編輯前變數
+[v-cloak] {
+  display: none;
+}

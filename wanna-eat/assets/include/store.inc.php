@@ -1,7 +1,20 @@
 <?php
 
-class Store
+require_once 'dbh.inc.php';
+
+class Store extends connection
 {
+    // 取得店家資訊
+    public function getStoreById()
+    {
+        $storeId = $_GET['storeId'];
+        $this->connect();
+        $sql = "SELECT * FROM store WHERE id=:storeId LIMIT 1;";
+        $sth = $this->query($sql);
+        $sth->execute(array(':storeId' => $storeId));
+        echo json_encode($sth->fetchAll(), JSON_UNESCAPED_UNICODE);
+    }
+
     public function index(): array
     {
         $sql = 'SELECT * FROM store';
