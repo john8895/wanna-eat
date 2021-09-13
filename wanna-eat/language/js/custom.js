@@ -300,7 +300,7 @@ $(function () {
         if ($('#add_storeTag').length) addStoreTag();
         if ($('.btn-del-store').length) deleteStore();
         if ($('#groupBuyForm').length) submitGroupBuy();
-        if ($('#addStoreForm').length) submitAddStore();
+        // if ($('#addStoreForm').length) submitAddStore();
         if ($('#input_addStoreCover').length) addStoreImagePreview();
         
         
@@ -326,13 +326,13 @@ $(function () {
             }
         }
         
-        function submitAddStore() {
-            $('#addStoreForm').on('submit', function () {
-                if (!checkInputVal($('input[name=name]'), '餐廳名稱')) {
-                    return false;
-                }
-            })
-        }
+        // function submitAddStore() {
+        //     $('#addStoreForm').on('submit', function () {
+        //         if (!checkInputVal($('input[name=name]'), '餐廳名稱')) {
+        //             return false;
+        //         }
+        //     })
+        // }
         
         
         // Group buy submit Check
@@ -386,6 +386,7 @@ $(function () {
                         const res2 = res[1];
                         const res3 = res[2];
                         const groupBuyHistory = res[3].data;
+                        console.log(res1.data, res2.data, res3.data, groupBuyHistory)
                         groupBuyDisplay(res1.data, res2.data, res3.data, groupBuyHistory)
                     })
                 )
@@ -440,12 +441,13 @@ $(function () {
                 groupText = '進行中團購&nbsp;&nbsp;';
             }
             
-            if (groupBuyData.length === 0) {
-                $('#current_groupBuy').text('目前還沒有團購 :(').addClass('text-center');
-            } else {
-                $('#current_groupBuy').html(`${groupText}<b>${groupBuyData.length}</b>`)
-                $('#group_now_badge').text(groupBuy.length)
-            }
+            // todo 9/11 要改vue寫法
+            // if (groupBuyData.length === 0) {
+            //     $('#current_groupBuy').text('目前還沒有團購 :(').addClass('text-center');
+            // } else {
+            //     // $('#current_groupBuy').html(`${groupText}<b>${groupBuyData.length}</b>`)
+            //     // $('#group_now_badge').text(groupBuy.length)
+            // }
             let orderBlock = '';
             for (let i = 0; i < groupBuyData.length; i++) {
                 // Calc orders
@@ -761,104 +763,103 @@ $(function () {
         //     submitData.postJson();
         // }
         
-        // todo 9/10 要改成vue寫法
-        function getStoreDeliveryAmount(orderTotal) {
-            const storeId = $('#store_id').val();
-            if (storeId.length === 0) return;
-            const getDeliveryAmountHandle = function (data) {
-                const amount = parseInt(data.store_full_price);
-                let amountHtml = '';
-                if (orderTotal > amount) {
-                    amountHtml = `<span class="item group-full"><i class="fas fa-truck mr-1"></i>已成團</span>`
-                } else {
-                    amountHtml = `<span class="item group-yet"><i class="fas fa-dizzy mr-1"></i>未成團</span>`
-                }
-                $('#deliveryAmount').empty().append(amountHtml);
-            }
-            const submitData = new AjaxData('group_buy_api.php?res=store&store_id=' + storeId, getDeliveryAmountHandle);
-            submitData.get();
-        }
+        // function getStoreDeliveryAmount(orderTotal) {
+        //     const storeId = $('#store_id').val();
+        //     if (storeId.length === 0) return;
+        //     const getDeliveryAmountHandle = function (data) {
+        //         const amount = parseInt(data.store_full_price);
+        //         let amountHtml = '';
+        //         if (orderTotal > amount) {
+        //             amountHtml = `<span class="item group-full"><i class="fas fa-truck mr-1"></i>已成團</span>`
+        //         } else {
+        //             amountHtml = `<span class="item group-yet"><i class="fas fa-dizzy mr-1"></i>未成團</span>`
+        //         }
+        //         $('#deliveryAmount').empty().append(amountHtml);
+        //     }
+        //     const submitData = new AjaxData('group_buy_api.php?res=store&store_id=' + storeId, getDeliveryAmountHandle);
+        //     submitData.get();
+        // }
         
         
-        function countOrderDisplay(totalData) {
-            console.log(4444)
-            let orderTotalHeadHtml = '';
-            let orderTotalBodyHtml = '';
-            let orderTotalHtml = '';
-            let allTotal = 0;
-            // console.log('countOrderDisplay:', totalData);
-            
-            for (let k in totalData) {
-                let buyerName = totalData[k].buyerName.split(',');  // 訂購人
-                
-                allTotal += parseInt(totalData[k].subTotal);  // 總金額
-                
-                let buyerNameHtml = '';
-                buyerName.forEach((v, k) => {
-                    buyerNameHtml += `<li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">${v}</li>`;
-                })
-                
-                orderTotalHeadHtml = `
-            <div class="th row py-0 ">
-                <div class="col-sm-3 td">
-                    <span>點餐內容</span>
-                </div>
-                <div class="col-sm-2">
-                     <span>數量</span>
-                </div>
-                <div class="col-sm-2">
-                    <span>價格</span>
-                </div>
-                <div class="col-sm-2">
-                    <span>小計</span>
-                </div>
-                <div class="col-sm-3">
-                    <span>訂購人</span>
-                </div>
-            </div>
-            `;
-                orderTotalBodyHtml += `
-            <div class="table-row tr row py-0">
-                <div class="col-sm-3">
-                    <span>${totalData[k].meal}</span>
-                </div>
-                <div class="col-sm-2">
-                    <span>${totalData[k].order_number}</span>
-                </div>
-                <div class="col-sm-2">
-                    <span>${totalData[k].price}</span>
-                </div>
-                <div class="col-sm-2">
-                    <span>${totalData[k].subTotal}</span>
-                </div>
-                <div class="col-sm-3">
-                    <ul class="d-flex flex-wrap">
-                    ${buyerNameHtml}
-                    </ul>
-                </div>
-            </div>
-        `;
-                orderTotalHtml = `
-            <div class="th row py-0 ">
-                <div class="col-sm-3"></div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2">
-                    <span>NT$${allTotal}</span>
-                </div>
-                <div class="col-sm-3"></div>
-            </div>  
-            `
-            }
-            // $('#orderTotal').empty().append(orderTotalHeadHtml).append(orderTotalBodyHtml).append(orderTotalHtml);
-            
-            if ($('#orderTotalNum').length > 0) $('#orderTotalNum').empty().append(allTotal);
-            
-            // 獲取外送門檻 todo 9/10 要改成vue寫法
-            // getStoreDeliveryAmount(allTotal);  // 獲取外送門檻是否達標
-            // 統計高亮 todo 9/10 要改成vue寫法
-            clickRowHighlight();
-        }
+        // function countOrderDisplay(totalData) {
+        //     console.log(4444)
+        //     let orderTotalHeadHtml = '';
+        //     let orderTotalBodyHtml = '';
+        //     let orderTotalHtml = '';
+        //     let allTotal = 0;
+        //     // console.log('countOrderDisplay:', totalData);
+        //
+        //     for (let k in totalData) {
+        //         let buyerName = totalData[k].buyerName.split(',');  // 訂購人
+        //
+        //         allTotal += parseInt(totalData[k].subTotal);  // 總金額
+        //
+        //         let buyerNameHtml = '';
+        //         buyerName.forEach((v, k) => {
+        //             buyerNameHtml += `<li class="btn btn-outline-info py-0 px-1 mr-2 mt-2">${v}</li>`;
+        //         })
+        //
+        //         orderTotalHeadHtml = `
+        //     <div class="th row py-0 ">
+        //         <div class="col-sm-3 td">
+        //             <span>點餐內容</span>
+        //         </div>
+        //         <div class="col-sm-2">
+        //              <span>數量</span>
+        //         </div>
+        //         <div class="col-sm-2">
+        //             <span>價格</span>
+        //         </div>
+        //         <div class="col-sm-2">
+        //             <span>小計</span>
+        //         </div>
+        //         <div class="col-sm-3">
+        //             <span>訂購人</span>
+        //         </div>
+        //     </div>
+        //     `;
+        //         orderTotalBodyHtml += `
+        //     <div class="table-row tr row py-0">
+        //         <div class="col-sm-3">
+        //             <span>${totalData[k].meal}</span>
+        //         </div>
+        //         <div class="col-sm-2">
+        //             <span>${totalData[k].order_number}</span>
+        //         </div>
+        //         <div class="col-sm-2">
+        //             <span>${totalData[k].price}</span>
+        //         </div>
+        //         <div class="col-sm-2">
+        //             <span>${totalData[k].subTotal}</span>
+        //         </div>
+        //         <div class="col-sm-3">
+        //             <ul class="d-flex flex-wrap">
+        //             ${buyerNameHtml}
+        //             </ul>
+        //         </div>
+        //     </div>
+        // `;
+        //         orderTotalHtml = `
+        //     <div class="th row py-0 ">
+        //         <div class="col-sm-3"></div>
+        //         <div class="col-sm-2"></div>
+        //         <div class="col-sm-2"></div>
+        //         <div class="col-sm-2">
+        //             <span>NT$${allTotal}</span>
+        //         </div>
+        //         <div class="col-sm-3"></div>
+        //     </div>
+        //     `
+        //     }
+        //     // $('#orderTotal').empty().append(orderTotalHeadHtml).append(orderTotalBodyHtml).append(orderTotalHtml);
+        //
+        //     if ($('#orderTotalNum').length > 0) $('#orderTotalNum').empty().append(allTotal);
+        //
+        //     // 獲取外送門檻
+        //     // getStoreDeliveryAmount(allTotal);  // 獲取外送門檻是否達標
+        //     // 統計高亮
+        //     // clickRowHighlight();
+        // }
         
         
         /**
@@ -1043,6 +1044,56 @@ $(function () {
         })()
     }
 )
+// 餐廳
+const vueStore = {
+    data(){
+      return {
+      
+      }
+    },
+    methods: {
+       // 新增餐廳
+       addStore(e){
+           e.preventDefault();
+           console.log('addStore');
+       },
+    }
+}
+
+// 團購單
+const vueGroupBuy = {
+    data() {
+        return {
+            groupBuyData: {},
+        }
+    },
+    methods: {
+        // 讀取團購單
+        getGroupBy() {
+            const callback = (response) => {
+                response.json()
+                    .then(data => {
+                        console.log(data);
+                        this.groupBuyData = data;
+                        this.groupBuyDisplay();
+                    })
+            }
+            this.fetchData(`${this.ORDER_API}?res=buy`, 'GET', callback);
+        },
+        // 團購單顯示
+        groupBuyDisplay(){
+            // console.log(this.groupBuyData)
+        }
+    },
+    computed: {
+        getGroupBuyState() {
+            return this.groupBuyData.length > 0 ? `目前共 ${this.groupBuyData.length} 張團購單可參加` : '目前還沒有團購單';
+        },
+    },
+    mounted() {
+        this.getGroupBy();
+    }
+}
 
 // 設定狀態 / 結束訂單&繼續訂購
 const vueSetState = {
@@ -1136,20 +1187,6 @@ const vueSetState = {
             })
             this.continueOrderTimeHandler(orderId);
         },
-        // getOrderTotalById(_orderId) {
-        //     const orderId = _orderId.value;
-        //     const ref = this;
-        //     const api = `group_buy_api.php?res=order_list&order_id=${orderId}`;
-        //     axios.get(api)
-        //         .then((response) => {
-        //             this.calculateOrders(response.data);
-        //             this.orderData = response.data;
-        //             // this.calcOrdersTotal();
-        //         })
-        //         .catch((error) => {
-        //             console.log(error);
-        //         })
-        // },
     }
 }
 
@@ -1171,12 +1208,6 @@ const vueOrderDisplay = {
             
             this.fetchData(api, 'GET', this.ordersDisplay);
         },
-        // todo 9/10 用後端處理
-        getStoreById() {
-            // get storeId
-            
-            // this.fetchData(`${this.ORDER_API}?method=getStoreById&storeId=${storeId}`, 'GET', getStoreHandler);
-        },
         // 獲取外送門檻
         getStoreDeliveryAmount() {
             if (!this.$refs['storeId']) return;
@@ -1186,10 +1217,8 @@ const vueOrderDisplay = {
             const deliveryAmountHandler = (response) => {
                 response.json()
                     .then((data) => {
-                        console.log(data);
                         const limitAmount = parseInt(data.store_full_price);
-                        if (orderTotal >= limitAmount) {
-                            // 達外送門檻
+                        if (orderTotal >= limitAmount) {  // 達外送門檻
                             this.deliveryAmountLimit = true;
                         }
                     })
@@ -1321,8 +1350,8 @@ const vueOrderOperation = {
                 console.log(editFieldElement.name)
                 if (editFieldElement.name === 'order_price' || editFieldElement.name === 'order_number') {
                     if (!this.validationAmount(editFieldElement, editFieldElement.name)) return false;
-                    return true;
                 }
+                return true;
             };
             if (!amountValidation()) return;
             
@@ -1466,9 +1495,11 @@ const vueOrderCalculator = {
         return {
             orderTotal: {},
             orderDetails: {},
+            allOrderRemarkState: false,
         }
     },
     methods: {
+        // 訂單統計，合併相同餐點
         calculateOrders(orderData) {
             this.calcOrdersTotal(orderData);  // 計算訂單細節
             /*
@@ -1485,7 +1516,7 @@ const vueOrderCalculator = {
                 const _orderPrice = parseInt(order.order_price);
                 const _orderNumber = parseInt(order.order_number);
                 
-                if (_remark === '' || _remark === null) _remark = 0;
+                if (_remark === '' || _remark === null) _remark = '';
                 
                 // 如果訂單中有同名的餐點，就合併計數與加總
                 if (obj.hasOwnProperty(id)) {
@@ -1541,6 +1572,40 @@ const vueOrderCalculator = {
             }
             this.getStoreDeliveryAmount();  // 計算是否超過外送門檻
         },
+        // 折疊備註資訊
+        toggleOrderRemarkDetails(event) {
+            const orderTable = event.target.closest('.order-table');
+            const orderRemark = orderTable.querySelector('.order-remarks');
+            orderRemark.classList.toggle('show');
+        },
+        // toggle 所有備註資訊
+        toggleAllOrderRemarkDetails(event) {
+            const toggleTarget = event.target;
+            const allRemarks = document.querySelectorAll('.order-remarks');
+            this.allOrderRemarkState = !this.allOrderRemarkState;
+            
+            let count = 0;
+            allRemarks.forEach(remark => {
+                if (remark.classList.contains('show')) {
+                    count++;
+                }
+            });
+            if (count === allRemarks.length) {  // 全展開數量等於總數就關上
+                allRemarks.forEach(remark => remark.classList.remove('show'));
+                return;
+            }
+            allRemarks.forEach(remark => remark.classList.add('show'));  // 全打開
+        },
+        // 訂單統計高亮
+        clickRowHighlight(event) {
+            const target = event.target;
+            let changeElement = target;
+            if (!target.classList.contains('table-row')) {  // 如果不是點到 table-row
+                changeElement.closest('.table-row').classList.toggle('active');
+                return;
+            }
+            changeElement.classList.toggle('active');
+        },
     },
     computed: {
         filterRemarks() {
@@ -1574,6 +1639,8 @@ const app = Vue.createApp({
         vueGetAndPost,
         vueAlert,
         vueOrderOperation,
+        vueGroupBuy,
+        vueStore,
     ],
     data() {
         // let orderItem = {}
@@ -1585,19 +1652,3 @@ const app = Vue.createApp({
     
 });
 app.mount('#app');
-
-
-function clickRowHighlight() {
-    // todo: 列表要整個改為VUE 寫法
-    const rows = document.querySelectorAll('.table-row');
-    rows.forEach((row, key) => {
-        row.addEventListener('click', () => {
-            const target = row.getAttribute('style');
-            if (target === null || target === '') {
-                row.style.backgroundColor = '#fffa4c';
-            } else if (target.indexOf('background') > -1) {
-                row.style.background = '';
-            }
-        })
-    })
-}

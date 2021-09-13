@@ -766,6 +766,9 @@ input[name=order_paymentStatus] {
         box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.08);
     }
 }
+.card-body {
+    padding: 5px 1.25rem 1.23rem;
+}
 
 .order-total {
     .th {
@@ -774,7 +777,7 @@ input[name=order_paymentStatus] {
         }
 
         &:last-child {
-            border-top: 1px solid #999;    margin-top: 10px;
+            border-top: 1px solid #999;
         }
     }
 
@@ -788,6 +791,11 @@ input[name=order_paymentStatus] {
 
     .order-table {
         justify-content: space-between;
+        cursor: pointer;
+
+        &.active {
+            background-color: #fffa4c;
+        }
 
         .td {
             display: flex;
@@ -825,8 +833,9 @@ input[name=order_paymentStatus] {
 
         .order-remarks {
             i {
-                color: #F5DF00;
-                box-shadow: 1px 1px 1px #00000024;
+                color: #bcbcbc;
+                margin-right: 9px;
+                font-size: 13px;
             }
         }
     }
@@ -901,7 +910,37 @@ input[name=order_paymentStatus] {
 
     }
 }
+
 // 隱藏 vue 編輯前變數
 [v-cloak] {
-  display: none;
+    display: none;
+}
+
+.btn-toggle-order-remark, .btn-toggle-all-remarks {
+    cursor: pointer;
+}
+
+.btn-toggle-all-remarks {
+    &:hover {
+        color: $first-color;
+    }
+}
+
+.order-remarks {
+    display: none;
+    padding: 0 0 3px;
+
+    &.show {
+        display: block;
+    }
+
+    li {
+        padding: 3px 0;
+    }
+
+    .btn {
+        font-size: 15px;
+        padding: 3px 4px;
+        margin-right: 7px;
+    }
 }

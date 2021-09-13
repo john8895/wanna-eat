@@ -65,7 +65,7 @@
                     <li class="nav-item">
                         <a href="group-buy-now.php" class="nav-link">
                             <span class="mr-1">進行中團購</span> <span class="badge badge-light"
-                                                                  id="group_now_badge">0</span>
+                                                                  >%% groupBuyData.length %%</span>
                         </a>
                     </li>
                     <li class="nav-item">

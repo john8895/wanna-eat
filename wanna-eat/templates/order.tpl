@@ -228,7 +228,7 @@
 
                             </div>
 
-{*                            <div v-else>目前還沒有訂單 :(</div>*}
+                            {*                            <div v-else>目前還沒有訂單 :(</div>*}
                         </div>
                     </div>
                 </div>
@@ -241,7 +241,9 @@
                         <div class="sub-title mt-3">
                             <ul>
                                 <li>收單時間：{$item.end_time}</li>
-                                <li>共有 %% orderDetails.totalBuyerCount %% 個人參加團購，累積共 <b>%% orderDetails.totalOrderCount %%</b> 張訂單</li>
+                                <li>共有 %% orderDetails.totalBuyerCount %% 個人參加團購，累積共 <b>%% orderDetails.totalOrderCount
+                                        %%</b> 張訂單
+                                </li>
                                 <li class="mt-4">訂購電話：{$item.store_phone}</li>
                             </ul>
                         </div>
@@ -252,7 +254,8 @@
                         <div id="orderTotal" class="order-total">
                             <div class="th row py-0 order-table">
                                 <div class="td sn">
-                                    <span>編號</span>
+                                    <span class="mr-2">編號</span>
+                                    <span title="展開備註欄" @click="toggleAllOrderRemarkDetails($event)" class="btn-toggle-all-remarks"><i class="fa" :class="[allOrderRemarkState ? 'fa-minus-circle' : 'fa-plus-circle']"></i></span>
                                 </div>
                                 <div class="td">
                                     <span>點餐內容</span>
@@ -266,14 +269,15 @@
                                 <div class="td">
                                     <span>小計</span>
                                 </div>
-                                <div class="td buyerName">
-                                    <span>訂購人</span>
-                                </div>
+                                {*                                <div class="td buyerName">*}
+                                {*                                    <span>訂購人</span>*}
+                                {*                                </div>*}
                             </div>
 
-                            <div class="order-table table-row tr row" v-for="(order, orderKey) in orderTotal" :key="orderKey">
+                            <div class="order-table table-row tr row" v-for="(order, orderKey) in orderTotal" :key="orderKey" @click="clickRowHighlight($event)">
                                 <div class="td sn">
                                     <span>%% orderKey + 1 %%</span>
+                                    <span @click="toggleOrderRemarkDetails($event)" class="btn-toggle-order-remark"><i class="fa fa-angle-down"></i></span>
                                 </div>
                                 <div class="td">
                                     <span>%% order.meal %%</span>
@@ -287,24 +291,27 @@
                                 <div class="td">
                                     <span>%% order.subTotal %%</span>
                                 </div>
-                                <div class="td buyerName">
-                                    <ul class="d-flex flex-wrap">
-                                        <li class="btn btn-outline-info py-0 px-1 mr-2" v-for="(name, k) in order.buyerName" :key="k">
-                                            %% name %%
-                                        </li>
-                                    </ul>
-                                </div>
+                                {*                                <div class="td buyerName">*}
+                                {*                                    <ul class="d-flex flex-wrap">*}
+                                {*                                        <li class="btn btn-outline-info py-0 px-1 mr-2" v-for="(name, k) in order.buyerName" :key="k">*}
+                                {*                                            %% name %%*}
+                                {*                                        </li>*}
+                                {*                                    </ul>*}
+                                {*                                </div>*}
 
-                                <div class="col-sm-12" v-for="(remark, remarkKey) in order.remarks" :key="remarkKey">
-                                    <div class="order-remarks" v-if="remark.remark !== 0">
-                                        <div class="row">
-                                            <div class="col-sm-1"></div>
-                                            <div class="col-sm-7"><i class="fa fa-sticky-note mr-2"></i>%%
-                                                remark.buyerName %% %% remark.remark %%
+                                <div class="order-remarks col-sm-12">
+                                    <ul>
+                                    <li class="col-sm-12" v-for="(remark, remarkKey) in order.remarks" :key="remarkKey">
+                                            <div class="row">
+                                                <div class="col-sm-1"></div>
+                                                <div class="col-sm-7">
+                                                    <i class="fa fa-angle-right"></i>
+                                                    <span class="btn btn-outline-info">%% remark.buyerName %%</span>%% remark.remark %%
+                                                </div>
+                                                <div class="col-sm-3"></div>
                                             </div>
-                                            <div class="col-sm-3"></div>
-                                        </div>
-                                    </div>
+                                    </li>
+                                        </ul>
                                 </div>
                             </div>
 

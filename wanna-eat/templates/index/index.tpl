@@ -25,7 +25,7 @@
             <main id="app" class="mt-3">
                 <div class="row mb-4 no-gutters">
                     <div class="col-sm-12">
-                        <h4 id="current_groupBuy" class="h5 mb-2"></h4>
+                        <h4 id="current_groupBuy" class="h5 mb-2">%% getGroupBuyState %%</h4>
                     </div>
                 </div>
 
