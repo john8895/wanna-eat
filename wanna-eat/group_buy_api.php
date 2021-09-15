@@ -76,8 +76,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $method = $_POST['method'];
     $order = new Order();
+    $store = new Store();
 
     switch ($method) {
+        case 'addStore':
+            $store->addStore();
+            break;
         case 'postOrder':
             $order->postOrder();
             break;

@@ -301,30 +301,30 @@ $(function () {
         if ($('.btn-del-store').length) deleteStore();
         if ($('#groupBuyForm').length) submitGroupBuy();
         // if ($('#addStoreForm').length) submitAddStore();
-        if ($('#input_addStoreCover').length) addStoreImagePreview();
+        // if ($('#input_addStoreCover').length) addStoreImagePreview();
         
         
-        function addStoreImagePreview() {
-            $('#input_addStoreCover').on('change', function () {
-                readUrl(this, $('#store_cover_preview'));
-            })
-            $('#input_addStoreMenu').on('change', function () {
-                readUrl(this, $('#store_menu_preview'));
-            })
-        }
+        // function addStoreImagePreview() {
+        //     $('#input_addStoreCover').on('change', function () {
+        //         readUrl(this, $('#store_cover_preview'));
+        //     })
+        //     $('#input_addStoreMenu').on('change', function () {
+        //         readUrl(this, $('#store_menu_preview'));
+        //     })
+        // }
         
         // Upload image preview
-        function readUrl(input, jq_appendElement) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                $(reader).on('load', function (e) {
-                    const img = $('<img>').attr('src', e.target.result);
-                    img.addClass('preview-image img-thumbnail');
-                    jq_appendElement.empty().append(img);
-                })
-                reader.readAsDataURL(input.files[0])  // image to base64
-            }
-        }
+        // function readUrl(input, jq_appendElement) {
+        //     if (input.files && input.files[0]) {
+        //         var reader = new FileReader();
+        //         $(reader).on('load', function (e) {
+        //             const img = $('<img>').attr('src', e.target.result);
+        //             img.addClass('preview-image img-thumbnail');
+        //             jq_appendElement.empty().append(img);
+        //         })
+        //         reader.readAsDataURL(input.files[0])  // image to base64
+        //     }
+        // }
         
         // function submitAddStore() {
         //     $('#addStoreForm').on('submit', function () {
@@ -386,7 +386,7 @@ $(function () {
                         const res2 = res[1];
                         const res3 = res[2];
                         const groupBuyHistory = res[3].data;
-                        console.log(res1.data, res2.data, res3.data, groupBuyHistory)
+                        // console.log(res1.data, res2.data, res3.data, groupBuyHistory)
                         groupBuyDisplay(res1.data, res2.data, res3.data, groupBuyHistory)
                     })
                 )
@@ -1044,19 +1044,193 @@ $(function () {
         })()
     }
 )
+
+/******************
+ * Vue 3
+ ******************/
 // 餐廳
 const vueStore = {
-    data(){
-      return {
-      
-      }
+    data() {
+        return {
+            storeFormField: {
+                name: null,
+                phone: null,
+                cover: null,
+                menu: null,
+                description: '',
+                fullPrice: 0,
+                tags: [],
+                errors: [],
+            }
+        }
     },
     methods: {
-       // 新增餐廳
-       addStore(e){
-           e.preventDefault();
-           console.log('addStore');
-       },
+        // 拖移上傳圖片及縮圖處理
+        dragAndFileUpload() {
+            document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
+                const dropZoneElement = inputElement.closest(".drop-zone");
+                
+                // 點選input
+                dropZoneElement.addEventListener("click", (e) => {
+                    inputElement.click();
+                });
+                // Change Event
+                inputElement.addEventListener("change", (e) => {
+                    if (inputElement.files.length) {
+                        updateThumbnail(dropZoneElement, inputElement.files[0]);
+                    }
+                });
+                // 改變樣式：拖移圖片至區域
+                dropZoneElement.addEventListener("dragover", (e) => {
+                    e.preventDefault();
+                    dropZoneElement.classList.add("drop-zone--over");
+                });
+                // 改變樣式：拖移圖片離開
+                ["dragleave", "dragend"].forEach((type) => {
+                    dropZoneElement.addEventListener(type, (e) => {
+                        dropZoneElement.classList.remove("drop-zone--over");
+                    });
+                });
+                
+                dropZoneElement.addEventListener("drop", (e) => {
+                    e.preventDefault();
+                    
+                    if (e.dataTransfer.files.length) {
+                        // console.log(e.dataTransfer.files)
+                        inputElement.files = e.dataTransfer.files;
+                        // 產生縮圖
+                        updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+                    }
+                    dropZoneElement.classList.remove("drop-zone--over");
+                });
+            });
+            
+            // 產生縮圖
+            function updateThumbnail(dropZoneElement, file) {
+                let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+                
+                // first time 第一次進入
+                if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+                    dropZoneElement.querySelector(".drop-zone__prompt").remove();
+                }
+                
+                // first time
+                if (!thumbnailElement) {
+                    thumbnailElement = document.createElement("div");
+                    thumbnailElement.classList.add("drop-zone__thumb");
+                    dropZoneElement.appendChild(thumbnailElement);
+                }
+                
+                thumbnailElement.dataset.label = file.name;
+                
+                // Show thumbnail for image files  顯示縮圖在區域
+                if (file.type.startsWith("image/")) {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => {
+                        while (thumbnailElement.firstChild) {  // 移除上次置入的圖片
+                            thumbnailElement.firstChild.remove();
+                        }
+                        // thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+                        const img = new Image();
+                        img.src = reader.result;
+                        thumbnailElement.appendChild(img);
+                    };
+                } else {
+                    // thumbnailElement.style.backgroundImage = null;
+                }
+            }
+        },
+        // 新增餐廳 驗證
+        checkAddStoreForm(e) {
+            e.preventDefault();
+            const field = this.storeFormField;
+            const storeName = this.$refs.storeName;
+            const storePhone = this.$refs.storePhone;
+            const storeCover = this.$refs.storeCover;
+            const storeMenu = this.$refs.storeMenu;
+            
+            field.errors = [];  // 一開始先清空錯誤
+            
+            // 欄位檢查通過
+            if (field.name && field.phone && storeCover.files.length && storeMenu.files.length) {
+                this.addStore();
+            }
+            // 先移除全部錯誤提示CLASS
+            const removeInvalidClass = (() => {
+                [storeName, storePhone].forEach(item => {
+                    item.classList.remove('is-invalid');
+                });
+                [storeCover, storeMenu].forEach(item => {
+                    item.closest('.drop-zone').classList.remove('is-invalid');
+                })
+            })();
+            
+            // Add Invalid Class
+            const fieldValid = (element) => {
+                element.classList.add('is-invalid');
+                element.focus = true;
+            }
+            // 各欄位檢查
+            if (this.$refs.storeCover.files.length) {
+                field.cover = storeCover.files[0];
+            } else {
+                field.errors.push('餐廳封面是必填');
+                fieldValid(storeCover.closest('.drop-zone'));
+            }
+            if (this.$refs.storeMenu.files.length) {
+                field.cover = storeMenu.files[0];
+            } else {
+                field.errors.push('餐廳菜單是必填');
+                fieldValid(storeMenu.closest('.drop-zone'));
+            }
+            if (!field.name) {
+                field.errors.push('餐廳名稱是必填');
+                fieldValid(storeName);
+            }
+            if (!field.phone) {
+                field.errors.push('餐廳電話是必填');
+                fieldValid(storePhone);
+            }
+            
+            if (field.errors.length > 0) {
+                this.smartAlert('錯誤', `${field.errors.join('<br>')}`, 'error');
+            }
+        },
+        // 新增餐廳
+        addStore() {
+            const field = this.storeFormField;
+            const storeCover = this.$refs.storeCover.files[0];
+            const storeMenu = this.$refs.storeMenu.files[0];
+            
+            const addStoreData = new FormData();
+            addStoreData.append('method', 'addStore');
+            addStoreData.append('name', field.name);
+            addStoreData.append('description', field.description);
+            addStoreData.append('phone', field.phone);
+            addStoreData.append('storeFullPrice', field.fullPrice);
+            addStoreData.append('storeTag', field.tags);
+            addStoreData.append('storeCover', storeCover);
+            addStoreData.append('images', storeMenu);
+            const callback = (response) => {
+                response.text()
+                    .then((result) => {
+                        if (result) {
+                            this.smartAlert('新增餐廳成功', `已新增${field.name}<br>將跳轉至首頁`);
+                            window.location.href = 'index.html';
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.smartAlert('新增餐廳失敗', `未新增${field.name}<br>錯誤訊息：${error}`, 'error');
+                    })
+            }
+            this.fetchData(this.ORDER_API, 'POST', callback, addStoreData);
+        },
+        
+    },
+    mounted() {
+        this.dragAndFileUpload();
     }
 }
 
@@ -1073,7 +1247,7 @@ const vueGroupBuy = {
             const callback = (response) => {
                 response.json()
                     .then(data => {
-                        console.log(data);
+                        // console.log(data);
                         this.groupBuyData = data;
                         this.groupBuyDisplay();
                     })
@@ -1081,7 +1255,7 @@ const vueGroupBuy = {
             this.fetchData(`${this.ORDER_API}?res=buy`, 'GET', callback);
         },
         // 團購單顯示
-        groupBuyDisplay(){
+        groupBuyDisplay() {
             // console.log(this.groupBuyData)
         }
     },
@@ -1408,7 +1582,7 @@ const vueOrderOperation = {
                 this.fetchData(this.ORDER_API, 'POST', deleteOrderResultHandler, deleteOrderData);
             }
             
-            this.smartConfirmAlert('你確定要刪除嗎？', '這項操作是沒辦法還原的！', '是的，我要刪除', '', deleteOrderHandler);
+            this.smartConfirm('你確定要刪除嗎？', '這項操作是沒辦法還原的！', '是的，我要刪除', '', deleteOrderHandler);
             
         }
     }
@@ -1459,18 +1633,20 @@ const vueGetAndPost = {
 // 溫馨提示
 const vueAlert = {
     methods: {
-        smartAlert(_title = '', _description = '', _status = 'success') {
-            Swal.fire(
-                _title, _description, _status,
-                // todo 9/10 想加固定時間自動關閉  //
-                // timerProgressBar: true,
-                // https://sweetalert2.github.io/#configuration
-            )
+        smartAlert(_title = '', _description = '', _status = 'success', _timer) {
+            Swal.fire({
+                title: _title,
+                html: _description,
+                icon: _status,
+                timer: _timer ? _timer : 6000,
+                timerProgressBar: true,
+            })
         },
-        smartConfirmAlert(_title = '', _description = '', _confirmText = '', _status, _callback) {
+        smartConfirm(_title = '', _description = '', _confirmText = '', _status, _callback) {
             Swal.fire({
                 title: _title,
                 text: _description,
+                icon: _status,
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',

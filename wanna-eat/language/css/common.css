@@ -1128,4 +1128,43 @@ input[name=order_paymentStatus] + label i {
   margin-right: 7px;
 }
 
+.drop-zone {
+  max-width: 100%;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  border: 2px dashed #009578;
+  color: #ccc;
+  border-radius: 10px;
+}
+.drop-zone--over {
+  border-style: solid;
+}
+.drop-zone__input {
+  display: none;
+}
+.drop-zone__thumb {
+  width: 100%;
+  border-right: 10px;
+  overflow: hidden;
+  position: relative;
+  background-color: #e8e8e8;
+}
+.drop-zone__thumb:after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 5px 0;
+  background: rgba(0, 0, 0, 0.75);
+  font-size: 14px;
+  text-align: center;
+}
+.drop-zone.is-invalid {
+  border: 1px solid #dc3545;
+}
+
 /*# sourceMappingURL=common.css.map */

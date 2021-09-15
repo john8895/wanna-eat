@@ -38,7 +38,11 @@
 
                 <input type="hidden" value="{$store.id}" id="store_id" ref="storeId">
                 <input type="hidden" value="{$order_id}" id="order_id">
-                <div class="title">{$item.store_name}</div>
+                <div class="title">
+                    {$item.store_name}
+                    <a href="https://www.google.com/search?q={$item.store_name}" target="_blank" title="Google 網頁搜尋" class="ml-1 mr-1"><i class="fa fa-search"></i></a>
+                    <a href="https://www.google.com/search?newwindow=1&tbm=isch&q={$item.store_name}" target="_blank" title="Google 圖片搜尋" class="ml-1"><i class="fa fa-images"></i></a>
+                </div>
                 <ul class="sub-title">
                     {if $store.description !=''}
                         <li>

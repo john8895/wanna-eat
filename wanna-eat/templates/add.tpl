@@ -21,20 +21,25 @@
         <div class="container">
             <div class="row pt-4">
                 <div class="col-sm-12">
-                    <form action="add.php" method="post" enctype="multipart/form-data" id="addStoreForm">
-
-                        <div class="">
+                    <form method="post" enctype="multipart/form-data" @submit="checkAddStoreForm">
+                        <div>
                             {if isset($error)}
                                 <div class="form-group text-danger">
                                     {$error}
                                 </div>
                             {/if}
+                            <div class="text-center text-danger" v-if="storeFormField.errors.length">
+                                <b>提示：</b>
+                                <ul>
+                                    <li v-for="error in storeFormField.errors">%% error %%</li>
+                                </ul>
+                            </div>
                             <div class="row">
                                 <label class="col-sm-2 col-form-label text-right">餐廳名稱</label>
                                 <div class="col-sm-10">
                                     <div class="form-group">
                                         <input type="text" name="name"
-                                               class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
+                                               class="form-control" v-model="storeFormField.name" ref="storeName"
                                                {if isset($name)}value="{$name}"{/if} placeholder="請輸入餐廳名稱 *">
                                     </div>
                                 </div>
@@ -44,8 +49,8 @@
                                 <div class="col-sm-10">
                                     <div class="form-group">
                                         <input type="text" name="phone"
-                                               class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
-                                               {if isset($phone)}value="{$phone}"{/if} placeholder="請輸入餐廳電話">
+                                               class="form-control" v-model="storeFormField.phone" ref="storePhone"
+                                               {if isset($phone)}value="{$phone}"{/if} placeholder="請輸入餐廳電話 *">
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +59,7 @@
                                 <label class="col-sm-2 col-form-label text-right">餐廳介紹</label>
                                 <div class="col-sm-10">
                                     <div class="form-group">
-                                        <textarea name="description" cols="30" rows="3" class="form-control"
+                                        <textarea name="description" cols="30" rows="3" class="form-control" v-model="storeFormField.description"
                                                   placeholder="請輸入餐廳介紹">{if isset($description)} {$description} {/if}</textarea>
                                     </div>
                                 </div>
@@ -64,8 +69,8 @@
                                 <label class="col-sm-2 col-form-label text-right">外送金額</label>
                                 <div class="col-sm-10">
                                     <div class="form-group">
-                                        <input type="number" name="store_full_price"
-                                               class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
+                                        <input type="number" name="store_full_price" v-model="storeFormField.fullPrice"
+                                               class="form-control" ref="storeFullPrice"
                                                {if isset($store_full_price)}value="{$store_full_price}"{/if}
                                                placeholder="滿多少錢才可外送，不限制請輸入 0">
                                     </div>
@@ -76,8 +81,8 @@
                                 <label class="col-sm-2 col-form-label text-right">標籤</label>
                                 <div class="col-sm-10">
                                     <div class="form-group">
-                                        <input type="text" name="store_tag"
-                                               class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
+                                        <input type="text" name="store_tag" v-model="storeFormField.tags"
+                                               class="form-control"
                                                {if isset($store_tag)}value="{$store_tag}"{/if}
                                                placeholder="標籤分類，輸入多個標籤請以逗號「,」分隔">
                                     </div>
@@ -85,37 +90,36 @@
                             </div>
 
                             <div class="row">
-                                <label class="col-sm-2 col-form-label text-right">上傳封面</label>
+                                <label class="col-sm-2 col-form-label text-right">上傳封面 *</label>
                                 <div class="col-sm-10">
                                     <div class="form-group">
-                                        <input type="file" name="store_cover" class="form-control-file" id="input_addStoreCover">
-                                        <small class="form-text text-muted">
-                                            請上傳圖片類型檔案，大小不超過 1 MB
-                                        </small>
-                                        <div id="store_cover_preview"></div>
+
+                                        <div class="drop-zone">
+                                            <span class="drop-zone__prompt">拖移檔案至此或點選上傳圖片，大小不超過 1 MB</span>
+                                            <input type="file" name="store_cover" class="form-control-file drop-zone__input" ref="storeCover">
+                                        </div>
+{*                                        <div id="store_cover_preview"></div>*}
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-
-                        <div class="mt-5">
-                            <div class="text-center">
-                                <div class="sec-title">
-                                    <h3>上傳菜單</h3>
-                                    <div class="sub-title">Restaurant menu upload</div>
-                                </div>
-                            </div>
-
+                        <div>
+{*                            <div class="text-center">*}
+{*                                <div class="sec-title">*}
+{*                                    <h3>上傳菜單</h3>*}
+{*                                    <div class="sub-title">Restaurant menu upload</div>*}
+{*                                </div>*}
+{*                            </div>*}
                             <div class="row mt-4">
-                                <label class="col-sm-2 col-form-label text-right">上傳菜單</label>
+                                <label class="col-sm-2 col-form-label text-right">上傳菜單 *</label>
                                 <div class="col-sm-10">
                                     <div class="form-group">
-                                        <input type="file" name="images" class="form-control-file" id="input_addStoreMenu">
-                                        <small class="form-text text-muted">
-                                            請上傳圖片類型檔案，大小不超過 1 MB
-                                        </small>
-                                        <div id="store_menu_preview"></div>
+                                        <div class="drop-zone">
+                                            <span class="drop-zone__prompt">拖移檔案至此或點選上傳圖片，大小不超過 1 MB</span>
+                                            <input type="file" name="images" class="form-control-file drop-zone__input" ref="storeMenu">
+                                        </div>
+{*                                        <div id="store_menu_preview"></div>*}
                                     </div>
                                 </div>
                             </div>
