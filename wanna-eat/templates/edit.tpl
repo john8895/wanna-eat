@@ -1,154 +1,141 @@
 {include file="head.tpl"}
 {include file="header.tpl"}
-<main>
+<main class="page__add-res">
     <div class="inner__banner">
         <div class="container">
             <div class="d-flex justify-content-between">
-                <h1 class="title">修改餐廳資訊</h1>
+                <h1 class="title">修改餐廳</h1>
 
                 <nav class="jh-breadcrumb">
                     <ol>
                         <li><a href="index.php">首頁</a></li>
-                        <li>修改餐廳資訊</li>
+                        <li>修改餐廳</li>
                     </ol>
                 </nav>
 
             </div>
         </div>
     </div>
-    <div class="container innerPage-section">
-        <div class="row pt-4">
-            <div class="col-sm-12">
-                <form action="edit.php" method="post" enctype="multipart/form-data" id="addStoreForm">
-                    <div class="">
-                        {if isset($error)}
-                            <div class="form-group text-danger">
-                                {$error}
-                            </div>
-                        {/if}
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label text-right">餐廳名稱</label>
-                            <div class="col-sm-10">
-                                <div class="form-group">
-                                    <input type="hidden" name="id" value="{$item.id}">
-                                    <input type="text" name="name"
-                                           class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
-                                           value="{$item.name}"
-                                           placeholder="請輸入店家名稱">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label text-right">餐廳電話</label>
-                            <div class="col-sm-10">
-                                <div class="form-group">
-                                    <input type="text" name="phone"
-                                           class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
-                                           value="{$item.phone}"
-                                           placeholder="請輸入店家電話">
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label text-right">餐廳介紹</label>
-                            <div class="col-sm-10">
-                                <div class="form-group">
-                                        <textarea name="description" cols="30" rows="2"
-                                                  class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
-                                                  placeholder="請輸入店家介紹">{$item.description}</textarea>
+    <section>
+        <div class="container">
+            <div class="row pt-4">
+                <div class="col-sm-12">
+                    <form method="post" enctype="multipart/form-data" @submit="checkStoreForm($event, 'editStore')">
+                        <div>
+                            <div class="text-center text-danger" v-if="storeFormField.errors.length">
+                                <ul>
+                                    <li v-for="error in storeFormField.errors">%% error %%</li>
+                                </ul>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-2 col-form-label text-right">餐廳名稱</label>
+                                <div class="col-sm-10">
+                                    <div class="form-group">
+                                        <input type="hidden" ref="editStore">
+                                        <input type="text" name="name"
+                                               class="form-control" v-model="editStoreData.name" ref="storeName"
+                                               placeholder="請輸入餐廳名稱 *">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label text-right">外送金額</label>
-                            <div class="col-sm-10">
-                                <div class="form-group">
-                                    <input name="store_full_price"
-                                           class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
-                                           placeholder="請輸入外送金額" value="{$item.store_full_price}">
+                            <div class="row">
+                                <label class="col-sm-2 col-form-label text-right">餐廳電話</label>
+                                <div class="col-sm-10">
+                                    <div class="form-group">
+                                        <input type="text" name="phone"
+                                               class="form-control" v-model="editStoreData.phone" ref="storePhone"
+                                               placeholder="請輸入餐廳電話 *">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label text-right">標籤</label>
-                            <div class="col-sm-10">
-                                <div class="form-group">
-                                    <input type="text" name="store_tag"
-                                           class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
-                                           value="{$item.store_tag}"
-                                           placeholder="">
+                            <div class="row">
+                                <label class="col-sm-2 col-form-label text-right">餐廳介紹</label>
+                                <div class="col-sm-10">
+                                    <div class="form-group">
+                                        <textarea name="description" cols="30" rows="3" class="form-control" v-model="editStoreData.description"
+                                                  placeholder="請輸入餐廳介紹"></textarea>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row">
-                            <label class="col-sm-2 col-form-label text-right">上傳/更新封面</label>
-                            <div class="col-sm-10">
-                                <div class="form-group">
-                                    <input type="file" name="store_cover" class="form-control-file" id="input_addStoreCover">
-                                    <small class="form-text text-muted">
-                                        請上傳圖片類型檔案，大小不超過 1 MB
-                                    </small>
-                                    <div id="store_cover_preview">
-                                        <div class="image mt-3 img-thumbnail img-fluid" style="max-width: 300px">
-                                            {if isset($item.store_cover)}
-                                                <img src="{$item.store_cover}" alt="">
-                                            {else}
-                                                <img src="http://fakeimg.pl/300x300" alt="">
-                                            {/if}
+                            <div class="row">
+                                <label class="col-sm-2 col-form-label text-right">外送金額</label>
+                                <div class="col-sm-10">
+                                    <div class="form-group">
+                                        <input type="number" name="store_full_price" v-model="editStoreData.store_full_price"
+                                               class="form-control" ref="storeFullPrice"
+                                               placeholder="滿多少錢才可外送，不限制請輸入 0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-sm-2 col-form-label text-right">標籤</label>
+                                <div class="col-sm-10">
+                                    <div class="form-group">
+                                        <input type="text" name="store_tag" v-model="editStoreData.store_tag"
+                                               class="form-control"
+                                               placeholder="標籤分類，輸入多個標籤請以逗號「,」分隔">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-sm-2 col-form-label text-right">上傳封面 *</label>
+                                <div class="col-sm-10">
+                                    <div class="form-group">
+
+                                        <div class="drop-zone">
+                                            {*                                            <span class="drop-zone__prompt">拖移檔案至此或點選上傳圖片，大小不超過 1 MB</span>*}
+                                            <input type="file" name="store_cover" @change="this.value = editStoreData.store_cover" class="form-control-file drop-zone__input" ref="storeCover">
+                                            <div class="drop-zone__thumb"><img :src="editStoreData.store_cover" alt=""></div>
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-12 mt-5 text-center">
-                        <div class="sec-title">
-                            <h3>更新菜單</h3>
-                            <div class="sub-title">Restaurant menu update</div>
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <label class="col-sm-2 col-form-label text-right">上傳/更新菜單</label>
-                        <div class="col-sm-10">
-                            <div class="form-group">
-                                <input type="file" name="images" class="form-control-file" id="input_addStoreMenu">
-                                <small class="form-text text-muted">
-                                    請上傳圖片類型檔案，大小不超過 1 MB
-                                </small>
-                                <div id="store_menu_preview">
-                                    {if isset($item.images)}
-                                        <img src="{$item.images}" alt="" class="img-thumbnail">
-                                    {else}
-                                        <img src="http://fakeimg.pl/300x300" alt="" class="img-thumbnail">
-                                    {/if}
+
+                        <div class="row mt-4">
+                            <label class="col-sm-2 col-form-label text-right">上傳菜單 *</label>
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <div class="drop-zone">
+{*                                        <span class="drop-zone__prompt">拖移檔案至此或點選上傳圖片，大小不超過 1 MB</span>*}
+                                        <input type="file" name="images" @change="this.value = editStoreData.images" class="form-control-file drop-zone__input" ref="storeMenu">
+                                        <div class="drop-zone__thumb"><img :src="editStoreData.images" alt=""></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-default mb-2">確認修改</button>
-                    </div>
 
-                </form>
-            </div>
+                        <div class="form-group text-center mt-4">
+                            <button type="submit" class="btn btn-default">確定修改</button>
+                        </div>
 
+                        <div class="row mt-4">
+                            <div class="col-sm-4">
+                                <div class="mb-2"><i class="fa fa-file-image mr-2"></i>縮圖小幫手</div>
+                                <div class="form-group">
+                                    <div class="drop-zone">
+                                        <span class="drop-zone__prompt">拖移大圖至此幫你圖縮小</span>
+                                        <input type="file" name="images" class="form-control-file drop-zone__input resize-image" ref="resizeImage">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <div class="col-sm-12">
-                <a href="javascript:window.history.back()" class="btn btn-dark mt-5 px-3 rounded-0">
-                    <i class="fas fa-reply mr-2"></i>回上一頁
-                </a>
+                    </form>
+                </div>
+                <div class="col-sm-12">
+                    <a href="javascript:window.history.back()" class="btn btn-dark mt-5 px-3 rounded-0">
+                        <i class="fas fa-reply mr-2"></i>回上一頁
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-
-
-    </div>
+    </section>
 </main>
 {include file="footer.tpl"}
 {include file="js.tpl"}

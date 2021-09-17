@@ -35,9 +35,3 @@ class Connection
         return $sth->errorCode() != '0000';
     }
 }
-
-//$conn = new Connection();
-//$sql = "SELECT * FROM group_buy WHERE id=:id";
-//$sth = $conn->query($sql);
-//$sth->execute(array(':id' => '200705164726'));
-//print_r($sth->fetchAll());

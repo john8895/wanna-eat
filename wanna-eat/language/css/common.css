@@ -996,10 +996,6 @@ input[name=order_paymentStatus] + label i {
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.08);
 }
 
-.card-body {
-  padding: 5px 1.25rem 1.23rem;
-}
-
 .order-total .th:first-child {
   background-color: #f5f5f5;
 }
@@ -1136,7 +1132,7 @@ input[name=order_paymentStatus] + label i {
   text-align: center;
   cursor: pointer;
   border: 2px dashed #009578;
-  color: #ccc;
+  color: #757575;
   border-radius: 10px;
 }
 .drop-zone--over {

@@ -21,15 +21,9 @@
         <div class="container">
             <div class="row pt-4">
                 <div class="col-sm-12">
-                    <form method="post" enctype="multipart/form-data" @submit="checkAddStoreForm">
+                    <form method="post" enctype="multipart/form-data" @submit="checkStoreForm($event, 'addStore')">
                         <div>
-                            {if isset($error)}
-                                <div class="form-group text-danger">
-                                    {$error}
-                                </div>
-                            {/if}
                             <div class="text-center text-danger" v-if="storeFormField.errors.length">
-                                <b>提示：</b>
                                 <ul>
                                     <li v-for="error in storeFormField.errors">%% error %%</li>
                                 </ul>
@@ -98,28 +92,18 @@
                                             <span class="drop-zone__prompt">拖移檔案至此或點選上傳圖片，大小不超過 1 MB</span>
                                             <input type="file" name="store_cover" class="form-control-file drop-zone__input" ref="storeCover">
                                         </div>
-{*                                        <div id="store_cover_preview"></div>*}
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div>
-{*                            <div class="text-center">*}
-{*                                <div class="sec-title">*}
-{*                                    <h3>上傳菜單</h3>*}
-{*                                    <div class="sub-title">Restaurant menu upload</div>*}
-{*                                </div>*}
-{*                            </div>*}
-                            <div class="row mt-4">
-                                <label class="col-sm-2 col-form-label text-right">上傳菜單 *</label>
-                                <div class="col-sm-10">
-                                    <div class="form-group">
-                                        <div class="drop-zone">
-                                            <span class="drop-zone__prompt">拖移檔案至此或點選上傳圖片，大小不超過 1 MB</span>
-                                            <input type="file" name="images" class="form-control-file drop-zone__input" ref="storeMenu">
-                                        </div>
-{*                                        <div id="store_menu_preview"></div>*}
+                        <div class="row mt-4">
+                            <label class="col-sm-2 col-form-label text-right">上傳菜單 *</label>
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <div class="drop-zone">
+                                        <span class="drop-zone__prompt">拖移檔案至此或點選上傳圖片，大小不超過 1 MB</span>
+                                        <input type="file" name="images" class="form-control-file drop-zone__input" ref="storeMenu">
                                     </div>
                                 </div>
                             </div>
@@ -127,6 +111,18 @@
 
                         <div class="form-group text-center mt-4">
                             <button type="submit" class="btn btn-default">新增餐廳</button>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-sm-4">
+                                <div class="mb-2"><i class="fa fa-file-image mr-2"></i>縮圖小幫手</div>
+                                <div class="form-group">
+                                    <div class="drop-zone">
+                                        <span class="drop-zone__prompt">拖移大圖至此幫你圖縮小</span>
+                                        <input type="file" name="images" class="form-control-file drop-zone__input" ref="resizeImage">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </form>

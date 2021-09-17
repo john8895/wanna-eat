@@ -79,6 +79,7 @@
                     </li>
 
                 </ul>
+{*                todo: 9/17 要改成全前端*}
                 {if isset($logged) && $logged}
                     {if !$time_up}
                         <div class="text-left mt-4">
@@ -96,7 +97,7 @@
                 {if isset($store.store_cover)}
                     <img src="{$store.store_cover}" alt="" class="img-fluid img-thumbnail">
                 {else}
-                    <img src="./language/img/fake_store_img.jpg" alt="" class="img-fluid img-thumbnail">
+                    <img src="./language/img/noimg.jpg" alt="" class="img-fluid img-thumbnail">
                 {/if}
             </div>
         </div>
@@ -111,9 +112,13 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <a href="{$store.images}" title="" target="_blank">
-                        <img src="{$store.images}" alt="" class="img-fluid img-thumbnail" style="max-height: 1000px">
-                    </a>
+                    {if isset($store.images)}
+                        <a href="{$store.images}" title="" target="_blank">
+                            <img src="{$store.images}" alt="" class="img-fluid img-thumbnail" style="max-height: 1000px">
+                        </a>
+                    {else}
+                        <img src="./language/img/noimg.jpg" alt="" class="img-fluid img-thumbnail">
+                    {/if}
                 </div>
             </div>
         </div>

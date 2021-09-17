@@ -767,9 +767,9 @@ input[name=order_paymentStatus] {
     }
 }
 
-.card-body {
-    padding: 5px 1.25rem 1.23rem;
-}
+//.card-body {
+//    padding: 5px 1.25rem 1.23rem;
+//}
 
 .order-total {
     .th {
@@ -954,7 +954,7 @@ input[name=order_paymentStatus] {
     text-align: center;
     cursor: pointer;
     border: 2px dashed #009578;
-    color: #ccc;
+    color: #757575;
     border-radius: 10px;
 
     &--over {

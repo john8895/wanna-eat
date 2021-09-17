@@ -7,20 +7,8 @@ require_once('assets/include/store.inc.php');
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
-//    $method = $_GET['method'];
-//    $store = new Store();
-//
-//    switch ($method){
-//        case 'getStoreById':
-//            $store->getStoreById();
-//        break;
-//
-//        default:
-//        break;
-//    }
-
     foreach ($_GET as $key => $value) {
+        $store = new Store();
 
         switch ($key) {
             case 'res':
@@ -66,10 +54,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             case 'del':
                 deleteOrder();
                 break;
+            case 'request':
+                switch ($value) {
+                    case 'getOrdersById':
+                        $store->getStoreById();
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
             // Close Order
             default:
                 break;
         }
+
     }
 }
 
@@ -81,6 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($method) {
         case 'addStore':
             $store->addStore();
+            break;
+        case 'editStore':
+            $store->editStore();
             break;
         case 'postOrder':
             $order->postOrder();

@@ -1,10 +1,6 @@
-import {Order} from './include/order.inc.js';
-
+// import {Order} from './include/order.inc.js';
 // import { orderApp } from './include/order.app.js';
 
-/**
- * SweetAlert Class
- */
 class SwalAlert {
     constructor(title, description, confirmText, status, callbackFunc) {
         this.status = status;
@@ -441,7 +437,6 @@ $(function () {
                 groupText = '進行中團購&nbsp;&nbsp;';
             }
             
-            // todo 9/11 要改vue寫法
             // if (groupBuyData.length === 0) {
             //     $('#current_groupBuy').text('目前還沒有團購 :(').addClass('text-center');
             // } else {
@@ -1061,49 +1056,77 @@ const vueStore = {
                 fullPrice: 0,
                 tags: [],
                 errors: [],
-            }
+            },
+            editStoreData: {}
         }
     },
     methods: {
         // 拖移上傳圖片及縮圖處理
         dragAndFileUpload() {
+            const ref = this;
             document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
                 const dropZoneElement = inputElement.closest(".drop-zone");
+                // const resizeImage = ref.$refs.resizeImage || 0;
+                // console.log(resizeImage)
                 
-                // 點選input
-                dropZoneElement.addEventListener("click", (e) => {
-                    inputElement.click();
-                });
-                // Change Event
-                inputElement.addEventListener("change", (e) => {
-                    if (inputElement.files.length) {
-                        updateThumbnail(dropZoneElement, inputElement.files[0]);
-                    }
-                });
-                // 改變樣式：拖移圖片至區域
+                /*********************
+                 * 改變樣式
+                 ********************/
+                // 拖移圖片至區域
                 dropZoneElement.addEventListener("dragover", (e) => {
                     e.preventDefault();
                     dropZoneElement.classList.add("drop-zone--over");
                 });
-                // 改變樣式：拖移圖片離開
+                // 拖移圖片離開
                 ["dragleave", "dragend"].forEach((type) => {
                     dropZoneElement.addEventListener(type, (e) => {
                         dropZoneElement.classList.remove("drop-zone--over");
                     });
                 });
                 
+                /*********************
+                 * 觸發事件  Change Event
+                 ********************/
+                dropZoneElement.addEventListener("click", (e) => {
+                    inputElement.click();  // 點選input
+                });
+                
+                // 點選 input 事件
+                inputElement.addEventListener("change", (e) => {
+                    if (inputElement.files.length) {
+                        if (!fileSizeValid(inputElement.files[0])) return;  // 驗證檔案大小及產生縮圖
+                    }
+                });
+                // 拖移事件
                 dropZoneElement.addEventListener("drop", (e) => {
                     e.preventDefault();
                     
                     if (e.dataTransfer.files.length) {
-                        // console.log(e.dataTransfer.files)
-                        inputElement.files = e.dataTransfer.files;
-                        // 產生縮圖
-                        updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+                        if (!fileSizeValid(e.dataTransfer.files[0])) return;  // 驗證檔案大小及產生縮圖
                     }
                     dropZoneElement.classList.remove("drop-zone--over");
                 });
+                
+                /*********************
+                 * 檔案大小驗證
+                 ********************/
+                const fileSizeValid = (_file) => {
+                    // 縮圖小幫手  如果有特定 class
+                    if (inputElement.classList.contains('resize-image')) {
+                        ref.imageResize(dropZoneElement, _file);
+                        return false;
+                    }
+                    
+                    const size = parseInt(_file.size / 1000);
+                    if (size > 1000) {
+                        ref.smartAlert('提示', '上傳圖檔超過 1MB，請縮圖後再上傳，謝謝', 'error');
+                        return false;
+                    }
+                    // 生成縮圖
+                    updateThumbnail(dropZoneElement, _file);
+                }
             });
+            
             
             // 產生縮圖
             function updateThumbnail(dropZoneElement, file) {
@@ -1114,16 +1137,30 @@ const vueStore = {
                     dropZoneElement.querySelector(".drop-zone__prompt").remove();
                 }
                 
-                // first time
+                // first time 第一次進入
                 if (!thumbnailElement) {
                     thumbnailElement = document.createElement("div");
                     thumbnailElement.classList.add("drop-zone__thumb");
                     dropZoneElement.appendChild(thumbnailElement);
                 }
                 
-                thumbnailElement.dataset.label = file.name;
+                thumbnailElement.dataset.label = `${file.name} / ${parseInt(file.size / 1000)}KB`;
                 
                 // Show thumbnail for image files  顯示縮圖在區域
+                // if (file.type.startsWith("image/")) {
+                //     ref.imageResize(thumbnailElement, file)
+                //     // const source = ref.imageResize(thumbnailElement, file);
+                //     // while (thumbnailElement.firstChild) {  // 移除上次置入的圖片
+                //     //         thumbnailElement.firstChild.remove();
+                //     //     }
+                //     //     const img = new Image();
+                //     //     img.src = source;
+                //     //     thumbnailElement.appendChild(img);
+                // }
+                
+                /*********************
+                 * 顯示縮圖在區域
+                 ********************/
                 if (file.type.startsWith("image/")) {
                     const reader = new FileReader();
                     reader.readAsDataURL(file);
@@ -1131,20 +1168,86 @@ const vueStore = {
                         while (thumbnailElement.firstChild) {  // 移除上次置入的圖片
                             thumbnailElement.firstChild.remove();
                         }
-                        // thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
-                        const img = new Image();
+                        // const img = new Image();
+                        const img = document.createElement("img");
                         img.src = reader.result;
                         thumbnailElement.appendChild(img);
                     };
-                } else {
-                    // thumbnailElement.style.backgroundImage = null;
                 }
             }
         },
+        // 圖片縮圖
+        imageResize(dropZoneElement, file) {
+            const ref = this;
+            if (!file) throw new Error("file is required");  // 如果沒有 file 扔出錯誤
+            
+            let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+            
+            // first time 第一次進入
+            if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+                dropZoneElement.querySelector(".drop-zone__prompt").remove();
+            }
+            
+            // first time 第一次進入
+            if (!thumbnailElement) {
+                thumbnailElement = document.createElement("div");
+                thumbnailElement.classList.add("drop-zone__thumb");
+                dropZoneElement.appendChild(thumbnailElement);
+            }
+            
+            const reader = new FileReader();
+            reader.readAsDataURL(file);  // 將圖片編碼成 Data URL
+            
+            reader.onload = function (event) {
+                const imageElement = document.createElement("img");
+                imageElement.src = event.target.result.toString();
+                
+                /*********************
+                 * 圖片縮小
+                 ********************/
+                imageElement.onload = function (e) {
+                    const canvas = document.createElement("canvas");
+                    const MAX_WIDTH = 750;  // 最大寬度
+                    const scaleSize = MAX_WIDTH / e.target.width; // ex:0.6 得到縮小比例
+                    const ctx = canvas.getContext("2d");
+                    
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = e.target.height * scaleSize; // 等比高度
+                    // 繪圖
+                    ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
+                    
+                    // 輸出圖檔 (toBlob 可處理10MB以上檔案)
+                    canvas.toBlob(
+                        (blob) => {
+                            // resultUrl =  URL.createObjectURL(blob);
+                            const url = URL.createObjectURL(blob);
+                            // 移除
+                            while (thumbnailElement.firstChild) {
+                                thumbnailElement.firstChild.remove();
+                            }
+                            
+                            const img = document.createElement("img");
+                            img.src = reader.result;
+                            thumbnailElement.appendChild(img);
+                            
+                            // 建立下載連結
+                            const link = document.createElement("a");
+                            const fileName = new Date().getTime();  // 生成不重覆檔名
+                            link.href = url;
+                            link.download = `download-${fileName}.jpg`;
+                            link.click();
+                            URL.revokeObjectURL(url);
+                        },
+                        "image/jpeg",
+                        1
+                    );
+                };
+            };
+        },
         // 新增餐廳 驗證
-        checkAddStoreForm(e) {
+        checkStoreForm(e, method = '') {
             e.preventDefault();
-            const field = this.storeFormField;
+            const field = method === 'addStore' ? this.storeFormField : this.editStoreData;
             const storeName = this.$refs.storeName;
             const storePhone = this.$refs.storePhone;
             const storeCover = this.$refs.storeCover;
@@ -1153,9 +1256,14 @@ const vueStore = {
             field.errors = [];  // 一開始先清空錯誤
             
             // 欄位檢查通過
-            if (field.name && field.phone && storeCover.files.length && storeMenu.files.length) {
+            if (method === 'addStore' && field.name && field.phone && storeCover.files.length && storeMenu.files.length) {
                 this.addStore();
             }
+            if (method === 'editStore' && field.name && field.phone) {
+                this.editStore();
+            }
+            
+            
             // 先移除全部錯誤提示CLASS
             const removeInvalidClass = (() => {
                 [storeName, storePhone].forEach(item => {
@@ -1167,31 +1275,61 @@ const vueStore = {
             })();
             
             // Add Invalid Class
-            const fieldValid = (element) => {
+            const fieldIsInvalidClassAdd = (element) => {
                 element.classList.add('is-invalid');
                 element.focus = true;
             }
-            // 各欄位檢查
-            if (this.$refs.storeCover.files.length) {
-                field.cover = storeCover.files[0];
-            } else {
-                field.errors.push('餐廳封面是必填');
-                fieldValid(storeCover.closest('.drop-zone'));
+            
+            // 新增餐廳  驗證欄位
+            const addStoreFieldValidation = () => {
+                // 各欄位檢查
+                if (this.$refs.storeCover.files.length) {
+                    field.cover = storeCover.files[0];
+                } else {
+                    field.errors.push('餐廳封面是必填');
+                    fieldIsInvalidClassAdd(storeCover.closest('.drop-zone'));
+                }
+                if (this.$refs.storeMenu.files.length) {
+                    field.cover = storeMenu.files[0];
+                } else {
+                    field.errors.push('餐廳菜單是必填');
+                    fieldIsInvalidClassAdd(storeMenu.closest('.drop-zone'));
+                }
+                if (!field.name) {
+                    field.errors.push('餐廳名稱是必填');
+                    fieldIsInvalidClassAdd(storeName);
+                }
+                if (!field.phone) {
+                    field.errors.push('餐廳電話是必填');
+                    fieldIsInvalidClassAdd(storePhone);
+                }
             }
-            if (this.$refs.storeMenu.files.length) {
-                field.cover = storeMenu.files[0];
-            } else {
-                field.errors.push('餐廳菜單是必填');
-                fieldValid(storeMenu.closest('.drop-zone'));
+            
+            // 修改餐廳  驗證欄位
+            const editStoreFieldValidation = () => {
+                if (this.$refs.storeCover.files.length) {
+                    field.cover = storeCover.files[0];
+                }  // else field.cover = null;
+                if (this.$refs.storeMenu.files.length) {
+                    field.cover = storeMenu.files[0];
+                }
+                if (!this.$refs.storeName.value) {
+                    field.errors.push('餐廳名稱是必填');
+                    fieldIsInvalidClassAdd(storeName);
+                } else {
+                    field.name = this.$refs.storeName.value;
+                }
+                if (!this.$refs.storePhone.value) {
+                    field.errors.push('餐廳電話是必填');
+                    fieldIsInvalidClassAdd(storePhone);
+                } else {
+                    field.phone = this.$refs.storePhone.value;
+                }
             }
-            if (!field.name) {
-                field.errors.push('餐廳名稱是必填');
-                fieldValid(storeName);
-            }
-            if (!field.phone) {
-                field.errors.push('餐廳電話是必填');
-                fieldValid(storePhone);
-            }
+            
+            if (method === 'addStore') addStoreFieldValidation();
+            if (method === 'editStore') editStoreFieldValidation();
+            
             
             if (field.errors.length > 0) {
                 this.smartAlert('錯誤', `${field.errors.join('<br>')}`, 'error');
@@ -1215,9 +1353,15 @@ const vueStore = {
             const callback = (response) => {
                 response.text()
                     .then((result) => {
-                        if (result) {
+                        if (result === '1') {
                             this.smartAlert('新增餐廳成功', `已新增${field.name}<br>將跳轉至首頁`);
-                            window.location.href = 'index.html';
+                            setTimeout(() => {
+                                window.location.href = './index.php';
+                            }, 3000)
+                        } else if (result === '2') {
+                            this.smartAlert('圖檔過大', '請檢查要上傳的檔案', 'error');
+                        } else {
+                            this.smartAlert('後端檢查失敗', `錯誤訊息：${result}`, 'error');
                         }
                     })
                     .catch((error) => {
@@ -1227,10 +1371,71 @@ const vueStore = {
             }
             this.fetchData(this.ORDER_API, 'POST', callback, addStoreData);
         },
-        
+        // 修改餐廳
+        editStore() {
+            const field = this.editStoreData;
+            const storeCover = this.$refs.storeCover.files[0] || 0;
+            const storeMenu = this.$refs.storeMenu.files[0] || 0;
+            const storeId = this.getUrlId();  // 取得 Store Id
+            
+            const editStoreData = new FormData();
+            editStoreData.append('method', 'editStore');
+            editStoreData.append('id', storeId);
+            editStoreData.append('name', field.name);
+            editStoreData.append('description', field.description);
+            editStoreData.append('phone', field.phone);
+            editStoreData.append('storeFullPrice', field.store_full_price);
+            editStoreData.append('storeTag', field.store_tag);
+            if(storeCover) editStoreData.append('storeCover', storeCover);
+            if(storeMenu) editStoreData.append('images', storeMenu);
+            const callback = (response) => {
+                response.text()
+                    .then((result) => {
+                        if (result === '1') {
+                            this.smartAlert('修改餐廳成功', `已修改${field.name}<br>將跳轉至首頁`);
+                            setTimeout(() => {
+                                window.location.href = './index.php';
+                            }, 3000)
+                        } else if (result === '2') {
+                            this.smartAlert('圖檔過大', '請檢查要上傳的檔案', 'error');
+                        } else {
+                            this.smartAlert('後端檢查失敗', `錯誤訊息：${result}`, 'error');
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.smartAlert('新增餐廳失敗', `未新增${field.name}<br>錯誤訊息：${error}`, 'error');
+                    })
+            }
+            this.fetchData(this.ORDER_API, 'POST', callback, editStoreData);
+        },
+        // 顯示餐廳
+        showStoreById() {
+            const storeId = this.getUrlId();  // 取得 Store Id
+            
+            const callback = (response) => {
+                response.json()
+                    .then(result => {
+                        console.log(result);
+                        this.editStoreData = result[0];
+                    })
+                    .catch((error) => {
+                        throw new Error(`讀取遠端資料失敗：${error}`);
+                    })
+            }
+            this.fetchData(`${this.ORDER_API}?request=getOrdersById&storeId=${storeId}`, 'GET', callback);
+        },
+        // 取得網址帶的id
+        getUrlId(){
+            const url = window.location.href.split('?')[1];
+            if (!url) return;
+            return url.split('?').join().substr(3);  // 取得 Store Id
+        }
     },
     mounted() {
-        this.dragAndFileUpload();
+        if (document.querySelector('.drop-zone__input')) this.dragAndFileUpload();  // 拖移圖片區域  @addOrder
+        if (this.$refs.editStore) this.showStoreById();
+        
     }
 }
 
@@ -1288,6 +1493,7 @@ const vueSetState = {
         },
         // 結束訂單
         endOrderTimeHandler() {
+            const ref = this;
             const orderEndTime = this.$refs['order_endTime'];
             const endTime = new Date(orderEndTime.textContent);
             const today = new Date();
@@ -1312,8 +1518,7 @@ const vueSetState = {
             function closeOrderHandler(res) {
                 console.log(res)
                 if (res) {
-                    const success = new SwalAlert('已收單', '此單已無法增加訂單')
-                    success.fire();
+                    ref.smartAlert('已收單', '此單已無法增加訂單', 'success');
                     setTimeout(function () {
                         location.reload()
                     }, 2000)
@@ -1322,6 +1527,8 @@ const vueSetState = {
         },
         // 繼續訂單
         continueOrderTimeHandler(orderId) {
+            const ref = this;
+            
             // 從資料庫取出結束時間， 加上比今天多一點時間，再寫回資料庫
             const currentTime = new Date();
             currentTime.setHours(currentTime.getHours() + 4);
@@ -1340,7 +1547,7 @@ const vueSetState = {
             function getOrderEndTimeHandler(res) {
                 console.log(res)
                 if (res) {
-                    const success = new SwalAlert('已恢復訂單', '可以繼續訂購').fire()
+                    ref.smartAlert('已恢復訂單', '可以繼續訂購', 'success');
                     setTimeout(function () {
                         location.reload()
                     }, 2000)
@@ -1407,8 +1614,6 @@ const vueOrderDisplay = {
         ordersDisplay(orderData) {
             orderData.json()
                 .then(orderData => {
-                    console.log(orderData)
-                    
                     this.ordersData = orderData;
                     this.calculateOrders(orderData);
                 })
@@ -1588,78 +1793,6 @@ const vueOrderOperation = {
     }
 }
 
-// POST與GET 操作
-const vueGetAndPost = {
-    data() {
-        const ORDER_API = 'group_buy_api.php';
-        return {
-            ORDER_API,
-        }
-    },
-    methods: {
-        fetchData(_api = '', _method = 'GET', _callback, _body = undefined) {
-            // 狀態校驗
-            function processStatus(response) {
-                if (response.status === 200 || response.status === 0) {
-                    return Promise.resolve(response);
-                } else {
-                    return Promise.reject(new Error(response.statusText));
-                }
-            }
-            
-            const option = {
-                method: _method === 'POST' ? 'POST' : 'GET',
-            }
-            // console.log(_body)
-            
-            if (_body) option['body'] = _body;
-            // console.log(option)
-            
-            
-            fetch(_api, option)
-                .then(processStatus)
-                .then((response) => {
-                    // console.log(response)
-                    _callback(response);
-                    return true;
-                }).catch(err => {
-                console.log(err, _callback);
-                return false;
-            })
-        }
-    }
-}
-
-// 溫馨提示
-const vueAlert = {
-    methods: {
-        smartAlert(_title = '', _description = '', _status = 'success', _timer) {
-            Swal.fire({
-                title: _title,
-                html: _description,
-                icon: _status,
-                timer: _timer ? _timer : 6000,
-                timerProgressBar: true,
-            })
-        },
-        smartConfirm(_title = '', _description = '', _confirmText = '', _status, _callback) {
-            Swal.fire({
-                title: _title,
-                text: _description,
-                icon: _status,
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: _confirmText
-            }).then((result) => {
-                if (result.value) {
-                    _callback();
-                }
-            })
-        }
-    }
-}
-
 // 訂單統計
 const vueOrderCalculator = {
     data() {
@@ -1675,10 +1808,15 @@ const vueOrderCalculator = {
         }
     },
     methods: {
-        // 訂單統計，合併相同餐點
+        /**************************
+         * 訂單統計  合併相同餐點
+         *************************/
         calculateOrders(orderData) {
-            this.calcOrdersTotal(orderData);  // 計算訂單細節
+            this.calcOrdersTotal(orderData);  // 計算訂單總計、不重覆購買人
+            this.getStoreDeliveryAmount();  // 計算外送門檻
+            
             /*
+             * 【功能】
              * 1.同名餐點、價格合併，數量、小計加總，記錄所有訂購人
              * 2.同名餐點但備註不同要分別列出：餐點名稱、數量、單價、訂購人、備註
              * 3.訂單總計
@@ -1686,6 +1824,8 @@ const vueOrderCalculator = {
              */
             let subTotalNum = 0;
             let obj = {};
+    
+            // 合併相同餐點
             orderData.forEach((order) => {
                 const id = order.order_meal;  // 雞排飯
                 let _remark = order.order_remark;  // 備註
@@ -1694,9 +1834,9 @@ const vueOrderCalculator = {
                 
                 if (_remark === '' || _remark === null) _remark = '';
                 
-                // 如果訂單中有同名的餐點，就合併計數與加總
-                if (obj.hasOwnProperty(id)) {
-                    subTotalNum = obj[id].subTotal + _orderPrice;
+                // 有同名餐點就合併計數與加總
+                if (obj.hasOwnProperty(id)) {  // object.hasOwnProperty() 搜尋物件內的 key
+                    subTotalNum = obj[id].subTotal + (_orderPrice * _orderNumber);
                     obj[id].buyerName.push(order.order_name);  // 全部訂購人
                     obj[id].remarks.push({
                         'buyerName': order.order_name,
@@ -1712,13 +1852,14 @@ const vueOrderCalculator = {
                         'buyerName': obj[id].buyerName,
                         'remarks': obj[id].remarks,
                     };
-                } else {  // 沒有同名餐點就建立物件
+                // 沒同名餐點就建立新物件
+                } else {
                     obj[id] = {
                         'meal': id,
                         'price': _orderPrice,
                         'orderNumber': _orderNumber,
                         'totalBuyer': 1,
-                        'subTotal': _orderPrice,
+                        'subTotal': _orderPrice * _orderNumber,  // 小計 = 價格 x 數量
                         'buyerName': new Array(order.order_name),
                         'remarks': new Array({
                             'buyerName': order.order_name,
@@ -1730,23 +1871,29 @@ const vueOrderCalculator = {
             })
             let mergeOrder = Object.values(obj);  // 合併訂單物件 ex: [ {} ]
             this.orderTotal = mergeOrder;
+            // console.log(mergeOrder)
         },
-        // 計算訂單細節
+        /**************************
+         * 計算訂單總計、不重覆購買人
+         *************************/
         calcOrdersTotal(data) {
+            // console.log(data)
             let priceTotal = 0;
             let buyerNameArr = [];
+            
             data.forEach(item => {
-                priceTotal += parseInt(item.order_price);
+                priceTotal += parseInt(item.order_price) * parseInt(item.order_number);
                 buyerNameArr.push(item.order_name);
             })
-            // 得到不重覆的購買人 arr.indexOf('小明') === 0 (position in array)
+            // 不重覆購買人 arr.indexOf('小明') === 0 (position in array)
             const buyerNames = buyerNameArr.filter((item, index) => buyerNameArr.indexOf(item) === index);
+            
+            // 建立資料
             this.orderDetails = {
                 'totalBuyerCount': buyerNames.length,
                 'totalOrderCount': data.length,
                 'priceTotal': priceTotal,
             }
-            this.getStoreDeliveryAmount();  // 計算是否超過外送門檻
         },
         // 折疊備註資訊
         toggleOrderRemarkDetails(event) {
@@ -1800,9 +1947,84 @@ const vueOrderCalculator = {
         }
     },
     mounted() {
-        const orderId = this.$refs['orderId'] || 0;
-        if (orderId) this.getOrdersById();
+        if (this.$refs['orderId']) this.getOrdersById();
     },
+}
+
+// POST與GET 操作
+const vueGetAndPost = {
+    data() {
+    },
+    methods: {
+        fetchData(_api = '', _method = 'GET', _callback, _body = undefined) {
+            // 狀態校驗
+            function processStatus(response) {
+                if (response.status === 200 || response.status === 0) {
+                    return Promise.resolve(response);
+                } else {
+                    return Promise.reject(new Error(response.statusText));
+                }
+            }
+            
+            const option = {
+                method: _method === 'POST' ? 'POST' : 'GET',
+            }
+            if (_body) option['body'] = _body;
+            
+            fetch(_api, option)
+                .then(processStatus)
+                .then((response) => {
+                    // console.log(response)
+                    _callback(response);
+                    return true;
+                }).catch(err => {
+                console.log(err, _callback);
+                return false;
+            })
+        }
+    }
+}
+
+// 溫馨提示
+const vueAlert = {
+    methods: {
+        smartAlert(_title = '', _description = '', _status = 'success', _timer) {
+            Swal.fire({
+                title: _title,
+                html: _description,
+                icon: _status,
+                timer: _timer ? _timer : 6000,
+                timerProgressBar: true,
+            })
+        },
+        smartConfirm(_title = '', _description = '', _confirmText = '', _status, _callback) {
+            Swal.fire({
+                title: _title,
+                text: _description,
+                icon: _status,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: _confirmText
+            }).then((result) => {
+                if (result.value) {
+                    _callback();
+                }
+            })
+        }
+    }
+}
+
+const vueConstants = {
+    data() {
+        const ORDER_API = 'group_buy_api.php';
+        // const mainDefine = {
+        //     ROOT: 'index.php',
+        // }
+        return {
+            ORDER_API,
+        }
+    }
 }
 
 // Vue 實體
@@ -1817,14 +2039,11 @@ const app = Vue.createApp({
         vueOrderOperation,
         vueGroupBuy,
         vueStore,
+        vueConstants,
     ],
     data() {
-        // let orderItem = {}
-        return {
-            // closeDisabled: false,
-        }
+        return {}
     },
     methods: {},
-    
 });
 app.mount('#app');
