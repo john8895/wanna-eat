@@ -893,22 +893,22 @@ input[name=order_paymentStatus] {
 #gotop {
     position: fixed;
     right: 30px;
-    bottom: 30px;
+    bottom: 90px;
     display: none;
 
 
     &:hover {
 
         svg {
-            fill: $first-color;
+            //fill: $first-color;
+            fill: black;
         }
     }
 
     svg {
         width: 28px;
-        fill: black;
         transition: .3s ease-in-out;
-
+        fill: $first-color;
     }
 }
 

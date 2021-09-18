@@ -7,6 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript" src="./language/js/tempusdominus-bootstrap-4.min.js"></script>
 
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script type="text/javascript" src="./language/js/owl.carousel.min.js"></script>
 <script>
     $('.owl-carousel').owlCarousel({

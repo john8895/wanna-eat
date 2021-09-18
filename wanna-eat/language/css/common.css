@@ -1084,16 +1084,16 @@ input[name=order_paymentStatus] + label i {
 #gotop {
   position: fixed;
   right: 30px;
-  bottom: 30px;
+  bottom: 90px;
   display: none;
 }
 #gotop:hover svg {
-  fill: #EB4847;
+  fill: black;
 }
 #gotop svg {
   width: 28px;
-  fill: black;
   transition: 0.3s ease-in-out;
+  fill: #EB4847;
 }
 
 [v-cloak] {

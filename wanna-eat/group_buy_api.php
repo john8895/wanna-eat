@@ -4,6 +4,7 @@ require_once('./assets/inc/config.php');
 require_once('assets/inc/connect.php');
 require_once('assets/include/order.inc.php');
 require_once('assets/include/store.inc.php');
+require_once('assets/include/user.inc.php');
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -76,8 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $method = $_POST['method'];
     $order = new Order();
     $store = new Store();
+    $user = new User();
 
     switch ($method) {
+        case 'recaptcha':
+            $user->recaptchaValidate();
+            break;
         case 'addStore':
             $store->addStore();
             break;

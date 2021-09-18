@@ -21,7 +21,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-5 m-auto">
-                    <form class="form-signin" autocomplete="off" action="login.php" method="post">
+                    <form class="form-signin" autocomplete="off" method="post">
 
                         <div class="login-section">
                             <div class="login-header">
@@ -38,7 +38,7 @@
                                            class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
                                            placeholder="請輸入帳號" required
                                            autofocus
-                                           name="username" {if isset($username)}value="{$username}"{/if}>
+                                           name="username" {if isset($username)}value="{$username}"{/if} ref="username">
                                 </div>
                                 <div class="form-group">
 
@@ -46,15 +46,17 @@
                                            class="form-control border-top-0 border-left-0 border-right-0 border-bottom"
                                            placeholder="請輸入密碼"
                                            required
-                                           name="password">
+                                           name="password" ref="password">
                                 </div>
-{*                                <div class="checkbox mb-3 text-right">*}
-{*                                    <label>*}
-{*                                        <input type="checkbox" name="remember_me" value="remember_me"{if isset($member_login) && $member_login === '1'} checked{/if}> 記得我*}
-{*                                    </label>*}
-{*                                </div>*}
+                                {*                                <div class="checkbox mb-3 text-right">*}
+                                {*                                    <label>*}
+                                {*                                        <input type="checkbox" name="remember_me" value="remember_me"{if isset($member_login) && $member_login === '1'} checked{/if}> 記得我*}
+                                {*                                    </label>*}
+                                {*                                </div>*}
                                 <div class="col-sm-12 text-center mt-4">
-                                    <button class="btn btn-default" type="submit">登入</button>
+                                    <button class="btn btn-default g-recaptcha" type="submit" data-action="verify1" data-callback="recaptchaHandler" data-sitekey="6LeWwnEcAAAAACR_aD5w2RsmpWSnJEGxI3JppBn1">
+                                        登入
+                                    </button>
                                 </div>
                             </div>
                         </div>

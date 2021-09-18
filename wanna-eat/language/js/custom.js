@@ -1043,6 +1043,65 @@ $(function () {
 /******************
  * Vue 3
  ******************/
+// Login
+const vueLogin = {
+    methods: {
+        recaptchaHandler(token) {
+            // console.log(token);
+            const username = this.$refs.username.value;
+            const password = this.$refs.password.value;
+            
+            if(!this.loginValidateForm(username, password)){
+                this.smartAlert('前端登入失敗', '帳號或密碼沒有填寫', 'error');
+                return;
+            }
+            
+            const recaptchaData = new FormData();
+            recaptchaData.append('method', 'recaptcha');
+            recaptchaData.append('username', username);
+            recaptchaData.append('password', password);
+            recaptchaData.append('g-recaptcha-response', token);
+            
+            // 傳送 token 至後端驗證 recaptcha
+            const callback = (response) => {
+                response.text()
+                    .then(result => {
+                        if (result === '0') {
+                            this.smartAlert('登入失敗', '帳號或密碼錯誤，請重新輸入', 'error');
+                            return;
+                        }
+                        if (result === '2') {
+                            this.smartAlert('登入失敗', '帳號或密碼沒填寫', 'error');
+                            return;
+                        }
+                        if (result === '1') {
+                            this.smartAlert('登入成功', '跳轉至首頁', 'success');
+                            setTimeout(() => {
+                                window.location.href = './index.php';
+                            }, 3000)
+                        } else {
+                            throw new Error(`${result}`);  // 例外錯誤
+                            // console.log(result);  // 例外錯誤
+                        }
+                        // console.log(result)
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+            this.fetchData(this.ORDER_API, 'POST', callback, recaptchaData);
+        },
+        // 登入驗證
+        loginValidateForm(username, password) {
+            return !(!username || !password);
+         },
+    },
+    
+    mounted() {
+        window.recaptchaHandler = this.recaptchaHandler;
+    },
+}
+
 // 餐廳
 const vueStore = {
     data() {
@@ -1057,7 +1116,8 @@ const vueStore = {
                 tags: [],
                 errors: [],
             },
-            editStoreData: {}
+            editStoreData: {},
+            storeData: {},
         }
     },
     methods: {
@@ -1386,8 +1446,8 @@ const vueStore = {
             editStoreData.append('phone', field.phone);
             editStoreData.append('storeFullPrice', field.store_full_price);
             editStoreData.append('storeTag', field.store_tag);
-            if(storeCover) editStoreData.append('storeCover', storeCover);
-            if(storeMenu) editStoreData.append('images', storeMenu);
+            if (storeCover) editStoreData.append('storeCover', storeCover);
+            if (storeMenu) editStoreData.append('images', storeMenu);
             const callback = (response) => {
                 response.text()
                     .then((result) => {
@@ -1409,32 +1469,45 @@ const vueStore = {
             }
             this.fetchData(this.ORDER_API, 'POST', callback, editStoreData);
         },
-        // 顯示餐廳
-        showStoreById() {
-            const storeId = this.getUrlId();  // 取得 Store Id
-            
+        // 取得餐廳資料  自網址參數
+        getStoreById() {
+            const getUrlId = () => {  // 取得網址帶的id
+                const url = window.location.href.split('?')[1];
+                if (!url) return;
+                return url.split('?').join().substr(3);  // 取得 Store Id
+            }
+            const storeId = getUrlId();  // 取得 Store Id
+            this.getStoreByIdHandler(storeId, this.editStoreData);
+        },
+        // 取得餐廳資料  自網頁refs元素
+        getStoreByRefsId() {
+            const storeId = this.$refs.storeId.value;
+            this.getStoreByIdHandler(storeId, this.storeData);
+        },
+        getStoreByIdHandler(_storeId, dataVariable) {
             const callback = (response) => {
                 response.json()
                     .then(result => {
-                        console.log(result);
-                        this.editStoreData = result[0];
+                        console.log(result[0]);
+                        dataVariable = result[0];
+                        this.orderNameTitleDisplay(result[0]);
                     })
                     .catch((error) => {
                         throw new Error(`讀取遠端資料失敗：${error}`);
                     })
             }
-            this.fetchData(`${this.ORDER_API}?request=getOrdersById&storeId=${storeId}`, 'GET', callback);
+            this.fetchData(`${this.ORDER_API}?request=getOrdersById&storeId=${_storeId}`, 'GET', callback);
         },
-        // 取得網址帶的id
-        getUrlId(){
-            const url = window.location.href.split('?')[1];
-            if (!url) return;
-            return url.split('?').join().substr(3);  // 取得 Store Id
-        }
+        // 網頁 title 顯示餐廳名稱
+        orderNameTitleDisplay(_storeData) {
+            const originalTitle = document.title;
+            document.title = `${originalTitle} - ${_storeData.name}`;
+        },
     },
     mounted() {
         if (document.querySelector('.drop-zone__input')) this.dragAndFileUpload();  // 拖移圖片區域  @addOrder
-        if (this.$refs.editStore) this.showStoreById();
+        if (this.$refs.method__editStore) this.getStoreById();  // 編輯餐廳
+        if (this.$refs.method__order) this.getStoreByRefsId();  // 訂單
         
     }
 }
@@ -1630,7 +1703,9 @@ const vueOrderDisplay = {
 // 訂單操作
 const vueOrderOperation = {
     data() {
-        let postData = {}
+        let postData = {
+            orderNumber: 1,
+        }
         return {
             postData,
         }
@@ -1824,7 +1899,7 @@ const vueOrderCalculator = {
              */
             let subTotalNum = 0;
             let obj = {};
-    
+            
             // 合併相同餐點
             orderData.forEach((order) => {
                 const id = order.order_meal;  // 雞排飯
@@ -1852,7 +1927,7 @@ const vueOrderCalculator = {
                         'buyerName': obj[id].buyerName,
                         'remarks': obj[id].remarks,
                     };
-                // 沒同名餐點就建立新物件
+                    // 沒同名餐點就建立新物件
                 } else {
                     obj[id] = {
                         'meal': id,
@@ -1877,13 +1952,15 @@ const vueOrderCalculator = {
          * 計算訂單總計、不重覆購買人
          *************************/
         calcOrdersTotal(data) {
-            // console.log(data)
+            console.log(data)
             let priceTotal = 0;
             let buyerNameArr = [];
+            let totalOrderCount = 0;
             
             data.forEach(item => {
-                priceTotal += parseInt(item.order_price) * parseInt(item.order_number);
-                buyerNameArr.push(item.order_name);
+                priceTotal += parseInt(item.order_price) * parseInt(item.order_number);  // 總金額
+                buyerNameArr.push(item.order_name);  // 總購買人
+                totalOrderCount += parseInt(item.order_number);  // 總筆數
             })
             // 不重覆購買人 arr.indexOf('小明') === 0 (position in array)
             const buyerNames = buyerNameArr.filter((item, index) => buyerNameArr.indexOf(item) === index);
@@ -1891,7 +1968,7 @@ const vueOrderCalculator = {
             // 建立資料
             this.orderDetails = {
                 'totalBuyerCount': buyerNames.length,
-                'totalOrderCount': data.length,
+                'totalOrderCount': totalOrderCount,
                 'priceTotal': priceTotal,
             }
         },
@@ -1967,9 +2044,11 @@ const vueGetAndPost = {
             }
             
             const option = {
-                method: _method === 'POST' ? 'POST' : 'GET',
+                method: _method,
             }
+            // console.log(option)
             if (_body) option['body'] = _body;
+            // console.log(_body)
             
             fetch(_api, option)
                 .then(processStatus)
@@ -1978,7 +2057,7 @@ const vueGetAndPost = {
                     _callback(response);
                     return true;
                 }).catch(err => {
-                console.log(err, _callback);
+                console.log(err, ', ', _callback);
                 return false;
             })
         }
@@ -2040,6 +2119,7 @@ const app = Vue.createApp({
         vueGroupBuy,
         vueStore,
         vueConstants,
+        vueLogin,
     ],
     data() {
         return {}

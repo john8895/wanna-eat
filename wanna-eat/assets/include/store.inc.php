@@ -232,7 +232,6 @@ class Store extends connection
         // 更新數據
         $this->connect();
         $sql = "UPDATE store SET name=:storeName, phone=:storePhone, store_full_price=:storeFullPrice, description=:description{$sqlStoreCover}{$sql_image},store_tag=:storeTag WHERE id={$storeData['id']}";
-//        print_r($sql);
         $sth = $this->query($sql);
 
         $sqlArray = [':storeName' => $storeData['name'], ':storePhone' => $storeData['phone'],':storeFullPrice' => $storeData['storeFullPrice'], ':description' => $storeData['description'], ':storeTag' => $storeData['storeTag']];

@@ -36,6 +36,7 @@
                 {/if}
 
 
+                <input type="hidden" ref="method__order">
                 <input type="hidden" value="{$store.id}" id="store_id" ref="storeId">
                 <input type="hidden" value="{$order_id}" id="order_id">
                 <div class="title">

@@ -32,7 +32,7 @@
                                 <label class="col-sm-2 col-form-label text-right">餐廳名稱</label>
                                 <div class="col-sm-10">
                                     <div class="form-group">
-                                        <input type="hidden" ref="editStore">
+                                        <input type="hidden" ref="method__editStore">
                                         <input type="text" name="name"
                                                class="form-control" v-model="editStoreData.name" ref="storeName"
                                                placeholder="請輸入餐廳名稱 *">
