@@ -1051,7 +1051,7 @@ const vueLogin = {
             const username = this.$refs.username.value;
             const password = this.$refs.password.value;
             
-            if(!this.loginValidateForm(username, password)){
+            if (!this.loginValidateForm(username, password)) {
                 this.smartAlert('前端登入失敗', '帳號或密碼沒有填寫', 'error');
                 return;
             }
@@ -1094,7 +1094,7 @@ const vueLogin = {
         // 登入驗證
         loginValidateForm(username, password) {
             return !(!username || !password);
-         },
+        },
     },
     
     mounted() {
@@ -1436,7 +1436,15 @@ const vueStore = {
             const field = this.editStoreData;
             const storeCover = this.$refs.storeCover.files[0] || 0;
             const storeMenu = this.$refs.storeMenu.files[0] || 0;
-            const storeId = this.getUrlId();  // 取得 Store Id
+            const getUrlId = () => {  // 取得網址帶的id
+                const url = window.location.href.split('?')[1];
+                if (!url) throw new Error('Missing url');
+                return url.split('?').join().substr(3);  // 取得 Store Id
+            }
+            const storeId = getUrlId();  // 取得 Store Id
+            
+            // 移除 beforeunreload 事件上的阻止重整
+            window.removeEventListener('beforeunload', this.stopReloadPageHandler);
             
             const editStoreData = new FormData();
             editStoreData.append('method', 'editStore');
@@ -1489,8 +1497,10 @@ const vueStore = {
                 response.json()
                     .then(result => {
                         console.log(result[0]);
-                        dataVariable = result[0];
-                        this.orderNameTitleDisplay(result[0]);
+                        this.editStoreData = result[0];
+                        // 阻止頁面重整
+                        this.stopReloadPage();
+                        this.orderNameTitleDisplay(result[0]);  // 網頁 title 顯示餐廳名稱
                     })
                     .catch((error) => {
                         throw new Error(`讀取遠端資料失敗：${error}`);
@@ -1503,12 +1513,21 @@ const vueStore = {
             const originalTitle = document.title;
             document.title = `${originalTitle} - ${_storeData.name}`;
         },
+        // 阻止頁面重整
+        stopReloadPage() {
+            console.log(555)
+            window.addEventListener('beforeunload', this.stopReloadPageHandler)
+        },
+        stopReloadPageHandler(e) {
+            console.log(666)
+            e.returnValue = 'Are you sure leave the page?';
+        }
     },
     mounted() {
         if (document.querySelector('.drop-zone__input')) this.dragAndFileUpload();  // 拖移圖片區域  @addOrder
         if (this.$refs.method__editStore) this.getStoreById();  // 編輯餐廳
         if (this.$refs.method__order) this.getStoreByRefsId();  // 訂單
-        
+        this.stopReloadPage();
     }
 }
 
