@@ -80,7 +80,7 @@
                     </li>
 
                 </ul>
-{*                todo: 9/17 要改成全前端*}
+                {*                todo: 9/17 要改成全前端*}
                 {if isset($logged) && $logged}
                     {if !$time_up}
                         <div class="text-left mt-4">
@@ -92,6 +92,84 @@
                         </div>
                     {/if}
                 {/if}
+
+                <button class="btn btn-success" data-toggle="modal" data-target="#rateBoard">評價</button>
+
+
+                <div class="modal fade" id="rateBoard" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                {*                                評價 START*}
+
+                                <div class="rate-wrap">
+
+                                    <div class="row">
+                                        <div class="col-sm-7">
+                                            <div class="user-comments">
+                                                <article></article>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <div class="rating">
+                                                <div class="rating-score">
+                                                    4.9
+                                                    <span class="rating-number">/10</span>
+                                                </div>
+                                                <div id="half-stars-example">
+                                                    <div class="rating-group">
+                                                        <input class="rating__input rating__input--none" checked name="rating2" id="rating2-0" value="0" type="radio">
+                                                        <label aria-label="0 stars" class="rating__label" for="rating2-0">&nbsp;</label>
+                                                        <label aria-label="0.5 stars" class="rating__label rating__label--half" for="rating2-05"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                                                        <input class="rating__input" name="rating2" id="rating2-05" value="0.5" type="radio">
+                                                        <label aria-label="1 star" class="rating__label" for="rating2-10"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                                        <input class="rating__input" name="rating2" id="rating2-10" value="1" type="radio">
+                                                        <label aria-label="1.5 stars" class="rating__label rating__label--half" for="rating2-15"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                                                        <input class="rating__input" name="rating2" id="rating2-15" value="1.5" type="radio">
+                                                        <label aria-label="2 stars" class="rating__label" for="rating2-20"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                                        <input class="rating__input" name="rating2" id="rating2-20" value="2" type="radio">
+                                                        <label aria-label="2.5 stars" class="rating__label rating__label--half" for="rating2-25"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                                                        <input class="rating__input" name="rating2" id="rating2-25" value="2.5" type="radio" checked>
+                                                        <label aria-label="3 stars" class="rating__label" for="rating2-30"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                                        <input class="rating__input" name="rating2" id="rating2-30" value="3" type="radio">
+                                                        <label aria-label="3.5 stars" class="rating__label rating__label--half" for="rating2-35"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                                                        <input class="rating__input" name="rating2" id="rating2-35" value="3.5" type="radio">
+                                                        <label aria-label="4 stars" class="rating__label" for="rating2-40"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                                        <input class="rating__input" name="rating2" id="rating2-40" value="4" type="radio">
+                                                        <label aria-label="4.5 stars" class="rating__label rating__label--half" for="rating2-45"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                                                        <input class="rating__input" name="rating2" id="rating2-45" value="4.5" type="radio">
+                                                        <label aria-label="5 stars" class="rating__label" for="rating2-50"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                                        <input class="rating__input" name="rating2" id="rating2-50" value="5" type="radio">
+                                                    </div>
+                                                    <p class="desc" style="margin-bottom: 2rem; font-family: sans-serif; font-size:0.9rem">
+                                                        Half stars<br/>
+                                                        Space on left side to select 0 stars</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                                {*                                評價 END*}
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <div class="col-sm-6 res-cover">
@@ -245,101 +323,107 @@
             </div>
 
             <div class="col-sm-12 mt-4" v-if="ordersData.length">
-                <div class="text-center">
-                    <div class="sec-title">
-                        <h3 class="border-bottom pb-3">{$item.store_name} 訂單統計</h3>
-                        <div class="sub-title mt-3">
-                            <ul>
-                                <li>收單時間：{$item.end_time}</li>
-                                <li>共有 %% orderDetails.totalBuyerCount %% 個人參加團購，累積共 <b>%% orderDetails.totalOrderCount
-                                        %%</b> 張訂單
-                                </li>
-                                <li class="mt-4">訂購電話：{$item.store_phone}</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="card table border">
-                    <div class="card-body">
-                        <div id="orderTotal" class="order-total">
-                            <div class="th row py-0 order-table">
-                                <div class="td sn">
-                                    <span class="mr-2">編號</span>
-                                    <span title="展開備註欄" @click="toggleAllOrderRemarkDetails($event)" class="btn-toggle-all-remarks"><i class="fa" :class="[allOrderRemarkState ? 'fa-minus-circle' : 'fa-plus-circle']"></i></span>
-                                </div>
-                                <div class="td">
-                                    <span>點餐內容</span>
-                                </div>
-                                <div class="td num">
-                                    <span>數量</span>
-                                </div>
-                                <div class="td num">
-                                    <span>價格</span>
-                                </div>
-                                <div class="td">
-                                    <span>小計</span>
-                                </div>
-                                {*                                <div class="td buyerName">*}
-                                {*                                    <span>訂購人</span>*}
-                                {*                                </div>*}
-                            </div>
-
-                            <div class="order-table table-row tr row" v-for="(order, orderKey) in orderTotal" :key="orderKey" @click="clickRowHighlight($event)">
-                                <div class="td sn">
-                                    <span>%% orderKey + 1 %%</span>
-                                    <span @click="toggleOrderRemarkDetails($event)" class="btn-toggle-order-remark"><i class="fa fa-angle-down"></i></span>
-                                </div>
-                                <div class="td">
-                                    <span>%% order.meal %%</span>
-                                </div>
-                                <div class="td num">
-                                    <span>%% order.orderNumber %%</span>
-                                </div>
-                                <div class="td num">
-                                    <span>%% order.price %%</span>
-                                </div>
-                                <div class="td">
-                                    <span>%% order.subTotal %%</span>
-                                </div>
-                                {*                                <div class="td buyerName">*}
-                                {*                                    <ul class="d-flex flex-wrap">*}
-                                {*                                        <li class="btn btn-outline-info py-0 px-1 mr-2" v-for="(name, k) in order.buyerName" :key="k">*}
-                                {*                                            %% name %%*}
-                                {*                                        </li>*}
-                                {*                                    </ul>*}
-                                {*                                </div>*}
-
-                                <div class="order-remarks col-sm-12">
-                                    <ul>
-                                    <li class="col-sm-12" v-for="(remark, remarkKey) in order.remarks" :key="remarkKey">
-                                            <div class="row">
-                                                <div class="col-sm-1"></div>
-                                                <div class="col-sm-7">
-                                                    <i class="fa fa-angle-right"></i>
-                                                    <span class="btn btn-outline-info">%% remark.buyerName %%</span>%% remark.remark %%
-                                                </div>
-                                                <div class="col-sm-3"></div>
-                                            </div>
+                <div id="screenCapture">
+                    <div class="text-center">
+                        <div class="sec-title">
+                            <h3 class="border-bottom pb-3">{$item.store_name} 訂單統計</h3>
+                            <div class="sub-title mt-3">
+                                <ul>
+                                    <li>收單時間：{$item.end_time}</li>
+                                    <li>共有 %% orderDetails.totalBuyerCount %% 個人參加團購，累積共 <b>%%
+                                            orderDetails.totalOrderCount
+                                            %%</b> 張訂單
                                     </li>
+                                    <li class="mt-4">訂購電話：{$item.store_phone}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card table border">
+                        <div class="card-body">
+                            <div id="orderTotal" class="order-total">
+                                <div class="th row py-0 order-table">
+                                    <div class="td sn">
+                                        <span class="mr-2">編號</span>
+                                        <span title="展開備註欄" @click="toggleAllOrderRemarkDetails($event)" class="btn-toggle-all-remarks"><i class="fa" :class="[allOrderRemarkState ? 'fa-minus-circle' : 'fa-plus-circle']"></i></span>
+                                    </div>
+                                    <div class="td">
+                                        <span>點餐內容</span>
+                                    </div>
+                                    <div class="td num">
+                                        <span>數量</span>
+                                    </div>
+                                    <div class="td num">
+                                        <span>價格</span>
+                                    </div>
+                                    <div class="td">
+                                        <span>小計</span>
+                                    </div>
+                                    {*                                <div class="td buyerName">*}
+                                    {*                                    <span>訂購人</span>*}
+                                    {*                                </div>*}
+                                </div>
+
+                                <div class="order-table table-row tr row" v-for="(order, orderKey) in orderTotal" :key="orderKey" @click="clickRowHighlight($event)">
+                                    <div class="td sn">
+                                        <span>%% orderKey + 1 %%</span>
+                                        <span @click="toggleOrderRemarkDetails($event)" class="btn-toggle-order-remark"><i class="fa fa-angle-down"></i></span>
+                                    </div>
+                                    <div class="td">
+                                        <span>%% order.meal %%</span>
+                                    </div>
+                                    <div class="td num">
+                                        <span>%% order.orderNumber %%</span>
+                                    </div>
+                                    <div class="td num">
+                                        <span>%% order.price %%</span>
+                                    </div>
+                                    <div class="td">
+                                        <span>%% order.subTotal %%</span>
+                                    </div>
+                                    {*                                <div class="td buyerName">*}
+                                    {*                                    <ul class="d-flex flex-wrap">*}
+                                    {*                                        <li class="btn btn-outline-info py-0 px-1 mr-2" v-for="(name, k) in order.buyerName" :key="k">*}
+                                    {*                                            %% name %%*}
+                                    {*                                        </li>*}
+                                    {*                                    </ul>*}
+                                    {*                                </div>*}
+
+                                    <div class="order-remarks col-sm-12">
+                                        <ul>
+                                            <li class="col-sm-12" v-for="(remark, remarkKey) in order.remarks" :key="remarkKey">
+                                                <div class="row">
+                                                    <div class="col-sm-1"></div>
+                                                    <div class="col-sm-7">
+                                                        <i class="fa fa-angle-right"></i>
+                                                        <span class="btn btn-outline-info">%% remark.buyerName %%</span>%%
+                                                        remark.remark %%
+                                                    </div>
+                                                    <div class="col-sm-3"></div>
+                                                </div>
+                                            </li>
                                         </ul>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="th row py-0 ">
-                                <div class="col-sm-3"></div>
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-2">
-                                    <span>總金額 %% orderDetails.priceTotal %% 元</span>
+                                <div class="th row py-0 ">
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-2">
+                                        <span>總金額 %% orderDetails.priceTotal %% 元</span>
+                                    </div>
+                                    <div class="col-sm-3"></div>
                                 </div>
-                                <div class="col-sm-3"></div>
+
+
                             </div>
-
-
                         </div>
                     </div>
                 </div>
 
+                <button @click="screenshot">一鍵擷圖</button>
+                <div id="screenCaptureDisplay"></div>
             </div>
 
             <div class="col-sm-12">

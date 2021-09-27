@@ -3,12 +3,12 @@
 <script src="https://unpkg.com/vue@next"></script>
 <script src="./language/js/axios.min.js"></script>
 <script src="./language/js/moment.js"></script>
-{*<script src="./language/js/sweetalert2.all.min.js"></script>*}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript" src="./language/js/tempusdominus-bootstrap-4.min.js"></script>
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script type="text/javascript" src="./language/js/owl.carousel.min.js"></script>
+<script type="text/javascript" src="./language/js/vendor/html2canvas.min.js"></script>
 <script>
     $('.owl-carousel').owlCarousel({
         loop:true,

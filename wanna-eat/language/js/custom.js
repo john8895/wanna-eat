@@ -1498,8 +1498,6 @@ const vueStore = {
                     .then(result => {
                         console.log(result[0]);
                         this.editStoreData = result[0];
-                        // 阻止頁面重整
-                        this.stopReloadPage();
                         this.orderNameTitleDisplay(result[0]);  // 網頁 title 顯示餐廳名稱
                     })
                     .catch((error) => {
@@ -1515,19 +1513,46 @@ const vueStore = {
         },
         // 阻止頁面重整
         stopReloadPage() {
-            console.log(555)
             window.addEventListener('beforeunload', this.stopReloadPageHandler)
         },
         stopReloadPageHandler(e) {
-            console.log(666)
             e.returnValue = 'Are you sure leave the page?';
-        }
+        },
+        // 一鍵擷圖
+        screenshot() {
+            console.log(55)
+            html2canvas(document.querySelector('#screenCapture'))
+                .then(canvas => {
+                    const dataURL = canvas.toDataURL('image/png');
+                    
+                    let img = new Image();
+                    img.src = dataURL;
+                    
+                    const open = window.open('', '');
+                    open.document.write(img);
+                    
+                    // window.open(dataURL, '_blank');
+                    
+                    // let img = new Image();
+                    // img.src = canvas.toDataURL();
+                    // window.open(img, '_blank');
+                    
+                    // const screenDisplay = document.querySelector('#screenCaptureDisplay');
+                    // while(screenDisplay.firstChild) {
+                    //     screenDisplay.removeChild(screenDisplay.firstChild)
+                    // }
+                    // screenDisplay.appendChild(img);
+                });
+        },
     },
     mounted() {
         if (document.querySelector('.drop-zone__input')) this.dragAndFileUpload();  // 拖移圖片區域  @addOrder
-        if (this.$refs.method__editStore) this.getStoreById();  // 編輯餐廳
+        // 編輯餐廳
+        if (this.$refs.method__editStore) {
+            this.getStoreById();
+            this.stopReloadPage();  // 阻止頁面重整
+        }
         if (this.$refs.method__order) this.getStoreByRefsId();  // 訂單
-        this.stopReloadPage();
     }
 }
 
