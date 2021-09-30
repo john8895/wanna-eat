@@ -119,7 +119,7 @@
                                 <div class="form-group">
                                     <div class="drop-zone">
                                         <span class="drop-zone__prompt">拖移大圖至此幫你圖縮小</span>
-                                        <input type="file" name="images" class="form-control-file drop-zone__input" ref="resizeImage">
+                                        <input type="file" name="images" class="form-control-file drop-zone__input resize-image" ref="resizeImage">
                                     </div>
                                 </div>
                             </div>

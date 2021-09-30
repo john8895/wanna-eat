@@ -99,64 +99,86 @@
                 <div class="modal fade" id="rateBoard" tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="">Modal title</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
+                            {*                            <div class="modal-header">*}
+                            {*                                <h5 class="modal-title" id="">Modal title</h5>*}
+                            {*                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">*}
+                            {*                                    <span aria-hidden="true">&times;</span>*}
+                            {*                                </button>*}
+                            {*                            </div>*}
                             <div class="modal-body">
 
                                 {*                                評價 START*}
 
                                 <div class="rate-wrap">
-
-                                    <div class="row">
-                                        <div class="col-sm-7">
-                                            <div class="user-comments">
-                                                <article></article>
-                                            </div>
+                                    <div class="rating">
+                                        <div class="rating-score">
+                                            4.9
+                                            <span class="rating-number">/10</span>
                                         </div>
-                                        <div class="col-sm-5">
-                                            <div class="rating">
-                                                <div class="rating-score">
-                                                    4.9
-                                                    <span class="rating-number">/10</span>
-                                                </div>
-                                                <div id="half-stars-example">
-                                                    <div class="rating-group">
-                                                        <input class="rating__input rating__input--none" checked name="rating2" id="rating2-0" value="0" type="radio">
-                                                        <label aria-label="0 stars" class="rating__label" for="rating2-0">&nbsp;</label>
-                                                        <label aria-label="0.5 stars" class="rating__label rating__label--half" for="rating2-05"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
-                                                        <input class="rating__input" name="rating2" id="rating2-05" value="0.5" type="radio">
-                                                        <label aria-label="1 star" class="rating__label" for="rating2-10"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
-                                                        <input class="rating__input" name="rating2" id="rating2-10" value="1" type="radio">
-                                                        <label aria-label="1.5 stars" class="rating__label rating__label--half" for="rating2-15"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
-                                                        <input class="rating__input" name="rating2" id="rating2-15" value="1.5" type="radio">
-                                                        <label aria-label="2 stars" class="rating__label" for="rating2-20"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
-                                                        <input class="rating__input" name="rating2" id="rating2-20" value="2" type="radio">
-                                                        <label aria-label="2.5 stars" class="rating__label rating__label--half" for="rating2-25"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
-                                                        <input class="rating__input" name="rating2" id="rating2-25" value="2.5" type="radio" checked>
-                                                        <label aria-label="3 stars" class="rating__label" for="rating2-30"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
-                                                        <input class="rating__input" name="rating2" id="rating2-30" value="3" type="radio">
-                                                        <label aria-label="3.5 stars" class="rating__label rating__label--half" for="rating2-35"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
-                                                        <input class="rating__input" name="rating2" id="rating2-35" value="3.5" type="radio">
-                                                        <label aria-label="4 stars" class="rating__label" for="rating2-40"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
-                                                        <input class="rating__input" name="rating2" id="rating2-40" value="4" type="radio">
-                                                        <label aria-label="4.5 stars" class="rating__label rating__label--half" for="rating2-45"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
-                                                        <input class="rating__input" name="rating2" id="rating2-45" value="4.5" type="radio">
-                                                        <label aria-label="5 stars" class="rating__label" for="rating2-50"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
-                                                        <input class="rating__input" name="rating2" id="rating2-50" value="5" type="radio">
-                                                    </div>
-                                                    <p class="desc" style="margin-bottom: 2rem; font-family: sans-serif; font-size:0.9rem">
-                                                        Half stars<br/>
-                                                        Space on left side to select 0 stars</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
                                     </div>
+                                    <div class="comments-wrap">
+                                        <article>
+                                            <div class="user-comments d-flex">
+                                                <div class="user-comments__avatar">
+                                                    <img src="http://fakeimg.pl/32x32" alt=""></div>
+                                                <div class="user-comments__text">
+                                                    <div class="user-name">Joe</div>
+                                                    <div class="user-rate">
+
+                                                    </div>
+                                                    <div class="user-meal">雞排飯</div>
+                                                    <div class="user-comments-body">非常好吃，會想再吃一次！</div>
+                                                    <div class="comment-post-time">2021.09.24 12:12</div>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+
+                                    <div class="post-comment">
+                                        <div class="post-comment-title h4">留下你的評價</div>
+                                        <div class="rating-box">
+                                            <div>評價</div>
+                                            <div id="half-stars-example">
+                                                <div class="rating-group">
+                                                    <input class="rating__input rating__input--none" checked name="rating2" id="rating2-0" value="0" type="radio">
+                                                    <label aria-label="0 stars" class="rating__label" for="rating2-0">&nbsp;</label>
+                                                    <label aria-label="0.5 stars" class="rating__label rating__label--half" for="rating2-05"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                                                    <input class="rating__input" name="rating2" id="rating2-05" value="0.5" type="radio">
+                                                    <label aria-label="1 star" class="rating__label" for="rating2-10"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                                    <input class="rating__input" name="rating2" id="rating2-10" value="1" type="radio">
+                                                    <label aria-label="1.5 stars" class="rating__label rating__label--half" for="rating2-15"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                                                    <input class="rating__input" name="rating2" id="rating2-15" value="1.5" type="radio">
+                                                    <label aria-label="2 stars" class="rating__label" for="rating2-20"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                                    <input class="rating__input" name="rating2" id="rating2-20" value="2" type="radio">
+                                                    <label aria-label="2.5 stars" class="rating__label rating__label--half" for="rating2-25"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                                                    <input class="rating__input" name="rating2" id="rating2-25" value="2.5" type="radio" checked>
+                                                    <label aria-label="3 stars" class="rating__label" for="rating2-30"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                                    <input class="rating__input" name="rating2" id="rating2-30" value="3" type="radio">
+                                                    <label aria-label="3.5 stars" class="rating__label rating__label--half" for="rating2-35"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                                                    <input class="rating__input" name="rating2" id="rating2-35" value="3.5" type="radio">
+                                                    <label aria-label="4 stars" class="rating__label" for="rating2-40"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                                    <input class="rating__input" name="rating2" id="rating2-40" value="4" type="radio">
+                                                    <label aria-label="4.5 stars" class="rating__label rating__label--half" for="rating2-45"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                                                    <input class="rating__input" name="rating2" id="rating2-45" value="4.5" type="radio">
+                                                    <label aria-label="5 stars" class="rating__label" for="rating2-50"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                                    <input class="rating__input" name="rating2" id="rating2-50" value="5" type="radio">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <textarea name="comment-text" id="" cols="30" rows="10" placeholder="留下一些想法與意見，讓其他朋友能夠更了解這間商店。"></textarea>
+                                    </div>
+
+                                    {*                                    <div class="row">*}
+                                    {*                                        <div class="col-sm-7">*}
+                                    {*                                            *}
+                                    {*                                            *}
+                                    {*                                        </div>*}
+                                    {*                                        <div class="col-sm-5">*}
+
+                                    {*                                        </div>*}
+
+
+                                    {*                                    </div>*}
                                 </div>
 
 
@@ -165,7 +187,7 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
                             </div>
                         </div>
                     </div>

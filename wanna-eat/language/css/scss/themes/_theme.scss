@@ -1000,6 +1000,12 @@ input[name=order_paymentStatus] {
         box-shadow: 1px 1px 13px 2px #7b7b7b70;
     }
 }
+
+.rating-box {
+    display: flex;
+    align-items: center;
+}
+
 /*
  *  Pure CSS star rating that works without reversing order
  *  of inputs
@@ -1041,8 +1047,9 @@ input[name=order_paymentStatus] {
     /* add padding and positioning to half star labels */
     .rating__label--half {
         padding-right: 0;
-        margin-right: -1.18em;
+        margin-right: -20.18px;
         z-index: 2;
+        width: 20px;
     }
 
     /* set default star color */
@@ -1088,7 +1095,19 @@ input[name=order_paymentStatus] {
     }
 }
 
-//body {
-//    padding: 1rem;
-//    text-align: center;
-//}
+.rate-wrap {
+    .rating {
+        padding: 20px;
+        background-color: #cdd;
+    }
+
+    .rating-score {
+        font-size: 30px;
+        font-weight: 900;
+        color: #ED4422;
+    }
+    .rating-number {
+        font-size: 16px;
+        font-weight: normal;
+    }
+}
