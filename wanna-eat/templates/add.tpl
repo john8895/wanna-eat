@@ -90,7 +90,7 @@
 
                                         <div class="drop-zone">
                                             <span class="drop-zone__prompt">拖移檔案至此或點選上傳圖片，大小不超過 1 MB</span>
-                                            <input type="file" name="store_cover" class="form-control-file drop-zone__input" ref="storeCover">
+                                            <input type="file" name="store_cover" class="form-control-file drop-zone__input store-cover" ref="storeCover">
                                         </div>
                                     </div>
                                 </div>
@@ -103,7 +103,7 @@
                                 <div class="form-group">
                                     <div class="drop-zone">
                                         <span class="drop-zone__prompt">拖移檔案至此或點選上傳圖片，大小不超過 1 MB</span>
-                                        <input type="file" name="images" class="form-control-file drop-zone__input" ref="storeMenu">
+                                        <input type="file" name="images" class="form-control-file drop-zone__input store-menu" ref="storeMenu">
                                     </div>
                                 </div>
                             </div>

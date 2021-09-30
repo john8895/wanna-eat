@@ -1153,6 +1153,7 @@ const vueStore = {
                 
                 // 點選 input 事件
                 inputElement.addEventListener("change", (e) => {
+    
                     if (inputElement.files.length) {
                         if (!fileSizeValid(inputElement.files[0])) return;  // 驗證檔案大小及產生縮圖
                     }
@@ -1160,8 +1161,9 @@ const vueStore = {
                 // 拖移事件
                 dropZoneElement.addEventListener("drop", (e) => {
                     e.preventDefault();
+                    console.log(e.dataTransfer.files[0])
                     
-                    if (e.dataTransfer.files.length) {
+                    if (e.dataTransfer.files[0]) {
                         if (!fileSizeValid(e.dataTransfer.files[0])) return;  // 驗證檔案大小及產生縮圖
                     }
                     dropZoneElement.classList.remove("drop-zone--over");
@@ -1171,6 +1173,15 @@ const vueStore = {
                  * 檔案大小驗證
                  ********************/
                 const fileSizeValid = (_file) => {
+                    // let uploadType = '';
+                    // if(inputElement.classList.contains('store-cover')) uploadType = 'storeCover';
+                    // if(inputElement.classList.contains('store-menu')) uploadType = 'storeMenu';
+                    // // const uploadType = inputElement.classList.contains('store-cover') || inputElement.classList.contains('store-menu');
+                    // console.log(uploadType)
+                    // console.log(inputElement.classList.contains('store-cover'))
+                    // console.log(inputElement.classList.contains('store-menu'))
+                    
+                    
                     // 縮圖小幫手  如果有特定 class
                     if (inputElement.classList.contains('resize-image')) {
                         ref.imageResize(dropZoneElement, _file);
@@ -1184,6 +1195,12 @@ const vueStore = {
                     }
                     // 生成縮圖
                     updateThumbnail(dropZoneElement, _file);
+                    
+                    // Set file to vue variable
+                    if(inputElement.classList.contains('store-cover')) ref.storeFormField.cover = _file;
+                    if(inputElement.classList.contains('store-menu')) ref.storeFormField.menu = _file;
+                    
+                    return true;
                 }
             });
             
@@ -1307,6 +1324,7 @@ const vueStore = {
         // 新增餐廳 驗證
         checkStoreForm(e, method = '') {
             e.preventDefault();
+            // const ref = this;
             const field = method === 'addStore' ? this.storeFormField : this.editStoreData;
             const storeName = this.$refs.storeName;
             const storePhone = this.$refs.storePhone;
@@ -1316,7 +1334,7 @@ const vueStore = {
             field.errors = [];  // 一開始先清空錯誤
             
             // 欄位檢查通過
-            if (method === 'addStore' && field.name && field.phone && storeCover.files.length && storeMenu.files.length) {
+            if (method === 'addStore' && field.name && field.phone && this.storeFormField.cover && this.storeFormField.menu) {
                 this.addStore();
             }
             if (method === 'editStore' && field.name && field.phone) {
@@ -1343,15 +1361,11 @@ const vueStore = {
             // 新增餐廳  驗證欄位
             const addStoreFieldValidation = () => {
                 // 各欄位檢查
-                if (this.$refs.storeCover.files.length) {
-                    field.cover = storeCover.files[0];
-                } else {
+                if(!this.storeFormField.cover){
                     field.errors.push('餐廳封面是必填');
                     fieldIsInvalidClassAdd(storeCover.closest('.drop-zone'));
                 }
-                if (this.$refs.storeMenu.files.length) {
-                    field.cover = storeMenu.files[0];
-                } else {
+                if (!this.storeFormField.menu) {
                     field.errors.push('餐廳菜單是必填');
                     fieldIsInvalidClassAdd(storeMenu.closest('.drop-zone'));
                 }
@@ -1364,7 +1378,7 @@ const vueStore = {
                     fieldIsInvalidClassAdd(storePhone);
                 }
             }
-            
+            // todo 9/30 cover menu validation 要測試
             // 修改餐廳  驗證欄位
             const editStoreFieldValidation = () => {
                 if (this.$refs.storeCover.files.length) {
@@ -1398,8 +1412,8 @@ const vueStore = {
         // 新增餐廳
         addStore() {
             const field = this.storeFormField;
-            const storeCover = this.$refs.storeCover.files[0];
-            const storeMenu = this.$refs.storeMenu.files[0];
+            const storeCover = this.storeFormField.cover;
+            const storeMenu = this.storeFormField.menu;
             
             const addStoreData = new FormData();
             addStoreData.append('method', 'addStore');
