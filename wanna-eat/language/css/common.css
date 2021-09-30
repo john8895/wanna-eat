@@ -1260,4 +1260,41 @@ input[name=order_paymentStatus] + label i {
   font-weight: normal;
 }
 
+.loading-effect-wrap {
+  width: 100%;
+  z-index: 30;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.loading-effect-wrap:after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  position: absolute;
+  opacity: 0;
+}
+.loading-effect-wrap.beforeend:after {
+  opacity: 0.8;
+}
+.loading-effect-wrap .loading-block {
+  padding: 0 25px 10px;
+  transform: translateY(20vh);
+  text-align: center;
+  z-index: 1;
+}
+.loading-effect-wrap .loading-block .loading-effect {
+  margin-top: 10px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.loading-effect-wrap .loading-block .loading-effect img {
+  width: 50px;
+}
+
 /*# sourceMappingURL=common.css.map */

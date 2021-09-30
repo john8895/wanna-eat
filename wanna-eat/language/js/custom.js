@@ -1153,7 +1153,7 @@ const vueStore = {
                 
                 // 點選 input 事件
                 inputElement.addEventListener("change", (e) => {
-    
+                    
                     if (inputElement.files.length) {
                         if (!fileSizeValid(inputElement.files[0])) return;  // 驗證檔案大小及產生縮圖
                     }
@@ -1197,8 +1197,8 @@ const vueStore = {
                     updateThumbnail(dropZoneElement, _file);
                     
                     // Set file to vue variable
-                    if(inputElement.classList.contains('store-cover')) ref.storeFormField.cover = _file;
-                    if(inputElement.classList.contains('store-menu')) ref.storeFormField.menu = _file;
+                    if (inputElement.classList.contains('store-cover')) ref.storeFormField.cover = _file;
+                    if (inputElement.classList.contains('store-menu')) ref.storeFormField.menu = _file;
                     
                     return true;
                 }
@@ -1361,7 +1361,7 @@ const vueStore = {
             // 新增餐廳  驗證欄位
             const addStoreFieldValidation = () => {
                 // 各欄位檢查
-                if(!this.storeFormField.cover){
+                if (!this.storeFormField.cover) {
                     field.errors.push('餐廳封面是必填');
                     fieldIsInvalidClassAdd(storeCover.closest('.drop-zone'));
                 }
@@ -1532,32 +1532,44 @@ const vueStore = {
         stopReloadPageHandler(e) {
             e.returnValue = 'Are you sure leave the page?';
         },
-        // 一鍵擷圖
-        screenshot() {
-            console.log(55)
+        // todo: 一鍵擷圖
+        orderScreenshot() {
             html2canvas(document.querySelector('#screenCapture'))
                 .then(canvas => {
                     const dataURL = canvas.toDataURL('image/png');
                     
                     let img = new Image();
                     img.src = dataURL;
-                    
-                    const open = window.open('', '');
-                    open.document.write(img);
-                    
-                    // window.open(dataURL, '_blank');
+                    img.onload = () => {
+                        // console.log(img)
+                        // document.body.appendChild(img)
+                        
+                        // todo: 10/1 無法在window.open開啟
+                        // window.open('', '');
+                        // open.document.write(dataURL);
+                        // window.open(dataURL, '_blank');
+                        const screenDisplay = document.querySelector('#screenCaptureDisplay');
+                        while (screenDisplay.firstChild) {
+                            screenDisplay.removeChild(screenDisplay.firstChild)
+                        }
+                        screenDisplay.appendChild(img);
+                    }
                     
                     // let img = new Image();
                     // img.src = canvas.toDataURL();
                     // window.open(img, '_blank');
-                    
-                    // const screenDisplay = document.querySelector('#screenCaptureDisplay');
-                    // while(screenDisplay.firstChild) {
-                    //     screenDisplay.removeChild(screenDisplay.firstChild)
-                    // }
-                    // screenDisplay.appendChild(img);
                 });
         },
+        // store rating  餐廳評價
+        postRating() {
+            console.log(555)
+        },
+        ratingFormValidator() {
+            // console.log(555)
+        },
+        storeRatingHandler() {
+        
+        }
     },
     mounted() {
         if (document.querySelector('.drop-zone__input')) this.dragAndFileUpload();  // 拖移圖片區域  @addOrder
@@ -2152,6 +2164,49 @@ const vueAlert = {
     }
 }
 
+// Loading
+const vueLoading = {
+    data() {
+        return {}
+    },
+    methods: {
+        /******************
+         * 頁面載入前Loading效果
+         ******************/
+        loadingEffect() {
+            const loading = {
+                start: () => {  // 頁面載入中
+                    const loadingHtml = `
+                    <div id="loadingEffect" class="loading-effect-wrap beforeend">
+                      <div class="loading-block">
+                        <div class="loading-effect"><span class="mr-2">讀取中…</span><img src="./language/img/loading-spinner.gif"></div>
+                      </div>
+                    </div>
+                    `;
+                    document.body.insertAdjacentHTML('beforeend', loadingHtml);
+                },
+                complete: () => {  // 頁面載入完成 document.readyState === 'complete'
+                    const loading = document.getElementById('loadingEffect');
+                    loading.remove(loading);
+                }
+            }
+            
+            loading.start();
+            // Loading OK
+            document.addEventListener('readystatechange', () => {
+                if (document.readyState === 'complete') {
+                    loading.complete();
+                }
+            })
+        },
+    },
+    mounted() {
+    },
+    created() {
+        this.loadingEffect();
+    },
+}
+
 const vueConstants = {
     data() {
         const ORDER_API = 'group_buy_api.php';
@@ -2178,6 +2233,7 @@ const app = Vue.createApp({
         vueStore,
         vueConstants,
         vueLogin,
+        vueLoading,
     ],
     data() {
         return {}

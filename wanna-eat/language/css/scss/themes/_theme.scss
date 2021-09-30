@@ -1106,8 +1106,69 @@ input[name=order_paymentStatus] {
         font-weight: 900;
         color: #ED4422;
     }
+
     .rating-number {
         font-size: 16px;
         font-weight: normal;
+    }
+}
+
+.loading-effect-wrap {
+    width: 100%;
+    z-index: 30;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    &:after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        position: absolute;
+        opacity: 0;
+    }
+
+
+    // 頁面載入前加載效果
+    &.beforeend {
+        &:after {
+            //content: '';
+            opacity: 0.8;
+        }
+
+    }
+
+    //&.page-loading {
+    //    .loading-effect {
+    //        color: #fff;
+    //    }
+    //    //
+    //    //&.hide {
+    //    //    display: none;
+    //    //}
+    //}
+
+    .loading-block {
+        padding: 0 25px 10px;
+        //box-shadow: 2px 2px 1px #9696968a;
+        transform: translateY(20vh);
+        //background-color: #fff;
+        text-align: center;
+        z-index: 1;
+
+        .loading-effect {
+            margin-top: 10px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+
+            img {
+                width: 50px;
+            }
+        }
     }
 }
