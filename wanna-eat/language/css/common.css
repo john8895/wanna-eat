@@ -1162,8 +1162,8 @@ input[name=order_paymentStatus] + label i {
   padding: 20px 10px;
 }
 
-#screenCaptureDisplay canvas {
-  box-shadow: 1px 1px 13px 2px #7b7b7b70;
+.screen-capture img {
+  border: 1px solid #ddd;
 }
 
 .rating-box {

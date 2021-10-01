@@ -93,7 +93,7 @@
                     {/if}
                 {/if}
 
-{*                <button class="btn btn-success" data-toggle="modal" data-target="#rateBoard">評價</button>*}
+                <button class="btn btn-success" data-toggle="modal" data-target="#rateBoard">評價</button>
 
 
                 <div class="modal fade" id="rateBoard" tabindex="-1">
@@ -445,8 +445,11 @@
                     </div>
                 </div>
 
-                <button @click="orderScreenshot">一鍵擷圖</button>
-                <div id="screenCaptureDisplay"></div>
+{*                TODO: 10/1 加入燈箱 *}
+                <div class="text-center">
+                    <button @click="orderScreenshot" class="btn btn-success"><i class="fa fa-camera mr-2"></i>訂單擷圖</button>
+                    <div id="screenCaptureDisplay" class="screen-capture"></div>
+                </div>
             </div>
 
             <div class="col-sm-12">

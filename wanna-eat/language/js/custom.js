@@ -1223,17 +1223,6 @@ const vueStore = {
                 
                 thumbnailElement.dataset.label = `${file.name} / ${parseInt(file.size / 1000)}KB`;
                 
-                // Show thumbnail for image files  顯示縮圖在區域
-                // if (file.type.startsWith("image/")) {
-                //     ref.imageResize(thumbnailElement, file)
-                //     // const source = ref.imageResize(thumbnailElement, file);
-                //     // while (thumbnailElement.firstChild) {  // 移除上次置入的圖片
-                //     //         thumbnailElement.firstChild.remove();
-                //     //     }
-                //     //     const img = new Image();
-                //     //     img.src = source;
-                //     //     thumbnailElement.appendChild(img);
-                // }
                 
                 /*********************
                  * 顯示縮圖在區域
@@ -1321,7 +1310,7 @@ const vueStore = {
                 };
             };
         },
-        // 新增餐廳 驗證
+        // 新增或修改餐廳 驗證
         checkStoreForm(e, method = '') {
             e.preventDefault();
             // const ref = this;
@@ -1340,7 +1329,6 @@ const vueStore = {
             if (method === 'editStore' && field.name && field.phone) {
                 this.editStore();
             }
-            
             
             // 先移除全部錯誤提示CLASS
             const removeInvalidClass = (() => {
@@ -1381,8 +1369,9 @@ const vueStore = {
             // todo 9/30 cover menu validation 要測試
             // 修改餐廳  驗證欄位
             const editStoreFieldValidation = () => {
-                if (this.$refs.storeCover.files.length) {
-                    field.cover = storeCover.files[0];
+                console.log(this.storeFormField.cover)
+                if (this.storeFormField.cover) {
+                    field.cover = this.storeFormField.cover;
                 }  // else field.cover = null;
                 if (this.$refs.storeMenu.files.length) {
                     field.cover = storeMenu.files[0];
@@ -1448,8 +1437,10 @@ const vueStore = {
         // 修改餐廳
         editStore() {
             const field = this.editStoreData;
-            const storeCover = this.$refs.storeCover.files[0] || 0;
-            const storeMenu = this.$refs.storeMenu.files[0] || 0;
+            const storeCover = this.storeFormField.cover;
+            const storeMenu = this.storeFormField.menu;
+            // const storeCover = this.$refs.storeCover.files[0] || 0;
+            // const storeMenu = this.$refs.storeMenu.files[0] || 0;
             const getUrlId = () => {  // 取得網址帶的id
                 const url = window.location.href.split('?')[1];
                 if (!url) throw new Error('Missing url');
