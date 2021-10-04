@@ -136,4 +136,22 @@ class Order extends Connection
         if ($this->hasError($sth)) echo 0;
         echo 1;
     }
+
+    // 新增評價
+    public function postRating()
+    {
+
+        $nowDate = date("Y-m-d H:i:s");  // ex: 2020-07-04 18:21:00
+
+        $rating['userId'] = $_POST['userId'];
+        $rating['storeId'] = $_POST['storeId'];
+        $rating['ratingDate'] = $nowDate;
+        $rating['score'] = $_POST['score'];
+        $rating['comment'] = $_POST['comment'];
+        $this->connect();
+        $sql = "INSERT INTO store_rating(`user_id`,`store_id`,`rating_date`,`rating_score`,`rating_comment`)VALUES(1,22,'2020-07-04 18:21:00',5,'很好吃！')";
+
+    }
 }
+//$nowDate = date("Y-m-d H:i:s");
+//echo $nowDate;

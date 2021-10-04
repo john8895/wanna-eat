@@ -107,6 +107,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'deleteOrder':
             $order->deleteOrder();
             break;
+        case 'postRating':
+            $order->postRating();
+            break;
         default:
             break;
     }
