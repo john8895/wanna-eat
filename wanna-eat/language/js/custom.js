@@ -1188,12 +1188,12 @@ const vueStoreRating = {
         // add rating todo 10/1 新增評價
         postRating() {
             if (!this.ratingFormValidator()) return;
-            
+            const userId = parseInt('1');
             
             const ratingData = new FormData();
             ratingData.append('method', 'postRating');
             // todo: 10/1 獲取 userId
-            ratingData.append('userId', this.ratingFormField.score);
+            ratingData.append('userId', userId);
             ratingData.append('storeId', parseInt(this.storeData.id));
             ratingData.append('score', this.ratingFormField.score);
             ratingData.append('comment', this.ratingFormField.comment);
