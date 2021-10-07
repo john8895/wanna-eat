@@ -1,5 +1,3 @@
-{* filename: group-buy.tpl *}
-
 {include file="head.tpl"}
 {include file="header.tpl"}
 <main>

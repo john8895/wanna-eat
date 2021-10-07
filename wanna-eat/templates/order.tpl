@@ -1,4 +1,3 @@
-{* filename: order.tpl *}
 {include file="head.tpl"}
 {include file="header.tpl"}
 <main class="page__order {if ($time_up)}history_order{/if} ">

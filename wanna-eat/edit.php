@@ -14,9 +14,6 @@ $store = new Store();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $store->show($smarty);
 }
-//if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//    $store->edit($smarty);
-//}
 
 if (isset($error_message)) {
     $smarty->assign('error', $error_message);

@@ -23,10 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $smarty->assign('order_id', $order_id);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//    orderHandler();
-}
-
 
 // Order Display
 function groupDisplay($smarty)

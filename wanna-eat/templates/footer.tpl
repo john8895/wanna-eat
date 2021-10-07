@@ -1,9 +1,4 @@
 <footer class="footer">
-{*    <div id="pageLoadingEffect" class="loading-effect-wrap page-loading hide">*}
-{*        <div class="loading-block">*}
-{*            <div class="loading-effect"><span class="mr-2">讀取中…</span><img src="./language/img/loading-spinner.gif"></div>*}
-{*        </div>*}
-{*    </div>*}
     <div class="footer-body">
         <div class="container">
             <div class="row">
