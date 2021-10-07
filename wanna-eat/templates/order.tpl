@@ -362,7 +362,7 @@
                                     {*                                </div>*}
                                 </div>
 
-                                <div class="order-table table-row tr row" v-for="(order, orderKey) in orderTotal" :key="orderKey" @click="clickRowHighlight($event)">
+                                <div class="order-table highlight-table-row tr row" v-for="(order, orderKey) in orderTotal" :key="orderKey" @click="clickRowHighlight($event)">
                                     <div class="td sn">
                                         <span>%% orderKey + 1 %%</span>
                                         <span @click="toggleOrderRemarkDetails($event)" class="btn-toggle-order-remark"><i class="fa fa-angle-down"></i></span>

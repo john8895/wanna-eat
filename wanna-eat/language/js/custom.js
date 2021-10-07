@@ -657,6 +657,46 @@ $(function () {
 /******************
  * Vue 3
  ******************/
+// Member
+const vueMember = {
+    data() {
+        const registerFormFields = {
+            name: '',
+            email: '',
+            password: '',
+            passwordConfirm: '',
+        }
+        return {
+            registerFormFields,
+        }
+    },
+    methods: {
+        register(e) {
+            e.preventDefault();
+            if (!this.registerFromValidate()) return;
+            
+            const registerFormData = new FormData();
+            registerFormData.append('method', 'register');
+            registerFormData.append('name', this.registerFormFields.name);
+            registerFormData.append('email', this.registerFormFields.email);
+            registerFormData.append('password', this.registerFormFields.password);
+            
+            this.fetchData(this.ORDER_API, 'POST', this.registerHandler, registerFormData);
+        },
+        registerFromValidate() {
+            console.log(55)
+            
+            return true;
+        },
+        registerHandler(response) {
+            response.text()
+                .then(result => {
+                    console.log(result);
+                })
+        }
+    }
+}
+
 // Login
 const vueLogin = {
     methods: {
@@ -1197,7 +1237,7 @@ const vueStoreRating = {
             ratingData.append('storeId', parseInt(this.storeData.id));
             ratingData.append('score', this.ratingFormField.score);
             ratingData.append('comment', this.ratingFormField.comment);
-    
+            
             console.log('post end')
             this.fetchData(this.ORDER_API, 'POST', this.storeRatingHandler, ratingData);
         },
@@ -1211,7 +1251,7 @@ const vueStoreRating = {
             //     this.smartAlert('錯誤', '無法獲取 User id', 'error');
             //     return false;
             // }
-            if(!this.storeData.id || this.storeData.id === ''){
+            if (!this.storeData.id || this.storeData.id === '') {
                 this.smartAlert('錯誤', '無法獲取店家id', 'error');
                 return false;
             }
@@ -1718,8 +1758,8 @@ const vueOrderCalculator = {
         clickRowHighlight(event) {
             const target = event.target;
             let changeElement = target;
-            if (!target.classList.contains('table-row')) {  // 如果不是點到 table-row
-                changeElement.closest('.table-row').classList.toggle('active');
+            if (!target.classList.contains('highlight-table-row')) {  // 如果不是點到 table-row
+                changeElement.closest('.highlight-table-row').classList.toggle('active');
                 return;
             }
             changeElement.classList.toggle('active');
@@ -1883,6 +1923,7 @@ const app = Vue.createApp({
         vueLogin,
         vueLoading,
         vueStoreRating,
+        vueMember,
     ],
     data() {
         return {}

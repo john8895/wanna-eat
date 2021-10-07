@@ -5,7 +5,6 @@
         <div class="container">
             <div class="d-flex justify-content-between">
                 <h1 class="title">我的帳號</h1>
-
                 <nav class="jh-breadcrumb">
                     <ol>
                         <li><a href="index.php">首頁</a></li>
@@ -16,7 +15,6 @@
             </div>
         </div>
     </div>
-
     <section>
         <div class="container">
             <div class="row">
@@ -48,20 +46,14 @@
                                            required
                                            name="password" ref="password">
                                 </div>
-                                {*                                <div class="checkbox mb-3 text-right">*}
-                                {*                                    <label>*}
-                                {*                                        <input type="checkbox" name="remember_me" value="remember_me"{if isset($member_login) && $member_login === '1'} checked{/if}> 記得我*}
-                                {*                                    </label>*}
-                                {*                                </div>*}
                                 <div class="col-sm-12 text-center mt-4">
-                                    <button class="btn btn-default g-recaptcha" type="submit" data-action="verify1" data-callback="recaptchaHandler" data-sitekey="6LeWwnEcAAAAACR_aD5w2RsmpWSnJEGxI3JppBn1">
+                                    <button class="btn btn-default g-recaptcha mr-2" type="submit" data-action="verify1" data-callback="recaptchaHandler" data-sitekey="6LeWwnEcAAAAACR_aD5w2RsmpWSnJEGxI3JppBn1">
                                         登入
                                     </button>
+                                    <a href="./register.php" title="加入會員" class="btn btn-primary">加入會員</a>
                                 </div>
                             </div>
                         </div>
-
-
                     </form>
                 </div>
             </div>

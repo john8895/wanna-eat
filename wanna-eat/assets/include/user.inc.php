@@ -6,6 +6,7 @@ require_once 'dbh.inc.php';
 
 class User extends connection
 {
+    // 待刪
     public function delete()
     {
         $sql = "DELETE FROM store WHERE id = {$_GET['id']};";
@@ -74,6 +75,9 @@ class User extends connection
         $_SESSION['logged_in'] = true;
         $_SESSION['name'] = $users['username'];
         echo 1;
-//        header('Location: index.php');
+    }
+
+    public function register(){
+        echo 1;
     }
 }
