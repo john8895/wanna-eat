@@ -36,8 +36,11 @@ class Store extends connection
         $this->connect();
         $sth = $this->query($sql);
         $sth->execute();
-        $result = $sth->fetchAll();
-        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+//        $result = $sth->fetchAll(PDO::FETCH_NUM);
+        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+//        $result = $sth->fetchAll(PDO::FETCH_BOTH);
+//        print_r($result);
+        echo json_encode($result);
     }
 
     private function validateFields()

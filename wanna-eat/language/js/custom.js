@@ -1220,7 +1220,7 @@ const vueStore = {
         }
         if (this.$refs.method__order) this.getStoreByRefsId();  // 訂單
         
-        if (this.$refs.moduleIndex) {
+        if (this.$refs.module__index) {
             this.getALlStores();
         }
     }
