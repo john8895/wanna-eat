@@ -59,7 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     case 'getOrdersById':
                         $store->getStoreById();
                         break;
-
+                    case 'getAllStores':
+                        $store->getAllStores();
+                        break;
                     default:
                         break;
                 }

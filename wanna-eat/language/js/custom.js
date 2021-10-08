@@ -772,6 +772,7 @@ const vueStore = {
             },
             editStoreData: {},
             storeData: {},
+            allStores: {},
         }
     },
     methods: {
@@ -1173,7 +1174,7 @@ const vueStore = {
         stopReloadPageHandler(e) {
             e.returnValue = 'Are you sure leave the page?';
         },
-        // todo: 一鍵擷圖
+        // 一鍵擷圖
         orderScreenshot() {
             html2canvas(document.querySelector('#screenCapture'))
                 .then(canvas => {
@@ -1182,25 +1183,33 @@ const vueStore = {
                     let img = new Image();
                     img.src = dataURL;
                     img.onload = () => {
-                        // console.log(img)
-                        // document.body.appendChild(img)
-                        
                         // todo: 10/1 無法在window.open開啟
                         // window.open('', '');
                         // open.document.write(dataURL);
                         // window.open(dataURL, '_blank');
+                        // const screenDiv = document.createElement('div');
+                        // screenDiv.classList.add('screen-capture');
+                        
                         const screenDisplay = document.querySelector('#screenCaptureDisplay');
                         while (screenDisplay.firstChild) {
                             screenDisplay.removeChild(screenDisplay.firstChild)
                         }
+                        // screenDiv.appendChild(img);
                         screenDisplay.appendChild(img);
                     }
-                    
-                    // let img = new Image();
-                    // img.src = canvas.toDataURL();
-                    // window.open(img, '_blank');
                 });
         },
+        // 取得所有餐廳
+        getALlStores() {
+            this.fetchData(`${this.ORDER_API}?request=getAllStores`, 'GET', response => {
+                response.json()
+                    .then(allStoreData => {
+                        console.log(allStoreData);
+                        // todo: 10/8 get all store handler
+                        this.allStores = allStoreData;
+                    })
+            })
+        }
     },
     mounted() {
         if (document.querySelector('.drop-zone__input')) this.dragAndFileUpload();  // 拖移圖片區域  @addOrder
@@ -1210,6 +1219,10 @@ const vueStore = {
             this.stopReloadPage();  // 阻止頁面重整
         }
         if (this.$refs.method__order) this.getStoreByRefsId();  // 訂單
+        
+        if (this.$refs.moduleIndex) {
+            this.getALlStores();
+        }
     }
 }
 

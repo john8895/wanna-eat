@@ -30,6 +30,16 @@ class Store extends connection
         return $stores;
     }
 
+    public function getAllStores()
+    {
+        $sql = "SELECT * FROM store";
+        $this->connect();
+        $sth = $this->query($sql);
+        $sth->execute();
+        $result = $sth->fetchAll();
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    }
+
     private function validateFields()
     {
         global $storeData;
@@ -253,3 +263,5 @@ class Store extends connection
         $smarty->assign('item', $fetch_assoc);
     }
 }
+//$store = new Store();
+//$store->getAllStores();

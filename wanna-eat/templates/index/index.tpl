@@ -1,4 +1,4 @@
-<main class="page__index page__res-list" id="app">
+<main class="page__index page__res-list" id="app" ref="moduleIndex">
     <section class="main__slider">
         <div class="owl-carousel owl-theme">
             <div class="slider-item">

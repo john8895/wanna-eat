@@ -994,9 +994,31 @@ input[name=order_paymentStatus] {
 #screenCapture {
     padding: 20px 10px;
 }
+
 .screen-capture {
+    //position: fixed;
+    //top: 0;
+    //bottom: 0;
+    //z-index: 2;
+    //max-height: 100vh;
+
+    //&:after {
+    //    content: '';
+    //    position: fixed;
+    //    top: 0;
+    //    bottom: 0;
+    //    width: 100%;
+    //    background-color: #0000006b;
+    //    left: 0;
+    //    z-index: 1;
+    //    display: inline-block;
+    //}
+
     img {
+        //position: relative;
+        //z-index: 2;
         border: 1px solid #ddd;
+        //max-height: 100vh;
     }
 }
 
@@ -1177,3 +1199,4 @@ input[name=order_paymentStatus] {
         }
     }
 }
+
