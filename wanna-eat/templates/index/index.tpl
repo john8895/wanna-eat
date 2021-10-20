@@ -1,14 +1,14 @@
 <main class="page__index page__res-list" id="app" ref="module__index">
-    <section class="main__slider">
-        <div class="owl-carousel owl-theme">
-            <div class="slider-item">
-                <img src="./language/img/banner1.jpg" alt="">
-            </div>
-            <div class="slider-item">
-                <img src="./language/img/banner2.jpg" alt="">
-            </div>
-        </div>
-    </section>
+{*    <section class="main__slider">*}
+{*        <div class="owl-carousel owl-theme">*}
+{*            <div class="slider-item">*}
+{*                <img src="./language/img/banner1.jpg" alt="">*}
+{*            </div>*}
+{*            <div class="slider-item">*}
+{*                <img src="./language/img/banner2.jpg" alt="">*}
+{*            </div>*}
+{*        </div>*}
+{*    </section>*}
 
     {*    Store list*}
     <section class="section main__group-list">
@@ -35,9 +35,6 @@
                         <div class="card group-list-item">
                             <div class="store-image">
                                 <div class="group-status">
-{*                                    ${groupFull}*}
-{*                                    <div class="item group-countName">{oneOrderNum}人</div>*}
-{*                                    <div class="item group-leftTime">&nbsp;${left_time}收單</div>*}
                                 </div>
                                 <a :href=`order.php?id={literal}${groupBuy.groupId}{/literal}` :title=`我要跟{literal}${groupBuy.groupHost}{/literal}開的{literal}${groupBuy.storeName}{/literal}`>
                                     <img :src="groupBuy.storeCover" alt="" class="img-fluid">
@@ -60,10 +57,8 @@
                             </div>
                         </div>
                     </div
-
                 </div>
             </main>
-
         </div>
     </section>
 

@@ -1220,7 +1220,7 @@ const vueStore = {
         }
         // if (this.$refs.method__order) this.getStoreByRefsId();  // 訂單
         
-        if (this.$refs.module__index) {
+        if (this.$refs.module__index || this.$refs.module__storeList) {
             this.getALlStores();
         }
     }
@@ -1288,6 +1288,7 @@ const vueGroupBuy = {
     data() {
         return {
             allContinueGroupBuys: [],
+            groupBuyHistory: [],
         }
     },
     methods: {
@@ -1330,6 +1331,16 @@ const vueGroupBuy = {
                 })
             }
         },
+        // 取得已收單團購單
+        getGroupBuyHistory() {
+            const callback = (response) => {
+                response.json()
+                    .then(groupBuyHistoryData => {
+                        this.groupBuyHistory = groupBuyHistoryData;
+                    })
+            }
+            this.fetchData(`${this.ORDER_API}?request=getGroupBuyHistory`, 'GET', callback);
+        },
     },
     computed: {
         // 顯示團購單狀態
@@ -1338,7 +1349,12 @@ const vueGroupBuy = {
         },
     },
     mounted() {
-        if (this.$refs.module__index) this.getAllContinueGroupBuys();
+        if (this.$refs.module__index || this.$refs.module__groupBuyNow || this.$refs.module__storeList || this.$refs.module__groupHistory) {
+            this.getAllContinueGroupBuys();
+        }
+        if (this.$refs.module__groupHistory) {
+            this.getGroupBuyHistory();
+        }
     }
 }
 

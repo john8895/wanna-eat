@@ -67,6 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     case 'getAllGroupBuys':
                         $groupBuy->getAllGroupBuys();
                         break;
+                    case 'getGroupBuyHistory':
+                        $groupBuy->getGroupBuyHistory();
+                        break;
                     default:
                         break;
                 }
