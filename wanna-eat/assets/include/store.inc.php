@@ -12,7 +12,7 @@ class Store extends connection
         $sql = "SELECT * FROM store WHERE id=:storeId LIMIT 1;";
         $sth = $this->query($sql);
         $sth->execute(array(':storeId' => $storeId));
-        echo json_encode($sth->fetchAll(), JSON_UNESCAPED_UNICODE);
+        echo json_encode($sth->fetchAll(PDO::FETCH_ASSOC), JSON_UNESCAPED_UNICODE);
     }
 
     public function index(): array

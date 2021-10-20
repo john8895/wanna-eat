@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+<!--<script>-->
+<!--    function sendRequest() {-->
+<!--        // 新建一個Promise，模擬傳送到伺服器再接收回應-->
+<!--        return new Promise(function (resolve, reject) {-->
+<!--            setTimeout(function () {-->
+<!--                resolve("John Doe");-->
+<!--            }, 2000);-->
+<!--        });-->
+<!--    }-->
+
+<!--    // 宣告這個function是async，只有在有async宣告function裡才能使用 await-->
+<!--    async function getUsername() {-->
+<!--        let username = await sendRequest();  // 等待 sendRequest 跑完再賦予username值-->
+<!--        console.log(username);-->
+<!--    }-->
+
+<!--    getUsername();-->
+
+<!--</script>-->
+
+<script>
+	function sendRequest() {
+		return new Promise(function (resolve, reject){
+          setTimeout(function () {
+              resolve("Hello World")
+		  }, 2000)
+		})
+	}
+    function sendRequestTwo() {
+		return new Promise(function (resolve, reject){
+          setTimeout(function () {
+              resolve("Hello World")
+		  }, 2000)
+		})
+	}
+
+    async function getUsername() {
+		let username = await sendRequest();
+        let username2 = await sendRequestTwo();
+        console.log(username);
+        console.log(username2);
+    }
+
+    getUsername();
+</script>
+</body>
+</html>

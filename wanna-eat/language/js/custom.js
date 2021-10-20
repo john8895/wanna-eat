@@ -287,9 +287,9 @@ $(function () {
 $(function () {
         "use strict"
         // Only index
-        if ($('.page__index').length || $('.page__group-buy-now').length || $('.layout__header').length) {
-            showOrder();
-        }
+        // if ($('.page__index').length || $('.page__group-buy-now').length || $('.layout__header').length) {
+        //     showOrder();
+        // }
         if ($('#add_hostName').length) addHostName();
         if ($('#add_storeTag').length) addStoreTag();
         if ($('.btn-del-store').length) deleteStore();
@@ -461,7 +461,7 @@ $(function () {
             </div>
         </div>`
             }
-            $('.order-block').empty().append(orderBlock);
+            // $('.order-block').empty().append(orderBlock);
             $('.del-group-btn').on('click', delGroupBuy)
         }
         
@@ -1128,47 +1128,46 @@ const vueStore = {
             }
             this.fetchData(this.ORDER_API, 'POST', callback, editStoreData);
         },
+        getUrlId() {
+            const url = window.location.href.split('?')[1];
+            if (!url) return;
+            return url.split('?').join().substr(3);  // 取得 Store Id
+        },
         // 取得餐廳資料  自網址參數
-        getStoreById() {
-            const getUrlId = () => {  // 取得網址帶的id
-                const url = window.location.href.split('?')[1];
-                if (!url) return;
-                return url.split('?').join().substr(3);  // 取得 Store Id
-            }
-            const storeId = getUrlId();  // 取得 Store Id
-            this.getStoreByIdHandler(storeId, 'editStoreData');
+        getStoreById(_storeId, _callback) {
+            this.fetchData(`${this.ORDER_API}?request=getStoreById&storeId=${_storeId}`, 'GET', _callback);
         },
         // 取得餐廳資料  自網頁refs元素
-        getStoreByRefsId() {
-            const storeId = this.$refs.storeId.value;
-            this.getStoreByIdHandler(storeId, 'storeData');
-        },
-        getStoreByIdHandler(_storeId, _dataVariable) {
+        // getStoreByRefsId() {
+        //     const storeId = this.$refs.storeId.value;
+        //     this.getStoreByIdHandler(storeId, 'storeData');
+        // },
+        // 取得修改店家數據
+        getEditStoreData() {
+            const storeId = this.getUrlId();
             const callback = (response) => {
                 response.json()
                     .then(result => {
                         console.log(result[0]);
-                        if (_dataVariable === 'storeData') {
-                            this.storeData = result[0];
-                        }
-                        if (_dataVariable === 'editStoreData') {
-                            this.editStoreData = result[0];
-                        }
+                        this.editStoreData = result[0];
                         this.orderNameTitleDisplay(result[0]);  // 網頁 title 顯示餐廳名稱
                     })
                     .catch((error) => {
                         throw new Error(`讀取遠端資料失敗：${error}`);
                     })
             }
-            this.fetchData(`${this.ORDER_API}?request=getOrdersById&storeId=${_storeId}`, 'GET', callback);
+            this.getStoreById(storeId, callback);
         },
+        // getStoreByIdHandler(_storeId, _dataVariable) {
+        //    const storeId = this.getUrlId();
+        // },
         // 網頁 title 顯示餐廳名稱
         orderNameTitleDisplay(_storeData) {
             const originalTitle = document.title;
             document.title = `${originalTitle} - ${_storeData.name}`;
         },
         // 阻止頁面重整
-        stopReloadPage() {
+        stopPageReload() {
             window.addEventListener('beforeunload', this.stopReloadPageHandler)
         },
         stopReloadPageHandler(e) {
@@ -1215,10 +1214,11 @@ const vueStore = {
         if (document.querySelector('.drop-zone__input')) this.dragAndFileUpload();  // 拖移圖片區域  @addOrder
         // 編輯餐廳
         if (this.$refs.method__editStore) {
-            this.getStoreById();
-            this.stopReloadPage();  // 阻止頁面重整
+            // this.getStoreByIdHandler();
+            this.getEditStoreData();
+            this.stopPageReload();  // 阻止頁面重整
         }
-        if (this.$refs.method__order) this.getStoreByRefsId();  // 訂單
+        // if (this.$refs.method__order) this.getStoreByRefsId();  // 訂單
         
         if (this.$refs.module__index) {
             this.getALlStores();
@@ -1287,34 +1287,58 @@ const vueStoreRating = {
 const vueGroupBuy = {
     data() {
         return {
-            groupBuyData: {},
+            allContinueGroupBuys: [],
         }
     },
     methods: {
-        // 讀取團購單
-        getGroupBy() {
-            const callback = (response) => {
-                response.json()
-                    .then(data => {
-                        // console.log(data);
-                        this.groupBuyData = data;
-                        this.groupBuyDisplay();
-                    })
+        // 取得還未收單團購單
+        async getAllContinueGroupBuys() {
+            const ref = this;
+            // 取得團購單數據、再由店家編號去查到店家資料，組成新object
+            const getGroupBuys = () => fetch(`${this.ORDER_API}?request=getAllGroupBuys`, {method: 'GET'});
+            const getStoreById = storeId => fetch(`${this.ORDER_API}?request=getStoreById&storeId=${storeId}`, {method: 'GET'});
+            
+            let allGroupBuyData = await getGroupBuys();  // 等待,取回資料再往下執行
+            
+            // return一個Promise
+            allGroupBuyData.json().then(groupBuyData => {
+                groupBuyHandler(groupBuyData);
+            })
+            
+            // 團購單資料處理
+            function groupBuyHandler(groupBuyData) {
+                groupBuyData.forEach(async function (item) {
+                    let store = await getStoreById(item.store_id);  // get store By Id  以店家ID取得店家資料
+                    let stores = () => store.json();
+                    let storeData = await stores();
+                    
+                    // 組成新物件存入vue變數
+                    ref.allContinueGroupBuys.push({
+                        endTime: item.end_time,
+                        groupHost: item.group_host,
+                        groupId: item.id,
+                        groupRemark: item.remark,
+                        storeId: item.store_id,
+                        description: storeData[0].description,
+                        storeMenu: storeData[0].images,
+                        storeName: storeData[0].name,
+                        storePhone: storeData[0].phone,
+                        storeCover: storeData[0].store_cover,
+                        storeFullPrice: storeData[0].store_full_price,
+                        storeTag: storeData[0].store_tag
+                    });
+                })
             }
-            this.fetchData(`${this.ORDER_API}?res=buy`, 'GET', callback);
         },
-        // 團購單顯示
-        groupBuyDisplay() {
-            // console.log(this.groupBuyData)
-        }
     },
     computed: {
+        // 顯示團購單狀態
         getGroupBuyState() {
-            return this.groupBuyData.length > 0 ? `目前共 ${this.groupBuyData.length} 張團購單可參加` : '目前還沒有團購單';
+            return this.allContinueGroupBuys.length > 0 ? `目前共 ${this.allContinueGroupBuys.length} 張團購單可參加` : '目前還沒有團購單';
         },
     },
     mounted() {
-        this.getGroupBy();
+        if (this.$refs.module__index) this.getAllContinueGroupBuys();
     }
 }
 
@@ -1335,6 +1359,56 @@ const vueSetState = {
                 ...newState
             }
         },
+    }
+}
+
+// 訂單顯示
+const vueOrderDisplay = {
+    data() {
+        let deliveryAmountLimit = false;
+        return {
+            ordersData: {},
+            deliveryAmountLimit,
+        }
+    },
+    methods: {
+        // 載入團購訂單 #order.php
+        getOrdersById() {
+            if (!this.$refs['orderId']) return;
+            const orderId = this.$refs['orderId'].value;
+            const api = `${this.ORDER_API} ? res = order_list & order_id =${orderId}`;
+            
+            this.fetchData(api, 'GET', this.ordersDisplay);
+        },
+        // 獲取外送門檻
+        getStoreDeliveryAmount() {
+            if (!this.$refs['storeId']) return;
+            const storeId = this.$refs['storeId'].value;
+            const orderTotal = this.orderDetails.priceTotal;  // 訂單總金額
+            
+            const deliveryAmountHandler = (response) => {
+                response.json()
+                    .then((data) => {
+                        const limitAmount = parseInt(data.store_full_price);
+                        if (orderTotal >= limitAmount) {  // 達外送門檻
+                            this.deliveryAmountLimit = true;
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            }
+            
+            this.fetchData(`${this.ORDER_API} ? res = store & store_id =${storeId}`, 'GET', deliveryAmountHandler);
+        },
+        // 訂單顯示 #order.php
+        ordersDisplay(orderData) {
+            orderData.json()
+                .then(orderData => {
+                    this.ordersData = orderData;
+                    this.calculateOrders(orderData);
+                })
+        },
         // 結束訂單
         endOrderTimeHandler() {
             const ref = this;
@@ -1348,7 +1422,7 @@ const vueSetState = {
             const h = newTime.getHours() > 9 ? newTime.getHours() : '0' + newTime.getHours()
             const m = newTime.getMinutes() > 9 ? newTime.getMinutes() : '0' + newTime.getMinutes()
             const s = newTime.getSeconds() > 9 ? newTime.getSeconds() : '0' + newTime.getSeconds()
-            const nowTime = `${newTime.getFullYear()}-${newTime.getMonth() + 1}-${newTime.getDate()} ${h}:${m}:${s}`
+            const nowTime = `${newTime.getFullYear()} -${newTime.getMonth() + 1} -${newTime.getDate()} ${h} :${m} :${s}`
             const order_id = this.$refs['orderId'].value;
             
             // Post form
@@ -1380,13 +1454,17 @@ const vueSetState = {
             const h = currentTime.getHours() > 9 ? currentTime.getHours() : '0' + currentTime.getHours()
             const m = currentTime.getMinutes() > 9 ? currentTime.getMinutes() : '0' + currentTime.getMinutes()
             const s = currentTime.getSeconds() > 9 ? currentTime.getSeconds() : '0' + currentTime.getSeconds()
-            const nowTime = `${currentTime.getFullYear()}-${currentTime.getMonth() + 1}-${currentTime.getDate()} ${h}:${m}:${s}`
+            const nowTime = `${currentTime.getFullYear()} -${currentTime.getMonth() + 1} -${currentTime.getDate()} ${h}
+        :${m}
+        :${s}
+            `
             
             let orderEndTimeData = new FormData();
             orderEndTimeData.append('method', 'continueOrder');
             orderEndTimeData.append('order_id', orderId);
             orderEndTimeData.append('new_time', nowTime);
-            const act = new AjaxData(`group_buy_api.php`, getOrderEndTimeHandler, orderEndTimeData).postJson();
+            const act = new AjaxData(`
+            group_buy_api.php`, getOrderEndTimeHandler, orderEndTimeData).postJson();
             
             function getOrderEndTimeHandler(res) {
                 console.log(res)
@@ -1412,63 +1490,7 @@ const vueSetState = {
             })
             this.continueOrderTimeHandler(orderId);
         },
-    }
-}
-
-// 訂單顯示
-const vueOrderDisplay = {
-    data() {
-        let deliveryAmountLimit = false;
-        return {
-            ordersData: {},
-            deliveryAmountLimit,
-        }
     },
-    methods: {
-        // 載入團購訂單 #order.php
-        getOrdersById() {
-            if (!this.$refs['orderId']) return;
-            const orderId = this.$refs['orderId'].value;
-            const api = `${this.ORDER_API}?res=order_list&order_id=${orderId}`;
-            
-            this.fetchData(api, 'GET', this.ordersDisplay);
-        },
-        // 獲取外送門檻
-        getStoreDeliveryAmount() {
-            if (!this.$refs['storeId']) return;
-            const storeId = this.$refs['storeId'].value;
-            const orderTotal = this.orderDetails.priceTotal;  // 訂單總金額
-            
-            const deliveryAmountHandler = (response) => {
-                response.json()
-                    .then((data) => {
-                        const limitAmount = parseInt(data.store_full_price);
-                        if (orderTotal >= limitAmount) {  // 達外送門檻
-                            this.deliveryAmountLimit = true;
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
-            }
-            
-            this.fetchData(`${this.ORDER_API}?res=store&store_id=${storeId}`, 'GET', deliveryAmountHandler);
-        },
-        // 訂單顯示 #order.php
-        ordersDisplay(orderData) {
-            orderData.json()
-                .then(orderData => {
-                    this.ordersData = orderData;
-                    this.calculateOrders(orderData);
-                })
-        }
-    },
-    created() {
-    },
-    beforeMount() {
-    },
-    mounted() {
-    }
 }
 
 // 訂單操作
@@ -1531,7 +1553,8 @@ const vueOrderOperation = {
             this.checkElementNonExists(_inputElement, _fieldName);  // 檢查元素是否存在
             
             if (!_inputElement.value) {
-                this.smartAlert('訂單欄位檢查', `${_fieldName}不可為空`, 'error');
+                this.smartAlert('訂單欄位檢查', `${_fieldName}
+            不可為空`, 'error');
                 _inputElement.classList.add('is-invalid');
                 return false;
             }
@@ -1542,7 +1565,9 @@ const vueOrderOperation = {
         // 檢查元素是否存在，不存在拋出錯誤
         checkElementNonExists(_inputElement, _fieldName) {
             if (!_inputElement) {
-                throw new Error(`${_fieldName}欄位不存在，得到結果：${_inputElement}`);
+                throw new Error(`${_fieldName}
+            欄位不存在，得到結果：${_inputElement}
+            `);
             }
         },
         // 驗證輸入金額正確性
@@ -1550,7 +1575,10 @@ const vueOrderOperation = {
             const reg = /^[1-9]{1}[0-9]?/g;  // 1-無上限 正整數不可負數不可為 0
             try {
                 if (_fieldElement.value.match(reg) === null) {
-                    this.smartAlert('欄位檢查提醒', `${_fieldName} 請輸入不為 0 的正整數(不能是負數)<br>注意！資料尚未更新`, 'error');
+                    this.smartAlert('欄位檢查提醒', `${_fieldName}
+            請輸入不為
+            0
+            的正整數(不能是負數) < br > 注意！資料尚未更新`, 'error');
                     _fieldElement.classList.add('is-invalid');
                     return false;
                 }
@@ -1618,7 +1646,9 @@ const vueOrderOperation = {
                                 this.getOrdersById();
                             }
                         } catch (e) {
-                            throw new Error(`刪除訂單失敗！error：${e}`)
+                            throw new Error(`
+            刪除訂單失敗！error：${e}
+            `)
                         }
                     })
                     .catch(error => {
@@ -1888,7 +1918,7 @@ const vueLoading = {
                 },
                 complete: () => {  // 頁面載入完成 document.readyState === 'complete'
                     const loading = document.getElementById('loadingEffect');
-                    loading.remove(loading);
+                    loading.remove();
                 }
             }
             

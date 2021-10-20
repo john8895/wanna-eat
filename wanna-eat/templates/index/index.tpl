@@ -30,7 +30,38 @@
                 </div>
 
                 {* Order block *}
-                <div class="row order-block"></div>
+                <div class="row order-block">
+                    <div class="col-sm-12 col-md-6 col-lg-3 mb-3" v-for="(groupBuy, groupBuyKey) in allContinueGroupBuys">
+                        <div class="card group-list-item">
+                            <div class="store-image">
+                                <div class="group-status">
+{*                                    ${groupFull}*}
+{*                                    <div class="item group-countName">{oneOrderNum}人</div>*}
+{*                                    <div class="item group-leftTime">&nbsp;${left_time}收單</div>*}
+                                </div>
+                                <a :href=`order.php?id={literal}${groupBuy.groupId}{/literal}` :title=`我要跟{literal}${groupBuy.groupHost}{/literal}開的{literal}${groupBuy.storeName}{/literal}`>
+                                    <img :src="groupBuy.storeCover" alt="" class="img-fluid">
+                                </a>
+                            </div>
+
+                            <div class="card-body text-center">
+                                <a :href=`order.php?id={literal}${groupBuy.groupId}{/literal}` :title=`我要跟{literal}${groupBuy.groupHost}{/literal}開的{literal}${groupBuy.storeName}{/literal}`>
+                                    %% groupBuy.storeName %%
+                                </a>
+                                <ul>
+                                    <li class="orderBtn">
+                                        <div class="mt-2 text-center">
+                                            <button class="btn btn-outline-danger del-group-btn  border-top-0 border-left-0 border-right-0" :data-groupid="groupBuy.groupId">
+                                                刪除此單
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div
+
+                </div>
             </main>
 
         </div>

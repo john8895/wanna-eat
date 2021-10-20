@@ -114,12 +114,12 @@ class Order extends Connection
     // 繼續訂單
     public function continueOrder()
     {
-        $order_id = $_POST['order_id'];
-        $new_time = $_POST['new_time'];
+        $orderId = $_POST['order_id'];
+        $newTime = $_POST['new_time'];
         $this->connect();
-        $sql = "UPDATE group_buy SET end_time='{$new_time}' WHERE id= :orderId";
+        $sql = "UPDATE group_buy SET end_time=:newTime WHERE id=:orderId";
         $sth = $this->query($sql);
-        $sth->execute(array(':orderId' => $order_id));
+        $sth->execute(array(':newTime' => $newTime, ':orderId' => $orderId));
         if ($this->hasError($sth)) echo 0;
         echo 1;
     }
@@ -127,12 +127,12 @@ class Order extends Connection
     // 關閉訂單
     public function closeOrder()
     {
-        $end_time = $_POST['end_time'];
-        $order_id = $_POST['order_id'];
+        $endTime = $_POST['end_time'];
+        $orderId = $_POST['order_id'];
         $this->connect();
-        $sql = "UPDATE group_buy SET end_time='{$end_time}' WHERE id={$order_id}";
+        $sql = "UPDATE group_buy SET end_time=:endTime WHERE id=:orderId";
         $sth = $this->query($sql);
-        $sth->execute(array(':orderId' => $order_id));
+        $sth->execute(array(':endTime' => $endTime, ':orderId' => $orderId));
         if ($this->hasError($sth)) echo 0;
         echo 1;
     }

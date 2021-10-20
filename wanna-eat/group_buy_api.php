@@ -5,10 +5,12 @@ require_once('assets/inc/connect.php');
 require_once('assets/include/order.inc.php');
 require_once('assets/include/store.inc.php');
 require_once('assets/include/user.inc.php');
+require_once('assets/include/groupbuy.inc.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     foreach ($_GET as $key => $value) {
         $store = new Store();
+        $groupBuy = new GroupBuy();
 
         switch ($key) {
             case 'res':
@@ -56,11 +58,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 break;
             case 'request':
                 switch ($value) {
-                    case 'getOrdersById':
+                    case 'getStoreById':
                         $store->getStoreById();
                         break;
                     case 'getAllStores':
                         $store->getAllStores();
+                        break;
+                    case 'getAllGroupBuys':
+                        $groupBuy->getAllGroupBuys();
                         break;
                     default:
                         break;
@@ -141,8 +146,7 @@ function getGroupBuy()
             $new_item[] = $item;
         }
     }
-//    $json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
-    $json_data = json_encode($new_item);  // 轉為json格式，轉譯處理中文
+    $json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
     echo $json_data;
     $result->close();
 }
