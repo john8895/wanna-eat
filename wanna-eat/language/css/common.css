@@ -932,9 +932,6 @@ input[name=order_paymentStatus] + label i {
 .store-image a {
   text-align: center;
 }
-.store-image a:hover img {
-  transform: scale(1.1) rotate(2deg);
-}
 .store-image img {
   height: 100%;
   margin: auto;
@@ -1275,7 +1272,7 @@ input[name=order_paymentStatus] + label i {
   width: 100%;
   height: 100%;
   background-color: #fff;
-  position: absolute;
+  position: fixed;
   opacity: 0;
 }
 .loading-effect-wrap.beforeend:after {

@@ -10,7 +10,7 @@ class GroupBuy extends connection
         $sth = $this->query($sql);
         $sth->execute();
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
-        echo  json_encode($result, JSON_UNESCAPED_UNICODE);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 
     public function getGroupBuyHistory()
@@ -20,7 +20,25 @@ class GroupBuy extends connection
         $sth = $this->query($sql);
         $sth->execute();
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
-        echo  json_encode($result, JSON_UNESCAPED_UNICODE);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    }
+
+    /** Delete group buy */
+    public function deleteGroupBuyByGroupId()
+    {
+        $groupId = $_POST['groupId'];
+        session_start();
+        if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
+            echo 2;  // Login Failed
+            return;
+        }
+
+        $sql = "DELETE FROM group_buy WHERE id=:groupId";
+        $this->connect();
+        $sth = $this->query($sql);
+        $sth->execute(array(':groupId' => $groupId));
+        if ($this->hasError($sth)) echo 0;
+        echo 1; // successfully deleted group
     }
 }
 //$groupBuy = new GroupBuy();

@@ -1332,14 +1332,79 @@ const vueGroupBuy = {
             }
         },
         // 取得已收單團購單
-        getGroupBuyHistory() {
-            const callback = (response) => {
-                response.json()
-                    .then(groupBuyHistoryData => {
-                        this.groupBuyHistory = groupBuyHistoryData;
-                    })
+        async getGroupBuyHistory() {
+            const ref = this;
+            // 取得團購單數據、再由店家編號去查到店家資料，組成新object
+            const getGroupBuys = () => fetch(`${this.ORDER_API}?request=getGroupBuyHistory`, {method: 'GET'});
+            const getStoreById = storeId => fetch(`${this.ORDER_API}?request=getStoreById&storeId=${storeId}`, {method: 'GET'});
+            
+            let allGroupBuyData = await getGroupBuys();  // 等待,取回資料再往下執行
+            
+            // return一個Promise
+            allGroupBuyData.json().then(groupBuyData => {
+                groupBuyHandler(groupBuyData);
+            })
+            
+            // 團購單資料處理
+            function groupBuyHandler(groupBuyData) {
+                groupBuyData.forEach(async function (item) {
+                    let store = await getStoreById(item.store_id);  // get store By Id  以店家ID取得店家資料
+                    let stores = () => store.json();
+                    let storeData = await stores();
+                    
+                    if (storeData.length === 0) return;  // 跳過已刪除店家資料的團購單(會得到空陣列)
+                    
+                    // 組成新物件存入vue變數
+                    ref.groupBuyHistory.push({
+                        endTime: item.end_time,
+                        groupHost: item.group_host,
+                        groupId: item.id,
+                        groupRemark: item.remark,
+                        storeId: item.store_id,
+                        description: storeData[0].description,
+                        storeMenu: storeData[0].images,
+                        storeName: storeData[0].name,
+                        storePhone: storeData[0].phone,
+                        storeCover: storeData[0].store_cover,
+                        storeFullPrice: storeData[0].store_full_price,
+                        storeTag: storeData[0].store_tag
+                    });
+                })
             }
-            this.fetchData(`${this.ORDER_API}?request=getGroupBuyHistory`, 'GET', callback);
+        },
+        // 刪除團購單
+        // todo 10/21 要先進到這裡
+        deleteGroupBuy(event){
+            this.smartConfirm('刪除團購單確認', '注意，這個動作不能復原，想清楚了嗎？', '我確定要刪除', 'info', this.deleteGroupBuyByGroupId(event));
+        },
+        deleteGroupBuyByGroupId(event){
+            const groupId = event.target.dataset.groupid;
+            const deleteGroupBuyData = new FormData();
+            deleteGroupBuyData.append('method', 'deleteGroupBuyByGroupId');
+            deleteGroupBuyData.append('groupId', groupId);
+            
+            this.fetchData(this.ORDER_API, 'POST', this.deleteGroupBuyHandler, deleteGroupBuyData);
+        },
+        deleteGroupBuyHandler(response){
+            response.text().then(deleteGroupBuyState => {
+                deleteGroupBuyState = parseInt(deleteGroupBuyState);
+                console.log(deleteGroupBuyState)
+                if(deleteGroupBuyState === 1) {
+                    this.smartAlert('操作成功', '已刪除一筆團購單，將為您重整頁面…', 'success');
+                    setTimeout(()=> {
+                        location.reload();
+                    }, 4000);
+                    return;
+                }
+                if(deleteGroupBuyState === 2) {
+                    this.smartAlert('操作失敗', '尚未登入', 'error');
+                    return;
+                }
+                if(deleteGroupBuyState === 0) {
+                    this.smartAlert('操作失敗', '無法刪除', 'error');
+                    return;
+                }
+            })
         },
     },
     computed: {
@@ -1392,7 +1457,8 @@ const vueOrderDisplay = {
         getOrdersById() {
             if (!this.$refs['orderId']) return;
             const orderId = this.$refs['orderId'].value;
-            const api = `${this.ORDER_API} ? res = order_list & order_id =${orderId}`;
+            const api = `${this.ORDER_API}?res=order_list&order_id=${orderId}`;
+            console.log(orderId, api);
             
             this.fetchData(api, 'GET', this.ordersDisplay);
         },
@@ -1415,7 +1481,7 @@ const vueOrderDisplay = {
                     })
             }
             
-            this.fetchData(`${this.ORDER_API} ? res = store & store_id =${storeId}`, 'GET', deliveryAmountHandler);
+            this.fetchData(`${this.ORDER_API}?res=store&store_id=${storeId}`, 'GET', deliveryAmountHandler);
         },
         // 訂單顯示 #order.php
         ordersDisplay(orderData) {
@@ -1438,7 +1504,7 @@ const vueOrderDisplay = {
             const h = newTime.getHours() > 9 ? newTime.getHours() : '0' + newTime.getHours()
             const m = newTime.getMinutes() > 9 ? newTime.getMinutes() : '0' + newTime.getMinutes()
             const s = newTime.getSeconds() > 9 ? newTime.getSeconds() : '0' + newTime.getSeconds()
-            const nowTime = `${newTime.getFullYear()} -${newTime.getMonth() + 1} -${newTime.getDate()} ${h} :${m} :${s}`
+            const nowTime = `${newTime.getFullYear()}-${newTime.getMonth() + 1}-${newTime.getDate()} ${h}:${m}:${s}`
             const order_id = this.$refs['orderId'].value;
             
             // Post form
@@ -1856,6 +1922,7 @@ const vueGetAndPost = {
                 if (response.status === 200 || response.status === 0) {
                     return Promise.resolve(response);
                 } else {
+                    console.log(response)
                     return Promise.reject(new Error(response.statusText));
                 }
             }
@@ -1893,7 +1960,7 @@ const vueAlert = {
                 timerProgressBar: true,
             })
         },
-        smartConfirm(_title = '', _description = '', _confirmText = '', _status, _callback) {
+        smartConfirm(_title = '', _description = '', _confirmText = '', _status, _callback ='') {
             Swal.fire({
                 title: _title,
                 text: _description,

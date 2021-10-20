@@ -86,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $order = new Order();
     $store = new Store();
     $user = new User();
+    $groupBuy = new GroupBuy();
 
     switch ($method) {
         case 'recaptcha':
@@ -121,12 +122,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'register':
             $user->register();
             break;
+        case 'deleteGroupBuyByGroupId':
+            $groupBuy->deleteGroupBuyByGroupId();
+            break;
         default:
             break;
     }
 
     if (isset($_POST['add_host_name'])) addHostName();
-    if (isset($_POST['group_id'])) deleteGroupBuy();
+//    if (isset($_POST['group_id'])) deleteGroupBuy();
 }
 
 

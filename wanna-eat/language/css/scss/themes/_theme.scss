@@ -692,11 +692,11 @@ input[name=order_paymentStatus] {
     a {
         text-align: center;
 
-        &:hover {
-            img {
-                transform: scale(1.1) rotate(2deg);
-            }
-        }
+        //&:hover {
+        //    img {
+        //        transform: scale(1.1) rotate(2deg);
+        //    }
+        //}
     }
 
     img {
@@ -1155,7 +1155,7 @@ input[name=order_paymentStatus] {
         width: 100%;
         height: 100%;
         background-color: #fff;
-        position: absolute;
+        position: fixed;
         opacity: 0;
     }
 
