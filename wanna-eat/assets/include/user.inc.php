@@ -1,7 +1,6 @@
 <?php
 
 use ReCaptcha\ReCaptcha;
-
 require_once 'dbh.inc.php';
 
 class User extends connection
@@ -77,7 +76,17 @@ class User extends connection
         echo 1;
     }
 
+    // 會員註冊
     public function register(){
+        $user['email'] = $_POST['email'];
+        $user['password'] = $_POST['password'];
+        $user['nickName'] = $_POST['nickName'];
+
+        $sql = "INSERT INTO `users` (username, password, nick_name) VALUES (:email, :password, :nickName)";
+        $this->connect();
+        $sth = $this->query($sql);
+        $sth->execute(array(':email' => $user['email'], ':password' => $user['password'], ':nickName' => $user['nickName']));
+        if ($this->hasError($sth)) echo 0;
         echo 1;
     }
 }

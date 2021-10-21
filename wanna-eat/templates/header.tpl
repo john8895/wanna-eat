@@ -4,6 +4,9 @@
             <div class="container">
                 <div class="d-flex justify-content-between">
                     <a href="index.php" class="navbar-brand">今天要吃啥<span>？</span></a>
+{*                    <div class="header-search">*}
+{*                        <input type="text" class="form-control" placeholder="搜尋店家名稱">*}
+{*                    </div>*}
                     <nav class="header__account">
                         <ul class="d-flex header__nav-settings">
                             {if !isset($logged) || !$logged}

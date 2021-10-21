@@ -492,6 +492,7 @@ $(function () {
          * @Range: Edit-Account.php
          * Add host name , edit host name
          */
+        // todo 10/21 要轉為vue method
         function addHostName() {
             $('#add_hostName').on('click', addHostNameHandle);
             // 一開始先載入所有 hostname
@@ -655,13 +656,40 @@ $(function () {
 )
 
 /******************
- * Vue 3
+ * Vue3
  ******************/
+// Group
+const vueGroup = {
+    data() {
+        const groupRegisterFormFields = {
+            nickName: '',
+            password: '',
+            passwordConfirm: '',
+        };
+        return {
+            groupRegisterFormFields,
+        }
+    },
+    methods: {
+        // todo 10/21 群組註冊
+        groupRegister() {
+            console.log(55)
+            if(!this.groupRegisterFormValidation) return;
+            
+        },
+        // 群組表單驗證
+        groupRegisterFormValidation() {
+            
+            return true;
+        }
+    }
+}
+
 // Member
 const vueMember = {
     data() {
         const registerFormFields = {
-            name: '',
+            nickName: '',
             email: '',
             password: '',
             passwordConfirm: '',
@@ -671,23 +699,26 @@ const vueMember = {
         }
     },
     methods: {
+        // todo 10/21 會貢註冊
         register(e) {
             e.preventDefault();
             if (!this.registerFromValidate()) return;
             
             const registerFormData = new FormData();
             registerFormData.append('method', 'register');
-            registerFormData.append('name', this.registerFormFields.name);
+            registerFormData.append('nickName', this.registerFormFields.nickName);
             registerFormData.append('email', this.registerFormFields.email);
             registerFormData.append('password', this.registerFormFields.password);
             
             this.fetchData(this.ORDER_API, 'POST', this.registerHandler, registerFormData);
         },
+        // 註冊表單驗證
         registerFromValidate() {
             console.log(55)
             
             return true;
         },
+        // 會員註冊處理
         registerHandler(response) {
             response.text()
                 .then(result => {
@@ -1370,7 +1401,7 @@ const vueGroupBuy = {
             }
         },
         // 刪除團購單
-        deleteGroupBuy(event){
+        deleteGroupBuy(event) {
             this.tempGroupId = event.target.dataset.groupid;  // 存入全域變數，以利callback使用
             try {
                 this.smartConfirm('刪除團購單確認', '注意，這個動作不能復原', '我確定要刪除', 'warning', this.deleteGroupBuyByGroupId);
@@ -1378,7 +1409,7 @@ const vueGroupBuy = {
                 console.log(e)
             }
         },
-        deleteGroupBuyByGroupId(groupId){
+        deleteGroupBuyByGroupId(groupId) {
             const deleteGroupBuyData = new FormData();
             deleteGroupBuyData.append('method', 'deleteGroupBuyByGroupId');
             deleteGroupBuyData.append('groupId', this.tempGroupId);
@@ -1386,22 +1417,22 @@ const vueGroupBuy = {
             this.fetchData(this.ORDER_API, 'POST', this.deleteGroupBuyHandler, deleteGroupBuyData);
         },
         // 刪除團購單處理
-        deleteGroupBuyHandler(response){
+        deleteGroupBuyHandler(response) {
             response.text().then(deleteGroupBuyState => {
                 deleteGroupBuyState = parseInt(deleteGroupBuyState);
                 console.log(deleteGroupBuyState)
-                if(deleteGroupBuyState === 1) {
+                if (deleteGroupBuyState === 1) {
                     this.smartAlert('操作成功', '已刪除一筆團購單，將為您重整頁面…', 'success');
-                    setTimeout(()=> {
+                    setTimeout(() => {
                         location.reload();
                     }, 4000);
                     return;
                 }
-                if(deleteGroupBuyState === 2) {
+                if (deleteGroupBuyState === 2) {
                     this.smartAlert('操作失敗', '尚未登入', 'error');
                     return;
                 }
-                if(deleteGroupBuyState === 0) {
+                if (deleteGroupBuyState === 0) {
                     this.smartAlert('操作失敗', '無法刪除', 'error');
                     return;
                 }
@@ -1972,7 +2003,7 @@ const vueAlert = {
                 confirmButtonText: _confirmText
             }).then((result) => {
                 console.log(result)
-                if (result.isConfirmed){
+                if (result.isConfirmed) {
                     _callback();
                 }
                 // if (result.value) {
@@ -2055,6 +2086,7 @@ const app = Vue.createApp({
         vueLoading,
         vueStoreRating,
         vueMember,
+        vueGroup,
     ],
     data() {
         return {}
