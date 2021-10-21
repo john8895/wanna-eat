@@ -324,64 +324,64 @@ $(function () {
         }
         
         // Get group-buy data
-        function showOrder(res = '') {
-            
-            if (res === 'error') {
-                return new SwalAlert('操作失敗', '未登入或是找不到該訂單 ID，沒有資料被刪除', '', 'error').fire();
-            } else if (res === 'success') {
-                const alert = new SwalAlert('操作成功', '已刪除一筆團購單', '', 'success').fire();
-            }
-            
-            // axios get multiple urls
-            const total_orders = axios.get('group_buy_api.php?res=total_orders');
-            const groupBuy = axios.get('group_buy_api.php?res=buy');
-            // 如果在歷史團購單頁，就讀取歷史團購單
-            const groupBuyHistory = $('.page__group-history').length ? axios.get('group_buy_api.php?res=buy_history') : 0;
-            const store_info = axios.get('group_buy_api.php?res=stores');
-            
-            axios
-                .all([groupBuy, total_orders, store_info, groupBuyHistory])
-                .then(
-                    axios.spread((...res) => {
-                        const res1 = res[0];
-                        const res2 = res[1];
-                        const res3 = res[2];
-                        const groupBuyHistory = res[3].data;
-                        // console.log(res1.data, res2.data, res3.data, groupBuyHistory)
-                        groupBuyDisplay(res1.data, res2.data, res3.data, groupBuyHistory)
-                    })
-                )
-                .catch(
-                    axios.spread((...error) => {
-                        const res1 = error[0];
-                        const res2 = error[1];
-                        const res3 = error[2];
-                        console.error(error[0].errors)
-                        console.error(error[1].errors)
-                        console.error(error[2].errors)
-                        console.error(error[3].errors)
-                        
-                    })
-                )
-        }
+        // function showOrder(res = '') {
+        //
+        //     if (res === 'error') {
+        //         return new SwalAlert('操作失敗', '未登入或是找不到該訂單 ID，沒有資料被刪除', '', 'error').fire();
+        //     } else if (res === 'success') {
+        //         const alert = new SwalAlert('操作成功', '已刪除一筆團購單', '', 'success').fire();
+        //     }
+        //
+        //     // axios get multiple urls
+        //     const total_orders = axios.get('group_buy_api.php?res=total_orders');
+        //     const groupBuy = axios.get('group_buy_api.php?res=buy');
+        //     // 如果在歷史團購單頁，就讀取歷史團購單
+        //     const groupBuyHistory = $('.page__group-history').length ? axios.get('group_buy_api.php?res=buy_history') : 0;
+        //     const store_info = axios.get('group_buy_api.php?res=stores');
+        //
+        //     axios
+        //         .all([groupBuy, total_orders, store_info, groupBuyHistory])
+        //         .then(
+        //             axios.spread((...res) => {
+        //                 const res1 = res[0];
+        //                 const res2 = res[1];
+        //                 const res3 = res[2];
+        //                 const groupBuyHistory = res[3].data;
+        //                 // console.log(res1.data, res2.data, res3.data, groupBuyHistory)
+        //                 groupBuyDisplay(res1.data, res2.data, res3.data, groupBuyHistory)
+        //             })
+        //         )
+        //         .catch(
+        //             axios.spread((...error) => {
+        //                 const res1 = error[0];
+        //                 const res2 = error[1];
+        //                 const res3 = error[2];
+        //                 console.error(error[0].errors)
+        //                 console.error(error[1].errors)
+        //                 console.error(error[2].errors)
+        //                 console.error(error[3].errors)
+        //
+        //             })
+        //         )
+        // }
         
         
         // Calc total price and total people of order id.
-        function indexOrdersCalc(json, order_id) {
-            let sum = 0;
-            let name = [];
-            json.forEach(item => {
-                if (item.order_id === order_id) {
-                    sum += parseInt(item.order_price);
-                    name.push(item.order_name)
-                }
-            })
-            const totalName = name.filter((item, index) => name.indexOf(item) === index);  // 刪除重複元素
-            return {
-                totalPrice: sum,
-                totalName: totalName,
-            };
-        }
+        // function indexOrdersCalc(json, order_id) {
+        //     let sum = 0;
+        //     let name = [];
+        //     json.forEach(item => {
+        //         if (item.order_id === order_id) {
+        //             sum += parseInt(item.order_price);
+        //             name.push(item.order_name)
+        //         }
+        //     })
+        //     const totalName = name.filter((item, index) => name.indexOf(item) === index);  // 刪除重複元素
+        //     return {
+        //         totalPrice: sum,
+        //         totalName: totalName,
+        //     };
+        // }
         
         
         /**
@@ -391,101 +391,101 @@ $(function () {
          * @param stores  餐廳數據
          * @param groupBuyHistory  歷史團購單
          */
-        function groupBuyDisplay(groupBuy, totalOrders, stores, groupBuyHistory) {
-            let groupBuyData;
-            let groupText = '';
-            if (groupBuyHistory) {
-                groupBuyData = groupBuyHistory;
-                groupText = '過往的團購單數&nbsp;&nbsp;';
-            } else {
-                groupBuyData = groupBuy;
-                groupText = '進行中團購&nbsp;&nbsp;';
-            }
-            
-            let orderBlock = '';
-            for (let i = 0; i < groupBuyData.length; i++) {
-                // Calc orders
-                const orderCalc = indexOrdersCalc(totalOrders, groupBuyData[i].id)
-                const oneOrderSum = orderCalc.totalPrice;
-                const oneOrderNum = orderCalc.totalName.length;
-                const groupId = parseInt(groupBuyData[i].store_id);
-                
-                // Calc left time
-                const end_time = new Date(groupBuyData[i].end_time).getTime();
-                const left_time = moment(end_time).fromNow()  // 比較當日獲取還剩幾分鐘收單
-                
-                // Get store data
-                let storeCover = './language/img/noimg.jpg';
-                let storeFullPrice = 0;
-                for (const key in stores) {
-                    const store_id = parseInt(stores[key].id);
-                    if (groupId === store_id) {
-                        storeCover = stores[key].store_cover;
-                        storeFullPrice = stores[key].store_full_price;
-                    }
-                }
-                if (storeCover == null) storeCover = './language/img/noimg.jpg';
-                
-                // group full & yet
-                let groupFull = '';
-                if (oneOrderSum >= storeFullPrice) {
-                    groupFull = `<div class="item group-full">已成團</div>`;
-                } else {
-                    groupFull = `<div class="item group-yet">未成團</div>`;
-                }
-                
-                orderBlock += `
-        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-        <div class="card group-list-item">
-                <div class="store-image">
-                    <div class="group-status">
-                        ${groupFull}
-                        <div class="item group-countName">${oneOrderNum}人</div>
-                        <div class="item group-leftTime">&nbsp;${left_time}收單</div>
-                    </div>
-                    <a href="order.php?id=${groupBuyData[i].id}" title="我要跟${groupBuyData[i].group_host}開的${groupBuyData[i].store_name}">
-                        <img src="${storeCover}" alt="" class="img-fluid">
-                    </a>
-                </div>
-            
-            <div class="card-body text-center">
-            <span id="store_name">${groupBuyData[i].store_name}</span>
-            <ul>
-                <li class="orderBtn">
-                    <div class="mt-2 text-center">
-                        <button class="btn btn-outline-danger del-group-btn  border-top-0 border-left-0 border-right-0" data-groupid="${groupBuyData[i].id}">刪除此單</button>
-                    </div>
-                </li>
-            </ul>
-            </div>
-            </div>
-        </div>`
-            }
-            // $('.order-block').empty().append(orderBlock);
-            $('.del-group-btn').on('click', delGroupBuy)
-        }
+        // function groupBuyDisplay(groupBuy, totalOrders, stores, groupBuyHistory) {
+        //     let groupBuyData;
+        //     let groupText = '';
+        //     if (groupBuyHistory) {
+        //         groupBuyData = groupBuyHistory;
+        //         groupText = '過往的團購單數&nbsp;&nbsp;';
+        //     } else {
+        //         groupBuyData = groupBuy;
+        //         groupText = '進行中團購&nbsp;&nbsp;';
+        //     }
+        //
+        //     let orderBlock = '';
+        //     for (let i = 0; i < groupBuyData.length; i++) {
+        //         // Calc orders
+        //         const orderCalc = indexOrdersCalc(totalOrders, groupBuyData[i].id)
+        //         const oneOrderSum = orderCalc.totalPrice;
+        //         const oneOrderNum = orderCalc.totalName.length;
+        //         const groupId = parseInt(groupBuyData[i].store_id);
+        //
+        //         // Calc left time
+        //         const end_time = new Date(groupBuyData[i].end_time).getTime();
+        //         const left_time = moment(end_time).fromNow()  // 比較當日獲取還剩幾分鐘收單
+        //
+        //         // Get store data
+        //         let storeCover = './language/img/noimg.jpg';
+        //         let storeFullPrice = 0;
+        //         for (const key in stores) {
+        //             const store_id = parseInt(stores[key].id);
+        //             if (groupId === store_id) {
+        //                 storeCover = stores[key].store_cover;
+        //                 storeFullPrice = stores[key].store_full_price;
+        //             }
+        //         }
+        //         if (storeCover == null) storeCover = './language/img/noimg.jpg';
+        //
+        //         // group full & yet
+        //         let groupFull = '';
+        //         if (oneOrderSum >= storeFullPrice) {
+        //             groupFull = `<div class="item group-full">已成團</div>`;
+        //         } else {
+        //             groupFull = `<div class="item group-yet">未成團</div>`;
+        //         }
+        //
+        //         orderBlock += `
+        // <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+        // <div class="card group-list-item">
+        //         <div class="store-image">
+        //             <div class="group-status">
+        //                 ${groupFull}
+        //                 <div class="item group-countName">${oneOrderNum}人</div>
+        //                 <div class="item group-leftTime">&nbsp;${left_time}收單</div>
+        //             </div>
+        //             <a href="order.php?id=${groupBuyData[i].id}" title="我要跟${groupBuyData[i].group_host}開的${groupBuyData[i].store_name}">
+        //                 <img src="${storeCover}" alt="" class="img-fluid">
+        //             </a>
+        //         </div>
+        //
+        //     <div class="card-body text-center">
+        //     <span id="store_name">${groupBuyData[i].store_name}</span>
+        //     <ul>
+        //         <li class="orderBtn">
+        //             <div class="mt-2 text-center">
+        //                 <button class="btn btn-outline-danger del-group-btn  border-top-0 border-left-0 border-right-0" data-groupid="${groupBuyData[i].id}">刪除此單</button>
+        //             </div>
+        //         </li>
+        //     </ul>
+        //     </div>
+        //     </div>
+        // </div>`
+        //     }
+        //     // $('.order-block').empty().append(orderBlock);
+        //     $('.del-group-btn').on('click', delGroupBuy)
+        // }
         
         
         /**
          * @Range: index.php
          * Delete group-buy
          */
-        function delGroupBuy() {
-            const group_id = $(this).data('groupid');
-            if (!group_id) return;
-            
-            let delData = new FormData();
-            delData.append('group_id', group_id);
-            
-            const delGroupBuyAct = new AjaxData(`group_buy_api.php`, showOrder, delData);
-            
-            const delGroupBuyVar = function () {
-                delGroupBuyAct.postJson();
-            }
-            
-            let alertInfo = new SwalAlert('你確定要刪除嗎？', "這項操作是沒辦法還原的！", '是的，我要刪除', '', delGroupBuyVar);
-            alertInfo.fireConfirm()
-        }
+        // function delGroupBuy() {
+        //     const group_id = $(this).data('groupid');
+        //     if (!group_id) return;
+        //
+        //     let delData = new FormData();
+        //     delData.append('group_id', group_id);
+        //
+        //     const delGroupBuyAct = new AjaxData(`group_buy_api.php`, showOrder, delData);
+        //
+        //     const delGroupBuyVar = function () {
+        //         delGroupBuyAct.postJson();
+        //     }
+        //
+        //     let alertInfo = new SwalAlert('你確定要刪除嗎？', "這項操作是沒辦法還原的！", '是的，我要刪除', '', delGroupBuyVar);
+        //     alertInfo.fireConfirm()
+        // }
         
         
         /**
@@ -1137,11 +1137,6 @@ const vueStore = {
         getStoreById(_storeId, _callback) {
             this.fetchData(`${this.ORDER_API}?request=getStoreById&storeId=${_storeId}`, 'GET', _callback);
         },
-        // 取得餐廳資料  自網頁refs元素
-        // getStoreByRefsId() {
-        //     const storeId = this.$refs.storeId.value;
-        //     this.getStoreByIdHandler(storeId, 'storeData');
-        // },
         // 取得修改店家數據
         getEditStoreData() {
             const storeId = this.getUrlId();
@@ -1286,9 +1281,11 @@ const vueStoreRating = {
 // 團購單
 const vueGroupBuy = {
     data() {
+        let tempGroupId = '';
         return {
             allContinueGroupBuys: [],
             groupBuyHistory: [],
+            tempGroupId,
         }
     },
     methods: {
@@ -1373,18 +1370,22 @@ const vueGroupBuy = {
             }
         },
         // 刪除團購單
-        // todo 10/21 要先進到這裡
         deleteGroupBuy(event){
-            this.smartConfirm('刪除團購單確認', '注意，這個動作不能復原，想清楚了嗎？', '我確定要刪除', 'info', this.deleteGroupBuyByGroupId(event));
+            this.tempGroupId = event.target.dataset.groupid;  // 存入全域變數，以利callback使用
+            try {
+                this.smartConfirm('刪除團購單確認', '注意，這個動作不能復原', '我確定要刪除', 'warning', this.deleteGroupBuyByGroupId);
+            } catch (e) {
+                console.log(e)
+            }
         },
-        deleteGroupBuyByGroupId(event){
-            const groupId = event.target.dataset.groupid;
+        deleteGroupBuyByGroupId(groupId){
             const deleteGroupBuyData = new FormData();
             deleteGroupBuyData.append('method', 'deleteGroupBuyByGroupId');
-            deleteGroupBuyData.append('groupId', groupId);
+            deleteGroupBuyData.append('groupId', this.tempGroupId);
             
             this.fetchData(this.ORDER_API, 'POST', this.deleteGroupBuyHandler, deleteGroupBuyData);
         },
+        // 刪除團購單處理
         deleteGroupBuyHandler(response){
             response.text().then(deleteGroupBuyState => {
                 deleteGroupBuyState = parseInt(deleteGroupBuyState);
@@ -1960,7 +1961,7 @@ const vueAlert = {
                 timerProgressBar: true,
             })
         },
-        smartConfirm(_title = '', _description = '', _confirmText = '', _status, _callback ='') {
+        smartConfirm(_title = '', _description = '', _confirmText = '', _status, _callback) {
             Swal.fire({
                 title: _title,
                 text: _description,
@@ -1970,9 +1971,13 @@ const vueAlert = {
                 cancelButtonColor: '#d33',
                 confirmButtonText: _confirmText
             }).then((result) => {
-                if (result.value) {
+                console.log(result)
+                if (result.isConfirmed){
                     _callback();
                 }
+                // if (result.value) {
+                //     _callback();
+                // }
             })
         }
     }
