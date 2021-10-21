@@ -673,14 +673,21 @@ const vueGroup = {
     methods: {
         // todo 10/21 群組註冊
         groupRegister() {
-            console.log(55)
-            if(!this.groupRegisterFormValidation) return;
+            if (!this.groupRegisterFormValidation) return;
             
+            const groupFormData = new FormData();
+            groupFormData.append('method', 'groupRegister');
+            groupFormData.append('nickName', this.groupRegisterFormFields.nickName);
+            groupFormData.append('password', this.groupRegisterFormFields.password);
+            this.fetchData(this.ORDER_API, 'POST', this.groupRegisterHandler, groupFormData);
         },
         // 群組表單驗證
         groupRegisterFormValidation() {
             
             return true;
+        },
+        groupRegisterHandler(response) {
+            console.log(response)
         }
     }
 }
@@ -1490,7 +1497,6 @@ const vueOrderDisplay = {
             if (!this.$refs['orderId']) return;
             const orderId = this.$refs['orderId'].value;
             const api = `${this.ORDER_API}?res=order_list&order_id=${orderId}`;
-            console.log(orderId, api);
             
             this.fetchData(api, 'GET', this.ordersDisplay);
         },
@@ -1516,9 +1522,10 @@ const vueOrderDisplay = {
             this.fetchData(`${this.ORDER_API}?res=store&store_id=${storeId}`, 'GET', deliveryAmountHandler);
         },
         // 訂單顯示 #order.php
-        ordersDisplay(orderData) {
-            orderData.json()
+        ordersDisplay(response) {
+            response.json()
                 .then(orderData => {
+                    // console.log(orderData)
                     this.ordersData = orderData;
                     this.calculateOrders(orderData);
                 })
@@ -1659,8 +1666,23 @@ const vueOrderOperation = {
             this.postData = {};
             
             // POST
-            this.fetchData(this.ORDER_API, 'POST', this.getOrdersById, postOrderData);
-            this.smartAlert('訂單操作', '訂單成功送出！');
+            this.fetchData(this.ORDER_API, 'POST', this.postOrderHandler, postOrderData);
+        },
+        // 送出訂單後處理
+        postOrderHandler(response){
+            response.text()
+                .then(result => {
+                    if(result === '0') {
+                        this.smartAlert('操作失敗', '訂單無法送出！', 'error');
+                        return;
+                    }
+                    if(result === '1') {
+                        this.smartAlert('訂單操作', '訂單成功送出！', 'success');
+                        return;
+                    }
+                    throw new Error('postOrderHandler error');
+                })
+            this.getOrdersById();
         },
         // 檢查input欄位是否為空
         checkInputNonEmpty(_inputElement, _fieldName) {

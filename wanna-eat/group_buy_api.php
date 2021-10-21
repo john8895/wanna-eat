@@ -6,6 +6,7 @@ require_once('assets/include/order.inc.php');
 require_once('assets/include/store.inc.php');
 require_once('assets/include/user.inc.php');
 require_once('assets/include/groupbuy.inc.php');
+require_once('assets/include/group.inc.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     foreach ($_GET as $key => $value) {
@@ -87,49 +88,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $store = new Store();
     $user = new User();
     $groupBuy = new GroupBuy();
+    $group = new Group();
 
     switch ($method) {
-        case 'recaptcha':
+        case 'recaptcha':  // 驗證碼
             $user->recaptchaValidate();
             break;
-        case 'addStore':
+        case 'addStore':  // 新增店家
             $store->addStore();
             break;
-        case 'editStore':
+        case 'editStore':  // 編輯店家
             $store->editStore();
             break;
-        case 'postOrder':
+        case 'postOrder':  // 新增訂單
             $order->postOrder();
             break;
         case 'getFilterOrders':
             $order->getFilterOrders();
             break;
-        case 'editOrder':
+        case 'editOrder':  // 編輯訂單
             $order->editOrder();
             break;
-        case 'continueOrder':
+        case 'continueOrder':  // 繼續訂單
             $order->continueOrder();
             break;
-        case 'closeOrder':
+        case 'closeOrder':  // 結束訂單
             $order->closeOrder();
             break;
-        case 'deleteOrder':
+        case 'deleteOrder':  // 刪除訂單
             $order->deleteOrder();
             break;
-        case 'postRating':
+        case 'postRating':  // 新增評價
             $order->postRating();
             break;
-        case 'register':
+        case 'register':  // 會員註冊
             $user->register();
             break;
-        case 'deleteGroupBuyByGroupId':
+        case 'deleteGroupBuyByGroupId':  // 刪除團購單以團購單ID
             $groupBuy->deleteGroupBuyByGroupId();
             break;
         default:
             break;
     }
 
-    if (isset($_POST['add_host_name'])) addHostName();
+    if (isset($_POST['add_host_name'])) addHostName();  // 新增團購主
 //    if (isset($_POST['group_id'])) deleteGroupBuy();
 }
 
