@@ -662,7 +662,7 @@ $(function () {
 const vueGroup = {
     data() {
         const groupRegisterFormFields = {
-            nickName: '',
+            groupName: '',
             password: '',
             passwordConfirm: '',
         };
@@ -673,23 +673,60 @@ const vueGroup = {
     methods: {
         // todo 10/21 群組註冊
         groupRegister() {
-            if (!this.groupRegisterFormValidation) return;
+            if (!this.groupRegisterFormValidation()) return;  // 表單驗證
             
             const groupFormData = new FormData();
             groupFormData.append('method', 'groupRegister');
-            groupFormData.append('nickName', this.groupRegisterFormFields.nickName);
+            groupFormData.append('groupName', this.groupRegisterFormFields.groupName);
             groupFormData.append('password', this.groupRegisterFormFields.password);
+            this.groupRegisterFormFields.groupName = '';
+            this.groupRegisterFormFields.password = '';
+            this.groupRegisterFormFields.passwordConfirm = '';
             this.fetchData(this.ORDER_API, 'POST', this.groupRegisterHandler, groupFormData);
         },
         // 群組表單驗證
         groupRegisterFormValidation() {
+            // 檢查是否為空
+            const checkFieldEmpty = (field, fieldName) => {
+                if (field === '') {
+                    this.smartAlert('欄位檢查', `${fieldName}必須要填寫`, 'warning');
+                    return false;
+                }
+                return true;
+            }
+            if (!checkFieldEmpty(this.groupRegisterFormFields.groupName, '群組名稱')) return false;
+            if (!checkFieldEmpty(this.groupRegisterFormFields.password, '群組密碼')) return false;
+            if (!checkFieldEmpty(this.groupRegisterFormFields.passwordConfirm, '確認密碼')) return false;
             
+            if (this.groupRegisterFormFields.password !== this.groupRegisterFormFields.passwordConfirm) {
+                this.smartAlert('欄位檢查', '密碼與確認密碼不同，請重新輸入', 'warning');
+                return false;
+            }
             return true;
         },
         groupRegisterHandler(response) {
-            console.log(response)
+            response.text()
+                .then(result => {
+                    if (result === '1') {
+                        this.smartAlert('註冊成功', '註冊群組完成', 'success');
+                        return;
+                    }
+                    if (result === '0') {
+                        this.smartAlert('註冊失敗', '註冊群組失敗', 'error');
+                        return;
+                    }
+                    throw new Error('group register failed on function groupRegisterHandler')
+                })
         }
-    }
+    },
+    computed: {
+        checkPasswordLength() {
+            const length = this.groupRegisterFormFields.password.length;
+            if (length === 0) return;
+            return length >= 6;
+            // return length < 6 ? `密碼字數太少，目前輸入 ${length} 字` : `密碼字數超過 6 個字，這樣可以！`;
+        }
+    },
 }
 
 // Member
@@ -1266,26 +1303,34 @@ const vueStoreRating = {
             score: '0',
             comment: '',
         }
+        const storeRatingEmpty = false;
+        const storeRatings = {};
         return {
             ratingFormField,
+            storeRatingEmpty,
+            storeRatings,
         }
     },
     methods: {
-        // add rating todo 10/1 新增評價
+        // add rating
         postRating() {
             if (!this.ratingFormValidator()) return;
-            const userId = parseInt('1');
+            const userId = '1';
+            // todo 10/26 資料庫只接受 int，所以要驗證是否為數字
+            const storeId = this.$refs.storeId.value || 0;
+            if(!storeId) throw new Error('Missing storeId in postRating');
+            console.log(storeId)
             
             const ratingData = new FormData();
             ratingData.append('method', 'postRating');
             // todo: 10/1 獲取 userId
             ratingData.append('userId', userId);
-            ratingData.append('storeId', parseInt(this.storeData.id));
+            ratingData.append('storeId', storeId);
             ratingData.append('score', this.ratingFormField.score);
             ratingData.append('comment', this.ratingFormField.comment);
             
             console.log('post end')
-            this.fetchData(this.ORDER_API, 'POST', this.storeRatingHandler, ratingData);
+            this.fetchData(this.ORDER_API, 'POST', this.postStoreRatingHandler, ratingData);
         },
         // 評價欄位驗證
         ratingFormValidator() {
@@ -1297,14 +1342,14 @@ const vueStoreRating = {
             //     this.smartAlert('錯誤', '無法獲取 User id', 'error');
             //     return false;
             // }
-            if (!this.storeData.id || this.storeData.id === '') {
-                this.smartAlert('錯誤', '無法獲取店家id', 'error');
-                return false;
-            }
+            // if (!this.storeData.id || this.storeData.id === '') {
+            //     this.smartAlert('錯誤', '無法獲取店家id', 'error');
+            //     return false;
+            // }
             return true;
         },
         // Post rating data
-        storeRatingHandler(response) {
+        postStoreRatingHandler(response) {
             response.text()
                 .then(result => {
                     console.log(result);
@@ -1312,8 +1357,32 @@ const vueStoreRating = {
                 .catch(err => {
                     console.log(err);
                 })
+        },
+        // 取得店家評價
+        getStoreRatingByStoreId() {
+            const storeId = this.$refs.storeId.value || 0;
+            if (!storeId) throw new Error('Missing storeId in getStoreRatingByStoreId');
+            
+            console.log(storeId)
+            this.fetchData(`${this.ORDER_API}?request=getStoreRating&storeId=${storeId}`, 'GET', this.getStoreRatingHandler);
+            // this.fetchData(`${this.ORDER_API}?request=getStoreRating&storeId=${storeId}`, 'GET', callback);
+            
+            function callback(response) {
+                console.log(response);
+                response.json()
+                    .then(result => {
+                        this.storeRatings = result;
+                    })
+            }
+        },
+        getStoreRatingHandler(response) {
+            console.log(response);
+            response.json()
+                .then(result => {
+                    this.storeRatings = result;
+                })
         }
-    }
+    },
 }
 
 // 團購單
@@ -1494,6 +1563,7 @@ const vueOrderDisplay = {
     methods: {
         // 載入團購訂單 #order.php
         getOrdersById() {
+            console.log('getOrdersById()')
             if (!this.$refs['orderId']) return;
             const orderId = this.$refs['orderId'].value;
             const api = `${this.ORDER_API}?res=order_list&order_id=${orderId}`;
@@ -1669,14 +1739,14 @@ const vueOrderOperation = {
             this.fetchData(this.ORDER_API, 'POST', this.postOrderHandler, postOrderData);
         },
         // 送出訂單後處理
-        postOrderHandler(response){
+        postOrderHandler(response) {
             response.text()
                 .then(result => {
-                    if(result === '0') {
+                    if (result === '0') {
                         this.smartAlert('操作失敗', '訂單無法送出！', 'error');
                         return;
                     }
-                    if(result === '1') {
+                    if (result === '1') {
                         this.smartAlert('訂單操作', '訂單成功送出！', 'success');
                         return;
                     }
@@ -1689,8 +1759,7 @@ const vueOrderOperation = {
             this.checkElementNonExists(_inputElement, _fieldName);  // 檢查元素是否存在
             
             if (!_inputElement.value) {
-                this.smartAlert('訂單欄位檢查', `${_fieldName}
-            不可為空`, 'error');
+                this.smartAlert('訂單欄位檢查', `${_fieldName}不可為空`, 'error');
                 _inputElement.classList.add('is-invalid');
                 return false;
             }
@@ -1701,8 +1770,7 @@ const vueOrderOperation = {
         // 檢查元素是否存在，不存在拋出錯誤
         checkElementNonExists(_inputElement, _fieldName) {
             if (!_inputElement) {
-                throw new Error(`${_fieldName}
-            欄位不存在，得到結果：${_inputElement}
+                throw new Error(`${_fieldName}欄位不存在，得到結果：${_inputElement}
             `);
             }
         },
@@ -1711,10 +1779,7 @@ const vueOrderOperation = {
             const reg = /^[1-9]{1}[0-9]?/g;  // 1-無上限 正整數不可負數不可為 0
             try {
                 if (_fieldElement.value.match(reg) === null) {
-                    this.smartAlert('欄位檢查提醒', `${_fieldName}
-            請輸入不為
-            0
-            的正整數(不能是負數) < br > 注意！資料尚未更新`, 'error');
+                    this.smartAlert('欄位檢查提醒', `${_fieldName}請輸入不為0的正整數(不能是負數)<br>注意！資料尚未更新`, 'error');
                     _fieldElement.classList.add('is-invalid');
                     return false;
                 }

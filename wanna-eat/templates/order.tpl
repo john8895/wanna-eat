@@ -92,7 +92,7 @@
                     {/if}
                 {/if}
 
-                <button class="btn btn-success" data-toggle="modal" data-target="#rateBoard">評價</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#rateBoard" @click="getStoreRatingByStoreId">評價</button>
 
 
                 <div class="modal fade" id="rateBoard" tabindex="-1">
@@ -107,8 +107,8 @@
                                             <span class="rating-number">/10</span>
                                         </div>
                                     </div>
-                                    <div class="comments-wrap">
-                                        <article>
+                                    <div class="comments-wrap" v-if="storeRatings">
+                                        <article v-for="rating in storeRatings">
                                             <div class="user-comments d-flex">
                                                 <div class="user-comments__avatar">
                                                     <img src="http://fakeimg.pl/32x32" alt=""></div>
@@ -124,6 +124,7 @@
                                             </div>
                                         </article>
                                     </div>
+
 
                                     <div class="post-comment">
                                         <div class="post-comment-title h4">留下你的評價</div>

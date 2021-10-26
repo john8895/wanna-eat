@@ -1,6 +1,6 @@
 {include file="head.tpl"}
 {include file="header.tpl"}
-<main class="page__register-group" id="app">
+<main class="page__group-register" id="app">
     <div class="inner__banner">
         <div class="container">
             <div class="d-flex justify-content-between">
@@ -30,7 +30,7 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="firstName">群組名稱</label>
-                                        <input type="text" class="form-control" id="firstName" placeholder="" v-model="groupRegisterFormFields.nickName" required>
+                                        <input type="text" class="form-control" id="firstName" placeholder="" v-model="groupRegisterFormFields.groupName" required>
                                         <div class="invalid-feedback">
                                             Valid first name is required.
                                         </div>
@@ -40,8 +40,12 @@
                                 <div class="mb-3">
                                     <label for="password">密碼</label>
                                     <input type="password" class="form-control" id="password" v-model="groupRegisterFormFields.password" placeholder="" required>
-                                    <div class="invalid-feedback">
-                                        Please enter your shipping address.
+                                    <div class="text-mute" :class="[checkPasswordLength ? 'is-valid' : 'is-invalid']"></div>
+                                    <div class="valid-feedback">
+                                        密碼字數超過 6 個字，這樣可以！
+                                    </div>
+                                    <div class="invalid-feedback" v-if="groupRegisterFormFields.password > 0">
+                                        密碼字數太少，目前輸入 %% groupRegisterFormFields.password %% 字
                                     </div>
                                 </div>
                                 <div class="mb-3">

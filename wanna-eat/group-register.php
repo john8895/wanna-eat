@@ -14,4 +14,4 @@ if (isset($_COOKIE['member_login'])) $smarty->assign('member_login', '1');
 if (isset($error_message)) {
     $smarty->assign('error', $error_message);
 }
-$smarty->display("./templates/register-group.tpl");
+$smarty->display("./templates/group-register.tpl");

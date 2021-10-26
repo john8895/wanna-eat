@@ -19,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     case 'buy':
                         getGroupBuy();
                         break;
-                    case 'buy_history':
-                        getGroupHistory();
-                        break;
+//                    case 'buy_history':
+//                        getGroupHistory();
+//                        break;
                     case 'total_orders':
                         getOrders();
                         break;
@@ -70,6 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         break;
                     case 'getGroupBuyHistory':
                         $groupBuy->getGroupBuyHistory();
+                        break;
+                    case 'getStoreRating':
+                        $store->getRating();
                         break;
                     default:
                         break;
@@ -127,6 +130,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'deleteGroupBuyByGroupId':  // 刪除團購單以團購單ID
             $groupBuy->deleteGroupBuyByGroupId();
             break;
+        case 'groupRegister':  // 刪除團購單以團購單ID
+            $group->register();
+            break;
         default:
             break;
     }
@@ -161,18 +167,18 @@ function getGroupBuy()
 }
 
 
-function getGroupHistory()
-{
-    $result = connect_mysql("SELECT * FROM group_buy ORDER BY end_time DESC");
-    $new_item = array();
-    while ($item = $result->fetch_assoc()) {
-        $new_item[] = $item;
-    }
-//    $json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
-    $json_data = json_encode($new_item);  // 轉為json格式，轉譯處理中文
-    echo $json_data;
-    $result->close();
-}
+//function getGroupHistory()
+//{
+//    $result = connect_mysql("SELECT * FROM group_buy ORDER BY end_time DESC");
+//    $new_item = array();
+//    while ($item = $result->fetch_assoc()) {
+//        $new_item[] = $item;
+//    }
+////    $json_data = json_encode($new_item, JSON_UNESCAPED_UNICODE);  // 轉為json格式，轉譯處理中文
+//    $json_data = json_encode($new_item);  // 轉為json格式，轉譯處理中文
+//    echo $json_data;
+//    $result->close();
+//}
 
 
 /** Delete group buy */

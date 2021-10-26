@@ -25,6 +25,13 @@
                                             <a href="logout.php" title="會員登出">會員登出</a>
                                         </li>
                                         <li class="link-item">
+                                            <a href="group-register.php" title="註冊群組">註冊群組</a>
+                                        </li>
+
+                                        <li class="link-item">
+                                            <a href="group-login.php" title="群組登入">群組登入</a>
+                                        </li>
+                                        <li class="link-item">
                                             <a href="edit-info.php" title="修改資訊">修改資訊</a>
                                         </li>
                                     </ul>

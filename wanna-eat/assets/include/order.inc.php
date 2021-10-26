@@ -140,7 +140,6 @@ class Order extends Connection
     // 新增評價
     public function postRating()
     {
-//        echo 'back';
         $nowDate = date("Y-m-d H:i:s");  // ex: 2020-07-04 18:21:00
 
         $rating['userId'] = $_POST['userId'];
@@ -148,6 +147,7 @@ class Order extends Connection
         $rating['date'] = $nowDate;
         $rating['score'] = $_POST['score'];
         $rating['comment'] = $_POST['comment'];
+
         $this->connect();
         $sql = "INSERT INTO store_rating(`user_id`,`store_id`,`rating_date`,`rating_score`,`rating_comment`)VALUES(:userId,:storeId,:ratingDate,:ratingScore,:ratingComment)";
         $sth = $this->query($sql);

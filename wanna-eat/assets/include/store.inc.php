@@ -247,7 +247,7 @@ class Store extends connection
         $sql = "UPDATE store SET name=:storeName, phone=:storePhone, store_full_price=:storeFullPrice, description=:description{$sqlStoreCover}{$sql_image},store_tag=:storeTag WHERE id={$storeData['id']}";
         $sth = $this->query($sql);
 
-        $sqlArray = [':storeName' => $storeData['name'], ':storePhone' => $storeData['phone'],':storeFullPrice' => $storeData['storeFullPrice'], ':description' => $storeData['description'], ':storeTag' => $storeData['storeTag']];
+        $sqlArray = [':storeName' => $storeData['name'], ':storePhone' => $storeData['phone'], ':storeFullPrice' => $storeData['storeFullPrice'], ':description' => $storeData['description'], ':storeTag' => $storeData['storeTag']];
         // 有上傳封面與菜單就加入sql語句
         if ($hasCover) $sqlArray[':storeCover'] = $storeData['storeCover'];
         if ($hasImage) $sqlArray[':image'] = $storeData['images'];
@@ -264,6 +264,19 @@ class Store extends connection
         $result = connect_mysql($sql);
         $fetch_assoc = mysqli_fetch_assoc($result);
         $smarty->assign('item', $fetch_assoc);
+    }
+
+    // 取得店家評價
+    public function getRating()
+    {
+        $rating['storeId'] = $_GET['storeId'];
+//        if (!$rating['storeId']) echo 2;  // store id === 0
+        $this->connect();
+        $sql = "SELECT * FROM store_rating WHERE store_id=:storeId ORDER BY rating_date ASC";  // DESC 由大到小，ASC 由小到大
+        $sth = $this->query($sql);
+        $sth->execute(array(':storeId' => $rating['storeId']));
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 }
 //$store = new Store();
